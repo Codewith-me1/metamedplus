@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+{% include "layout/sidebar.html" %}
+<html>
+<head>
+    <title>Add Staff Basic Information</title>
+</head>
+<body>
+    <div class="container">
+    
+    <form method="post">
+        {% csrf_token %}
+        <!-- Personal Information -->
+        <h2>Add Staff Basic Information</h2>
+        <h3>Personal Information</h3>
+        <label for="staff_id">Staff ID *</label>
+        <input type="text" id="staff_id" name="staff_id" required><br>
+
+
+        <label for="role">Role</label>
+        <select id="role" name="role">
+            <option value="">Select A Role</option>
+            {% for role in role %}
+                <option value="{{ role.role }}">{{ role.role }}</option>
+                
+               
+                
+            {% endfor %}
+        </select><br><br>
+{% comment %} 
+        <label for="role">Role *</label>
+        <input type="text" id="role" name="role" required><br> {% endcomment %}
+
+        <label for="designation">Designation *</label>
+        
+        <select id="role" name="designation">
+            <option value="">Select A Role</option>
+            {% for role in role %}
+                <option value="{{ role.designation }}">{{ role.designation }}</option>
+                
+               
+                
+            {% endfor %}
+        </select><br><br>
+
+        <label for="designation">Department</label>
+        <select id="role" name="department">
+            <option value="">Department</option>
+            {% for role in role %}
+                <option value="{{ role.department }}">{{ role.department }}</option>
+                
+               
+                
+            {% endfor %}
+        </select><br><br>
+        
+
+        <label for="specialist">Specialist *</label>
+        <select id="role" name="specialist">
+            <option value="">Specialist</option>
+            {% for role in role %}
+                <option value="{{ role.specialist }}">{{ role.sspecialist }}</option>
+                
+               
+                
+            {% endfor %}
+        </select><br><br>
+
+        <label for="first_name">First Name *</label>
+        <input type="text" id="first_name" name="first_name" required><br>
+
+        <label for="last_name">Last Name *</label>
+        <input type="text" id="last_name" name="last_name" required><br>
+
+        <label for="father_name">Father Name</label>
+        <input type="text" id="father_name" name="father_name"><br>
+
+        <label for="mother_name">Mother Name</label>
+        <input type="text" id="mother_name" name="mother_name"><br>
+
+        <label for="gender">Gender *</label>
+        <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label for="marital_status">Marital Status *</label>
+        <select id="marital_status" name="marital_status" required>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Divorced">Divorced</option>
+            <option value="Widowed">Widowed</option>
+        </select><br>
+
+        <label for="blood_group">Blood Group *</label>
+        <input type="text" id="blood_group" name="blood_group" required><br>
+
+        <label for="date_of_birth">Date Of Birth *</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required><br>
+
+        <label for="date_of_joining">Date Of Joining *</label>
+        <input type="date" id="date_of_joining" name="date_of_joining" required><br>
+
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone"><br>
+
+        <label for="emergency_contact">Emergency Contact</label>
+        <input type="tel" id="emergency_contact" name="emergency_contact"><br>
+
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="current_address">Current Address</label>
+        <textarea id="current_address" name="current_address"></textarea><br>
+
+        <label for="permanent_address">Permanent Address</label>
+        <textarea id="permanent_address" name="permanent_address"></textarea><br>
+
+        <!-- Add more fields for Qualification, Experience, Identification Numbers, etc. -->
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>

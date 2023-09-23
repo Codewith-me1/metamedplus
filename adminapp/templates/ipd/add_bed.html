@@ -1,0 +1,114 @@
+{% include "layout/sidebar.html" %}
+
+
+<style>
+
+  
+</style>
+<div class="container">
+<form method="post" action="{% url 'add_bed' %}">
+  
+<h2>Bed Details</h2>
+
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="patient">Select Bed Group</label>
+        <select id="patient" name="patient">
+            <option value="">Select Bed Group</option>
+            {% for bed in bed_grp %}
+                <option value="{{ bed.id }}">{{ bed.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="floor">Floor:</label>
+        <input type="text" id="floor" name="floor" required>
+    </div>
+
+    <div class="form-group">
+        <label for="bed_pur">Purpose:</label>
+        <select id="bed_pur" name="bed_pur">
+            {% for bed in bed_pur %}
+                <option value="{{ bed.id }}">{{ bed.purpose }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="mark_as_unused">Mark as Unused</label>
+        <input type="checkbox" id="mark_as_unused" name="mark_as_unused" {% if bed.mark_as_unused %}checked{% endif %}>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save">
+    </div>
+
+   
+</form>
+
+<form method="post" action="{% url 'add_bed_group' %}">
+  <h2>Add Bed Group</h2>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="floor">Floor:</label>
+        <input type="text" id="floor" name="floor" required>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save">
+    </div>
+
+ 
+</form>
+
+<form method="post" action="{% url 'add_purpose' %}">
+  <h2>Add Bed Purpose</h2>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="purpose">Name:</label>
+        <input type="text" id="name" name="purpose" required>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save">
+    </div>
+
+</form>
+
+<form method="post" action="{% url 'add_floor' %}">
+  <h2>Add Floor</h2>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="name">Floor:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save">
+    </div>
+
+ 
+   
+</form>
+<div> 

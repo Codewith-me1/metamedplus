@@ -1,0 +1,170 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style-main.css' %}">
+    <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
+    {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css/ionicons.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css/custom_style.css" %}">
+    <link rel="stylesheet" href=" {% static "css/all.css" %}"> 
+    <link rel="stylesheet" href=" {% static "css/idcard.css" %}">
+    <link rel="stylesheet" href=" {% static "css/animate.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css/AdminLTE.css" %}"> 
+   <link rel="stylesheet" href=" {% static "css/AdminLTE.min.css" %}">
+   <link rel="stylesheet" href=" {% static "css//skins/_all-skins.min.css" %}">
+   <link rel="stylesheet" href=" {% static "css//skins/_all-skins.css" %}">
+    <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css" %}">
+    <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css.map" %}"> 
+    <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.css" %}"> 
+    <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}"> 
+    <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}"> 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+</head>
+<style>
+    
+   
+    
+    .sidebar {
+        width: 250px;
+        background-color: #333;
+        color: #fff;
+    }
+    
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .sidebar li {
+        padding: 10px;
+    }
+    
+    .sidebar a {
+        text-decoration: none;
+        color: #fff;
+    }
+    
+    .content {
+        flex-grow: 1;
+        padding: 15px;
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 100%; /* On smaller screens, make the sidebar full-width */
+        }
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+    /* styles.css */
+
+  /* Center the form header */
+  h1 {
+      text-align: center;
+  }
+  
+  /* Style form inputs and labels */
+  .form-group {
+      margin-bottom: 15px;
+  }
+  
+  label {
+      display: block;
+      font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="datetime-local"],
+  select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+  
+  /* Center the submit button */
+  input[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+  
+  /* Add hover effect to the submit button */
+  input[type="submit"]:hover {
+      background-color: #0056b3;
+  }
+  form{
+    width:80%;
+    margin-left:20rem;
+  }
+  label{
+    margin-top:2rem;    
+  }
+  h1{
+    margin-left:20rem;
+  }
+    
+    
+</style>
+<!DOCTYPE html>
+<body>
+    
+        
+    <div class="sidebar">
+        <ul>
+        
+            <li><a href="{% url 'appointment' %}">Appointment</a></li>
+        
+            <li><a href="{% url 'appointmentForm' %}">Appointment Form</a></li>
+            <li><a href="{% url 'appointment_details_form' %}">Appointment Details Form</a></li>
+            <li><a href="{% url 'patient_form' %}">Patient Form</a></li>
+            <li><a href="{% url 'patient_list' %}">Patient List</a></li>
+            <li><a href="{% url 'add_staff' %}">Add Staff</a></li>
+            <li><a href="{% url 'staff_list' %}">Staff List</a></li>
+            <li><a href="{% url 'role' %}">Role</a></li>
+            <li><a href="{% url 'role_form' %}">Role Form</a></li>
+            <li><a href="{% url 'search-staff' %}">Search Staff</a></li>
+            <li><a href="{% url 'add_bed' %}">Add Bed</a></li>
+            <li><a href="{% url 'add_bed_group' %}">Add Bed Group</a></li>
+            <li><a href="{% url 'add_purpose' %}">Add Purpose</a></li>
+            <li><a href="{% url 'add_floor' %}">Add Floor</a></li>
+            <li><a href="{% url 'ipd_dash' %}">IPD Dashboard</a></li>
+            <li><a href="{% url 'submit_symptom' %}">Submit Symptom</a></li>
+            <li><a href="{% url 'ipd_patient' %}">IPD Patient</a></li>
+            <li><a href="{% url 'add_med' %}">Add Medicine</a></li>
+            <li><a href="{% url 'supplier_form' %}">Supplier Form</a></li>
+            <li><a href="{% url 'med_det' %}">Medication Details</a></li>
+            <li><a href="{% url 'med_cat' %}">Medicine Category</a></li>
+            <li><a href="{% url 'add_donor' %}">Add Donor</a></li>
+            {% comment %} <li><a href="{% url 'show' %}">Show</a></li> {% endcomment %}
+            <li><a href="{% url 'issue_blood' %}">Issue Blood</a></li>
+            <li><a href="{% url 'issue_comp' %}">Issue Comp</a></li>
+            <li><a href="{% url 'add_charge' %}">Add Charge</a></li>
+            <li><a href="{% url 'charge_name' %}">Charge Name</a></li>
+            <li><a href="{% url 'tax_cat' %}">Tax Category</a></li>
+            <li><a href="{% url 'path_test' %}">Path Test</a></li>
+            <li><a href="{% url 'path' %}">Pathology</a></li>
+            <li><a href="{% url 'ipd_pat' %}">IPD Dashboard </a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

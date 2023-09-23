@@ -1,0 +1,30 @@
+{% include "layout/sidebar.html" %}
+<div class="container">
+    <h1>Appointment Details</h1>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Designation</th>
+          <th>Department</th>
+          <th>Specialist</th>
+            
+         
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for role in role %}
+          <tr>
+            <td>{{ role.role }}</td>
+            <td>{{ role.designation }}</td>
+            <td>{{ role.department }}</td>
+            <td>{{ role.specialist }}</td>
+        
+          
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

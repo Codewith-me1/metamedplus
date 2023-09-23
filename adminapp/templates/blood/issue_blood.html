@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+{% include "layout/sidebar.html" %}
+<head>
+    <title>Add Blood Donation</title>
+</head>
+<body>
+    <h1>Add Blood Donation</h1>
+    <form method="POST" action="{% url 'issue_blood' %}">
+        {% csrf_token %}
+        <label for="reference_name">Reference Name *</label>
+        <input type="text" name="reference_name" required><br>
+
+        <label for="issue_date">Issue Date *</label>
+        <select name="issue_date" required>
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+        </select><br>
+
+
+<label for="hospital_doctor">Hospital Doctor</label>
+        <input type="text" name="hospital_doctor"><br>
+
+        <label for="technician">Technician</label>
+        <input type="text" name="technician"><br>
+
+        <label for="blood_group">Blood Group</label>
+        <select name="blood_group">
+            <option value="" selected>Select</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+        </select><br>
+
+        <label for="bag">Bag</label>
+        <select name="bag">
+            <option value="" selected>Select</option>
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+        </select><br>
+
+        <label for="charge_category">Charge Category</label>
+        <select name="charge_category">
+            <option value="" selected>Select</option>
+            <option value="Category 1">Category 1</option>
+            <option value="Category 2">Category 2</option>
+            <option value="Category 3">Category 3</option>
+        </select><br>
+
+        <label for="charge_name">Charge Name</label>
+        <input type="text" name="charge_name"><br>
+
+        <label for="standard_charge">Standard Charge (Rs.)</label>
+        <input type="number" name="standard_charge"><br>
+
+        <label for="note">Note</label>
+        <textarea name="note"></textarea><br>
+
+
+        <h2>Financial Information</h2>
+        <label for="total">Total (Rs.)</label>
+        <input type="number" name="total" ><br>
+
+        <label for="discount_percentage">Discount (%)</label>
+        <input type="number" name="discount_percentage" ><br>
+
+        <label for="discount">Discount (Rs.)</label>
+        <input type="number" name="discount" ><br>
+
+        <label for="tax">Tax (Rs.)</label>
+        <input type="number" name="tax" ><br>
+
+        <label for="net_amount">Net Amount (Rs.)</label>
+        <input type="number" name="net_amount" ><br>
+
+        <label for="payment_mode">Payment Mode *</label>
+        <select name="payment_mode" required>
+            <option value="Cash">Cash</option>
+            <!-- Add more payment modes as needed -->
+        </select><br>
+
+        <button type="submit">Save</button>
+    </form>
+    {% for blood in blood %}
+
+    <p>{{  blood.reference_name}}</p>
+    <p>{{  blood.blood_group}}</p>
+    
+
+{% endfor %} 
+</body>
+</html>

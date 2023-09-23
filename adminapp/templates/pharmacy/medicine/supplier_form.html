@@ -1,0 +1,70 @@
+<!-- supplier_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Supplier Form</title>
+    {% include "layout/sidebar.html" %}
+</head>
+<style> 
+.table{
+    margin-top:4rem;
+}
+</style>
+<body>
+    <div class="container">
+    
+    <form method="post" action="{% url "supplier_form" %}">
+        <h1>Supplier Form</h1>
+        {% csrf_token %}
+        <label for="supplier_name">Supplier Name *</label>
+        <input type="text" name="supplier_name" required><br>
+        
+        <label for="supplier_contact">Supplier Contact</label>
+        <input type="text" name="supplier_contact"><br>
+        
+        <label for="contact_person_name">Contact Person Name</label>
+        <input type="text" name="contact_person_name"><br>
+        
+        <label for="contact_person_phone">Contact Person Phone</label>
+        <input type="text" name="contact_person_phone"><br>
+        
+        <label for="drug_license_number">Drug License Number</label>
+        <input type="text" name="drug_license_number"><br>
+        
+        <label for="address">Address</label>
+        <textarea name="address"></textarea><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Supplier Name</th>
+            <th>Supplier Contact</th>
+            <th>Contact Person Name</th>
+            
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for supp in supp %}
+            <tr>
+              <td>{{ supp.supplier_name }}</td>
+  
+              <td>{{ supp.supplier_contact }}</td>
+              <td>{{ supp.contact_person_name}}</td>
+              
+              
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+
+
+
+
+
+
+<!-- medication_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "layout/sidebar.html" %}
+    <meta charset="UTF-8">
+    <title>Medication Form</title>
+</head>
+<body>
+    <div class="container"> 
+    <h1>Medication Form</h1>
+    <form method="post" action="{% url "med_cat" %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" class="form-control" name="category" required>
+        </div>
+  
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th></th>
+            
+            
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for med in med_cat %}
+            <tr>
+              <td>{{ med.medicine_category}}</td>
+
+              
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+</div>
+</body>
+</html>
+
+
+    {% comment %} {% for med in med_cat %}
+<p>{{  med.medicine_category}}</p>
+{% endfor %}
+</body>
+</html> {% endcomment %}
+
+
+

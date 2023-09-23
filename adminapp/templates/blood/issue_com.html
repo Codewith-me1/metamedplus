@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    {% include "layout/sidebar.html" %}
+<head>
+    <title>Add Product</title>
+</head>
+<body>
+    <h1>Add Product</h1>
+    <form method="POST" action="{% url 'issue_comp' %}">
+        {% csrf_token %}
+        <label for="category_name">Category Name:</label>
+        <input type="text" name="category_name"><br>
+
+        <label for="unit">Unit:</label>
+        <input type="text" name="unit"><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+    {% for comp in comp %}
+
+    <p>{{  comp.category_name}}</p>
+    <p>{{  comp.unit}}</p>
+    
+
+{% endfor %} 
+</body>
+</html>

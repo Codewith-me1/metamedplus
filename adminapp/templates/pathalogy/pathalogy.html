@@ -1,0 +1,94 @@
+{% include "layout/sidebar.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Pathology Test</title>
+</head>
+<body>
+   
+    <form method="POST" action="{% url "path" %}">
+        <h1>Create Pathology Test</h1>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="test_name">Test Name *</label>
+            <input type="text" name="test_name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="report_days">Report Days *</label>
+            <input type="number" name="report_days" required>
+        </div>
+
+        <div class="form-group">
+            <label for="report_date">Report Date *</label>
+            <input type="date" name="report_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="tax_percentage">Tax *</label>
+            <input type="text" name="tax_percentage" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount (Rs.) *</label>
+            <input type="text" name="amount" required>
+        </div>
+
+        <div class="form-group">
+            <label for="referral_doctor">Referral Doctor *</label>
+            <select id="patient" name="referral_doctor">
+                <option value="">Select Doctor</option>
+                {% for doc in doc %}
+                    <option value="">{{ doc.first_name }}</option>
+                {% endfor %}
+            </select>
+            
+            
+        </div>
+
+        <h2>Financial Information</h2>
+        <div class="form-group">
+            <label for="total">Total (Rs.)</label>
+            <input type="number" name="total">
+        </div>
+
+        <div class="form-group">
+            <label for="discount_percentage">Discount (%)</label>
+            <input type="number" name="discount_percentage">
+        </div>
+
+        <div class="form-group">
+            <label for="discount">Discount (Rs.)</label>
+            <input type="number" name="discount">
+        </div>
+
+        <div class="form-group">
+            <label for="tax">Tax (Rs.)</label>
+            <input type="number" name="tax">
+        </div>
+
+        <div class="form-group">
+            <label for="net_amount">Net Amount (Rs.)</label>
+            <input type="number" name="net_amount">
+        </div>
+
+        <div class="form-group">
+            <label for="payment_mode">Payment Mode *</label>
+            <select name="payment_mode" required>
+                <option value="Cash">Cash</option>
+                <!-- Add more payment modes as needed -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="payment_amount">Payment Amount (Rs.)</label>
+            <input type="number" name="payment_amount">
+        </div>
+
+        <input type="submit" value="Submit">
+    </form>
+    {% for path in path %}
+    <p> {{path.test_name}}
+    {% endfor %}
+</body>
+</html>

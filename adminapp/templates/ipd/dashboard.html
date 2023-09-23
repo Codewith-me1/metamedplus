@@ -1,0 +1,34 @@
+{% include "layout/sidebar.html" %}
+<div class="container">
+    <h1>Appointment Details</h1>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>consultant doctor</th>
+          <th>Patient Name</th>
+          <th>Systoms</th>
+          <th>Bed Number</th>
+         
+         
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for ipd in ipd %}
+          <tr>
+            <td><a href="ipd/{{ipd.id}}">{{ ipd.id }}</a></td>  
+            <td>{{ ipd.patient_name }}</td>
+            <td>{{ ipd.patient_name }}</td>
+            <td>{{ ipd.symptoms_type }}</td>  
+            <td>{{ ipd.bed_number }}</td>  
+            
+          
+          
+        {% endfor %}
+        
+      
+      </tbody>
+    </table>
+  </div>

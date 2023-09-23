@@ -1,0 +1,35 @@
+<!-- select_services.html -->
+{% include "layout/sidebar.html" %}
+<style> 
+
+</style>
+<div class="container">
+<form method="post" action="{% url "charge_name" %}">
+    {% csrf_token %}
+    
+    <label for="charge_name"> Charge</label>
+    <input type="text" name="charge_name" required><br>
+    
+    <label><input type="checkbox" name="appointment" value="True" {% if service_type.appointment %}checked{% endif %}> Appointment</label><br>
+    <label><input type="checkbox" name="opd" value="True" {% if service_type.opd %}checked{% endif %}> OPD</label><br>
+    <label><input type="checkbox" name="ipd" value="True" {% if service_type.ipd %}checked{% endif %}> IPD</label><br>
+    <label><input type="checkbox" name="pathology" value="True" {% if service_type.pathology %}checked{% endif %}> Pathology</label><br>
+    <label><input type="checkbox" name="radiology" value="True" {% if service_type.radiology %}checked{% endif %}> Radiology</label><br>
+    <label><input type="checkbox" name="blood_bank" value="True" {% if service_type.blood_bank %}checked{% endif %}> Blood Bank</label><br>
+    <label><input type="checkbox" name="ambulance" value="True" {% if service_type.ambulance %}checked{% endif %}> Ambulance</label><br>
+    
+    <button type="submit">Save</button>
+    {% comment %} {% for charge in charge %}
+    <li>    
+        <strong>Appointment:</strong> {{ charge.appointment }}<br>
+        <strong>OPD:</strong> {{ charge.opd }}<br>
+        <strong>IPD:</strong> {{ charge.ipd }}<br>
+        <strong>Pathology:</strong> {{ charge.pathology }}<br>
+        <strong>Radiology:</strong> {{ charge.radiology }}<br>
+        <strong>Blood Bank:</strong> {{ charge.blood_bank }}<br>
+        <strong>Ambulance:</strong> {{ charge.ambulance }}<br>
+    </li>
+    <br>
+{% endfor %} {% endcomment %}
+</form>
+</div>

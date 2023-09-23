@@ -1,0 +1,26 @@
+<!-- create_model_instance.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Model Instance</title>
+</head>
+<body>
+    {% include "layout/sidebar.html" %}
+    
+    <form method="post" action="{% url "tax_cat" %}">
+        <h1>Create Model Instance</h1>
+        {% csrf_token %}
+        <label for="tax_category">Tax Category:</label>
+        <input type="text" id="tax_category" name="tax_category" maxlength="100" /><br>
+        
+        <label for="unit">Unit:</label>
+        <input type="text" id="unit" name="unit" maxlength="100" /><br>
+        
+        <button type="submit">Create</button>
+    </form>
+    {% for tax in tax %}
+    <p> {{tax.tax_category}} </p>
+    {% endfor %}
+</body>
+</html>

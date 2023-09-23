@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appointment Details</title>
+</head>
+{% include "layout/sidebar.html" %}
+<body>
+{% load static %}
+  <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style-main.css' %}">
+  <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
+  {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
+  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+  <link rel="stylesheet" href=" {% static "css/ionicons.min.css" %}">
+  <link rel="stylesheet" href=" {% static "css/custom_style.css" %}">
+  <link rel="stylesheet" href=" {% static "css/all.css" %}"> 
+  <link rel="stylesheet" href=" {% static "css/idcard.css" %}">
+  <link rel="stylesheet" href=" {% static "css/animate.min.css" %}">
+  <link rel="stylesheet" href=" {% static "css/AdminLTE.css" %}"> 
+ <link rel="stylesheet" href=" {% static "css/AdminLTE.min.css" %}">
+ <link rel="stylesheet" href=" {% static "css//skins/_all-skins.min.css" %}">
+ <link rel="stylesheet" href=" {% static "css//skins/_all-skins.css" %}">
+  <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.min.css" %}">
+  <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css" %}">
+  <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css.map" %}"> 
+  <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.css" %}"> 
+  <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}"> 
+  <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}"> 
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+  
+
+
+  {% comment %} {% block sidebar %} {% include 'layout/sidebar.html' %} {% endblock sidebar %} {% endcomment %}
+  
+
+  <div class="container">
+    <h1>Appointment Details</h1>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Appointment No</th>
+          <th>Appointment Date</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          <th>Doctor</th>
+          <th>Source</th>
+          <th>Priority</th>
+          <th>Fees</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for appointments in appointments %}
+          <tr>
+            <td>{{ appointments.patient_name }}</td>
+            <td>{{ appointments.appointment_no }}</td>
+            <td>{{ appointments.appointment_date }}</td>
+            <td>{{ appointments.phone }}</td>
+            <td>{{ appointments.gender }}</td>
+            <td>{{ appointments.doctor }}</td>
+            <td>{{ appointments.source }}</td>
+            <td>{{ appointments.priority }}</td>
+            <td>{{ appointments.fees }}</td>
+            <td>{{ appointments.status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+

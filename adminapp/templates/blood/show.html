@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include "layout/sidebar.html" %}
+    <title>View Donor</title>
+</head>
+<body>
+
+    <!-- Display other donor fields... -->
+
+    <h2>Financial Information</h2>
+    <p>Total (Rs.): {{ financial_info.total }}</p>
+    <p>Discount (%): {{ financial_info.discount_percentage }}</p>
+    <p>Discount (Rs.): {{ financial_info.discount }}</p>
+    <p>Tax (Rs.): {{ financial_info.tax }}</p>
+    <p>Net Amount (Rs.): {{ financial_info.net_amount }}</p>
+    <p>Payment Mode: {{ financial_info.payment_mode }}</p>
+    <p>Payment Amount (Rs.): {{ financial_info.payment_amount }}</p>
+
+    <a href="{% url 'donor_list' %}">Back to Donor List</a>
+</body>
+</html>

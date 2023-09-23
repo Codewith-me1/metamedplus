@@ -1,0 +1,76 @@
+{% include "layout/sidebar.html" %}
+<div class="container">
+<form method="post" enctype="multipart/form-data" action="{% url 'add_med' %}">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="name">Medicine Name:</label>
+        <input type="text" class="form-control" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="category">Medicine Category:</label>
+        <input type="text" class="form-control" name="category" required>
+    </div>
+
+    <div class="form-group">
+        <label for="company">Medicine Company:</label>
+        <input type="text" class="form-control" name="company" required>
+    </div>
+
+    <div class="form-group">
+        <label for="composition">Medicine Composition:</label>
+        <input type="text" class="form-control" name="composition" required>
+    </div>
+
+    <div class="form-group">
+        <label for="group">Medicine Group:</label>
+        <input type="text" class="form-control" name="group" required>
+    </div>
+
+    <div class="form-group">
+        <label for="unit">Unit:</label>
+        <input type="text" class="form-control" name="unit" required>
+    </div>
+
+    <div class="form-group">
+        <label for="min_level">Min Level:</label>
+        <input type="number" class="form-control" name="min_level" required>
+    </div>
+
+    <div class="form-group">
+        <label for="reorder_level">Re-Order Level:</label>
+        <input type="number" class="form-control" name="reorder_level" required>
+    </div>
+
+    <div class="form-group">
+        <label for="tax_percentage">Tax (%):</label>
+        <input type="number" class="form-control" name="tax_percentage" required>
+    </div>
+
+    <div class="form-group">
+        <label for="unit_packing">Unit/Packing:</label>
+        <input type="text" class="form-control" name="unit_packing" required>
+    </div>
+
+    <div class="form-group">
+        <label for="vat_account">VAT A/C:</label>
+        <input type="text" class="form-control" name="vat_account" required>
+    </div>
+
+    <div class="form-group">
+        <label for="note">Note:</label>
+        <textarea class="form-control" name="note" rows="4" cols="50"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="medicine_photo">Medicine Photo (JPG/JPEG/PNG):</label>
+        <input type="file" class="form-control-file" name="medicine_photo">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+{% for med in med %}
+<p>{{  med.name}}</p>
+{% endfor %}

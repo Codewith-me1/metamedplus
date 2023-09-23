@@ -1,0 +1,22 @@
+
+<a href="/medicine-categories" >Prescription<a> 
+
+{% for ipd in ipd %}
+<h1> {{ipd.patient}}</h1>
+
+<li>
+    <p>{{ipd.height}}</p>
+    <p>{{ipd.weight}}</p>
+    <p>{{ipd.bp}}</p>
+    <p>{{ipd.temperature}}</p>
+</li>
+{% endfor %}
+
+
+
+
+
+
+
+
+

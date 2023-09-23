@@ -1,0 +1,96 @@
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Donor</title>
+</head>
+<body>
+    <h1>Add Donor</h1>
+    <form method="POST" action="{% url 'add_donor' %}">
+        {% csrf_token %}
+        <label for="name">Donor Name *</label>
+        <input type="text" name="name" required><br>
+
+        <label for="date_of_birth">Date of Birth *</label>
+        <input type="date" name="date_of_birth" required><br>
+
+        <label for="blood_group">Blood Group *</label>
+        <select name="blood_group" required>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+        </select><br>
+
+        <label for="gender">Gender *</label>
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select><br>
+
+        <label for="father_name">Father Name</label>
+        <input type="text" name="father_name"><br>
+
+        <label for="contact_no">Contact No</label>
+        <input type="text" name="contact_no"><br>
+
+        <label for="address">Address</label>
+        <textarea name="address"></textarea><br>
+
+        <button type="submit">Submit</button>
+
+
+        <h2>Financial Information</h2>
+        <label for="total">Total (Rs.)</label>
+        <input type="number" name="total" ><br>
+
+        <label for="discount_percentage">Discount (%)</label>
+        <input type="number" name="discount_percentage" ><br>
+
+        <label for="discount">Discount (Rs.)</label>
+        <input type="number" name="discount" ><br>
+
+        <label for="tax">Tax (Rs.)</label>
+        <input type="number" name="tax" ><br>
+
+        <label for="net_amount">Net Amount (Rs.)</label>
+        <input type="number" name="net_amount" ><br>
+
+        <label for="payment_mode">Payment Mode *</label>
+        <select name="payment_mode" required>
+            <option value="Cash">Cash</option>
+            <!-- Add more payment modes as needed -->
+        </select><br>
+
+        <label for="payment_amount">Payment Amount (Rs.) *</label>
+        <input type="number" name="payment_amount" required><br>
+        {% for donor in donor %}
+
+            <p>{{  donor.name}}</p>
+            <p>{{  donor.id}}</p>
+            <p>{{  donor.date_of_birth}}</p>
+            <h2>Financial Information</h2>
+
+
+
+            <h1>Hello</h1>
+            <p>Total  {{ donor.total }}</p>
+            <h2>Financial Information</h2>
+
+
+        {% endfor %} 
+
+
+    </form>
+
+
+        
+
+</body>
+</html>

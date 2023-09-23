@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Charge</title>
+</head>
+<body>
+    {% include "layout/sidebar.html" %}
+    
+    <form method="POST" action="{% url 'add_charge' %}">
+        <h1>Add Charge</h1>
+        {% csrf_token %}
+        <label for="charge_type">Charge Type:</label>
+        <select name="charge_type">
+            <option value="Type 1">Type 1</option>
+            <option value="Type 2">Type 2</option>
+            <option value="Type 3">Type 3</option>
+        </select><br>
+
+        <label for="charge_category">Charge Category:</label>
+        <select name="charge_category">
+            <option value="Category 1">Category 1</option>
+            <option value="Category 2">Category 2</option>
+            <option value="Category 3">Category 3</option>
+        </select><br>
+
+        <label for="unit_type">Unit Type:</label>
+        <select name="unit_type">
+            <option value="Unit 1">Unit 1</option>
+            <option value="Unit 2">Unit 2</option>
+            <option value="Unit 3">Unit 3</option>
+        </select><br>
+
+        <label for="charge_name">Charge Name:</label>
+        <input type="text" name="charge_name"><br>
+
+        <label for="tax_category">Tax Category:</label>
+        <select name="tax_category">
+            <option value="Category A">Category A</option>
+            <option value="Category B">Category B</option>
+            <option value="Category C">Category C</option>
+        </select><br>
+
+        <label for="tax_percentage">Tax (%):</label>
+        <input type="number" name="tax_percentage"><br>
+
+        <label for="standard_charge">Standard Charge (Rs.):</label>
+        <input type="number" name="standard_charge"><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description"></textarea><br>
+
+        <button type="submit">Save</button>
+    </form>
+
+ 
+</body>
+</html>

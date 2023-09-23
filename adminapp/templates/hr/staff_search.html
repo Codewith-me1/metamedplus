@@ -1,0 +1,37 @@
+
+{% include "layout/sidebar.html" %}
+<div class="container">
+<form method="GET" action="{% url 'search-staff' %}">
+    <input type="text" name="q" placeholder="Search by Role">
+    <button type="submit">Search</button>
+</form>
+<style>
+.container form{
+    display:flex; 
+    margin-top:2rem;    
+    
+}
+
+</style>
+
+<title>Search Results</title>
+</head>
+<body>
+    
+    <h2>Search Results</h2>
+
+    <!-- Display search form -->
+   
+    <!-- Display search results -->
+    {% if results %}
+        <ul>
+            {% for staff in results %}
+                <li>{{ staff.first_name }} {{ staff.last_name }} - {{ staff.role }}</li>
+                <!-- Display other staff information as needed -->
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+
+    </div>

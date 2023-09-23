@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Appointment Details Form</title>
+</head>
+<style>
+  /* styles.css */
+
+  /* Center the form header */
+  h1 {
+      text-align: center;
+  }
+  
+  /* Style form inputs and labels */
+  .form-group {
+      margin-bottom: 15px;
+  }
+  
+  label {
+      display: block;
+      font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="datetime-local"],
+  select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+  
+  /* Center the submit button */
+  input[type="submit"] {
+      display: block;
+      margin: 0 auto;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+  
+  /* Add hover effect to the submit button */
+  input[type="submit"]:hover {
+      background-color: #0056b3;
+  }
+  form{
+    width:80%;
+    margin-left:30rem;
+  }
+  label{
+    margin-top:2rem;    
+  }
+  h1{
+    margin-left:30rem;
+  }
+  
+</style>
+<body>
+{% include "layout/sidebar.html" %}
+  <div class="container">
+    <h1 style="text-align: center;">Appointment Details Form</h1>
+
+    <form method="post" action="{% url 'appointment_details_form' %}">
+        {% csrf_token %}
+        
+          <label for="patient">Patient</label>
+            <input type="text" id="patient_id_input" name="patient_search" placeholder="Search for a patient">
+      
+        
+        
+            <!-- Add a dropdown to select a patient -->
+           
+            <select id="patient" name="patient">
+                
+                {% for patient in patients %}
+                    <option value="{{ patient.id }}">{{ patient.name }}</option>
+                {% endfor %}
+            </select>
+        
+        
+        <div class="form-group">
+            <label for="appointment_no">Appointment Number:</label>
+            <input type="text" id="appointment_no" name="appointment_no" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="appointment_date">Appointment Date:</label>
+            <input type="datetime-local" id="appointment_date" name="appointment_date" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" required>
+        </div>
+        
+        
+          <label for="appointment_date">Doctor</label>
+            <select id="doctor" name="doctor">
+                <option value="">Select a doctor</option>
+                {% for doctor in doctor %}
+                    <option value="{{ doctor.staff_id }}">{{ doctor.first_name }}</option>
+                {% endfor %}
+            </select>
+        
+
+        <div class="form-group">
+            <label for="source">Source:</label>
+            <input type="text" id="source" name="source" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="priority">Priority:</label>
+            <input type="text" id="priority" name="priority" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="fees">Fees:</label>
+            <input type="text" id="fees" name="fees" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status" required>
+        </div>
+        
+        <div style="text-align: center;">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+  <script>
+    const patientSearchInput = document.getElementById('patient_id_input');
+    const patientDropdown = document.getElementById('patient');
+    
+    patientSearchInput.addEventListener('input', () => {
+        const enteredText = patientSearchInput.value.toLowerCase();
+        
+        // Clear the current dropdown options
+        patientDropdown.innerHTML = '<option value="">Select a patient</option>';
+        
+        // Filter and add matching patients to the dropdown
+        {% for patient in patients %}
+            const patientId = '{{ patient.id }}';
+            const patientName = '{{ patient.name }}';
+            
+            if (patientId.startsWith(enteredText) || patientName.toLowerCase().includes(enteredText)) {
+                const option = document.createElement('option');
+                option.value = patientId;
+                option.textContent = `${patientName} (ID: ${patientId})`;
+                patientDropdown.appendChild(option);
+            }
+        {% endfor %}
+
+        {% for doctor in doctor %}
+        const patientId = '{{ doctor.staff_id }}';
+        const patientName = '{{ doctor.first_name }}';
+        
+        if (patientId.startsWith(enteredText) || patientName.toLowerCase().includes(enteredText)) {
+            const option = document.createElement('option');
+            option.value = patientId;
+            option.textContent = `${patientName} (ID: ${patientId})`;
+            patientDropdown.appendChild(option);
+        }
+    {% endfor %}
+    });
+</script>
+
+
+</body>
+</html>

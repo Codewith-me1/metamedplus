@@ -1,0 +1,48 @@
+
+{% include "layout/sidebar.html" %}
+<div class ="content">
+<div class="container">
+    <h1>Appointment Details</h1>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Patient ID</th>
+          <th>Patient Name</th>
+          <th>Date of Birth</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          <th>Address</th>
+         
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for patients in patients %}
+          <tr>
+            <td>{{ patients.id }}</td>
+
+            <td>{{ patients.name }}</td>
+            <td>{{ patients.date_of_birth}}</td>
+            <td>{{ patients.phone}}</td>
+            <td>{{ patients.gender}}</td>
+            
+          
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+<script>
+    
+  function toggleSidebar() {
+      const sidebar = document.querySelector(".sidebar");
+      const content = document.querySelector(".content");
+  
+      sidebar.classList.toggle("active");
+      content.classList.toggle("active");
+  }
+  
+  <script>
