@@ -1,4 +1,5 @@
 
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 <div class="container">
 <form method="GET" action="{% url 'search-staff' %}">
@@ -12,6 +13,8 @@
     
 }
 
+
+
 </style>
 
 <title>Search Results</title>
@@ -23,15 +26,36 @@
     <!-- Display search form -->
    
     <!-- Display search results -->
-    {% if results %}
-        <ul>
-            {% for staff in results %}
-                <li>{{ staff.first_name }} {{ staff.last_name }} - {{ staff.role }}</li>
-                <!-- Display other staff information as needed -->
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No results found.</p>
-    {% endif %}
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Staff ID </th>
+            <th>first Name</th>
+            <th>Last Name</th>
+            <th>Role</th>
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for staff in results %}
+            <tr>
+                <td><a href="/payroll/{{ staff.staff_id }}">Generate Payroll<a></td>
+              <td>{{ staff.first_name }}</td>   
+              <td>{{ staff.last_name }}</td>
+              <td>{{ staff.role }}</td>
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
 
     </div>

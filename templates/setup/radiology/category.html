@@ -1,0 +1,88 @@
+
+    {% include "layout/header.html" %}
+    {% include "layout/sidebar.html" %}
+
+   
+    <div class="container">
+        <div class="main-header">
+          <h1 class="headline">Add Radiology Category </h1>
+          <div class="side-btns">
+      
+         
+            <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Radiology Category  </a>
+          <div id="popupContainer" class="form-popup-back">
+            <div class="form-Contain">
+                <div class="POP">
+                    <div class="cards">
+                      <div class="popup-header">
+                        <span id="closePopupBtn" class="close-button">Close</span>
+                        <h1>Radiology Category</h1>
+                      </div>
+                        <form class="form_popup" method="post" action="{% url 'radio_category' %}">
+                            {% csrf_token %}
+                            
+                            <div class="form-group">
+                                <label for="category_name">Category Name *</label>
+                                <input type="text" name="category_name" id="category_name" required>
+                            </div>
+                    
+      
+                            <!-- Your form fields go here -->
+                            
+                            <div style="text-align: center;">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            
+            <th> Category Name</th>
+     
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for radio in radio %}
+            <tr>
+                <td>{{ radio.name }}</td>
+            
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+  
+
+
+
+      <script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+       
+    </script>
+</body>
+</html>

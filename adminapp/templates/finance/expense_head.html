@@ -1,0 +1,60 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Expense Form</h2>
+        <form method="post" action="{% url "expense_head" %}">
+            {% csrf_token %}
+
+            <!-- Income Head Field -->
+            <div class="form-group">
+                <label for="expense_head">Expense Head:</label>
+                <input type="text" class="form-control" id="expense_head" name="expense_head" required>
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Expense Head</th>
+                
+                <th>Description</th>
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for expense_head in expense_head %}
+                <tr>
+                   <td>{{ expense_head.expense_head }}</td>
+                  <td>{{ expense_head.description }}</td>
+              
+                  
+              
+                
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

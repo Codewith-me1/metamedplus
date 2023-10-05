@@ -1,0 +1,591 @@
+
+
+    {% include "layout/header.html" %}
+    {% include "layout/sidebar.html" %}
+    <style>
+        .side_admin{
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .container{
+            margin-top:7rem;
+        }
+        .admin-det{
+            margin-top: 2rem;
+        }
+        .details{
+            display: flex;
+            padding: 1.5rem;
+            border: solid rgb(187, 187, 187) ;
+            border-width: 0px 0px 1px 0px;
+            justify-content: space-between;
+        }
+        .side_admin{
+            display: flex;
+            width: 50%;
+            flex-direction: column;
+            justify-content: flex-start;
+
+            
+        }
+        .basic-details ul{
+            padding: 10px !important;
+        }
+        .main-content{
+            display: flex;
+
+        }
+        .left-admin{
+            width: 90%;
+    
+        
+        }
+        .left{
+            width: 70%;
+    margin-left: 13rem;
+    border: solid #b3b3b3 1px;
+    padding: 1rem;
+        
+        }
+        .main-content section{
+            width: 100%;
+        }
+        .left-admin .details{
+            padding: 1rem;
+            
+
+        }
+       
+        .basic-details{
+
+            border: solid rgb(173, 160, 160) 1px;
+            border-radius: 10px;
+
+            margin: 1rem;
+            margin-top: 3rem;
+        }
+        .payroll table{
+            margin-top:1rem;
+        }
+
+        .admin-heading{
+            padding: 1.4rem;
+            border: solid  rgb(173, 160, 160) ;
+            border-width: 0px 0px 1px 0px;
+            background-color: aliceblue;
+            font-size: 10px;
+        }
+        .ipd-navbar {
+              
+              color: #fff;
+              padding: 10px ;
+              border: #b3b3b3 solid;
+              border-width: 1px 0px 0px 0px;
+          }
+  
+          .ipd-container {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+          }
+  
+          .ipd-navbar-brand {
+              font-size: 24px;
+              font-weight: bold;
+              text-decoration: none;
+              color: #fff;
+          }
+  
+          .ipd-navbar-brand:hover {
+              text-decoration: none;
+              color: #fff;
+          }
+  
+          .ipd-navbar-nav {
+              list-style: none;
+              padding: 0;
+              display:flex;
+              margin: 0;
+          }
+  
+          .ipd-nav-item {
+              display: inline;
+              margin-right: 20px;
+          }
+  
+          .ipd-nav-link {
+              text-decoration: none;
+              color: black;
+  
+              padding:10px ;
+              padding-left:20px;
+              padding-right:20px;
+          }
+  
+          .ipd-nav-link:hover {
+              text-decoration: none;
+              color: #ff6600;
+              background:#1cb88e ;
+              border: #f39c12  solid;
+              border-width: 0px 0px 5px 0px;
+              border-radius:10px 10px 0px 0px;
+          }
+          .off{
+              display:none;
+          }
+          .toggleable {
+              display: none;
+              padding: 20px;
+              background-color: #f5f5f5;
+              border: 1px solid #ccc;
+              
+          }
+      
+          /* Style for the "clicked" class on the active link */
+          .clicked {
+              {% comment %} font-weight: bold; {% endcomment %}
+              text-decoration: none;
+              color: #ff6600;
+              background:#1cb88e ;
+              border: #f39c12  solid;
+              border-width: 0px 0px 5px 0px;
+              border-radius:10px 10px 0px 0px;
+          }
+          .payroll-card{
+            padding: 1rem;
+            background-color: #1cb88e;
+            margin: 1rem;
+            color: #fff;
+            border-radius: 5px;
+            transition: color 0.3s, background-color 0.3s;
+
+          }
+          .payroll-card:hover{
+            /* color: #1cb88e; */
+            color: #f39c12;
+            background-color: #fff;
+          }
+          .payroll_info{
+            display: flex;
+            margin-top: 3rem;
+          }
+
+          .main-alert{
+            background-color: #1cb88e;
+            border-radius: 5px;
+            color: #ffffff;
+            padding: 1rem;
+            margin-top: 3rem ;
+          }
+          .table{
+            margin-top:3rem;
+          }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+<div class="container">
+<div class="main-content">
+<div class="side_admin">
+        <div class="admin-img">
+            <img src="{{staff.photo}}{{staff.id}}" alt="None">
+            <h1>{{staff.first_name}}</h1>
+            <div class="admin-icons">
+                <a href="#"><img src="main" alt="First"></a>
+                <a href="#"> <img src="second" alt="Second">Second</a>
+
+
+            
+
+        </div>
+        </div>
+
+    
+
+
+    
+<div class="admin-det">
+    <ul class="list-details">
+        <li class="details">
+            <b>Staff Id</b>
+            <a href="">{{staff.id}}</a>
+        </li>
+
+        <li class="details">
+            <b>Role</b>
+            <a href="">{{user.role}}</a>
+
+        </li>
+
+        <li class="details">
+            <b>Designation</b>
+            <a href="">{{staff.designation}}</a>
+        </li>
+
+        <li class="details">
+            <b>Specialist</b>
+            <a href="">{{staff.specialist}}</a>
+        </li>   
+
+        <li class="details">
+            <b>EPF No</b>
+            <a href="">{{staff.epf_no}}</a>
+        </li>
+
+        <li class="details">
+            <b>Basic Salary</b>
+            <a href="">{{staff.basic_salary}}</a>
+        </li>
+
+        <li class="details">
+            <b>Contract Type</b>
+            <a href="">{{staff.contract_type}}</a>
+        </li>
+
+        <li class="details">
+            <b>Work Shift   </b>
+            <a href="">{{staff.work_shift}}</a>
+        </li>
+
+        <li class="details">
+            <b>Work Location</b>
+            <a href="">{{staff.work_location}}</a>
+        </li>
+
+        <li class="details">
+            <b>Date Of Joining</b>
+            <a href="">{{staff.date_of_joining}}</a>
+        </li>
+    </ul>
+</div>
+</div>
+
+
+
+<div class="left">
+    <ul class="ipd-navbar-nav">
+        <li class="ipd-nav-item "><a href="#profile" class="ipd-nav-link">Profile</a></li>
+        <li class="ipd-nav-item  "><a href="#payroll" class="ipd-nav-link">payroll</a></li>
+        <li class="ipd-nav-item"><a href="#leaves" class="ipd-nav-link">Leaves</a></li>
+        <li class="ipd-nav-item"><a href="#document" class="ipd-nav-link">Document</a></li>
+        
+        <li class="ipd-nav-item"><a href="#timeline" class="ipd-nav-link">Timeline</a></li>
+        <!-- Add more menu items as needed -->
+    </ul>
+<section id="profile" class="profile toggeable">
+    <div class="left-admin">    
+     
+    
+    <div class="basic-details">
+        <ul class="list-details">
+            <li class="details">
+                <b>Phone</b>
+                <a href="">{{staff.phone}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Emergency Contact Number</b>
+                <a href="">{{staff.emergency_contact}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Email</b>
+                <a href="">{{staff.email}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Gender</b>
+                <a href="">{{staff.gender}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Blood Group</b>  
+                <a href="">{{staff.blood_group}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Date Of Birth</b>
+                <a href="">{{ staff.date_of_birth}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Marital Status</b>
+                <a href="">{{staff.marital_status}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Father Name</b>
+                <a href="">{{staff.father_name}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Mother Name</b>
+                <a href="">{{staff.mother_name}}</a>
+            </li>
+    
+            <li class="details">
+                <b>Qualification</b>
+                <a href="">{{staff.qualification}}</a>
+            </li>
+
+            <li class="details">
+                <b>Work Experience</b>
+                <a href="">{{staff.work_experience}}</a>
+            </li>
+
+            <li class="details">
+                <b>Specialization</b>
+                <a href="">{{staff.specialization}}</a>
+            </li>
+
+            <li class="details">
+                <b>Note</b>
+                <a href="">{{staff.note}}</a>
+            </li>
+
+            <li class="details">
+                <b>Pan Number</b>
+                <a href="">{{staff.pan_number}}</a>
+            </li>
+
+            <li class="details">
+                <b>National Identification Number</b>
+                <a href="">{{staff.national_id_number }}</a>
+            </li>
+
+            <li class="details">
+                <b>Local Identification Number</b>
+                <a href="">{{staff.local_id_number }}</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+<div class="basic-details">
+    <div class="admin-heading">
+    <h1>Address</h1>
+</div>
+    <ul class="list-details">
+        <li class="details">
+            <b>Current Address</b>
+            <a href="">{{staff.current_address}}</a>
+        </li>
+
+        <li class="details">
+            <b>Permanent Address</b>
+            <a href="">{{staff.permanent_address}}</a>
+        </li>
+
+    </ul>
+
+</div>
+
+
+<div class="basic-details">
+    <div class="admin-heading">
+    <h1>Bank Account Details</h1>
+</div>
+    <ul class="list-details">
+        <li class="details">
+            <b>Account Title</b>
+            <a href="">{{staff.account_title}}</a>
+        </li>
+
+        <li class="details">
+            <b>Bank Name</b>
+            <a href="">{{staff.bank_account_no}}</a>
+        </li>
+
+        <li class="details">
+            <b>Bank Branch Name</b>
+            <a href="">{{staff.bank_name}}</a>
+        </li>
+
+        <li class="details">
+            <b>Bank Account Number</b>
+            <a href="">{{staff.ifsc_code}}</a>
+        </li>
+
+        <li class="details">
+            <b>IFSC Code</b>
+            <a href="">{{staff.bank_branch_name}}</a>
+        </li>
+
+    </ul>
+
+</div>
+</div>
+
+</section>
+
+<section id="payroll" class="payroll toggeable ">
+
+    <div class="payroll_info">
+        <div class="payroll-card">
+            <h3>Total Net Salary Paid</h3>
+            <h2>Rs {{payroll.net_salary}}</h2>
+        </div>
+        <div class="payroll-card">
+            <h3>Total Gross Salary</h3>
+            <h2>RS {{payroll.gross_salary}}</h2>
+        </div>
+        <div class="payroll-card">
+            <h3>Total Earning</h3>
+            <h2>RS {{payroll.earning}}</h2>
+        </div>
+        <div class="payroll-card">
+            <h3>Total Deduction</h3>
+            <h2>RS {{payroll.deduction}}</h2>
+        </div>
+    </div>
+
+
+
+  
+
+</section>
+
+<section id="leaves" class="leaves toggeable">
+
+      
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Patient Name </th>
+            <th>Date</th>
+            <th>Nurse Name</th>
+           
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for nurse in nurse %}
+            <tr>
+                
+              <td>{{ nurse.patient }}</td>
+              <td>{{ nurse.date }}</td>
+                
+              <td>{{ nurse.nurse }}</td>
+              
+              
+            
+            
+          {% endfor %}  
+          
+        
+        </tbody>
+      </table>
+</section>
+
+<section id="document" class="document toggeable">
+
+<div class="main-alert"> 
+    <p>No Record Found</p>
+</div>
+    
+</section>
+
+<section id="timeline" class="Timeline toggeable">
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Patient Name </th>
+            <th>Date</th>
+            <th>Nurse Name</th>
+           
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for nurse in nurse %}
+            <tr>
+                
+              <td>{{ nurse.patient }}</td>
+              <td>{{ nurse.date }}</td>
+                
+              <td>{{ nurse.nurse }}</td>
+              
+              
+            
+            
+          {% endfor %}  
+          
+        
+        </tbody>
+      </table>
+
+<section>
+</div>
+</div>
+</div>
+</div>  
+
+
+
+
+<script>
+     function toggleSection(sectionId) {
+        // Hide all sections with class "toggleable"
+        var sections = document.querySelectorAll('.toggeable');
+        sections.forEach(function(section) {
+            section.classList.add('off');
+        });
+
+        // Show the selected section
+        var selectedSection = document.querySelector(sectionId);
+        if (selectedSection) {
+            selectedSection.classList.remove('off');
+        }
+    }
+    var sections = document.querySelectorAll('.toggeable');
+    var excludedSection = document.getElementById('profile');
+
+    sections.forEach(function(section) {
+    if (section !== excludedSection) {
+        section.classList.add('off');
+    }
+    });
+   
+        // Hide all sections with class "toggleable"
+   
+        // Show the selected section
+       
+
+    // Add an event listener to each navigation link
+    function toggleSection(sectionId) {
+        // Hide all sections with class "toggleable"
+        var sections = document.querySelectorAll('.toggeable');
+        sections.forEach(function(section) {
+            section.classList.add('off');
+        });
+
+        // Show the selected section
+        var selectedSection = document.querySelector(sectionId);
+        if (selectedSection) {
+            selectedSection.classList.remove('off');
+        }
+    }
+
+    // Add an event listener to each navigation link
+    document.addEventListener('DOMContentLoaded', function() {
+        var navLinks = document.querySelectorAll('.ipd-nav-link');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent the default link behavior
+
+                var sectionId = link.getAttribute('href');
+                toggleSection(sectionId);
+            });
+        });
+    });
+</script>
+</body>
+</html>

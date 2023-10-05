@@ -1,0 +1,307 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    
+    <style>
+        div#calendar{
+            width:70%;
+        }
+        .main-second{
+            margin-left:15rem;
+        }
+        .card{
+            background-color: white;
+            border: none !important;
+    padding: 10px 10px;
+    margin-left: 10px;
+    font-family: 'Poppins', sans-serif !important;
+    box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+    min-height: 50px;
+    background: #fff;
+    width: 100%;
+    border: none;
+    /* box-shadow: 0 1px 1px rgba(0,0,0,0.1); */
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+    padding: 20px;
+    border-radius: 10px;
+
+        }
+        .card:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.22);
+}
+.main-cards{
+   display: flex;
+   margin: 1rem;
+   margin-top:5rem !important; 
+   flex-wrap: nowrap;
+    
+
+}
+.fc-button, .fc-button-primary{
+    border:none !important;
+    background-color:#1cb88e !important;
+}
+.calender button{
+    background-color:#1cb88e !important;
+}
+.charts{
+    display: flex;
+
+}
+.chart{
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+    margin: 1rem;
+}
+
+.calender-section{
+    display: flex;
+    margin-top:5rem;
+    
+}
+h1{
+    font-size:25px !important; 
+}
+.card{
+    display:flex;
+}
+.card img{
+    width:40%;
+    height:50%;
+    padding:5px;
+    margin-top:10px;
+    margin-right:10px;
+
+}
+.box-content h3{
+    font-size:2rem;
+}
+.box-content h1{
+    font-size:3rem !important;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+    <div class="main-cards">
+        <div class="card">
+            <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                OPD Income 
+            </h3>
+            <h1>RS 0.00</h1>
+        </div>
+        </div>
+        <div class="card">
+            <img src="{% static "/css/images/icons8-bed-50.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                IPD Income 
+            </h3>
+            <h1>RS 0.00</h1>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                Phathalogy Income
+            </h3>
+            <h1>RS 0.00</h1>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "css/images/icons8-microscope-50.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                Pharmacy Income
+            </h3>
+            <h1>RS 0.00</h1>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "/css/images/icons8-water-16.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                Blood Bank Income
+            </h3>
+            <h1>RS 0.00</h1>
+            </div>
+
+        </div>
+        <div class="card">
+            <img src="{% static "css\images\icons8-ambulance-50.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                Ambulance Income
+            </h3>   
+            <h1>RS 0.00</h1>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static "css/images/icons8-money-100.png" %}" alt="">
+            <div class="box-content">
+            <h3>
+                General Income
+            </h3>
+            <h1>RS 0.00</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts">
+        <div class="chart">
+            <div class="chart-heading">
+                <h1>Yearly And Monthly Expense</h1>
+            </div>
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+    </div>
+    <div class="chart">
+        <div class="chart-heading">
+        <canvas id="chartId" aria-label="chart" height="350" width="580"></canvas>
+    </div>
+    </div>
+    </div>
+
+     <div class="calender-section">
+        <div id='calendar'></div>
+        <div class="main-second">
+            <div class="card">
+                <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt="">
+                <div class="box-content">
+                <h3>
+                    Doctor
+                </h3>
+
+                <h1>RS 0.00</h1>
+            </div>
+            </div>
+            <div class="card">
+                <img src="{% static "/css/images/doctor/icons8-accountant-64.png" %}" alt="">
+                <div class="box-content">
+                <h3>
+                    Accountant
+                </h3>
+                <h1>RS 0.00</h1>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static "/css/images/doctor/icons8-orthopedist-64.png" %}" alt="">
+                <div class="box-content">
+                <h3>
+                    Pathologist 
+                </h3>
+                <h1>RS 0.00</h1>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static "/css/images/doctor/icons8-Radiologist-64 (1).png" %}" alt="">
+                <div class="box-content">
+                <h3>
+                    Radiologist
+                </h3>
+                <h1>RS 0.00</h1>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static "/css/images/doctor/icons8-nurse-96.png" %}" alt="">
+                <div class="box-content">
+                <h3>
+                    Nurse
+                </h3>
+                <h1>RS 0.00</h1>
+                </div>
+    
+            </div>
+            
+        </div>
+     </div>
+     </div>
+
+</body>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+
+</script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.9/index.min.js"></script>
+<script>
+   const xValues = ['Jan', 'feb','march','april','may','june','july','august'];
+const yValues = [0, 1000, 2000,3000,4000,5000 ];
+const barColors = ["#1cb88e", "#e67e22"];
+const inc = ['income','expense']
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+   
+    datasets: [
+      {
+        label: 'Income',
+        data: [112,12,234,45],
+        backgroundColor: barColors[0],
+        borderWidth: 2,
+
+        borderSkipped: false,
+      },
+      {
+        label: 'Small Radius',
+        data:[112,12,121,12],
+
+        backgroundColor: barColors[1],
+        borderWidth: 2,
+        borderRadius: 5,
+        borderSkipped: false,
+      }
+    ]
+  },
+  
+   
+    
+  options: {}
+});
+var chrt = document.getElementById("chartId").getContext("2d");
+      var chartId = new Chart(chrt, {
+         type: 'doughnut',
+         data: {
+            labels: ["radiology", "income", "expense", "pathlology", "blood bank", "IPD"],
+            datasets: [{
+            label: "online tutorial subjects",
+            data: [20, 40, 13, 35, 20, 38],
+            backgroundColor: ['yellow', 'aqua', 'pink', 'lightgreen', 'gold', 'lightblue'],
+            hoverOffset: 5
+            }],
+         },
+         options: {
+            responsive: false,
+         },
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+</script>
+
+
+
+
+</html>

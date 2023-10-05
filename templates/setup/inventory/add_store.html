@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Item</title>
+</head>
+<body>
+    <h1>Add Item</h1>
+    <form method="post" action="{% url "add_store" %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="store_name">Item Store Name *</label>
+            <input type="text" name="store_name" required>
+        </div>
+        <div class="form-group">
+            <label for="stock_code">Item Stock Code</label>
+            <input type="text" name="stock_code">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description"></textarea>
+        </div>
+        <button type="submit">Add</button>
+    </form>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Store Name</th>
+            <th>Store Code</th>
+            <th>Description</th>
+
+         
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for store in store %}
+            <tr>
+                <td>{{ store.store_name  }}</td>
+                <td>{{ store.stock_code  }}</td>
+                <td>{{ store.description  }}</td>
+
+
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</body>
+</html>

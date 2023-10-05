@@ -1,0 +1,79 @@
+<!-- myapp/templates/myapp/add_contact.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Contact</title>
+</head>
+<body>
+    <h1>Add Contact</h1>
+    <form method="post" action="{% url "add_supplierdet" %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone *</label>
+            <input type="text" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="contact_person_name">Contact Person Name *</label>
+            <input type="text" name="contact_person_name" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address *</label>
+            <textarea name="address" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="contact_person_phone">Contact Person Phone *</label>
+            <input type="text" name="contact_person_phone" required>
+        </div>
+        <div class="form-group">
+            <label for="contact_person_email">Contact Person Email *</label>
+            <input type="email" name="contact_person_email" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description"></textarea>
+        </div>
+        <button type="submit">Add</button>
+    </form>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Supplier Name</th>
+            <th>Phone </th>
+            <th>Email</th>
+
+         
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for supplier in supplier %}
+            <tr>
+                <td>{{ supplier.name   }}</td>
+                <td>{{ supplier.phone  }}</td>
+                <td>{{ supplier.email  }}</td>
+
+
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+   
+</body>
+</html>

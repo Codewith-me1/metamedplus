@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 <html>
 <head>
@@ -6,121 +7,351 @@
 </head>
 <body>
     <div class="container">
+            <button type ="sumbit" onClick="printDiv()">print</button>
+        <div class="main-header"> 
+            <h1 class="headline">Add Staff Details</h1>
+            <div class="side-btns">
+          
+           
+            {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+            <a  class="btn-primary btn"href="{% url "add_staff" %}">Add Staff </a>
+          
+          </div>
+          </div>
+      
+      
+          <div class="ale alert-main">
+            Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.                            </div>
+<form class="hr_add " enctype="multipart/form-data" method="post">
+    {% csrf_token %}
     
-    <form method="post">
-        {% csrf_token %}
-        <!-- Personal Information -->
-        <h2>Add Staff Basic Information</h2>
-        <h3>Personal Information</h3>
-        <label for="staff_id">Staff ID *</label>
-        <input type="text" id="staff_id" name="staff_id" required><br>
-
-
-        <label for="role">Role</label>
-        <select id="role" name="role">
-            <option value="">Select A Role</option>
-            {% for role in role %}
-                <option value="{{ role.role }}">{{ role.role }}</option>
-                
-               
-                
-            {% endfor %}
-        </select><br><br>
-{% comment %} 
-        <label for="role">Role *</label>
-        <input type="text" id="role" name="role" required><br> {% endcomment %}
-
-        <label for="designation">Designation *</label>
+    <!-- Personal Information -->
+    <div class="basic">
+        <legend>Basic Information</legend>
+        </div>
+    <div class="hr_from">
+    <fieldset>
         
-        <select id="role" name="designation">
-            <option value="">Select A Role</option>
-            {% for role in role %}
-                <option value="{{ role.designation }}">{{ role.designation }}</option>
-                
-               
-                
-            {% endfor %}
-        </select><br><br>
-
-        <label for="designation">Department</label>
-        <select id="role" name="department">
-            <option value="">Department</option>
-            {% for role in role %}
-                <option value="{{ role.department }}">{{ role.department }}</option>
-                
-               
-                
-            {% endfor %}
-        </select><br><br>
         
+        <div class="form-group">
+            <label for="staff_id">Staff ID *</label>
+            <input type="text" id="staff_id" name="staff_id" required>
+        </div>
 
-        <label for="specialist">Specialist *</label>
-        <select id="role" name="specialist">
-            <option value="">Specialist</option>
-            {% for role in role %}
-                <option value="{{ role.specialist }}">{{ role.sspecialist }}</option>
-                
-               
-                
-            {% endfor %}
-        </select><br><br>
+        <div class="form-group">
+            <label for="role">Role *</label>
+            <select id="role" name="role">
+                <option value="">Select A Role</option>
+                {% for role in role %}
+                    <option value="{{ role.role }}">{{ role.role }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="first_name">First Name *</label>
-        <input type="text" id="first_name" name="first_name" required><br>
+        <div class="form-group">
+            <label for="designation">Designation *</label>
+            <select id="designation" name="designation">
+                <option value="">Select A Designation</option>
+                {% for role in role %}
+                    <option value="{{ role.designation }}">{{ role.designation }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="last_name">Last Name *</label>
-        <input type="text" id="last_name" name="last_name" required><br>
+        <div class="form-group">
+            <label for="department">Department</label>
+            <select id="department" name="department">
+                <option value="">Select A Department</option>
+                {% for role in role %}
+                    <option value="{{ role.department }}">{{ role.department }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="father_name">Father Name</label>
-        <input type="text" id="father_name" name="father_name"><br>
+        <div class="form-group">
+            <label for="specialist">Specialist *</label>
+            <select id="specialist" name="specialist">
+                <option value="">Select A Specialist</option>
+                {% for role in role %}
+                    <option value="{{ role.specialist }}">{{ role.specialist }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </fieldset>
 
-        <label for="mother_name">Mother Name</label>
-        <input type="text" id="mother_name" name="mother_name"><br>
+    <fieldset>
+        <legend>Contact Information</legend>
+        <div class="form-group">
+            <label for="first_name">First Name *</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
 
-        <label for="gender">Gender *</label>
-        <select id="gender" name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select><br>
+        <div class="form-group">
+            <label for="last_name">Last Name *</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
 
-        <label for="marital_status">Marital Status *</label>
-        <select id="marital_status" name="marital_status" required>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
-        </select><br>
+        <div class="form-group">
+            <label for="father_name">Father Name</label>
+            <input type="text" id="father_name" name="father_name">
+        </div>
 
-        <label for="blood_group">Blood Group *</label>
-        <input type="text" id="blood_group" name="blood_group" required><br>
+        <div class="form-group">
+            <label for="mother_name">Mother Name</label>
+            <input type="text" id="mother_name" name="mother_name">
+        </div>
 
-        <label for="date_of_birth">Date Of Birth *</label>
-        <input type="date" id="date_of_birth" name="date_of_birth" required><br>
+        <div class="form-group">
+            <label for="gender">Gender *</label>
+            <select id="gender" name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
 
-        <label for="date_of_joining">Date Of Joining *</label>
-        <input type="date" id="date_of_joining" name="date_of_joining" required><br>
+        <div class="form-group">
+            <label for="marital_status">Marital Status *</label>
+            <select id="marital_status" name="marital_status" required>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+            </select>
+        </div>
 
-        <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone"><br>
+        <div class="form-group">
+            <label for="blood_group">Blood Group *</label>
+            <input type="text" id="blood_group" name="blood_group" required>
+        </div>
 
-        <label for="emergency_contact">Emergency Contact</label>
-        <input type="tel" id="emergency_contact" name="emergency_contact"><br>
+        <div class="form-group">
+            <label for="date_of_birth">Date Of Birth *</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" required>
+        </div>
 
-        <label for="email">Email *</label>
-        <input type="email" id="email" name="email" required><br>
+        <div class="form-group">
+            <label for="date_of_joining">Date Of Joining *</label>
+            <input type="date" id="date_of_joining" name="date_of_joining" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="">Photo</label>
+            <label class="file_type"for="photo"><p>Drop A File </p></label>
+            <input type="file" class="form-control-file" id="photo" name="photo">
+        </div>
+    </fieldset>
 
-        <label for="current_address">Current Address</label>
-        <textarea id="current_address" name="current_address"></textarea><br>
+    <fieldset>
+        <legend>Contact Details</legend>
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
 
-        <label for="permanent_address">Permanent Address</label>
-        <textarea id="permanent_address" name="permanent_address"></textarea><br>
+        <div class="form-group">
+            <label for="emergency_contact">Emergency Contact</label>
+            <input type="tel" id="emergency_contact" name="emergency_contact">
+        </div>
 
-        <!-- Add more fields for Qualification, Experience, Identification Numbers, etc. -->
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
 
-        <!-- Submit Button -->
+        <div class="form-group">
+            <label for="current_address">Current Address</label>
+            <textarea id="current_address" name="current_address"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="permanent_address">Permanent Address</label>
+            <textarea id="permanent_address" name="permanent_address"></textarea>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Educational </legend>
+        <div class="form-group">
+            <label for="qualification">Qualification:</label>
+            <textarea class="form-control" name="qualification" id="qualification" rows="4" cols="50"></textarea>
+        </div>
+    
+        <div class="form-group">
+            <label for="work_experience">Work Experience:</label>
+            <textarea class="form-control" name="work_experience" id="work_experience" rows="4" cols="50"></textarea>
+        </div>
+    
+        <div class="form-group">
+            <label for="specialization">Specialization:</label>
+            <input type="text" class="form-control" name="specialization" id="specialization">
+        </div>
+    
+        <div class="form-group">
+            <label for="note">Note:</label>
+            <textarea class="form-control" name="note" id="note" rows="4" cols="50"></textarea>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Bank Deatils</legend>
+        <!-- Identification Numbers -->
+        <div class="form-group">
+            <label for="pan_number">PAN Number:</label>
+            <input type="text" class="form-control" name="pan_number" id="pan_number">
+        </div>
+    
+        <div class="form-group">
+            <label for="national_id_number">National ID Number:</label>
+            <input type="text" class="form-control" name="national_id_number" id="national_id_number">
+        </div>
+    
+        <div class="form-group">
+            <label for="local_id_number">Local ID Number:</label>
+            <input type="text" class="form-control" name="local_id_number" id="local_id_number">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Payroll And Summmary</legend>
+        <!-- Payroll and Salary -->
+        <div class="form-group">
+            <label for="payroll">Payroll:</label>
+            <input type="text" class="form-control" name="payroll" id="payroll">
+        </div>
+    
+        <div class="form-group">
+            <label for="epf_no">EPF Number:</label>
+            <input type="text" class="form-control" name="epf_no" id="epf_no">
+        </div>
+    
+        <div class="form-group">
+            <label for="basic_salary">Basic Salary:</label>
+            <input type="text" class="form-control" name="basic_salary" id="basic_salary">
+        </div>
+    
+        <div class="form-group">
+            <label for="contract_type">Contract Type:</label>
+            <input type="text" class="form-control" name="contract_type" id="contract_type">
+        </div>
+    
+        <!-- Work Details -->
+        <div class="form-group">
+            <label for="work_shift">Work Shift:</label>
+            <input type="text" class="form-control" name="work_shift" id="work_shift">
+        </div>
+    
+        <div class="form-group">
+            <label for="work_location">Work Location:</label>
+            <input type="text" class="form-control" name="work_location" id="work_location">
+        </div>
+    
+        <!-- Leave Information -->
+        
+        <div class="form-group">
+            <label for="number_of_leaves">Number of Leaves:</label>
+            <input type="text" class="form-control" name="number_of_leaves" id="number_of_leaves">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Bank Detials</legend>
+        <!-- Bank Account Details -->
+        <div class="form-group">
+            <label for="account_title">Account Title:</label>
+            <input type="text" class="form-control" name="account_title" id="account_title">
+        </div>
+    
+        <div class="form-group">
+            <label for="bank_account_no">Bank Account Number:</label>
+            <input type="text" class="form-control" name="bank_account_no" id="bank_account_no">
+        </div>
+    
+        <div class="form-group">
+            <label for="bank_name">Bank Name:</label>
+            <input type="text" class="form-control" name="bank_name" id="bank_name">
+        </div>
+    
+        <div class="form-group">
+            <label for="ifsc_code">IFSC Code:</label>
+            <input type="text" class="form-control" name="ifsc_code" id="ifsc_code">
+        </div>
+    
+        <div class="form-group">
+            <label for="bank_branch_name">Bank Branch Name:</label>
+            <input type="text" class="form-control" name="bank_branch_name" id="bank_branch_name">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Social Media </legend>
+        <!-- Social Media Links -->
+        <div class="form-group">
+            <label for="facebook_url">Facebook URL:</label>
+            <input type="text" class="form-control" name="facebook_url" id="facebook_url">
+        </div>
+    
+        <div class="form-group">
+            <label for="twitter_url">Twitter URL:</label>
+            <input type="text" class="form-control" name="twitter_url" id="twitter_url">
+        </div>
+    
+        <div class="form-group">
+            <label for="linkedin_url">LinkedIn URL:</label>
+            <input type="text" class="form-control" name="linkedin_url" id="linkedin_url">
+        </div>
+    
+        <div class="form-group">
+            <label for="instagram_url">Instagram URL:</label>
+            <input type="text" class="form-control" name="instagram_url" id="instagram_url">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Documents </legend>
+            <!-- Documents -->
+            <div class="form-group">
+        <label for="paid_leave">Paid Leave:</label>
+        <input type="checkbox" class="" name="paid_leave" id="paid_leave">
+    </div>
+
+        <div class="form-group">
+            <label for="">Resume:</label>
+            <label class="file_type"for="resume"><p>Drop A File </p></label>
+            <input type="file" class="form-control-file" name="resume" id="resume">
+        </div>
+    
+        <div class="form-group">
+            <label for="">Joining Letter:</label>
+            <label class="file_type"for="joining_letter"><p>Drop A File </p></label>
+            <input type="file" class="form-control-file" name="joining_letter" id="joining_letter">
+        </div>
+    
+        <div class="form-group">
+            <label for="">Other Documents:</label>
+            <label class="file_type"for="other_documents"><p>Drop A File </p></label>
+            <input type="file" class="form-control-file" name="other_documents" id="other_documents">
+        </div>
+
+    </fieldset>
+
+
+    <!-- Add more fieldsets for Qualification, Experience, Identification Numbers, etc. -->
+
+    <!-- Submit Button -->
+    <div class="form-group">
         <input type="submit" value="Submit">
-    </form>
+    </div>
+</div>
+</form>
+
+<script>
+    function printDiv() {
+        var divToPrint = document.querySelector('.table');
+        newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+   }
+</script>
+
+
 </div>
 </body>
 </html>

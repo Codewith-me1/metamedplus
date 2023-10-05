@@ -1,0 +1,219 @@
+    <!-- your_template.html -->
+
+  <!-- payment_form.html -->
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<style>
+
+.apply{
+    width:70%;
+}
+</style>
+<div class='container'>
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add  Referral</h1>
+                  </div>
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'referral_person' %}">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="referrer_name">Referrer Name *</label>
+                            <input type="text" name="referrer_name" id="referrer_name" class="form-control" required>
+                        </div>
+                        
+                        <!-- Referrer Contact -->
+                        <div class="form-group">
+                            <label for="referrer_contact">Referrer Contact</label>
+                            <input type="text" name="referrer_contact" id="referrer_contact" class="form-control">
+                        </div>
+                        
+                        <!-- Contact Person Name -->
+                        <div class="form-group">
+                            <label for="contact_person_name">Contact Person Name</label>
+                            <input type="text" name="contact_person_name" id="contact_person_name" class="form-control">
+                        </div>
+                        
+                        <!-- Contact Person Phone -->
+                        <div class="form-group">
+                            <label for="contact_person_phone">Contact Person Phone</label>
+                            <input type="text" name="contact_person_phone" id="contact_person_phone" class="form-control">
+                        </div>
+                        
+                        <!-- Category -->
+                        
+                        
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select name="category" id="category">
+                                <option value="">Select An Option  </option>
+                                {% for commission in commission %}
+                                    <option required value="{{ commission.category }}">{{ commission.category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Standard Commission -->
+                        <div class="form-group">
+                            <label for="standard_commission">Standard Commission (%)</label>
+                            <input type="text" name="standard_commission" id="standard_commission" class="form-control">
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea name="address" id="address" class="form-control"></textarea>
+                        </div>  
+                        
+                        <!-- Commission for Modules -->
+                        <div class="form-group">
+                            <label>Commission for Modules </label>
+                            <button class="apply" type="none" onclick="applyStandardCommission()"> Apply To All</button>
+                        </div>
+                        <br>
+                        
+                        <!-- Commission for Individual Modules -->
+                        <div class="form-group">
+                            <label for="commission_opd">OPD</label>
+                            <input type="text" name="commission_opd" id="commission_opd" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_ipd">IPD</label>
+                            <input type="text" name="commission_ipd" id="commission_ipd" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_pharmacy">Pharmacy</label>
+                            <input type="text" name="commission_pharmacy" id="commission_pharmacy" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_pathology">Pathology</label>
+                            <input type="text" name="commission_pathology" id="commission_pathology" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_radiology">Radiology</label>
+                            <input type="text" name="commission_radiology" id="commission_radiology" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_blood_bank">Blood Bank</label>
+                            <input type="text" name="commission_blood_bank" id="commission_blood_bank" class="form-control individual-commission">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="commission_ambulance">Ambulance</label>
+                            <input type="text" name="commission_ambulance" id="commission_ambulance" class="form-control individual-commission">
+                        </div>
+                        
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Refferal Person</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Refferal Person</a>
+  
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Name</th>
+            <th>Referre Contact</th>
+            <th>Contact person Name</th>
+            <th>Standard Commission</th>
+            <th>Address</th>
+
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for ref in ref %}
+            <tr>
+
+                <td>{{ ref.referrer_name }}</td>
+                <td>{{ ref.referrer_contact }}</td>
+                <td>{{ ref.contact_person_name }}</td>
+              
+              <td>{{ ref.standard_commission }}</td>
+              <td>{{ ref.address }}</td>
+              
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </div>
+<script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+       
+    function applyStandardCommission() {
+        // Get the value from the "Standard Commission" field
+        const standardCommissionInput = document.getElementById("standard_commission");
+        const standardCommissionValue = standardCommissionInput.value;
+
+        // Get all the individual commission input fields
+        const individualCommissionFields = document.querySelectorAll('.individual-commission');
+
+        // Set the standard commission value to all individual commission fields
+        individualCommissionFields.forEach(function(field) {
+            field.value = standardCommissionValue;
+        });
+    }
+    </script>
+
+</div>
+</body>
+</html>

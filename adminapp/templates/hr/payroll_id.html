@@ -1,0 +1,28 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class="container">
+<form method="POST">
+    {% csrf_token %}
+ 
+    <div class="form-group">
+        <label for="earning">Earning:</label>
+        <input type="number" name="earning" id="earning" step="0.01" required>
+    </div>
+
+    <div class="form-group">
+        <label for="deduction">Deduction:</label>
+        <input type="number" name="deduction" id="deduction" step="0.01" required>
+    </div>
+    
+   
+
+    <div class="form-group">
+        <label for="tax_percentage">Tax(%):</label>
+        <input type="number" name="tax_percentage" id="tax_percentage"  required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+</div>

@@ -3,14 +3,20 @@
 <head>
   <title>Appointment Details</title>
 </head>
-{% include "layout/sidebar.html" %}
+
 <body>
-{% load static %}
-  <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
+  {% include "layout/header.html" %}
+
+  {% include "layout/sidebar.html" %}
+  
+
+
+{% load static %} 
+  {% comment %} <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}"> {% endcomment %}
   <link rel="stylesheet" href="{% static 'css/style-main.css' %}">
-  <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
+  {% comment %} <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}"> {% endcomment %}
   {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
-  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+  {% comment %} <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
   <link rel="stylesheet" href=" {% static "css/ionicons.min.css" %}">
   <link rel="stylesheet" href=" {% static "css/custom_style.css" %}">
   <link rel="stylesheet" href=" {% static "css/all.css" %}"> 
@@ -24,18 +30,121 @@
   <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css" %}">
   <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css.map" %}"> 
   <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.css" %}"> 
-  <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}"> 
-  <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}"> 
+  <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}">  {% endcomment %}
+  {% comment %} <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}">  {% endcomment %}
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
   
+<style> 
 
+</style>
 
   {% comment %} {% block sidebar %} {% include 'layout/sidebar.html' %} {% endblock sidebar %} {% endcomment %}
-  
+
+
 
   <div class="container">
-    <h1>Appointment Details</h1>
     
+    
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Appointment Details</h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'appointment_details_form' %}">
+                        {% csrf_token %}
+                        
+                        <label for="patient">Patient</label>
+                        <input type="text" id="patient_id_input" name="patient_search" placeholder="Search for a patient">
+                  
+                    
+                    
+                        <!-- Add a dropdown to select a patient -->
+                       
+                        <select id="patient" name="patient">
+                            
+                            {% for patient in patients %}
+                                <option value="{{ patient.id }}">{{ patient.name }}</option>
+                            {% endfor %}
+                        </select>
+                    
+                    
+                    <div class="form-group">
+                        <label for="appointment_no">Appointment Number:</label>
+                        <input type="text" id="appointment_no" name="appointment_no" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="appointment_date">Appointment Date:</label>
+                        <input type="datetime-local" id="appointment_date" name="appointment_date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <input type="text" id="gender" name="gender" required>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="appointment_date">Doctor</label>
+                        <select id="doctor" name="doctor">
+                            <option value="">Select a doctor</option>
+                            {% for doctor in doctor %}
+                                <option value="{{ doctor.staff_id }}">{{ doctor.first_name }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>  
+            
+                    <div class="form-group">
+                        <label for="source">Source:</label>
+                        <input type="text" id="source" name="source" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <input type="text" id="priority" name="priority" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fees">Fees:</label>
+                        <input type="text" id="fees" name="fees" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <input type="text" id="status" name="status" required>
+                    </div>
+                    
+
+                        <!-- Your form fields go here -->
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="main-header">
+  <h1 class="headline">Appointment Details</h1>
+  <div class="side-btns">
+
+ 
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Appointment Form</a>
+
+</div>
+
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -69,6 +178,42 @@
         {% endfor %}
       </tbody>
     </table>
+
+  </div>
+
+
+
+    <script>
+      {% comment %} $(document).ready(function() {
+        $(".open-popup").click(function() {
+          $(".popup").fadeIn();
+        });
+      
+        $(".popup").click(function(event) {
+          if (event.target === this) {
+            $(this).fadeOut();
+          }
+        });
+      }); {% endcomment %}
+
+      
+
+      const openPopupBtn = document.getElementById("openPopupBtn");
+      const popupContainer = document.getElementById("popupContainer");
+      const closePopupBtn = document.getElementById("closePopupBtn");
+    {% comment %} console.log(openPopupBtn)
+    console.log(popupContainer)
+      openPopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "block";
+          console.log('hello')
+      }); {% endcomment %}
+      function change(){
+        popupContainer.style.display = "block";
+      }
+      closePopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "none";
+      });
+    </script>
   </div>
 
 

@@ -1,14 +1,124 @@
+{% include "layout/header.html" %}
+
 {% include "layout/sidebar.html" %}
 
 
+    
 <style>
+    .setup-sidebar{
+        margin: 1rem;
+        padding: 1rem;
+        width:40%;
+    
+    }
+    .setup-rightbar{
+        margin: 1rem;
+        padding: 1rem;
+        width:50%;
+        -webkit-box-shadow: 7px 13px 34px -4px rgba(0,0,0,0.75);
+-moz-box-shadow: 7px 13px 34px -4px rgba(0,0,0,0.75);
+box-shadow: 7px 13px 34px -4px rgba(0,0,0,0.75);
+        border-radius:10px;
+    
+    }
+    .setup-rightbar form{
+        padding:10px;   
+    }
+    .link{
+        border: solid black;
+        border-width: 0px 0px 1px 0px;
+        padding-left: 2rem;
+        
+    }
+    
 
-  
-</style>
+    .main-content{
+        display: flex;
+        margin-top:5rem;
+
+    }
+.off{
+    display:none;
+}
+.toggleable {
+    display: none;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    
+}
+
+/* Style for the "clicked" class on the active link */
+.clicked {
+    {% comment %} font-weight: bold; {% endcomment %}
+    text-decoration: none;
+    color: #ff6600;
+    background:#1cb88e ;
+    border: #f39c12  solid;
+    border-width: 0px 0px 5px 0px;
+    border-radius:10px 10px 0px 0px;
+}
+.link li{
+    text-decoration:none;
+    list-style-type:none;
+}
+.form-group .submit{
+    margin-top:50px;    
+}
+
+a{
+    color:#f39c12;
+}
+a:active{
+    color:#1cb88e !important;
+}
+ a:hover {
+     background-color: White !important; 
+     color:#1cb88e !important; 
+
+     text-decoration:none;
+}
+.next-section{
+    margin-top:8rem;
+}
+    </style>
 <div class="container">
+    <div class="main-content">
+    
+    
+    
+    <div class="setup-sidebar">
+    
+        <div class="link">
+            <li class="ipd-nav-item"><a href="#bed_form" class="ipd-nav-link"><h3>Add Bed</h3></a></li>
+           
+            
+        </div>
+    
+        <div class="link">
+            <li class="ipd-nav-item"><a href="#group" class="ipd-nav-link"><h3>Group</h3></a></li>
+           
+        </div>
+    
+        <div class="link">
+            <li class="ipd-nav-item"><a href="#new" class="ipd-nav-link"><h3>Floor</h3></a></li>
+          
+            
+        </div>
+        <div class="link">
+            <li class="ipd-nav-item"><a href="#purpose" class="ipd-nav-link"><h3>Purpose</h3></a></li>
+          
+            
+        </div>
+
+    
+    </div>
+<div class="setup-rightbar">
+    <section class="bed_form toggeable" id="bed_form">
 <form method="post" action="{% url 'add_bed' %}">
   
 <h2>Bed Details</h2>
+
 
     {% csrf_token %}
     <div class="form-group">
@@ -45,12 +155,13 @@
         <input type="checkbox" id="mark_as_unused" name="mark_as_unused" {% if bed.mark_as_unused %}checked{% endif %}>
     </div>
 
-    <div class="form-group">
+    
         <input type="submit" value="Save">
-    </div>
-
+    
    
 </form>
+</section>
+<section  class="group toggeable" id="group">
 
 <form method="post" action="{% url 'add_bed_group' %}">
   <h2>Add Bed Group</h2>
@@ -70,13 +181,12 @@
         <input type="text" id="description" name="description" required>
     </div>
 
-    <div class="form-group">
+    
         <input type="submit" value="Save">
-    </div>
 
- 
 </form>
-
+</section>
+<section id="purpose" class="purpose toggeable"> 
 <form method="post" action="{% url 'add_purpose' %}">
   <h2>Add Bed Purpose</h2>
     {% csrf_token %}
@@ -85,30 +195,229 @@
         <input type="text" id="name" name="purpose" required>
     </div>
 
-    <div class="form-group">
+    
         <input type="submit" value="Save">
-    </div>
+
 
 </form>
+</section>
 
-<form method="post" action="{% url 'add_floor' %}">
-  <h2>Add Floor</h2>
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="name">Floor:</label>
-        <input type="text" id="name" name="name" required>
-    </div>
+<section id="new" class="new toggeable"> 
+    <form method="post" action="{% url 'add_floor' %}">
+        <h2>Add Floor</h2>
+          {% csrf_token %}
+          <div class="form-group">
+              <label for="name">Floor:</label>
+              <input type="text" id="name" name="name" required>
+          </div>
+      
+          <div class="form-group">
+              <label for="description">Description:</label>
+              <input type="text" id="description" name="description" required>
+          </div>
+      
+          
+              <input type="submit" value="Save">
+      
+      
+       
+         
+      </form>
+     
+    </section>
+    
 
-    <div class="form-group">
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required>
-    </div>
 
-    <div class="form-group">
-        <input type="submit" value="Save">
-    </div>
+</div> 
 
- 
+</div> 
+<div class="next-section">
+
+    
+    <section  id="bed_form" class="bed_form toggeable">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>floor</th>
+                <th>Purpose</th>
+                <th>Used</th>
+             
+               
+              </tr>
+            </thead>
+            <tbody>
+            
+              {% for bed in bed %}
+                <tr>
+                    
+                  <td>{{ bed.name }}</td>
+                  <td>{{ bed.floor }}</td>
+                  <td>{{ bed.purpose }}</td>
+                  <td>{{ bed.mask_as_unused }}</td>
+
+                
+                
+              {% endfor %}
+              
+            
+            </tbody>
+          </table>
+    
+    
+    </section>
+
+    <section  id="new"class="new toggeable">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+             
+               
+              </tr>
+            </thead>
+            <tbody>
+            
+              {% for floor in floor %}
+                <tr>
+                    
+                  <td>{{ floor.name }}</td>
+                  <td>{{ floor.decsription }}</td>
+
+                
+                
+              {% endfor %}
+              
+            
+            </tbody>
+          </table>
+    
+    
+    </section>
+
+    <section  id="group"class="new toggeable">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>floor</th>
+                <th>Description</th>
+             
+               
+              </tr>
+            </thead>
+            <tbody>
+            
+              {% for grp in bed_grp %}
+                <tr>
+                    
+                  <td>{{ grp.name }}</td>
+                  <td>{{ grp.floor }}</td>
+                  <td>{{ grp.decsription }}</td>
+
+                
+                
+              {% endfor %}
+              
+            
+            </tbody>
+          </table>
+    
+    
+    </section>
+    <section  id="purpose"class="new toggeable">
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Purpose</th>
+               
+             
+               
+              </tr>
+            </thead>
+            <tbody>
+            
+              {% for purpose in bed_pur %}
+                <tr>
+                    
+                  <td>{{ purpose.purpose }}</td>
    
-</form>
-<div> 
+
+                
+                
+              {% endfor %}
+              
+            
+            </tbody>
+          </table>
+    
+    
+    </section>
+
+    </div> 
+
+
+</div> 
+
+</div> 
+
+
+    <script>
+         function toggleSection(sectionId) {
+           // Hide all sections with class "toggleable"
+           var sections = document.querySelectorAll('.toggeable');
+           sections.forEach(function(section) {
+               section.classList.add('off');
+           });
+   
+           // Show the selected section
+           var selectedSection = document.querySelectorAll(sectionId);
+           console.log(selectedSection)
+
+           for (var i = 0; i < selectedSection.length; i++) {
+            var selectedIds = selectedSection[i];
+            console.log(selectedIds)
+            var selected = "#"+selectedIds.id
+            console.log(selected)
+            if (selectedIds) {
+                
+                selectedIds.classList.remove('off');
+            }
+        }
+             
+
+
+          
+       }
+       var sections = document.querySelectorAll('.toggeable');
+       var excludedSection = document.getElementById('bed_form');
+   
+       sections.forEach(function(section) {
+       if (section !== excludedSection) {
+           section.classList.add('off');
+       }
+       });
+
+           // Hide all sections with class "toggleable"
+      
+           // Show the selected section
+          
+   
+       // Add an event listener to each navigation link
+       
+       // Add an event listener to each navigation link
+       document.addEventListener('DOMContentLoaded', function() {
+           var navLinks = document.querySelectorAll('.ipd-nav-link');
+           navLinks.forEach(function(link) {
+               link.addEventListener('click', function(e) {
+                   e.preventDefault(); // Prevent the default link behavior
+   
+                   var sectionIds = link.getAttribute('href');
+                   toggleSection(sectionIds);
+               });
+           });
+       });
+
+
+   </script>

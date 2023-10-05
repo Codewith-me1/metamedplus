@@ -1,0 +1,133 @@
+<!-- charge_type_form.html -->
+
+
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class="container">
+    
+    
+    
+  
+  <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Appointment Details</h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'charge_type' %}">
+                        {% csrf_token %}
+                        
+                        
+        <div class="form-group">
+            <label for="charge_type">Charge Type:</label>
+            <select name="charge_type">
+                <option value="">Select a Charge    </option>
+                {% for charge in charge_type %}
+    
+                    <option value={{charge.charge_name}}>{{charge.charge_name}}</option>
+    
+                {% endfor %}
+            </select><br>
+    
+        </div>
+    
+
+        <div class="form-group">
+
+
+            <label for="name"> Name:</label>
+            <input type="text" name="name" id="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+        </div>
+                        <!-- Your form fields go here -->
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="main-header">
+  <h1 class="headline">Charge Details</h1>
+  <div class="side-btns">
+
+ 
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Charge Details</a>
+
+</div>
+
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Charge Type</th>
+          <th>Name</th>
+          <th>Description</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for charge in charge %}
+          <tr>
+            <td>{{ charge.charge_type }}</td>
+            <td>{{ charge.name }}</td>
+            <td>{{ charge.description }}</td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+    <script>
+      {% comment %} $(document).ready(function() {
+        $(".open-popup").click(function() {
+          $(".popup").fadeIn();
+        });
+      
+        $(".popup").click(function(event) {
+          if (event.target === this) {
+            $(this).fadeOut();
+          }
+        });
+      }); {% endcomment %}
+
+      
+
+      const openPopupBtn = document.getElementById("openPopupBtn");
+      const popupContainer = document.getElementById("popupContainer");
+      const closePopupBtn = document.getElementById("closePopupBtn");
+    {% comment %} console.log(openPopupBtn)
+    console.log(popupContainer)
+      openPopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "block";
+          console.log('hello')
+      }); {% endcomment %}
+      function change(){
+        popupContainer.style.display = "block";
+      }
+      closePopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "none";
+      });
+    </script>
+  </div>
+
+
+

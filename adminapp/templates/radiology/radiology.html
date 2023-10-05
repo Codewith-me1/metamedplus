@@ -1,0 +1,202 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Radioology Test</title>
+</head>
+<body>
+   
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Radialogy Record</h1>
+                  </div>
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'radiology' %}">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="patient"> Patient</label>
+                            <select id="patient" name="patient">
+                                <option value="">Select a Patient</option>
+                                {% for patient in patient %}
+                                    <option value="{{patient.id}}">{{ patient.name }}{{patient.id}}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="test_name">Test Name *</label>
+                            <input type="text" name="test_name" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="report_days">Report Days *</label>
+                            <input type="number" name="report_days" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="report_date">Report Date *</label>
+                            <input type="date" name="report_date" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="tax_percentage">Tax *</label>
+                            <input type="text" name="tax_percentage" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="amount">Amount (Rs.) *</label>
+                            <input type="text" name="amount" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="referral_doctor">Referral Doctor *</label>
+                            <select id="patient" name="referral_doctor">
+                                <option value="">Select Doctor</option>
+                                {% for doc in doc %}
+                                    <option value="{{doc.first_name}}">{{ doc.first_name }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            
+                        </div>
+                
+                        <h2>Financial Information</h2>
+                        <div class="form-group">
+                            <label for="total">Total (Rs.)</label>
+                            <input type="number" name="total">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="discount_percentage">Discount (%)</label>
+                            <input type="number" name="discount_percentage">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="discount">Discount (Rs.)</label>
+                            <input type="number" name="discount">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="tax">Tax (Rs.)</label>
+                            <input type="number" name="tax">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="net_amount">Net Amount (Rs.)</label>
+                            <input type="number" name="net_amount">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="payment_mode">Payment Mode *</label>
+                            <select name="payment_mode" require d>
+                                <option value="Cash">Cash</option>
+                                <!-- Add more payment modes as needed -->
+                            </select>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="payment_amount">Payment Amount (Rs.)</label>
+                            <input type="number" name="payment_amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Note</label>
+                            <input type="text" name="note">
+                        </div>
+    
+    
+                       
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Radiology</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Radiology</a>
+    <a  href="{% url "radio_test" %}"class="btn-primary btn" >Add Radialogy Test</a>
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Name</th>
+            <th>Patient</th>
+            <th>Days</th>
+            <th>Date</th>
+            <th>Referral Doctor</th>
+            <th>Amount</th>
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for radio in radio %}
+            <tr>
+
+                <td>{{ radio.test_name }}</td>
+                <td>{{ radio.patient }}</td>
+               <td>{{ radio.report_days }}</td>
+              <td>{{ radio.report_date }}</td>
+              <td>{{ radio.referral_doctor }}</td>
+              <td>{{ radio.amount }}</td>
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </div>
+<script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+       
+    </script>
+</body>
+</html>

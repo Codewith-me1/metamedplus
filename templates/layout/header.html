@@ -1,0 +1,478 @@
+
+    {% load static %} 
+    <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style-main.css' %}">  
+    <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
+    {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
+     <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+      <link rel="stylesheet" href=" {% static "css/ionicons.min.css" %}">
+      <link rel="stylesheet" href=" {% static "css/custom_style.css" %}">
+      <link rel="stylesheet" href=" {% static "css/all.css" %}"> 
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href=" {% static "css/main.css" %}"> 
+      <link rel="stylesheet" href=" {% static "css/idcard.css" %}">
+      <link rel="stylesheet" href=" {% static "css/animate.min.css" %}">
+      <link rel="stylesheet" href=" {% static "css/AdminLTE.css" %}"> 
+    <link rel="stylesheet" href=" {% static "css/AdminLTE.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css//skins/_all-skins.min.css" %}">
+    <link rel="stylesheet" href=" {% static "css//skins/_all-skins.css" %}">
+      <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.min.css" %}">
+      <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css" %}">
+      <link rel="stylesheet" href=" {% static "css/bootstrap/css/bootstrap.css.map" %}"> 
+      <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.css" %}"> 
+      <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}"> 
+      <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}">  
+      <link rel="stylesheet" href="{% static "/css/calender.min.css" %} ">
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"> 
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.3.1/swiper-bundle.css" integrity="sha512-cAtZ0Luj6XlQ7YGgi5mPW0szI2z/2+btPjOqVEqK3z4h1/qojUwvQyTcocgKKOFv8noUFH5GOuhheX7PeDwwPA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Add CSS for the fixed navbar */
+      
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333; /* Set your preferred background color */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2000;
+        }
+        h1 , h2 {
+          font-family: Ubuntu !important;
+        }
+        h3{
+          font-family:Georgia, Arial Helvetica;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+         a.logo {
+            float: left; /* Place the logo on the right side */
+        }
+        a.logo img{
+          float:left;
+          width:50%;
+      }
+
+        .navbar a:hover {
+            background-color: #ddd; /* Change the background color on hover */
+            color: black;
+        }
+        .container{
+            margin-top:3rem;
+        }
+        .nav-item{
+            float:right;
+        }
+
+        .search{
+            float:right !important; 
+        }
+        .navbar{
+            background-color: white;
+        }
+        .navbar-brand{
+            margin-left:2rem;
+            font-size:3rem;
+            color:#ee9d1f !important;
+        }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          }
+          
+          /* Modal Content/Box */
+          .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+          }
+          
+          /* The Close Button */
+          .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            color:black !important;
+            padding:20px;
+            font-weight: bold;
+          }
+          
+          .close:hover,
+          .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+          }
+          #myBtn{
+            float: right;
+            border:none;
+            color:black !important;
+            margin:0.5rem;
+
+            
+          }
+          #myBtns{
+            float: right;
+            border:none;
+            color:black !important;
+            margin:0.5rem;
+
+            
+          }
+          .search input {
+                margin-top:10px;
+                border-radius:5px;
+            
+
+          }
+          #myBtn:hover{
+            color:white !important;
+            background-color:#1cb88e  !important;
+          }
+          #myBtns:hover{
+            color:white !important;
+            background-color:#1cb88e  !important;
+          }
+          .beds{
+            display:flex;
+
+          }
+          .bed_det{
+            padding:20px;
+            color:black;
+          }
+          .bed_details{
+            background-color:#1cb88e ;
+            padding:10px;
+            border-radius:10px;
+            margin:30px;
+          }
+          .bed{
+            text-align:center;
+            padding:10px;
+            background-color:#ee9d1f ;
+            margin:0px 700px;
+            border-radius:10px;
+
+          }
+          .sidebar{
+            padding-top:10rem;
+          }
+          .container{
+            margin-top:13rem;
+          }
+          .navbar{
+            border:solid #d2d1d1;
+            border-width:0px 0px 1px 0px;
+          }
+          .ad{
+            padding:5rem;
+          }
+
+          .slideshow-container {
+            width:30%;
+            position: relative;
+            margin:auto;
+            
+          }
+          
+          /* Next & previous buttons */
+          .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+          }
+          
+          /* Position the "next button" to the right */
+          .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+          }
+          
+          /* On hover, add a black background color with a little bit see-through */
+          .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+          }
+          
+          /* Caption text */
+          .text-slider {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+          }
+          
+          /* Number text (1/3 etc) */
+          .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+          }
+          
+          /* The dots/bullets/indicators */
+          .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+          }
+          
+          
+          
+          /* Fading animation */
+          .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+          }
+          
+          @keyframes fade {
+            from {opacity: .4} 
+            to {opacity: 1}
+          }
+          
+          /* On smaller screens, decrease text size */
+          @media only screen and (max-width: 300px) {
+            .prev, .next,.text {font-size: 11px}
+          }
+          .POP {
+            margin-top:10rem;
+          }
+    </style>
+
+    <!-- Create the fixed navbar -->
+    {% comment %} <nav> 
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+        <a href="#" class="logo"><img src="" alt="Logo"></a>
+    </div>
+
+</nav> {% endcomment %}
+
+
+
+<div>
+  
+  
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  {% if user.role == 'Admin' %}
+  <div class="slideshow-container">
+
+    <div class="mySlides fade">
+      <div class="numbertext">1 / 3</div>
+      <img src="https://www.webfx.com/wp-content/uploads/2021/10/example-of-banner-ad-with-value.png" style="width:100%">
+     
+    </div>
+    
+    <div class="mySlides fade">
+      <div class="numbertext">2 / 3</div>
+      <img src="https://www.webfx.com/wp-content/uploads/2021/10/example-of-banner-ad-with-value.png" style="width: 100%;">
+      
+    </div>
+    
+    <div class="mySlides fade">
+      <div class="numbertext">3 / 3</div>
+      <img src="https://www.webfx.com/wp-content/uploads/2021/10/example-of-banner-ad-with-value.png" style="width:100%">
+      
+    </div>
+    
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+    
+    </div>  
+    {% endif %}
+    
+    <a href="#" class="logo"><img src="{% static "css/images/doctor/metamed.png" %}" alt="Logo"></a>
+    <a class="navbar-brand" href="#">Your Hospital Name</a>
+   
+
+    <div class="header-btn">
+        <a href="profile/{{user.id}}" id="myBtns">Profile</a>
+    <a href="#"  id="myBtn">Bed Status</a>
+    <a href="{% url "add_task" %}" id="myBtns">Task</a>
+    <a href="#" id="myBtns">Calender</a>
+
+    
+    
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+    
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="nobed">
+        <h4 class="bed"> First<h4>
+
+        <div class="bed_details">
+            <div class="beds">
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+            </div>
+
+        </div>
+        <h4 class="bed"> Second<h4>
+        <div class="bed_details">
+            <div class="beds">
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+                <div class="bed_det ">
+                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+                    <p>1E</p>
+                </div>
+            </div>
+
+        </div>
+
+
+      </div>
+    
+    </div>
+
+
+    </div>
+
+    <!-- The Modal -->
+   
+ 
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+      <form class="form-inline search my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+
+    </div>
+
+
+      <br>
+      
+   
+      
+  </nav>
+  
+  
+  
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.3.1/swiper-bundle.js" integrity="sha512-4mlFrp9qno3Tz7HfKNi6hTnBS9Bb+Uzw6frb2U/4Jc0wHdL36LprwQqgDemKNvLVWSfoeQfrgLDDQA0N4oHxgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script> 
+
+  const swiper = new Swiper('.swiper', {
+    speed: 400,
+    spaceBetween: 100,
+  });
+
+ 
+    var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 2000); // Change image every 2 seconds
+}
+</script> 

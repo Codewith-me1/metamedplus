@@ -1,7 +1,27 @@
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+
+<style>
+  .container{
+    margin-top:10rem !important;
+  }
+</style>
+
 <div class="container">
-    <h1>Appointment Details</h1>
+  
+  <div class="main-content">
+    <button class="print"type ="sumbit" onClick="printDiv()">print</button>
+    <div class="main-header"> 
+      <h1 class="headline">Staff Details</h1>
+      <div class="side-btns">
     
+     
+      {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+      <a  class="btn-primary btn"href="{% url "add_staff" %}">Add Staff </a>
+    
+    </div>
+    </div>
+
     <table class="table">
       <thead>
         <tr>
@@ -29,3 +49,21 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<script>
+  function printDiv() {
+    var table = document.querySelector('.table');
+            var newWindow = window.open('', '', 'width=600,height=600');
+            newWindow.document.open();
+            newWindow.document.write('<html><head><title>Print Table</title></head><body>');
+            newWindow.document.write('<table>' + table.innerHTML + '</table>');
+            newWindow.document.write('</body></html>');
+            newWindow.document.close();
+
+            newWindow.onload = function() {
+                newWindow.print();
+                
+            };
+  }
+</script>

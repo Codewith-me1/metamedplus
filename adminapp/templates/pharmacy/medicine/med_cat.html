@@ -4,58 +4,6 @@
 
 
 
-<!-- medication_form.html -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% include "layout/sidebar.html" %}
-    <meta charset="UTF-8">
-    <title>Medication Form</title>
-</head>
-<body>
-    <div class="container"> 
-    <h1>Medication Form</h1>
-    <form method="post" action="{% url "med_cat" %}">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <input type="text" class="form-control" name="category" required>
-        </div>
-  
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Submit">
-        </div>
-    </form>
-    <table class="table">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th></th>
-            
-            
-           
-          </tr>
-        </thead>
-        <tbody>
-          
-          {% for med in med_cat %}
-            <tr>
-              <td>{{ med.medicine_category}}</td>
-
-              
-            
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-
-</div>
-</body>
-</html>
-
 
     {% comment %} {% for med in med_cat %}
 <p>{{  med.medicine_category}}</p>
@@ -65,3 +13,96 @@
 
 
 
+
+
+   
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class="container">
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Medication Form </h1>
+              </div>
+                <form class="form_popup" enctype="multipart/form-data" method="post" action="{% url 'purchase_med' %}">
+                    {% csrf_token %}
+                    
+    
+                    <div class="form-group">
+                      <label for="category">Category:</label>
+                      <input type="text" class="form-control" name="category" required>
+                  </div>
+        
+                    
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Medicine Category</h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Medicine Category</a>
+
+</div>    
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th></th>
+      
+      
+     
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for med in med_cat %}
+      <tr>
+        <td>{{ med.medicine_category}}</td>
+
+        
+      
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+</div>
+
+
+
+<script>
+    const openPopupBtn = document.getElementById("openPopupBtn");
+    const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+
+</script>

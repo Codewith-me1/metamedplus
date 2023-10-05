@@ -1,0 +1,104 @@
+
+
+
+<!-- payment_form.html -->
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class='container'>
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add  Referral Category</h1>
+                  </div>
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'referral' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="name">Name</label>
+                          <input type="text" class="form-control" id="name" name="name" required>
+                      </div>
+
+
+                      
+                     
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Refferal</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Refferal</a>
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+      <thead>
+        <tr>
+          
+          <th>Name</th>
+          
+         
+            
+         
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for category in category %}
+          <tr>
+              <td>{{ category.name }}</td>
+             
+            
+        
+          
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    </div>
+<script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+       
+   
+    </script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login</title>
+    <style>
+        /* Basic CSS styles for the form */
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* 3D mouse follower animation */
+        form {
+            position: relative;
+        }
+
+        form::before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #007bff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        form:hover::before {
+            transform: translate(-50%, -50%) scale(3);
+        }
+        h1{
+            text-align:center;
+            color:white;
+        }
+        body{
+            background-color:#1cb88e ;
+        }
+        form{
+            padding:3rem;
+        }
+
+        button[type="submit"]{
+
+            margin-left:7rem;
+            background-color:#ee9d1f ;
+
+        }
+    </style>
+
+</head>
+<body>
+    <h1> Login</h1>
+    <form method="post" action="{% url "login" %}">
+        {% csrf_token %}
+        <label for="id_username">Username:</label>
+        <input type="text" id="id_username" name="username" required>
+        <br>
+        <label for="id_password">Password:</label>
+        <input type="password" id="id_password" name="password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+
+
+</body>
+</html>

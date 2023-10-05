@@ -1,4 +1,8 @@
+
+
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+
 
 <style>
     select {
@@ -6,137 +10,226 @@
     }
 </style>
 <div class="container"> 
-<h1> IPD Patient</h1>
-<form method="post" action="{% url 'ipd_patient' %}">
-    {% csrf_token %}
 
-    <!-- Basic Information -->
+
+
+
+
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Add Birth Record</h1>
+              </div>
+                <form class="form_popup" method="post" action="{% url 'ipd_patient' %}">
+                    {% csrf_token %}
+                     <!-- Basic Information -->
     <select id="patient" name="patient">
                 
-        {% for patient in patients %}
+        {% for patient in patient %}
             <option value="{{ patient.id }}">{{ patient.name }}</option>
         {% endfor %}
+</select>
+
+<div class="form-group">
+    <label for="height">Height:</label>
+    <input type="text" class="form-control" name="height" required>
+</div>
+
+<div class="form-group">
+    <label for="weight">Weight:</label>
+    <input type="text" class="form-control" name="weight" required>
+</div>
+
+<div class="form-group">
+    <label for="bp">BP:</label>
+    <input type="text" class="form-control" name="bp" required>
+</div>
+
+<div class="form-group">
+    <label for="pulse">Pulse:</label>
+    <input type="number" class="form-control" name="pulse" required>
+</div>
+
+<div class="form-group">
+    <label for="temperature">Temperature:</label>
+    <input type="text" class="form-control" name="temperature" required>
+</div>
+
+<div class="form-group">
+    <label for="respiration">Respiration:</label>
+    <input type="number" class="form-control" name="respiration" required>
+</div>
+
+<div class="form-group">
+    <label for="symptoms_type">Symptoms Type:</label>
+    <select class="form-control" id="symptoms_type" name="symptoms_type">
+        <option value="">Select Symptoms Type</option>
+        {% for type in type %}
+            <option>{{ type.symptoms_type }}</option>
+        {% endfor %}
     </select>
+</div>
+
+<div class="form-group">
+    <label for="symptoms_description">Symptoms Description:</label>
+    <input type="text" class="form-control" name="symptoms_description" required>
+</div>
+
+<div class="form-group">
+    <label for="symptoms_title">Symptoms Title:</label>
+    <select class="form-control" id="symptoms_title" name="symptoms_title">
+        <option value="">Select Symptoms Title</option>
+        {% for type in type %}
+            <option>{{ type.symptoms_title }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- Admission Information -->
+<div class="form-group">
+    <label for="admission_date">Admission Date:</label>
+    <input type="datetime-local" class="form-control" name="admission_date" required>
+</div>
+
+<div class="form-group">
+    <label for="is_case_casualty">Case Casualty:</label>
+    <input type="checkbox" name="is_case_casualty">
+</div>
+
+<div class="form-group">
+    <label for="is_old_patient">Old Patient:</label>
+    <input type="checkbox" name="is_old_patient">
+</div>
+
+<div class="form-group">
+    <label for="is_tpa">TPA:</label>
+    <input type="checkbox" name="is_tpa">
+</div>
+
+<div class="form-group">
+    <label for="credit_limit">Credit Limit (Rs.):</label>
+    <input type="number" class="form-control" name="credit_limit" required>
+</div>
+
+<div class="form-group">
+    <label for="reference">Reference:</label>
+    <input type="text" class="form-control" name="reference" required>
+</div>
+
+<div class="form-group">
+    <label for="consultant_doctor">Consultant Doctor:</label>
+        <select id="consultant_doctor" name="consultant_doctor">
+            <option value="">Select a doctor</option>
+            {% for doctor in doctor %}
+                <option value="{{ doctor.staff_id }}">{{ doctor.first_name }}</option>
+            {% endfor %}
+        </select>
+</div>
+
+<div class="form-group">
     
-    <div class="form-group">
-        <label for="height">Height:</label>
-        <input type="text" class="form-control" name="height" required>
-    </div>
-
-    <div class="form-group">
-        <label for="weight">Weight:</label>
-        <input type="text" class="form-control" name="weight" required>
-    </div>
-
-    <div class="form-group">
-        <label for="bp">BP:</label>
-        <input type="text" class="form-control" name="bp" required>
-    </div>
-
-    <div class="form-group">
-        <label for="pulse">Pulse:</label>
-        <input type="number" class="form-control" name="pulse" required>
-    </div>
-
-    <div class="form-group">
-        <label for="temperature">Temperature:</label>
-        <input type="text" class="form-control" name="temperature" required>
-    </div>
-
-    <div class="form-group">
-        <label for="respiration">Respiration:</label>
-        <input type="number" class="form-control" name="respiration" required>
-    </div>
-
-    <div class="form-group">
-        <label for="symptoms_type">Symptoms Type:</label>
-        <select class="form-control" id="symptoms_type" name="symptoms_type">
-            <option value="">Select Symptoms Type</option>
-            {% for type in type %}
-                <option>{{ type.symptoms_type }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="symptoms_description">Symptoms Description:</label>
-        <input type="text" class="form-control" name="symptoms_description" required>
-    </div>
-
-    <div class="form-group">
-        <label for="symptoms_title">Symptoms Title:</label>
-        <select class="form-control" id="symptoms_title" name="symptoms_title">
-            <option value="">Select Symptoms Title</option>
-            {% for type in type %}
-                <option>{{ type.symptoms_title }}</option>
-            {% endfor %}
-        </select>
-    </div>
-
-    <!-- Admission Information -->
-    <div class="form-group">
-        <label for="admission_date">Admission Date:</label>
-        <input type="datetime-local" class="form-control" name="admission_date" required>
-    </div>
-
-    <div class="form-group">
-        <label for="is_case_casualty">Case Casualty:</label>
-        <input type="checkbox" name="is_case_casualty">
-    </div>
-
-    <div class="form-group">
-        <label for="is_old_patient">Old Patient:</label>
-        <input type="checkbox" name="is_old_patient">
-    </div>
-
-    <div class="form-group">
-        <label for="is_tpa">TPA:</label>
-        <input type="checkbox" name="is_tpa">
-    </div>
-
-    <div class="form-group">
-        <label for="credit_limit">Credit Limit (Rs.):</label>
-        <input type="number" class="form-control" name="credit_limit" required>
-    </div>
-
-    <div class="form-group">
-        <label for="reference">Reference:</label>
-        <input type="text" class="form-control" name="reference" required>
-    </div>
-
-    <div class="form-group">
-        <label for="consultant_doctor">Consultant Doctor:</label>
-            <select id="doctor" name="doctor">
-                <option value="">Select a doctor</option>
-                {% for doctor in doctor %}
-                    <option value="{{ doctor.staff_id }}">{{ doctor.first_name }}</option>
-                {% endfor %}
-            </select>
-    </div>
-
-    <div class="form-group">
-        
-        
-        <label for="bed_grp">Bed Group:</label>
-            <select id="bed_group" name="bed_group">
-                <option value="">Select a Bed</option>
-                {% for bed in bedtype %}
-                    <option value="{{ bed.name }}">{{ bed.name }}</option>
-                {% endfor %}
-            </select>
-
-    </div>
-
-    <div class="form-group">
-        <label for="bed_number">Bed Number:</label>
-        <select id="bed_number" name="bed_group">
-            <option value="">Select a Bed Number</option>
-            {% for bed in bed %}
+    
+    <label for="bed_grp">Bed Group:</label>
+        <select id="bed_group" name="bed_group">
+            <option value="">Select a Bed</option>
+            {% for bed in bedtype %}
                 <option value="{{ bed.name }}">{{ bed.name }}</option>
             {% endfor %}
         </select>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 </div>
+
+<div class="form-group">
+    <label for="bed_number">Bed Number:</label>
+    <select id="bed_number" name="bed_number">
+        <option value="">Select a Bed Number</option>
+        {% for bed in bed %}
+            <option value="{{ bed.name }}">{{ bed.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+ 
+                   
+        
+                    
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">IPD </h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add IPD Record</a>
+
+</div>    
+</div>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Patient Name </th>
+        <th>consultant doctor</th>
+        <th>Bed Group</th>
+        <th>Systoms</th>
+        <th>Bed Number</th>
+       
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for ipd in ipd %}
+        <tr>
+          <td><a href=" {{ipd.id}}">{{ ipd.id }}</a></td>  
+          <td>{{ ipd.patient }}</td>
+          <td>{{ ipd.consultant_doctor }}</td>
+
+          <td>{{ ipd.bed_group }}</td>
+          <td>{{ ipd.symptoms_type }}</td>  
+          <td>{{ ipd.bed_number }}</td>  
+          
+        
+        
+      {% endfor %}
+      
+    
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+
+
+
+<script>
+    const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+});
+   </script> 

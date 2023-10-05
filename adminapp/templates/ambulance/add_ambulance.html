@@ -1,0 +1,168 @@
+
+
+  
+
+
+    <!-- create_child.html -->
+    {% include "layout/sidebar.html" %}
+    {% include "layout/header.html" %}
+    <div class="container">
+    
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add call </h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'add_ambulance' %}">
+                        <div class="form-group">
+                            <label for="vehicle_number">Vehicle Number *</label>
+                            <input type="text" name="vehicle_number" id="vehicle_number" class="form-control" required>
+                        </div>
+                        
+                        <!-- Vehicle Model -->
+                        <div class="form-group">
+                            <label for="vehicle_model">Vehicle Model *</label>
+                            <input type="text" name="vehicle_model" id="vehicle_model" class="form-control" required>
+                        </div>
+                        
+                        <!-- Year Made -->
+                        <div class="form-group">
+                            <label for="year_made">Year Made</label>
+                            <input type="text" name="year_made" id="year_made" class="form-control">
+                        </div>
+                        
+                        <!-- Driver Name -->
+                        <div class="form-group">
+                            <label for="driver_name">Driver Name *</label>
+                            <input type="text" name="driver_name" id="driver_name" class="form-control" required>
+                        </div>
+                        
+                        <!-- Driver License -->
+                        <div class="form-group">
+                            <label for="driver_license">Driver License *</label>
+                            <input type="text" name="driver_license" id="driver_license" class="form-control" required>
+                        </div>
+                        
+                        <!-- Driver Contact -->
+                        <div class="form-group">
+                            <label for="driver_contact">Driver Contact *</label>
+                            <input type="text" name="driver_contact" id="driver_contact" class="form-control" required>
+                        </div>
+                        
+                        <!-- Vehicle Type -->
+                        <div class="form-group">
+                            <label for="vehicle_type">Vehicle Type *</label>
+                            <select name="vehicle_type" id="vehicle_type" class="form-control" required>
+                                <option value="Man">Main</option>
+                                {% comment %} {% for choice in vehicle.VEHICLE_TYPE_CHOICES %}
+                                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %} {% endcomment %}
+                            </select>
+                        </div>
+                        
+                        <!-- Note -->
+                        <div class="form-group">
+                            <label for="note">Note</label>
+                            <textarea name="note" id="note" class="form-control"></textarea>
+                        </div>
+    
+      
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Add  Ambulance</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Ambulance </a>
+    
+    </div>    
+    </div>   
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Vehicle Number </th>
+            <th>Vehicle Model</th>
+            <th>Driver Name</th>
+
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for vehicle in vehicle %}
+            <tr>
+                <td>{{ vehicle.vehicle_number }}</td>
+               <td>{{ vehicle.vehicle_model }}</td>
+               <td>{{ vehicle.driver_name }}</td>
+         
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    <script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+    const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+
+    $(document).ready(function () {
+        // Listen for changes in the vehicle_model select field
+        $('#vehicle_model').change(function () {
+            var selectedVehicle = $(this).val();
+            // Make an AJAX request to fetch the driver name for the selected vehicle
+            $.ajax({
+                type: 'GET',
+                url: '/get_driver_name', // Replace with your actual URL
+                data: { 'vehicle_model': selectedVehicle },
+                success: function (data) {
+                    // Update the driver_name input field with the retrieved value
+                    $('#driver_name').val(data.driver_name);
+                },
+                error: function () {
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+       </script> 
+       
+  

@@ -1,3 +1,4 @@
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 <!DOCTYPE html>
 <html>
@@ -6,98 +7,288 @@
 </head>
 <body>
     
-    <form method="post" action="{% url "path_test" %}">
-        {% csrf_token %}
-        <h1>Create Test</h1>
-        <div class="form-group">
-            <label for="test_name">Test Name *</label>
-            <input type="text" id="test_name" name="test_name" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="short_name">Short Name *</label>
-            <input type="text" id="short_name" name="short_name" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="test_type">Test Type</label>
-            <input type="text" id="test_type" name="test_type" />
-        </div>
-        
-        <div class="form-group">
-            <label for="category_name">Category Name *</label>
-            <input type="text" id="category_name" name="category_name" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="sub_category">Sub Category</label>
-            <input type="text" id="sub_category" name="sub_category" />
-        </div>
-        
-        <div class="form-group">
-            <label for="method">Method</label>
-            <input type="text" id="method" name="method" />
-        </div>
-        
-        <div class="form-group">
-            <label for="report_days">Report Days</label>
-            <input type="number" id="report_days" name="report_days" />
-        </div>
-        
-        <div class="form-group">
-            <label for="charge_category">Charge Category</label>
-            <input type="text" id="charge_category" name="charge_category" />
-        </div>
-        
-        <div class="form-group">
-            <label for="charge_name">Charge Name</label>
-           <select id= "charge_name" name="charge_name">
-            {% for charge in charge %}
-            <option value="">{{ charge.charge_type }}</option>
-            {% endfor %}
-            </select>
-        
-         </div>
-        
-        <div class="form-group">
-             
-            <label for="tax_percentage">Tax (%)</label>
-            <input type="number" id="tax_percentage" name="tax_percentage" />
-            
-        </div>
-        
-        <div class="form-group">
-            <label for="standard_charge">Standard Charge (Rs.) *</label>
-            <input type="number" id="standard_charge" name="standard_charge" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="amount">Amount (Rs.) *</label>
-            <input type="number" id="amount" name="amount" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="test_parameter_name">Test Parameter Name *</label>
-            <input type="text" id="test_parameter_name" name="test_parameter_name" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="reference_range">Reference Range *</label>
-            <input type="text" id="reference_range" name="reference_range" required />
-        </div>
-        
-        <div class="form-group">
-            <label for="unit">Unit *</label>
-            <input type="text" id="unit" name="unit" required />
-        </div>
-        
-        <div class="form-group">
-            <button type="submit">Create</button>
-        </div>
-    </form>
+    
 
-    {% for test in test %}
-    <p>{{ test.test_name }}</p>
-    {% endfor %}
+
+    <div class="container">
+        <div id="popupContainer" class="form-popup-back">
+            <div class="form-Contain">
+                <div class="POP">
+                    <div class="cards">
+                      <div class="popup-header">
+                        <span id="closePopupBtn" class="close-button">Close</span>
+                        <h1>Add Pathalogy Record</h1>
+                      </div>
+                        <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'path_test' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="test_name">Test Name *</label>
+                                <input type="text" id="test_name" name="test_name" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="short_name">Short Name *</label>
+                                <input type="text" id="short_name" name="short_name" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="test_type">Test Type</label>
+                                <input type="text" id="test_type" name="test_type" />
+                            </div>
+                            <div class="form-group">
+                                <label for="category_name">Category Name*</label>
+                               <select id= "category_name" name="category_name">
+                                <option value="">Select A Category</option>
+                                {% for category in category %}
+                                <option value="{{category.name}}">{{ category.name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+                          
+                            <div class="form-group">
+                                <label for="sub_category">Sub Category</label>
+                                <input type="text" id="sub_category" name="sub_category" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="method">Method</label>
+                                <input type="text" id="method" name="method" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="report_days">Report Days</label>
+                                <input type="number" id="report_days" name="report_days" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="charge_category">Charge Category</label>
+                               <select id= "charge_category" name="charge_category">
+                                <option value="">Select A Category</option>
+                                {% for charge in charge %}
+                                <option value="{{charge.charge_category}}">{{ charge.charge_category }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+
+                            
+                            
+                            <div class="form-group">
+                                <label for="charge_name">Charge Name</label>
+                               <select id= "charge_name" name="charge_name">
+                                <option value="">Select A Charge</option>
+                                {% for charge in charge %}
+                                <option value="{{charge.charge_name}}">{{ charge.charge_name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+                            
+                            <div class="form-group">
+                                 
+                                <label for="tax_percentage">Tax (%)</label>
+                                <input type="number" id="tax_percentage" name="tax_percentage" />
+                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="standard_charge">Standard Charge (Rs.) *</label>
+                                <input type="number" id="standard_charge" name="standard_charge" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="amount">Amount (Rs.) *</label>
+                                <input type="number" id="amount" name="amount" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="test_parameter_name">Test Parameter Name *</label>
+                               <select id= "test_parameter_name" name="test_parameter_name">
+                                <option value="">Select A Category</option>
+                                {% for para in parameter %}
+                                <option value="{{para.parameter_name}}">{{ para.parameter_name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+
+                           
+                            
+                            <div class="form-group">
+                                <label for="reference_range">Reference Range *</label>
+                                <input type="text" id="reference_range" name="reference_range" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="unit">Unit *</label>
+                                <input type="text" id="unit" name="unit" required />
+                            </div>
+                           
+                
+                            
+                            <div style="text-align: center;">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+        
+        
+        
+        
+        
+        
+        
+        <div class="main-header">
+        <h1 class="headline">Pathology Test </h1>
+        <div class="side-btns">
+        
+        
+        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+        <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Pathalogy Test</a>
+            
+        
+        </div>    
+        </div>   
+    
+    
+    
+    
+    
+        <table class="table">
+            <thead>
+              <tr>
+                
+                <th>Test Name</th>
+                <th>Short Name</th>
+                <th>Test Type</th>
+                <th>Category Name</th>
+                <th>Sub Category</th>
+                <th> Method</th>
+                <th>Report Days</th>
+                <th>Tax (%)</th>
+                <th>Charge(Rs)</th>
+                <th>Amount</th>
+               
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for test in test %}
+                <tr>
+                    <td>{{ test.test_name }}</td>
+                    <td>{{ test.short_name }}</td>
+                   <td>{{ test.test_type }}</td>
+                  <td>{{ test.category_name }}</td>
+                  <td>{{ test.sub_category }}</td>
+                  <td>{{ test.method }}</td>
+                  <td>{{ test.report_days }}</td>
+                  <td>{{ test.tax_percentage }}</td>
+                  <td>{{ test.charge_name }}</td>
+                  <td>{{ test.amount }}</td>
+                 
+                  
+                  
+              
+                
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        
+    
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+            const openPopupBtn = document.getElementById("openPopupBtn");
+            const popupContainer = document.getElementById("popupContainer");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        
+        function change(){
+          popupContainer.style.display = "block";
+        }
+        closePopupBtn.addEventListener("click", function() {
+            popupContainer.style.display = "none";
+        });
+      
+
+
+        {% comment %} $(document).ready(function() {
+            $("#test_parameter_name").change(function() {
+                var selectedOption = $(this).find(":selected");
+                var parameterId = selectedOption.val();
+                
+                if (parameterId) {
+                    $.ajax({
+                        url: '/get-parameter-details/' ,  // Define the URL for fetching data
+                        method: 'GET',
+                        data:{'selectedOption':selectedOption},
+                        dataType: 'json',
+                        success: function(data) {
+                            // Update the "Reference Range" and "Unit" input fields
+                            $("#reference_range").val(data.reference_range);
+                            $("#unit").val(data.unit);
+                        },
+                        error: function() {
+                            console.error('Error fetching parameter data.');
+                        }
+                    });
+                } else {
+                    // Clear the "Reference Range" and "Unit" fields if no option is selected
+                    $("#reference_range").val('');
+                    $("#unit").val('');
+                }
+            });
+        }); {% endcomment %}
+
+        $(document).ready(function () {
+            // Listen for changes in the vehicle_model select field
+            $('#test_parameter_name').change(function () {
+                var selectedParameter = $(this).val();
+                // Make an AJAX request to fetch the driver name for the selected vehicle
+                $.ajax({
+                    type: 'GET',
+                    url: 'get-parameter-details',
+                    data: { 'test_name': selectedParameter },
+                    success: function (data) {
+                        // Update the driver_name input field with the retrieved value
+                        $('#reference_range').val(data.reference_range);
+                        $('#unit').val(data.unit);
+                    },
+                    error: function () {
+                        // Handle errors if any
+                    }
+                });
+            });
+        });
+
+           $(document).ready(function () {
+    // Listen for changes in the vehicle_model select field
+    $('#charge_name').change(function () {
+        var selectedVehicle = $(this).val();
+        // Make an AJAX request to fetch the driver name for the selected vehicle
+        $.ajax({
+            type: 'GET',
+            url: 'get_tax',
+            data: { 'test_name': selectedVehicle },
+            success: function (data) {
+                // Update the driver_name input field with the retrieved value
+                $('#tax_percentage').val(data.tax);
+                $('#standard_charge').val(data.standard_charge);
+            },
+            error: function () {
+                // Handle errors if any
+            }
+        });
+    });
+});
+        </script>
 </body>
 </html>

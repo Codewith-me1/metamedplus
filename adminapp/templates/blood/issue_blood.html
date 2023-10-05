@@ -1,100 +1,214 @@
-<!DOCTYPE html>
-<html>
 
+
+<!-- create_death_record.html -->
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
-<head>
-    <title>Add Blood Donation</title>
-</head>
-<body>
-    <h1>Add Blood Donation</h1>
-    <form method="POST" action="{% url 'issue_blood' %}">
-        {% csrf_token %}
-        <label for="reference_name">Reference Name *</label>
-        <input type="text" name="reference_name" required><br>
 
-        <label for="issue_date">Issue Date *</label>
-        <select name="issue_date" required>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-            <option value="Option 3">Option 3</option>
-        </select><br>
+<div class="container"> 
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Issue Component</h1>
+              </div>
+                <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'issue_blood' %}">
+                    {% csrf_token %}
 
-
-<label for="hospital_doctor">Hospital Doctor</label>
-        <input type="text" name="hospital_doctor"><br>
-
-        <label for="technician">Technician</label>
-        <input type="text" name="technician"><br>
-
-        <label for="blood_group">Blood Group</label>
-        <select name="blood_group">
-            <option value="" selected>Select</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-        </select><br>
-
-        <label for="bag">Bag</label>
-        <select name="bag">
-            <option value="" selected>Select</option>
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-            <option value="Option 3">Option 3</option>
-        </select><br>
-
-        <label for="charge_category">Charge Category</label>
-        <select name="charge_category">
-            <option value="" selected>Select</option>
-            <option value="Category 1">Category 1</option>
-            <option value="Category 2">Category 2</option>
-            <option value="Category 3">Category 3</option>
-        </select><br>
-
-        <label for="charge_name">Charge Name</label>
-        <input type="text" name="charge_name"><br>
-
-        <label for="standard_charge">Standard Charge (Rs.)</label>
-        <input type="number" name="standard_charge"><br>
-
-        <label for="note">Note</label>
-        <textarea name="note"></textarea><br>
-
-
-        <h2>Financial Information</h2>
-        <label for="total">Total (Rs.)</label>
-        <input type="number" name="total" ><br>
-
-        <label for="discount_percentage">Discount (%)</label>
-        <input type="number" name="discount_percentage" ><br>
-
-        <label for="discount">Discount (Rs.)</label>
-        <input type="number" name="discount" ><br>
-
-        <label for="tax">Tax (Rs.)</label>
-        <input type="number" name="tax" ><br>
-
-        <label for="net_amount">Net Amount (Rs.)</label>
-        <input type="number" name="net_amount" ><br>
-
-        <label for="payment_mode">Payment Mode *</label>
-        <select name="payment_mode" required>
-            <option value="Cash">Cash</option>
-            <!-- Add more payment modes as needed -->
-        </select><br>
-
-        <button type="submit">Save</button>
-    </form>
-    {% for blood in blood %}
-
-    <p>{{  blood.reference_name}}</p>
-    <p>{{  blood.blood_group}}</p>
+                         <label for="patient">Patient*</label>
+                        <select id="patient" name="patient">
+                            <option value="">Select An Patient</option>
+                        {% for patient in patient %}
+                            <option value="{{ patient.id }}">{{ patient.name }} {{patient.id}}</option>
+                        {% endfor %}
+                         </select>
+                    
+                    <div class="form-group">
+                        <label for="issue_date">Issue Date *</label>
+                        
+                        <input type="date" name="issue_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reference_name">Reference Name *</label>
+                        <input type="text" name="reference_name" class="form-control" required>
+                    </div>
+            
+                 
+                    
+                    
+                        <div class="form-group">
+                            <label for="hospital_doctor">Hospital Doctor</label>
+                            <select id="hospital_doctor" name="hospital_doctor">
+                                <option value="">Select Doctor</option>
+                                {% for doc in doc %}
+                                    <option value="{{doc.first_name}}">{{ doc.first_name }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            
+                        </div>
+                
+                    <div class="form-group">
+                        <label for="technician">Technician</label>
+                        <input type="text" name="technician" class="form-control">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="blood_group">Blood Group</label>
+                        <select name="blood_group" class="form-control">
+                            <option value="" selected>Select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="bag">Bag</label>
+                        <select name="bag" class="form-control">
+                            <option value="" selected>Select</option>
+                            {% for bag in bag %}
+                            <option value="{{bag.bag}}">{{ bag.first_name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="charge_category">Charge Category</label>
+                        <select name="charge_category" class="form-control">
+                            <option value="" selected>Select</option>
+                            <option value="Category 1">Category 1</option>
+                            <option value="Category 2">Category 2</option>
+                            <option value="Category 3">Category 3</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="charge_name">Charge Name</label>
+                        <input type="text" name="charge_name" class="form-control">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="standard_charge">Standard Charge (Rs.)</label>
+                        <input type="number" name="standard_charge" class="form-control">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <textarea name="note" class="form-control"></textarea>
+                    </div>
+            
+                    <!-- Financial Information -->
+                    <h2>Financial Information</h2>
+                    <div class="form-group">
+                        <label for="total">Total (Rs.)</label>
+                        <input type="number" name="total" class="form-control">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="discount_percentage">Discount (%)</label>
+                        <input type="number" name="discount_percentage" class="form-control">
+                    </div>
+            
+                
+            
+                    <div class="form-group">
+                        <label for="tax">Tax (Rs.)</label>
+                        <input type="number" name="tax" class="form-control">
+                    </div>
+                 
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
     
 
-{% endfor %} 
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Issue Component</h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Issue Component</a>
+
+</div>    
+</div>   
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+        <th>Name </th>
+        <th>Blood Group</th>
+        <th>Tax</th>
+        <th>Total</th>
+        <th>Hospital Doctor </th>
+        <th>Patient Name </th>
+       
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for blood in blood %}
+        <tr>
+            <td>{{blood.reference_name}}</td>
+            <td>{{  blood.blood_group}}</td>
+            <td>{{  blood.tax}}</td>
+            <td>{{  blood.total}}</td>
+            <td>{{  blood.patient.name}}</td>
+            <td>{{  blood.hospital_doctor}}</td>
+           
+
+          
+      
+        
+        </tr>
+      {% endfor %}  
+      
+      
+
+  
+     
+    </tbody>
+  </table>
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+});
+   
+</script>
 </body>
 </html>

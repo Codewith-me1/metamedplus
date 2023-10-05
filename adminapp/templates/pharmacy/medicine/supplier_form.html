@@ -1,24 +1,37 @@
 <!-- supplier_form.html -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Supplier Form</title>
-    {% include "layout/sidebar.html" %}
-</head>
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
 <style> 
 .table{
-    margin-top:4rem;
+    margin-top:4rem;    
+}
+textarea{
+  margin-top:2rem;
+}
+
+.text label {
+  display: inline-block;
+  font-size: small;
+  margin-left: 5px;
+  width: 5%;
+  min-width: 60px;
 }
 </style>
 <body>
+
+
     <div class="container">
-    
-    <form method="post" action="{% url "supplier_form" %}">
-        <h1>Supplier Form</h1>
-        {% csrf_token %}
-        <label for="supplier_name">Supplier Name *</label>
+        <div id="popupContainer" class="form-popup-back">
+            <div class="form-Contain">
+                <div class="POP">
+                    <div class="cards">
+                      <div class="popup-header">
+                        <span id="closePopupBtn" class="close-button">Close</span>
+                        <h1>Supplier Details</h1>
+                      </div>
+                        <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'supplier_form' %}">
+                            {% csrf_token %}
+                            <label for="supplier_name">Supplier Name *</label>
         <input type="text" name="supplier_name" required><br>
         
         <label for="supplier_contact">Supplier Contact</label>
@@ -33,38 +46,152 @@
         <label for="drug_license_number">Drug License Number</label>
         <input type="text" name="drug_license_number"><br>
         
-        <label for="address">Address</label>
+        <label id="text"for="address">Address</label>
         <textarea name="address"></textarea><br>
+                            
+                            <div style="text-align: center;">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
         
-        <input type="submit" value="Submit">
-    </form>
+        
+        
+        
+        
+        
+        
+        <div class="main-header">
+        <h1 class="headline">Supplier Details </h1>
+        <div class="side-btns">
+        
+        
+        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+        <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Supplier Details</a>
+            
+        
+        </div>    
+        </div>   
     
-    <table class="table">
-        <thead>
-          <tr>
-            <th>Supplier Name</th>
-            <th>Supplier Contact</th>
-            <th>Contact Person Name</th>
-            
-           
-          </tr>
-        </thead>
-        <tbody>
-          
-          {% for supp in supp %}
+    
+    
+        <table class="table">
+          <thead>
             <tr>
-              <td>{{ supp.supplier_name }}</td>
-  
-              <td>{{ supp.supplier_contact }}</td>
-              <td>{{ supp.contact_person_name}}</td>
+              <th>Supplier Name</th>
+              <th>Supplier Contact</th>
+              <th>Contact Person Name</th>
               
-              
-            
+             
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            
+            {% for supp in supp %}
+              <tr>
+                <td>{{ supp.supplier_name }}</td>
+    
+                <td>{{ supp.supplier_contact }}</td>
+                <td>{{ supp.contact_person_name}}</td>
+                
+                
+              
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+    
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-</div>
+    <script>
+            const openPopupBtn = document.getElementById("openPopupBtn");
+            const popupContainer = document.getElementById("popupContainer");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        
+        function change(){
+          popupContainer.style.display = "block";
+        }
+        closePopupBtn.addEventListener("click", function() {
+            popupContainer.style.display = "none";
+        });
+      
+
+
+        {% comment %} $(document).ready(function() {
+            $("#test_parameter_name").change(function() {
+                var selectedOption = $(this).find(":selected");
+                var parameterId = selectedOption.val();
+                
+                if (parameterId) {
+                    $.ajax({
+                        url: '/get-parameter-details/' ,  // Define the URL for fetching data
+                        method: 'GET',
+                        data:{'selectedOption':selectedOption},
+                        dataType: 'json',
+                        success: function(data) {
+                            // Update the "Reference Range" and "Unit" input fields
+                            $("#reference_range").val(data.reference_range);
+                            $("#unit").val(data.unit);
+                        },
+                        error: function() {
+                            console.error('Error fetching parameter data.');
+                        }
+                    });
+                } else {
+                    // Clear the "Reference Range" and "Unit" fields if no option is selected
+                    $("#reference_range").val('');
+                    $("#unit").val('');
+                }
+            });
+        }); {% endcomment %}
+
+        $(document).ready(function () {
+            // Listen for changes in the vehicle_model select field
+            $('#test_parameter_name').change(function () {
+                var selectedParameter = $(this).val();
+                // Make an AJAX request to fetch the driver name for the selected vehicle
+                $.ajax({
+                    type: 'GET',
+                    url: 'get-parameter-details',
+                    data: { 'test_name': selectedParameter },
+                    success: function (data) {
+                        // Update the driver_name input field with the retrieved value
+                        $('#reference_range').val(data.reference_range);
+                        $('#unit').val(data.unit);
+                    },
+                    error: function () {
+                        // Handle errors if any
+                    }
+                });
+            });
+        });
+
+           $(document).ready(function () {
+    // Listen for changes in the vehicle_model select field
+    $('#charge_name').change(function () {
+        var selectedVehicle = $(this).val();
+        // Make an AJAX request to fetch the driver name for the selected vehicle
+        $.ajax({
+            type: 'GET',
+            url: 'get_tax',
+            data: { 'test_name': selectedVehicle },
+            success: function (data) {
+                // Update the driver_name input field with the retrieved value
+                $('#tax_percentage').val(data.tax);
+                $('#standard_charge').val(data.standard_charge);
+            },
+            error: function () {
+                // Handle errors if any
+            }
+        });
+    });
+});
+        </script>
 </body>
 </html>

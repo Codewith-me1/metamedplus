@@ -1,0 +1,104 @@
+    <!-- create_child.html -->
+    {% include "layout/sidebar.html" %}
+    {% include "layout/header.html" %}
+    <div class="container">
+    
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Task</h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'add_task' %}">
+               
+    
+                    
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" name="title" id="title" required>
+    </div>
+
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" class="form-control" name="date" id="date" required>
+    </div>
+
+   
+
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Task List</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Task List </a>
+    
+    </div>    
+    </div>   
+    
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Title </th>
+            <th>dat</th>
+     
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for task in task %}
+            <tr>
+                <td>{{ task.title }}</td>
+               <td>{{ task.date }}</td>
+
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    <script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+    const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+       </script> 

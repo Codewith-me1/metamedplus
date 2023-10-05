@@ -1,7 +1,25 @@
 from django.shortcuts import render
 from decimal import Decimal
 # Create your views here.
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from .models import DeathRecord
+from .models import CustomUser
+from .models import Payroll
+from .models import Referral_commission
+from django.utils.datastructures import MultiValueDictKeyError
 import decimal
+from .models import NursingRecord ,DoctorNote
+from .models import ChargeType
+from urllib.parse import unquote
+from .models import Zoom
+from .models import MedicationDose
+from .models import Task
+from .models import OpdPatient
+from .models import Radiology
+from .models import purchase
 from django.shortcuts import render
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -14,8 +32,9 @@ from .models import Role
 from .models import BedGroup, Bedtype, Bed,Floor
 from .models import  Symtopms, IpdPatient
 from .models import Med_Category, Med_Details, Supplier
-from .models import Donor_det,BloodDonation_component
+from .models import Donor_det,BloodDonation_component, BloodDonation
 from .models import Path_Category,Path_Parameter
+from .models import Path_Parameter
 from django.contrib.contenttypes.models import ContentType
 from . models import Charge
 from .models import Module_Charge
@@ -23,9 +42,70 @@ from .models import Tax_cat
 from .models import Pathology_test
 from .models import MedicineCategory
 from .models import Pathology
+from .models import Income,Expense
+from .models import IncomeHead ,ExpenseHead
+from .models import TPA
+from .models import ChildBirth
+from .models import ReferralCategory ,ReferralPerson ,Referral
+from .models import add_ambulancecall
+from .models import Ambulance
+from .models import ItemCategory
+from .models import Store
+from .models import SupplierDetails
+from .models import Item
+from .models import ItemStock
+from .models import Path_Category
+from .models import Radio_Category,Radio_Parameter, Radiology_test
+
 appin = "appointment"
 
+def profile(request,id):
 
+    staff  = AddStaff.objects.get(staff_id=id)
+    payroll = Payroll.objects.filter(staff=id)
+    
+    context ={
+        'staff':staff,
+        'payroll':payroll,  
+    }
+    return render(request,'admin/admin_profile.html',context)
+
+
+
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as log
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+
+def login(request):
+     if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        man = [form.data]
+        print(man)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(password)
+        print(username)
+        user = authenticate( request,username=username, password=password)
+        print(user)
+        
+        if user is not None:
+            log(request, user)  # Corrected login function call
+            if user.role == 'doctor':
+                return render(request, 'doctor/dashboard.html')  # Redirect to the doctor's dashboard
+            elif user.role == 'Admin':
+                return redirect('add_staff') 
+            elif user.role == 'New':
+                return redirect('doctor')
+            elif user.role =='Manooj':
+                return redirect('doctor')
+            else:
+                return redirect('doctor')
+
+            # Redirect to the admin's dashboard or other role-specific redirects as needed
+     else:
+            form = AuthenticationForm()
+     return render(request, 'admin/login.html', {'form': form})
 
 
 def adminapp(request):
@@ -42,10 +122,15 @@ def appointment(request):
   
 
   appointments = AppointmentDetails.objects.all()
+  patients = Patient.objects.all()
+  doctors = AddStaff.objects.filter(designation='doctor')
 
 
   context = {
     'appointments': appointments,
+    'patients':patients,
+     "doctor":doctors,
+
     
   }
 
@@ -172,7 +257,51 @@ def add_staff(request):
         email = request.POST.get('email')
         current_address = request.POST.get('current_address')
         permanent_address = request.POST.get('permanent_address')
+        photo = request.FILES.get('photo')
+        
+        
+        qualification = request.POST.get('qualification', '')
+        work_experience = request.POST.get('work_experience', '')
+        specialization = request.POST.get('specialization', '')
+        note = request.POST.get('note', '')
 
+        # Identification Numbers
+        pan_number = request.POST.get('pan_number', '')
+        national_id_number = request.POST.get('national_id_number', '')
+        local_id_number = request.POST.get('local_id_number', '')
+
+        # Payroll and Salary
+        payroll = request.POST.get('payroll', '')
+        epf_no = request.POST.get('epf_no', '')
+        basic_salary = request.POST.get('basic_salary', '')
+        contract_type = request.POST.get('contract_type', '')
+
+        # Work Details
+        work_shift = request.POST.get('work_shift', '')
+        work_location = request.POST.get('work_location', '')
+
+        # Leave Information
+        paid_leave = request.POST.get('paid_leave', False)
+        number_of_leaves = request.POST.get('number_of_leaves', None)
+
+        # Bank Account Details
+        account_title = request.POST.get('account_title', '')
+        bank_account_no = request.POST.get('bank_account_no', '')
+        bank_name = request.POST.get('bank_name', '')
+        ifsc_code = request.POST.get('ifsc_code', '')
+        bank_branch_name = request.POST.get('bank_branch_name', '')
+
+        # Social Media Links
+        facebook_url = request.POST.get('facebook_url', '')
+        twitter_url = request.POST.get('twitter_url', '')
+        linkedin_url = request.POST.get('linkedin_url', '')
+        instagram_url = request.POST.get('instagram_url', '')
+
+        # Documents
+        resume = request.FILES.get('resume')
+        joining_letter = request.FILES.get('joining_letter')
+        other_documents = request.FILES.get('other_documents')
+        print(photo)
         # Create a Staff object and save it to the database
         staff = AddStaff(
             staff_id=staff_id,
@@ -193,16 +322,50 @@ def add_staff(request):
             emergency_contact=emergency_contact,
             email=email,
             current_address=current_address,
+            photo=photo,
             permanent_address=permanent_address,
+            qualification=qualification,
+            work_experience=work_experience,
+            specialization=specialization,
+            note=note,
+            pan_number=pan_number,
+            national_id_number=national_id_number,
+            local_id_number=local_id_number,
+            payroll_new=payroll,
+            epf_no=epf_no,
+            basic_salary=basic_salary,
+            contract_type=contract_type,
+            work_shift=work_shift,
+            work_location=work_location,
+            paid_leave=paid_leave,
+            number_of_leaves=number_of_leaves,
+            account_title=account_title,
+            bank_account_no=bank_account_no,
+            bank_name=bank_name,
+            ifsc_code=ifsc_code,
+            bank_branch_name=bank_branch_name,
+            facebook_url=facebook_url,
+            twitter_url=twitter_url,
+            linkedin_url=linkedin_url,
+            instagram_url=instagram_url,
+            resume=resume,
+            joining_letter=joining_letter,
+            other_documents=other_documents
             # Add other fields here
         )
+
 
         # Save the Staff object to the database
         staff.save()
         
 
+
         # Redirect to a success page or staff list page
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
+        User.save()
         return HttpResponse("Staff information saved successfully.")
+       
+
     else:
         # Render the form for adding staff information
         role = Role.objects.all()
@@ -220,12 +383,18 @@ def staff(request):
   }
   return render(request,"hr/listhr.html",context)
 
+
+
 def role(request):
-   return render(request,"hr/role.html")
+   role = Role.objects.all()
+   context ={
+       'role':role,
+   }
+   return render(request,"hr/role.html",context)
 
 
 def role_form(request):
-       if request.method == 'POST':
+    if request.method == 'POST':
         # Get data from the POST request
         
         
@@ -249,16 +418,18 @@ def role_form(request):
         staff.save()
 
         # Redirect to a success page or staff list page
-        role = Role.objects.all()
-        context ={
-           "role":role
-        }
-        return render(request,"hr/role_list.html",context)
-       else:
+        return redirect('role')
+       
+    role = Role.objects.all()
+    context ={
+       'role':role,
+    }
         # Render the form for adding staff information
-        return render(request, 'hr/hr.html')
+    return render(request, 'hr/role.html',context)
     
-
+ 
+def doctor(request):
+    return render(request,'panels/doctor.html')
 def search_staff(request):
     if 'q' in request.GET:
         query = request.GET['q']
@@ -302,10 +473,12 @@ def add_bed(request):
     beds = Bed.objects.all()
     beds = BedGroup.objects.all()
     bed_pur = Bedtype.objects.all()
+    floor = Floor.objects.all()
     context = {
            "bed": beds,
             "bed_grp": beds,
-            'bed_pur':bed_pur
+            'bed_pur':bed_pur,
+            'floor':floor,
         }
     return render(request, 'ipd/add_bed.html',context)
 
@@ -433,9 +606,17 @@ def ipd_patient(request):
         consultant_doctor = request.POST['consultant_doctor']
         bed_group = request.POST['bed_group']
         bed_number = request.POST['bed_number']
+        try:
+            patient = Patient.objects.get(id=patient_name)
+            pat = Patient.name
+        except Patient.DoesNotExist:
+            # Handle the case where the patient does not exist
+            return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
+        
 
-        patient = IpdPatient(
-            patient_name = patient_name,
+
+        ipd = IpdPatient(
+            patient = patient,
             height=height,
             weight=weight,
             bp=bp,
@@ -455,29 +636,34 @@ def ipd_patient(request):
             bed_group=bed_group,
             bed_number=bed_number,
         )
-        patient.save()
+        ipd.save()
         doctors = AddStaff.objects.filter(designation='doctor')
         type = IpdPatient.objects.all()
         bedtype = Bedtype.objects.all()
         bed = Bed.objects.all()
-        patient =  Patient.objects.filter(name=patient_name)
+        ipd = IpdPatient.objects.all()
+        patient =  Patient.objects.all()
         context = {
             "type":type,
             "doctor":doctors,
             'bedtype':bedtype,
             'bed':bed,
+            'ipd':ipd,
             "patient":patient
         }
         return render(request,'ipd/dashboard.html',context)  # Redirect to a success page
     type = Symtopms.objects.all()
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
-    patient =  Patient.objects.filter(name=patient_name)
+    patient =  Patient.objects.all()
+    doctors = AddStaff.objects.filter(designation="doctor")
+    ipd = IpdPatient.objects.all()
     context = {
         "type": type,
         "doctor":doctors,
         'bedtype':bedtype,
         'bed':bed,
+        'ipd':ipd,  
         "patient":patient,
     }
     return render(request, 'ipd/ipd.html',context)
@@ -489,6 +675,7 @@ def ipd_dash(request):
     
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
+
 
     
     context = {
@@ -638,12 +825,12 @@ def add_donor(request):
         contact_no = request.POST.get('contact_no', '')
         address = request.POST.get('address', '')
 
-        total = (request.POST.get('total'))
-        discount_percentage = (request.POST.get('discount_percentage'))
-        discount = (request.POST.get('discount'))
-        tax = (request.POST.get('tax'))
-        net_amount = (request.POST.get('net_amount'))
-        payment_amount = (request.POST.get('payment_amount'))
+        # total = (request.POST.get('total'))
+        # discount_percentage = (request.POST.get('discount_percentage'))
+        # discount = (request.POST.get('discount'))
+        # tax = (request.POST.get('tax'))
+        # net_amount = (request.POST.get('net_amount'))
+        # payment_amount = (request.POST.get('payment_amount'))
 
         donor = Donor_det(
             name = name,
@@ -654,12 +841,12 @@ def add_donor(request):
             contact_no=contact_no,
             address = address,
 
-            total = total,
-            discount_percentage = discount_percentage,
-            discount=discount,
-            tax = tax,
-            net_amount = net_amount,
-            payment_amount = payment_amount,
+            # total = total,
+            # discount_percentage = discount_percentage,
+            # discount=discount,
+            # tax = tax,
+            # net_amount = net_amount,
+            # payment_amount = payment_amount,
 
 
         )
@@ -687,6 +874,7 @@ def show(request):
 
 def add_blood_donation(request):
     if request.method == 'POST':
+        patient = request.POST['patient']
         reference_name = request.POST['reference_name']
         issue_date = request.POST['issue_date']
         hospital_doctor = request.POST.get('hospital_doctor', '')
@@ -701,13 +889,13 @@ def add_blood_donation(request):
                 
         total = (request.POST.get('total'))
         discount_percentage = (request.POST.get('discount_percentage'))
-        discount = (request.POST.get('discount'))
+        patient = get_object_or_404(Patient, id=patient)
         tax = (request.POST.get('tax'))
-        net_amount = (request.POST.get('net_amount'))
-        payment_amount = (request.POST.get('payment_amount'))
+    
 
 
         blood_donation = BloodDonation_component(
+            patient = patient,
             reference_name=reference_name,
             issue_date=issue_date,
             hospital_doctor=hospital_doctor,
@@ -719,22 +907,23 @@ def add_blood_donation(request):
             standard_charge=standard_charge,
             note=note,
             total = total,
-            discount_percentage = discount_percentage,
-            discount=discount,
+            discount=discount_percentage,
             tax = tax,
-            net_amount = net_amount,
-            payment_amount = payment_amount,
+   
 
         )
         blood_donation.save()
-        blood = BloodDonation_component.objects.all()
-        context = {
-        'blood' : blood,
-         }
-        return render(request, 'blood/issue_blood.html',context)#  Redirect to a list view or another page
+        
+        return redirect('issue_blood')
     blood = BloodDonation_component.objects.all()
-    context = {
+    patient = Patient.objects.all()
+    doctor = AddStaff.objects.filter(designation="doctor")
+    bag = BloodDonation.objects.all()
+    context = { 
         'blood' : blood,
+        'patient':patient,
+        'doc':doctor,
+        'bag':bag,  
     }
     return render(request, 'blood/issue_blood.html',context)
 
@@ -744,15 +933,16 @@ def issue_comp(request):
     if request.method == 'POST':
         category_name = request.POST.get('category_name', '')
         unit = request.POST.get('unit', '')
+        percentage = request.POST.get('percentage')
 
-        product =Path_Category(category_name=category_name, unit=unit)
+        product =Tax_cat(tax_category=category_name, unit=unit,percentage=percentage)
         product.save()
-        comp = Path_Category.objects.all()
+        comp = Tax_cat.objects.all()
         context = {
         'comp' : comp,
         }
-        return render(request, 'blood/issue_com.html',context)
-    comp = Path_Category.objects.all()
+        return redirect('issue_comp')
+    comp = Tax_cat.objects.all()
     context = {
         'comp' : comp,
         }
@@ -782,17 +972,43 @@ def add_charge(request):
         )
         charge.save()
         charge = Charge.objects.all()
+
         context = {
             'charge':charge
         }
 
-        return render(request,'hospital/add_charge.html',context)  # Redirect to a list view or another page
+        return redirect('add_charge')  # Redirect to a list view or another page
     charge = Charge.objects.all()
+    charge_type = Module_Charge.objects.all()
+    category = ChargeType.objects.all()
+    tax = Tax_cat.objects.all()
+
     context = {
-            'charge':charge
+            'charge':charge,
+            'type':charge_type,
+            'category':category,
+            'tax':tax,
         }
     return render(request, 'hospital/add_charge.html',context)
 
+
+def create_charge_type(request):
+    if request.method == 'POST':
+        charge_type = request.POST['charge_type']
+        name = request.POST['name']
+        description = request.POST['description']
+
+        charge_type = get_object_or_404(Module_Charge,charge_name=charge_type)
+        ChargeType.objects.create(charge_type=charge_type,name=name, description=description)
+        return redirect('charge_type')
+    
+    charge_type = Module_Charge.objects.all()
+    charge = ChargeType.objects.all()
+    context = {
+        'charge_type':charge_type,
+        'charge':charge,
+    }
+    return render(request, 'hospital/charge_type.html',context)
 
 
 def charge_name(request):
@@ -834,13 +1050,14 @@ def tax_category(request):
     if request.method == 'POST':
         tax_category = request.POST.get('tax_category')
         unit = request.POST.get('unit')
-
+        percentage = request.POST.get('percentage')
         # Create a new instance of YourModel
-        your_model_instance = Tax_cat(
+        tax = Tax_cat(
             tax_category=tax_category,
             unit=unit,
+            percentage= percentage,
         )
-        your_model_instance.save()  # Save the object to the database
+        tax.save()  # Save the object to the database
 
         return redirect('tax_cat')
     tax = Tax_cat.objects.all()
@@ -893,15 +1110,20 @@ def path_test(request):
     test = Pathology_test.objects.all()
     doc =  AddStaff.objects.filter(designation='doctor')
     charge = Charge.objects.all()
+    category = Path_Category.objects.all()
+    parameter = Path_Parameter.objects.all()
     context = {
         'test':test,
         "doc":doc,
-        'charge':charge
+        'charge':charge,
+        'category':category,    
+        'parameter':parameter,
     }
     return render(request, 'pathalogy/path_test.html',context)
 
 def Pathology_Index(request):
     if request.method == 'POST':
+        patient= request.POST['patient']
         test_name = request.POST['test_name']
         report_days = int(request.POST['report_days'])
         report_date = request.POST['report_date']
@@ -916,7 +1138,11 @@ def Pathology_Index(request):
         net_amount = (request.POST.get('net_amount',0))
         payment_amount = (request.POST.get('payment_amount',0))
 
-
+        try:
+            patient = Patient.objects.get(id=patient)
+        except Patient.DoesNotExist:
+            # Handle the case where the patient does not exist
+            return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
         pathology_test = Pathology(
             test_name=test_name,
             report_days=report_days,
@@ -936,15 +1162,17 @@ def Pathology_Index(request):
         return redirect('path')
     path = Pathology.objects.all()
     doc =  AddStaff.objects.filter(designation='doctor')
+    patient = Patient.objects.all()
+    test = Pathology_test.objects.all()
     context = {
         'path':path,
         "doc":doc,
+        'patient':patient,
+        'test':test,
     }
     return render(request, 'pathalogy/pathalogy.html',context)
 
-def ipd_dashboard(request,ipd_id):
-    ipd = IpdPatient.objects.filter(pk=ipd_id)
-    return render(request,'ipd/pat_dash.html',{"ipd":ipd})
+
 
 def ipd_pat(request):
     ipd = IpdPatient.objects.all()
@@ -957,7 +1185,7 @@ def ipd_pat(request):
 def process_medicine_category(request):
    
     medicine = Medicine.objects.all()
-    # Handle other HTTP methods or form validation errors if needed
+    
     return render(request, 'ipd/precaution.html',{"medicine":medicine})
 
 def pre(request):
@@ -969,7 +1197,7 @@ def pre(request):
         dose_duration = request.POST.get('dose_duration')
         instruction = request.POST.get('instruction')
 
-        # Create a new MedicineCategory instance
+        
         medicine_category = MedicineCategory(
             category_name=category_name,
             medicine_id=medicine_id,
@@ -980,6 +1208,1365 @@ def pre(request):
         )
         medicine_category.save()
 
-        # Redirect to a success page or display a success message
         
         return redirect('ipd_dat')
+     
+
+#  FINCANCE SECTION 
+
+def create_income(request):
+    if request.method == 'POST':
+        demo = request.POST['demo']
+        name = request.POST['name']
+        invoice_number = request.POST['invoice_number']
+        date = request.POST['date']
+        amount = request.POST['amount']
+        document = request.FILES.get('document')
+        description = request.POST['description']
+
+        income = Income(
+            demo=demo,
+            name=name,
+            invoice_number=invoice_number,
+            date=date,
+            amount=amount,
+            document=document,
+            description=description
+        )
+        income.save()
+
+        return redirect('add_income')
+    income = Income.objects.all()
+    income_head = IncomeHead.objects.all()
+    context = {
+        'income':income,
+        'income_head':income_head,
+    }
+    return render(request, 'finance/income.html',context)
+
+
+def create_expense(request):
+    if request.method == 'POST':
+        expense = request.POST['expense']
+        name = request.POST['name']
+        invoice_number = request.POST['invoice_number']
+        date = request.POST['date']
+        amount = request.POST['amount']
+        document = request.FILES.get('document')
+        description = request.POST['description']
+
+        expense = Expense(
+            expense=expense,
+            name=name,
+            invoice_number=invoice_number,
+            date=date,
+            amount=amount,
+            document=document,
+            description=description
+        )
+        expense.save()
+
+        return redirect('add_expense')
+    expense = Expense.objects.all()
+    expense_head = ExpenseHead.objects.all()
+    context = {
+        'expense':expense,
+        'expense_head':expense_head,
+    }
+    return render(request, 'finance/expense.html',context)
+
+
+def income_head(request):
+    if request.method == "POST":
+        income_head = request.POST['income_head']
+        description = request.POST.get('description')
+
+        # Create a new IncomeHead object
+        income_head = IncomeHead(
+            income_head=income_head,
+            description=description,
+        )
+        income_head.save()
+
+        return redirect('income_head')
+    income_head = IncomeHead.objects.all()
+    context ={
+        "income_head":income_head,
+    }
+    return render(request, 'finance/finance.html',context)
+
+
+def expense_head(request):
+    if request.method == "POST":
+        expense_head = request.POST['expense_head']
+        description = request.POST.get('description')
+
+        # Create a new Expense\Head object
+        expense_head = ExpenseHead(
+            expense_head=expense_head,
+            description=description,
+        )
+        expense_head.save()
+
+        return redirect('expense_head')
+    expense_head = ExpenseHead.objects.all()
+    context ={
+        "expense_head":expense_head,
+    }
+    return render(request, 'finance/expense_head.html',context)
+
+
+
+# TPA SECTION
+
+
+
+def add_tpa(request):
+    if request.method == 'POST':
+    
+        name = request.POST.get('name')
+        code = request.POST.get('code')
+        contact_no = request.POST.get('contact_no')
+        address = request.POST.get('address')
+        contact_person_name = request.POST.get('contact_person_name')
+        contact_person_phone = request.POST.get('contact_person_phone')
+        
+        tpa = TPA(
+            name=name,
+            code=code,
+            contact_no=contact_no,
+            address=address,
+            contact_person_name=contact_person_name,
+            contact_person_phone=contact_person_phone,
+        )
+        tpa.save()
+
+        return redirect('add_tpa')
+    
+    tpa_main = TPA.objects.all()
+    context ={
+        'tpa':tpa_main,
+    }
+    return render(request, 'tpa/tpa.html',context)
+
+
+
+def create_child(request):
+    if request.method == 'POST':
+        # Handle the form submission
+        child_name = request.POST.get('child_name')
+        gender = request.POST.get('gender')
+        weight = request.POST.get('weight')
+        birth_date = request.POST.get('birth_date')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        case_id = request.POST.get('case_id')
+        mother_name = request.POST.get('mother_name')
+        father_name = request.POST.get('father_name')
+        report = request.POST.get('report')
+        
+        # Handle file uploads
+        child_photo = request.FILES.get('child_photo')
+        mother_photo = request.FILES.get('mother_photo')
+        father_photo = request.FILES.get('father_photo')
+        document_photo = request.FILES.get('document_photo')
+        
+        child = ChildBirth(
+            child_name=child_name,
+            gender=gender,
+            weight=weight,
+            child_photo=child_photo,
+            birth_date=birth_date,
+            phone=phone,
+            address=address,
+            case_id=case_id,
+            mother_name=mother_name,
+            mother_photo=mother_photo,
+            father_name=father_name,
+            father_photo=father_photo,
+            report=report,
+            document_photo=document_photo
+        )
+        child.save()
+        return redirect('add_child')
+    child = ChildBirth.objects.all()
+    context ={
+        'child':child,
+    }
+    return render(request, 'birth/create_child.html',context)
+
+
+def fetch_case_details(request):
+    case_id = request.GET.get('case_id')
+    try:
+        death_record = DeathRecord.objects.get(case_id=case_id)
+        data = {
+            'success': True,
+            'patient_name': death_record.patient_name,
+            'guardian_name': death_record.guardian_name,
+        }
+    except DeathRecord.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+
+
+def create_death_record(request):
+    if request.method == 'POST':
+        # Handle the form submission
+        case_id = request.POST.get('case_id')
+        patient_name = request.POST.get('patient_name')
+        death_date = request.POST.get('death_date')
+        guardian_name = request.POST.get('guardian_name')
+        report = request.POST.get('report')
+        
+       
+        attachment = request.FILES.get('attachment')
+        
+        death = DeathRecord(
+            case_id=case_id,
+            patient_name=patient_name,
+            death_date=death_date,
+            guardian_name=guardian_name,
+            attachment=attachment,
+            report=report
+        )
+        death.save()
+    patient = Patient.objects.all()
+    context ={
+        "patinet":patient,
+    }
+    return render(request, 'birth/death.html',context)
+
+
+# REFERRAL
+
+def add_referral_cate(request):
+    if request.method == 'POST':
+        # Handle the form submission
+        name = request.POST.get('name')
+
+        
+        death = ReferralCategory(
+            name=name,
+           
+        )
+        death.save()
+        return redirect('add_referral_cate')
+    category = ReferralCategory.objects.all()
+    context ={
+        "category":category,
+    }
+    return render(request, 'referral/add_category.html',context)
+
+
+def create_referralperson(request):
+    if request.method == 'POST':
+        # Handle form submission here
+        referrer_name = request.POST.get('referrer_name')
+        referrer_contact = request.POST.get('referrer_contact')
+        contact_person_name = request.POST.get('contact_person_name')
+        contact_person_phone = request.POST.get('contact_person_phone')
+        category = request.POST.get('category')
+        standard_commission = request.POST.get('standard_commission')
+        address = request.POST.get('address')
+        commission_opd = request.POST.get('commission_opd')
+        commission_ipd = request.POST.get('commission_ipd')
+        commission_pharmacy = request.POST.get('commission_pharmacy')
+        commission_pathology = request.POST.get('commission_pathology')
+        commission_radiology = request.POST.get('commission_radiology')
+        commission_blood_bank = request.POST.get('commission_blood_bank')
+        commission_ambulance = request.POST.get('commission_ambulance')
+
+        # Create a new Referral object and save it
+        referral = ReferralPerson(
+            referrer_name=referrer_name,
+            referrer_contact=referrer_contact,
+            contact_person_name=contact_person_name,
+            contact_person_phone=contact_person_phone,
+            category=category,
+            standard_commission=standard_commission,
+            address=address,
+            commission_opd=commission_opd,
+            commission_ipd=commission_ipd,
+            commission_pharmacy=commission_pharmacy,
+            commission_pathology=commission_pathology,
+            commission_radiology=commission_radiology,
+            commission_blood_bank=commission_blood_bank,
+            commission_ambulance=commission_ambulance
+        )
+        referral.save()
+        return redirect('referral_person')
+    r_person  = ReferralPerson.objects.all()
+    commission = Referral_commission.objects.all()
+    context ={
+        'ref':r_person,
+        'commission':commission,
+    }
+    return render(request, 'referral/refferal_person.html',context)
+
+
+
+def create_referre(request):
+    if request.method == 'POST':
+        patient = request.POST.get('patient')
+        patient_type = request.POST.get('patient_type')
+        bill_no = request.POST.get('bill_no')
+        bill_amount = request.POST.get('bill_amount')
+        payee = request.POST.get('payee')
+        commission_percentage = request.POST.get('commission_percentage')
+        commission_amount = request.POST.get('commission_amount')
+
+        # Calculate commission amount based on percentage
+        try:
+            commission_percentage = float(commission_percentage)
+            commission_amount = float(bill_amount) * (commission_percentage / 100)
+        except (ValueError, TypeError):
+            commission_percentage = 0
+            commission_amount = 0
+
+        # Create a new Payment object and save it
+        referral = Referral(
+            patient=patient,
+            patient_type=patient_type,
+            bill_no=bill_no,
+            bill_amount=bill_amount,
+            payee=payee,
+            commission_percentage=commission_percentage,
+            commission_amount=commission_amount
+        )
+        referral.save()
+
+        return redirect('referral')  # Redirect to a success page or list view
+    patient = Patient.objects.all()
+    ref = Referral.objects.all()
+    context ={
+        'patient':patient,
+        'ref':ref,
+    }
+    return render(request, 'referral/referral.html',context)
+
+
+
+def create_vehicle(request):
+    if request.method == 'POST':
+        vehicle_number = request.POST.get('vehicle_number')
+        vehicle_model = request.POST.get('vehicle_model')
+        year_made = request.POST.get('year_made')
+        driver_name = request.POST.get('driver_name')
+        driver_license = request.POST.get('driver_license')
+        driver_contact = request.POST.get('driver_contact')
+        vehicle_type = request.POST.get('vehicle_type')
+        note = request.POST.get('note')
+
+        # Create a new Vehicle object and save it
+        vehicle = Ambulance(
+            vehicle_number=vehicle_number,
+            vehicle_model=vehicle_model,
+            year_made=year_made,
+            driver_name=driver_name,
+            driver_license=driver_license,
+            driver_contact=driver_contact,
+            vehicle_type=vehicle_type,
+            note=note
+        )
+        vehicle.save()
+
+
+        return redirect('add_ambulance')  # Redirect to a success page or list view
+    vehicle = Ambulance.objects.all()
+    context ={
+        'vehicle':vehicle,
+    }
+    return render(request, 'ambulance/add_ambulance.html',context)
+
+
+def ambulance_call(request):
+    if request.method == 'POST':
+        vehicle_model = request.POST['vehicle_model']
+        driver_name = request.POST['driver_name']
+        date = request.POST['date']
+        charge_category = request.POST['charge_category']
+        charge_name = request.POST['charge_name']
+        standard_charge = request.POST['standard_charge']
+        note = request.POST['note']
+        
+        total = (request.POST.get('total',0))
+        tax = (request.POST.get('tax',0))
+        net_amount = (request.POST.get('net_amount',0))
+        payment_amount = (request.POST.get('payment_amount',0))
+
+
+        amb_all = add_ambulancecall(
+            vehicle_model=vehicle_model,
+            driver_name=driver_name,
+            date=date,
+            charge_category=charge_category,
+            charge_name=charge_name,
+            standard_charge=standard_charge,
+            note=note,
+            total = total,
+            tax = tax,
+            net_amount = net_amount,
+            payment_amount = payment_amount,
+            
+
+        )
+        amb_all.save()
+
+
+        return redirect('ambulance_call')  # Redirect to a page showing the list of expense records
+    ambulance = add_ambulancecall.objects.all()
+    vehicle = Ambulance.objects.all()
+    context ={
+        'call':ambulance,
+        'vehicle':vehicle,
+    }
+    return render(request, 'ambulance/call.html',context)
+
+
+def get_driver_name(request):
+    if request.method == 'GET':
+        selected_vehicle = request.GET.get('vehicle_model', None)
+        try:
+            driver = Ambulance.objects.get(vehicle_model=selected_vehicle)
+            data = {
+              'success': True,
+            'driver_name': driver.driver_name,
+            
+        }
+        except Ambulance.DoesNotExist:
+         data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+         
+    return JsonResponse(data)
+
+
+
+
+def add_itemcat(request):
+    if request.method == 'POST':
+        item_category = request.POST['item_category']
+        description = request.POST['description']
+
+        item = ItemCategory(
+            item_category=item_category,
+            description=description,
+        )
+        item.save()
+
+        return redirect('add_itemcat')  # Redirect to a page showing the list of items
+    category= ItemCategory.objects.all()
+    context ={
+        'category':category
+    }
+    return render(request,'setup/inventory/add_itemcat.html',context)
+
+
+
+def add_store(request):
+    if request.method == 'POST':
+        store_name = request.POST['store_name']
+        stock_code = request.POST['stock_code']
+        description = request.POST['description']
+        store  = Store(store_name=store_name,
+                        stock_code=stock_code,
+                          description=description)
+        store.save()
+        return redirect('add_store')
+    store = Store.objects.all()
+    context ={
+        "store":store
+    }
+    return render(request, 'setup/inventory/add_store.html',context )
+
+def add_supplierdet(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        phone = request.POST['phone']
+        email = request.POST['email']
+        contact_person_name = request.POST['contact_person_name']
+        address = request.POST['address']
+        contact_person_phone = request.POST['contact_person_phone']
+        contact_person_email = request.POST['contact_person_email']
+        description = request.POST['description']
+
+        supplier_det = SupplierDetails(
+            name=name,
+            phone=phone,
+            email=email,
+            contact_person_name=contact_person_name,
+            address=address,
+            contact_person_phone=contact_person_phone,
+            contact_person_email=contact_person_email,
+            description=description
+        )
+        supplier_det.save()
+        return redirect('add_supplierdet')
+
+    supplier = SupplierDetails.objects.all()
+    context ={
+        'supplier':supplier
+    }
+    return render(request, 'setup/inventory/add_supplier.html',context)
+
+
+
+def add_item(request):
+    if request.method == 'POST':
+        item = request.POST['item']
+        item_category = request.POST['item_category']
+        unit = request.POST['unit']
+        description = request.POST['description']
+        item = Item(
+            item=item,
+            item_category=item_category, 
+            unit=unit, 
+            description=description)
+        item.save()
+        return redirect('add_item')
+    item= Item.objects.all()
+    item_cat = ItemCategory.objects.all()
+    context ={
+        'item':item,
+        'item_cat':item_cat,
+    }
+    return render(request, 'inventory/add_item.html',context)
+
+
+def add_itemstock(request):
+    if request.method == 'POST':
+        item_category = request.POST['item_category']
+        item = request.POST['item']
+        supplier = request.POST['supplier']
+        store = request.POST['store']
+        quantity = request.POST['quantity']
+        purchase_price = request.POST['purchase_price']
+        date = request.POST['date']
+        description = request.POST['description']
+        try:
+            document = request.FILES['document']
+        except MultiValueDictKeyError:
+            document = None  # Handle the case when 'document' is missing in FILES
+
+
+        stock = ItemStock(
+            item_category=item_category,
+            item=item,
+            supplier=supplier,
+            store=store,
+            quantity=quantity,
+            purchase_price=purchase_price,
+            date=date,
+            description=description,
+            document=document
+        )
+        stock.save()
+        item = ItemStock.objects.all()
+        context ={
+            'item':item
+        }
+        return redirect('add_itemstock')
+    item = Item.objects.all()
+    itemstock = ItemStock.objects.all()
+    item_category = ItemCategory.objects.all()
+    supplier = SupplierDetails.objects.all()
+    stores = Store.objects.all()
+    context ={
+        'item':item,
+        'itemstock' :itemstock,
+        'itemcat':item_category,
+        'supplier':supplier,
+        'stores':stores,
+
+    }
+
+    return render(request, 'inventory/add_itemstock.html',context)
+
+
+def fetch_items_by_category(request):
+    # Get the selected category from the AJAX request
+    selected_category = request.GET.get('category')
+
+    # Query the database to retrieve items based on the selected category
+    
+    # Create a list of items to be returned as JSON
+    # items_list = [item.item for item in items]    
+
+    # Return the items as a JSON response
+    
+    try:
+       
+        items = Item.objects.filter(item_category=selected_category)
+        item_list = [{'value': item.item, 'text': item.item} for item in items]
+        data = {
+            'success': True,
+            'items': item_list,
+           
+        }
+    except Item.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+    # return JsonResponse({'items': items_list})
+
+
+def path_category(request):
+    if request.method == 'POST':
+        name = request.POST['category_name']
+        path_category = Path_Category(name=name)
+        path_category.save()
+        return redirect('path_category')
+    category = Path_Category.objects.all()
+    context ={
+        'category':category
+    }
+    return render(request, 'setup/pathology/category.html',context)
+
+def rado_category(request):
+    if request.method == 'POST':
+        name = request.POST['category_name']
+        path_category = Radio_Category(name=name)
+        path_category.save()
+        return redirect('radio_category')
+    radio = Radio_Category.objects.all()
+    context = {
+        'radio':radio,
+    }
+    return render(request, 'setup/radiology/category.html',context)
+
+
+
+
+def path_parameter(request):
+    if request.method == 'POST':
+        parameter_name = request.POST['parameter_name']
+        reference_range = request.POST['reference_range']
+        unit = request.POST['unit']
+        description = request.POST['description']
+        para = Path_Parameter(
+            parameter_name=parameter_name,
+            reference_range=reference_range,
+            unit=unit,
+            description=description
+        )
+        para.save()
+        return redirect('path_parameter')
+    parameter = Path_Parameter.objects.all()
+    context ={
+        'parameter':parameter,
+    }
+    return render(request, 'setup/pathology/create_parameter.html',context)
+
+
+
+def radio_parameter(request):
+    if request.method == 'POST':
+        parameter_name = request.POST['parameter_name']
+        reference_range = request.POST['reference_range']
+        unit = request.POST['unit']
+        description = request.POST['description']
+        para = Radio_Parameter(
+            parameter_name=parameter_name,
+            reference_range=reference_range,
+            unit=unit,
+            description=description
+        )
+        para.save()
+        return redirect('radio_parameter')
+    
+    parameter = Path_Parameter.objects.all()
+    context = {
+        'parameter':parameter,
+    }
+    return render(request, 'setup/radiology/create_parameter.html',context)
+
+
+def get_parameter_details(request):
+    try:
+        selected =  request.GET.get('test_name')
+        parameter = Path_Parameter.objects.get(parameter_name=selected)
+        data = {
+            'reference_range': parameter.reference_range,
+            'unit': parameter.unit,
+        }
+        return JsonResponse(data)   
+    except Path_Parameter.DoesNotExist:
+        return JsonResponse({'error': 'Parameter not found'}, status=404)
+    
+
+def radiology(request):
+    if request.method == 'POST':
+        patient = request.POST['patient']
+        test_name = request.POST['test_name']
+        report_days = int(request.POST['report_days'])
+        report_date = request.POST['report_date']
+        tax_percentage = Decimal(request.POST['tax_percentage'])
+        amount = Decimal(request.POST['amount'])
+        referral_doctor = request.POST['referral_doctor']
+
+        total = (request.POST.get('total',0))
+        discount_percentage = (request.POST.get('discount_percentage',0))
+        discount = (request.POST.get('discount',0))
+        tax = (request.POST.get('tax',0))
+        net_amount = (request.POST.get('net_amount',0))
+        payment_amount = (request.POST.get('payment_amount',0))
+
+        note =request.POST['note']
+
+        try:
+            patient = Patient.objects.get(id=patient)
+        except Patient.DoesNotExist:
+            # Handle the case where the patient does not exist
+            return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
+
+        pathology_test = Radiology(
+            patient = patient,
+            test_name=test_name,
+            report_days=report_days,
+            report_date=report_date,
+            tax_percentage=tax_percentage,
+            amount=amount,
+            referral_doctor=referral_doctor,
+
+            total = total,
+            discount_percentage = discount_percentage,
+            discount=discount,
+            tax = tax,
+            net_amount = net_amount,
+            payment_amount = payment_amount,
+
+            note = note,
+        )
+        pathology_test.save()
+        return redirect('radiology')
+    radio = Radiology.objects.all()
+    doc =  AddStaff.objects.filter(designation='doctor')
+    patient= Patient.objects.all()
+    context = {
+        'radio':radio,
+        "doc":doc,
+        'patient':patient,
+    }
+    return render(request, 'radiology/radiology.html',context)
+
+
+
+def radio_test(request):
+    if request.method == 'POST':
+        test_name = request.POST.get('test_name')
+        short_name = request.POST.get('short_name')
+        test_type = request.POST.get('test_type')
+        category_name = request.POST.get('category_name')
+        sub_category = request.POST.get('sub_category')
+        method = request.POST.get('method')
+        report_days = request.POST.get('report_days')
+        charge_category = request.POST.get('charge_category')
+        charge_name = request.POST.get('charge_name')
+        tax_percentage = Decimal(request.POST.get('tax_percentage',0))
+        standard_charge = Decimal(request.POST.get('standard_charge',0))
+        amount = Decimal(request.POST.get('amount',0))
+        test_parameter_name = request.POST.get('test_parameter_name')
+        reference_range = request.POST.get('reference_range')
+        unit = request.POST.get('unit')
+
+        test = Radiology_test(
+            test_name=test_name,
+            short_name=short_name,
+            test_type=test_type,
+            category_name=category_name,
+            sub_category=sub_category,
+            method=method,
+            report_days=report_days,
+            charge_category=charge_category,
+            charge_name=charge_name,
+            tax_percentage=tax_percentage,
+            standard_charge=standard_charge,
+            amount=amount,
+            test_parameter_name=test_parameter_name,
+            reference_range=reference_range,
+            unit=unit,
+        )
+        test.save()
+        return redirect('radio_test')    
+    test = Radiology.objects.all()
+    doc =  AddStaff.objects.filter(designation='doctor')
+    charge = Charge.objects.all()
+    category = Radio_Category.objects.all()
+    parameter = Radio_Parameter.objects.all()
+    context = {
+        'test':test,
+        "doc":doc,
+        'charge':charge,
+        'category':category,    
+        'parameter':parameter,
+    }
+    return render(request, 'radiology/radio_test.html',context)
+
+
+def get_tax_info(request):
+
+    try:
+        selected =  request.GET.get('test_name')
+        parameter = Pathology_test.objects.get(test_name=selected)
+        data = {
+            'tax': parameter.tax_percentage,
+            'standard_charge': parameter.standard_charge,
+        }
+        return JsonResponse(data)   
+    except Path_Parameter.DoesNotExist:
+        return JsonResponse({'error': 'Parameter not found'}, status=404)
+
+
+
+
+def opd(request):
+    if request.method == 'POST':
+        height = request.POST['height']
+        patient_name = request.POST['patient']
+        weight = request.POST['weight']
+        bp = request.POST['bp']
+        pulse = request.POST['pulse']
+        temperature = request.POST['temperature']
+        respiration = request.POST['respiration']
+        symptoms_type = request.POST['symptoms_type']
+        symptoms_title = request.POST['symptoms_title']
+        symptoms_description = request.POST['symptoms_description']
+        admission_date = request.POST['admission_date']
+        is_case_casualty = request.POST.get('is_case_casualty', False) == 'on'
+        is_old_patient = request.POST.get('is_old_patient', False) == 'on'
+        is_tpa = request.POST.get('is_tpa', False) == 'on'
+        credit_limit = request.POST['credit_limit']
+        reference = request.POST['reference']
+        consultant_doctor = request.POST['consultant_doctor']
+        note = request.POST['note']
+        any_known = request.POST['any_known']
+        charge_category = request.POST.get('charge_category')
+        charge_name = request.POST.get('charge_name')
+        tax_percentage = Decimal(request.POST.get('tax_percentage',0))
+        standard_charge = Decimal(request.POST.get('standard_charge',0))
+        amount = Decimal(request.POST.get('amount',0))
+        paid_amount = Decimal(request.POST.get('paid_amount',0))
+        applied_charges = request.POST.get('applied_charges')
+
+
+        try:
+            patient = Patient.objects.get(id=patient_name)
+            pat = Patient.name
+        except Patient.DoesNotExist:
+            # Handle the case where the patient does not exist
+            return render(request, 'opd/opd.html', {'error_message': 'Patient not found'})
+        
+
+
+        opd = OpdPatient(
+            patient = patient,
+            height=height,
+            weight=weight,
+            bp=bp,
+            pulse=pulse,
+            temperature=temperature,
+            symptoms_description=symptoms_description,
+            symptoms_title=symptoms_title,
+            respiration=respiration,
+            symptoms_type=symptoms_type,
+            admission_date=admission_date,
+            is_case_casualty=is_case_casualty,
+            is_old_patient=is_old_patient,
+            is_tpa=is_tpa,
+            credit_limit=credit_limit,
+            reference=reference,
+            consultant_doctor=consultant_doctor,
+            charge_category=charge_category,
+            charge_name=charge_name,
+            tax_percentage=tax_percentage,
+            standard_charge=standard_charge,
+            amount=amount,
+            paid_amount= paid_amount,
+            note = note,
+            Applied_charges = applied_charges,
+            any_known = any_known
+            
+        )
+        opd.save()
+        return redirect('opd')
+    type = Symtopms.objects.all()
+    
+    patient =  Patient.objects.all()
+    doctors = AddStaff.objects.filter(designation="doctor")
+    opd = OpdPatient.objects.all()
+    charge = Charge.objects.all()
+    category = Path_Category.objects.all()
+    context = {
+        "type": type,
+        "doctor":doctors,
+        'opd':opd,  
+        'charge':charge,
+        'category':category,
+        "patient":patient,
+    }
+    return render(request, 'opd/opd.html',context)
+
+
+
+def get_tax(request):
+
+    # try:
+    #     selected =  request.GET.get('charge_name')
+    # if selected is not None:
+    #         decoded =  unquote(selected)
+    #         charge = Charge.objects.get(charge_name=decoded)
+    #         data = {
+    #             'tax': charge.tax_percentage,
+    #              'standard_charge': charge.standard_charge,
+    #               }
+        
+    #         return JsonResponse(data)   
+    # else:
+    # except Charge.DoesNotExist:
+    #     return JsonResponse({'error': 'Parameter not found'}, status=404)
+    try:
+        selected = request.GET.get('test_name')
+        if selected is not None:
+            decoded = unquote(selected)
+            try:
+                charge = Charge.objects.get(charge_name=decoded)
+                data = {
+                    'tax': charge.tax_percentage,
+                    'standard_charge': charge.standard_charge,
+                }
+                return JsonResponse(data)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 'Charge not found'}, status=404)
+        else:
+            return JsonResponse({'error': 'Parameter not found'}, status=400)
+    except Exception as e:
+        # Handle any other exceptions that might occur
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def purchase_med(request):
+    if request.method == 'POST':
+        # Retrieve form data from POST request
+        category = request.POST.get('category')
+        name = request.POST.get('name')
+        batch_no = request.POST.get('batch_no')
+        expiry_date = request.POST.get('expiry_date')
+        mrp = request.POST.get('mrp')
+        batch_amount = request.POST.get('batch_amount')
+        sale_price = request.POST.get('sale_price')
+        tax_percentage = request.POST.get('tax_percentage')
+        packing_qty = request.POST.get('packing_qty')
+        quantity = request.POST.get('quantity')
+        purchase_price = request.POST.get('purchase_price')
+        tax = request.POST.get('tax')
+        note = request.POST.get('note')
+        attach_documents = request.POST.get('document')
+        amount = request.POST.get('amount')
+
+        total = (request.POST.get('total',0))
+        discount_percentage = (request.POST.get('discount_percentage',0))
+        discount = (request.POST.get('discount',0))
+        tax = (request.POST.get('tax',0))
+        net_amount = (request.POST.get('net_amount',0))
+        payment_amount = (request.POST.get('payment_amount',0))
+        payment_mode = request.POST.get('payment_mode')
+
+        # Create a new Medicine object and save it to the database
+        medicine = purchase(
+            category=category,
+            name=name,
+            payment_mode = payment_mode,
+            note=note,
+            documents= attach_documents,
+            batch_no=batch_no,
+            expiry_date=expiry_date,
+            mrp=mrp,
+            batch_amount=batch_amount,
+            sale_price=sale_price,
+            packing_qty=packing_qty,
+            quantity=quantity,
+            purchase_price=purchase_price,
+            tax=tax,
+            tax_percentage = tax_percentage,    
+
+            total = total,
+            discount_percentage = discount_percentage,
+            discount=discount,
+            
+            net_amount = net_amount,
+            payment_amount = payment_amount,
+            amount=amount,
+            
+        )
+        medicine.save()
+        return redirect('purchase_med')
+    
+    medicine  =  Medicine.objects.all()
+    medicineCat = Med_Category.objects.all()
+    med = purchase.objects.all()
+    context ={
+        'medicine':medicine,
+        "cat":medicineCat,
+        'med':med
+    }
+    return render(request, 'pharmacy/medicine/purchase.html',context)
+
+
+
+def add_nursing_record(request,id):
+    if request.method == 'POST':
+        # Retrieve form data from POST request
+        patient = id
+        date = request.POST.get('date')
+        nurse = request.POST.get('nurse')
+        note = request.POST.get('note')
+        comment = request.POST.get('comment')
+        patient = get_object_or_404(Patient, id=patient)
+        # Create a new NursingRecord object and save it to the database
+        nursing_record = NursingRecord(
+            date=date,
+            patient = patient,
+            nurse=nurse,
+            note=note,
+            comment=comment
+        )
+        nursing_record.save()
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+    
+    context ={
+        'nurse':nurse,
+        'staff':staff
+    }
+    return render(request, 'ipddashboard/nurse.html',context)
+
+
+def add_doctor_record(request,id):
+    if request.method == 'POST':
+        # Retrieve form data from POST request
+        patient = id
+        date = request.POST.get('date')
+        doctor = request.POST.get('nurse')
+        note = request.POST.get('note')
+        comment = request.POST.get('comment')
+        patient = get_object_or_404(Patient, id=patient)
+        # Create a new NursingRecord object and save it to the database
+        nursing_record = NursingRecord(
+            date=date,
+            patient = patient,
+            doctor=doctor,
+            note=note,
+            comment=comment
+        )
+        nursing_record.save()
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#doctor"
+        return redirect(url)
+    
+   
+
+
+def ipd_dashboard(request,ipd_id):
+    ipd = IpdPatient.objects.filter(pk=ipd_id)
+    nurse= NursingRecord.objects.all()
+    staff = AddStaff.objects.filter(designation="nurse")
+    doctor  = AddStaff.objects.filter(designation="doctor")
+
+    context ={
+        'nurse':nurse,
+        'staff':staff,
+        'ipd':ipd,
+        'doctor':doctor,
+    }
+    return render(request,'ipd/pat_dash.html',context)
+
+
+
+def add_medication_record(request):
+    if request.method == 'POST':
+        # Retrieve form data from POST request
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        category = request.POST.get('category')
+        medicine_name = request.POST.get('medicine_name')
+        dosage = request.POST.get('dosage')
+        remarks = request.POST.get('remarks')
+
+        # Create a new MedicationRecord object and save it to the database
+        medication_record = MedicationDose(
+            date=date,
+            time=time,
+            category=category,
+            medicine_name=medicine_name,
+            dosage=dosage,
+            remarks=remarks
+        )
+        medication_record.save()
+
+    return render(request, 'your_app/medication_record_form.html')
+
+
+
+
+def blood_donation_form(request):
+    if request.method == 'POST':
+        donor_name = request.POST['donor_name']
+        donate_date = request.POST['donate_date']
+        bag = request.POST['bag']
+        volume = request.POST['volume']
+        unit_type = request.POST['unit_type']
+        lot = request.POST['lot']
+        charge_category = request.POST['charge_category']
+        charge_name = request.POST['charge_name']
+        standard_charge = request.POST['standard_charge']
+        institution = request.POST['institution']
+        note = request.POST['note']
+        total = (request.POST.get('total',0))
+        discount_percentage = (request.POST.get('discount_percentage',0))
+        discount = (request.POST.get('discount',0))
+        tax = (request.POST.get('tax',0))
+        net_amount = (request.POST.get('net_amount',0))
+        payment_amount = (request.POST.get('payment_amount',0))
+
+        blood_donation = BloodDonation(
+            donor_name=donor_name,
+            donate_date=donate_date,
+            bag=bag,
+            volume=volume,
+            unit_type=unit_type,
+            lot=lot,
+            charge_category=charge_category,
+            charge_name=charge_name,
+            standard_charge=standard_charge,
+            institution=institution,
+            note=note,
+            total = total,
+            discount_percentage = discount_percentage,
+            discount=discount,
+            tax = tax,
+            net_amount = net_amount,
+            payment_amount = payment_amount,
+        )
+        blood_donation.save()
+        return redirect('blood_donation')
+    donor = Donor_det.objects.all()
+    unit = Tax_cat.objects.all()
+    blood = BloodDonation.objects.all()
+    context ={
+        'donor':donor,
+        'unit':unit,
+        'blood':blood,
+    }
+    return render(request, 'blood/blood_donation.html',context)
+
+
+
+
+def get_related_categories(request):
+  
+    selected_charge_type = request.GET.get('charge_type')
+        # Implement logic to retrieve related categories based on the selected_charge_type.
+        # Replace the following line with your logic.
+    
+    try:
+        selected_charge_type = request.GET.get('charge_type')   
+        if selected_charge_type is not None:
+            decoded = unquote(selected_charge_type)
+            try:
+                charge_category = ChargeType.objects.filter(charge_type=decoded)
+                charge = [category.name for category in charge_category]
+                data = {
+                    'name':charge,  
+                    # 'name':charge.name,
+                    # 'type': charge.charge_type,
+                }
+                return JsonResponse(data)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': 'Charge not found'}, status=404)
+        else:
+            return JsonResponse({'error': 'Parameter not found'}, status=400)
+    except Exception as e:
+        # Handle any other exceptions that might occur
+        return JsonResponse({'error': str(e)}, status=500)
+    
+
+def get_tax_percentage(request):
+    selected_tax_category = request.GET.get('tax_category')
+
+    try:
+        tax_data = Tax_cat.objects.get(id=selected_tax_category)
+        tax_percentage = tax_data.percentage  # Replace 'tax_percentage' with the actual field name
+        print(tax_percentage)
+        return JsonResponse({'tax_percentage': tax_percentage})
+    except ObjectDoesNotExist:
+        return JsonResponse({'error': 'Tax category not found'}, status=404)
+
+
+
+
+def commission_form(request):
+    if request.method == 'POST':
+        # Handle form submission here
+        category = request.POST.get('category')
+
+        standard_commission = request.POST.get('standard_commission')
+        commission_opd = request.POST.get('commission_opd')
+        commission_ipd = request.POST.get('commission_ipd')
+        commission_pharmacy = request.POST.get('commission_pharmacy')
+        commission_pathology = request.POST.get('commission_pathology')
+        commission_radiology = request.POST.get('commission_radiology')
+        commission_blood_bank = request.POST.get('commission_blood_bank')
+        commission_ambulance = request.POST.get('commission_ambulance')
+        
+
+        # Create a new CategoryCommission object and save it to the database
+        Referral_commission.objects.create(
+            category=category,
+        
+            standard_commission=standard_commission,
+            commission_opd=commission_opd,
+            commission_ipd=commission_ipd,
+            commission_pharmacy=commission_pharmacy,
+            commission_pathology=commission_pathology,
+            commission_radiology=commission_radiology,
+            commission_blood_bank=commission_blood_bank,
+            commission_ambulance=commission_ambulance
+
+        )
+
+        # Optionally, you can redirect to a success page or another view
+        return redirect('referral_commission')
+
+    
+        # Render the form template for GET requests
+
+    commission = Referral_commission.objects.all()
+    category = ReferralCategory.objects.all()
+    context ={
+        'commission':commission,
+        'category':category,
+    }
+    return render(request, 'referral/commission.html',context )
+
+
+
+def add_task(request):
+    if request.method == 'POST':
+        # Get the data from the POST request
+        title = request.POST['title']
+        date = request.POST['date']
+        
+        # Create a new MyEvent instance and save it to the database
+        Task.objects.create(title=title, date=date)
+        
+        return redirect('add_task')  # Redirect to a page displaying a list of events or wherever you want
+    task = Task.objects.all()
+    context ={
+        'task':task,    
+    }
+    return render(request, 'admin/task.html',context)
+
+def get_selected_role_data(request):
+    if request.method == 'POST':
+        selected_role = request.POST.get('role')
+
+        # You can query the database to retrieve staff members with the selected role
+        staff_members = AddStaff.objects.filter(role=selected_role)
+        
+
+        # Convert the staff members data to a list of dictionaries (JSON)
+        staff_data = [{'id': staff.staff_id, 'name': staff.first_name,'role':staff.role} for staff in staff_members]
+
+        return JsonResponse({'staff_data': staff_data})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+def payroll(request):
+    role = Role.objects.all()
+    context = {
+        'role':role
+    }
+    return render(request,'hr/payroll.html',context)
+
+
+def payroll_id(request,id):
+
+    
+   
+    staff_id = AddStaff.objects.get(staff_id=id)
+    print(staff_id)
+    
+    if request.method == 'POST':
+       
+        earning = float(request.POST.get('earning', 0.0))
+        deduction = float(request.POST.get('deduction', 0.0))
+        tax_percentage = float(request.POST.get('tax_percentage', 0.0))
+
+        # Calculate gross salary, tax, and net salary
+        gross_salary = earning - deduction
+        float(gross_salary)
+        tax = (tax_percentage / 100) * gross_salary
+        float(tax)
+
+        net_salary = gross_salary - tax
+        float(net_salary)
+
+        # Update or create the salary information for the staff member
+        salary, created = Payroll.objects.get_or_create(staff=staff_id)
+        salary.earning = earning
+        salary.deduction = deduction
+        salary.gross_salary = gross_salary
+        salary.tax_percentage = tax_percentage
+        salary.tax = tax
+        salary.net_salary = net_salary
+        salary.save()
+
+        return redirect('payroll')  # Redirect to a list of staff salaries or wherever you prefer
+    staff = AddStaff.objects.get(staff_id=id)
+    context = {
+        'staff':staff,  
+    }
+    
+    return render(request,'hr/payroll_id.html',context)
+
+
+
+
+def create_meeting(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        meeting_date = request.POST.get('meeting_date')
+        duration_minutes = request.POST.get('duration_minutes')
+        host_video = request.POST.get('host_video')
+        client_video = request.POST.get('client_video')
+        description = request.POST.get('description')
+        staff_list = request.POST.get('staff_list')
+
+        # Create a new ZoomMeeting object
+        meeting = Zoom(
+            title=title,
+            meeting_date=meeting_date,
+            duration_minutes=duration_minutes,
+            host_video=host_video,
+            client_video=client_video,
+            description=description,
+            staff_list=staff_list,
+        )
+        meeting.save()
+
+        return redirect('meeting')  # Redirect to a list of meetings or wherever you prefer
+    meet = Zoom.objects.all()
+    context = {
+        'meet':meet
+    }
+    return render(request, 'meeting/zoom.html',context)

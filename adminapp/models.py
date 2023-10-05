@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 # Create your models here.
 class User(models.Model):
@@ -68,7 +69,7 @@ class AddStaff(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     emergency_contact = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField()
-    photo = models.ImageField(upload_to='staff_photos/', blank=True, null=True)
+    photo = models.FileField(upload_to='staff_photos/', blank=True, null=True)
     current_address = models.TextField(blank=True, null=True)
     permanent_address = models.TextField(blank=True, null=True)
 
@@ -84,7 +85,7 @@ class AddStaff(models.Model):
     local_id_number = models.CharField(max_length=20, blank=True, null=True)
 
     # Payroll and Salary
-    payroll = models.CharField(max_length=100, blank=True, null=True)
+    payroll_new = models.CharField(max_length=100, blank=True, null=True)
     epf_no = models.CharField(max_length=20, blank=True, null=True)
     basic_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     contract_type = models.CharField(max_length=100, blank=True, null=True)
@@ -153,7 +154,7 @@ class Bed(models.Model):
 
 class IpdPatient(models.Model):
     id = models.AutoField(primary_key=True)
-    patient = models.CharField(max_length=100,default=0)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,blank=True,null=True)
     height = models.FloatField()
     weight = models.FloatField()
     bp = models.CharField(max_length=20)
@@ -166,12 +167,15 @@ class IpdPatient(models.Model):
     admission_date = models.DateTimeField()
     is_case_casualty = models.BooleanField()
     is_old_patient = models.BooleanField()
-    is_tpa = models.BooleanField()
+    is_tpa = models.BooleanField()  
     credit_limit = models.DecimalField(max_digits=10, decimal_places=2)
     reference = models.CharField(max_length=255)
     consultant_doctor = models.CharField(max_length=255)
     bed_group = models.CharField(max_length=255)
     bed_number = models.CharField(max_length=10)
+
+
+
 
 
 
@@ -221,24 +225,36 @@ class Med_Details(models.Model):
         return f"{self.category} - {self.dose}"
 
 
-class Purchase_Med(models.Model):
+    
+class purchase(models.Model):
     category = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     batch_no = models.CharField(max_length=50)
     expiry_date = models.DateField()
-    mrp = models.DecimalField(max_digits=10, decimal_places=2)
-    batch_amount = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2)
+    mrp = models.IntegerField(max_length=20)
+    batch_amount = models.IntegerField(max_length=20,blank=True,null=True)
+    sale_price = models.IntegerField(max_length=10)
     packing_qty = models.IntegerField(blank=True,null=True)
     quantity = models.IntegerField()
-    purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
-    tax_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    purchase_price = models.IntegerField(max_length=20 )
+    tax_percentage = models.IntegerField(max_length=20)
+    amount = models.IntegerField(max_length=10)
+    documents = models.ImageField(upload_to='medicine/', blank=True, null=True)
+    note = models.TextField()
+
+
+    total = models.IntegerField(max_length=10)
+    discount_percentage = models.IntegerField(max_length=10 )
+    discount = models.IntegerField(max_length=10 )
+    tax = models.IntegerField(max_length=10)
+    net_amount = models.IntegerField(max_length=10)
+    payment_mode = models.CharField(max_length=255)
+    payment_amount = models.IntegerField(max_length=10)
+
 
     def __str__(self):
         return self.name
     
-
 
 
 
@@ -253,13 +269,13 @@ class Donor_det(models.Model):
     contact_no = models.CharField(max_length=15, blank=True, null=True, verbose_name='Contact No')
     address = models.TextField(blank=True, null=True, verbose_name='Address')
     
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2 ,default=0,)
-    discount = models.DecimalField(max_digits=10,  default=0, decimal_places=2 )
-    tax = models.DecimalField(max_digits=10,  default=0,  decimal_places=2)
-    net_amount = models.DecimalField(max_digits=10,  default=0, decimal_places=2)
-    payment_mode = models.CharField(max_length=255, choices=(('Cash', 'Cash'),))
-    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    # total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    # discount_percentage = models.DecimalField(max_digits=5, decimal_places=2 ,default=0,)
+    # discount = models.DecimalField(max_digits=10,  default=0, decimal_places=2 )
+    # tax = models.DecimalField(max_digits=10,  default=0,  decimal_places=2)
+    # net_amount = models.DecimalField(max_digits=10,  default=0, decimal_places=2)
+    # payment_mode = models.CharField(max_length=255)
+    # payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name
@@ -270,7 +286,7 @@ class Donor_det(models.Model):
 
 
 class BloodDonation_component(models.Model):
-
+    patient =  models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     reference_name = models.CharField(max_length=255)
     issue_date = models.CharField(max_length=20,  )
     hospital_doctor = models.CharField(max_length=255,  blank=True, null=True)
@@ -283,12 +299,10 @@ class BloodDonation_component(models.Model):
     note = models.TextField( blank=True, null=True)
             
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2 ,default=0,)
+    
     discount = models.DecimalField(max_digits=10,  default=0, decimal_places=2 )
     tax = models.DecimalField(max_digits=10,  default=0,  decimal_places=2)
-    net_amount = models.DecimalField(max_digits=10,  default=0, decimal_places=2)
-    payment_mode = models.CharField(max_length=255, choices=(('Cash', 'Cash'),))
-    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+   
 
 
   
@@ -297,6 +311,7 @@ class BloodDonation_component(models.Model):
         return self.reference_name
 
 #  Pathalogy
+
 class Path_Category(models.Model):
     category_name = models.CharField(max_length=100,blank=True,null=True)
     unit = models.CharField(max_length=100,blank=True,null=True)
@@ -317,8 +332,8 @@ class Charge(models.Model):
     unit_type = models.CharField(max_length=100)
     charge_name = models.CharField(max_length=100)
     tax_category = models.CharField(max_length=100)
-    tax_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    standard_charge = models.DecimalField(max_digits=10, decimal_places=2)
+    tax_percentage = models.CharField(max_length=5)
+    standard_charge = models.CharField(max_length=10)
     description = models.TextField(blank=True,null=True)
 
     def __str__(self):
@@ -338,11 +353,19 @@ class Module_Charge(models.Model):
     ambulance = models.BooleanField(default=False)
 
     def __str__(self):
-        return "Service Type"
-    
+        return self.charge_name
+
+class ChargeType(models.Model):
+    charge_type = models.ForeignKey(Module_Charge,on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 class Tax_cat(models.Model):
     tax_category = models.CharField(max_length=100,blank=True,null=True)
+    percentage = models.IntegerField(max_length=100,default=12  )
     unit = models.CharField(max_length=100,blank=True,null=True)
 
 class Pathology_test(models.Model):
@@ -371,6 +394,7 @@ class Pathology_test(models.Model):
 
 
 class Pathology(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     test_name = models.CharField(max_length=255)
     report_days = models.PositiveIntegerField()
     report_date = models.DateField()
@@ -383,13 +407,34 @@ class Pathology(models.Model):
     discount = models.IntegerField(max_length=10 )
     tax = models.IntegerField(max_length=10)
     net_amount = models.IntegerField(max_length=10)
-    payment_mode = models.CharField(max_length=255, choices=(('Cash', 'Cash'),))
+    payment_mode = models.CharField(max_length=255)
     payment_amount = models.IntegerField(max_length=10)
 
 
     def __str__(self):
         return self.test_name
-    
+
+
+class Radiology(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
+    test_name = models.CharField(max_length=255)
+    report_days = models.PositiveIntegerField()
+    report_date = models.DateField()
+    tax_percentage = models.IntegerField(max_length=10)
+    amount = models.IntegerField(max_length=10)
+    referral_doctor = models.CharField(max_length=255)
+
+    total = models.IntegerField(max_length=10)
+    discount_percentage = models.IntegerField(max_length=10 )
+    discount = models.IntegerField(max_length=10 )
+    tax = models.IntegerField(max_length=10)
+    net_amount = models.IntegerField(max_length=10)
+    payment_mode = models.CharField(max_length=255)
+    payment_amount = models.IntegerField(max_length=10)
+
+    note = models.TextField(null=True)
+    def __str__(self):
+        return self.test_name
 
 class MedicineCategory(models.Model):
     category_name = models.CharField(max_length=255)
@@ -401,3 +446,399 @@ class MedicineCategory(models.Model):
 
     def __str__(self):
         return self.category_name
+    
+class IncomeHead(models.Model):
+    income_head = models.CharField(max_length=100)
+    description = models.TextField(blank=True,null=True)
+
+
+class ExpenseHead(models.Model):
+    expense_head = models.CharField(max_length=100)
+    description = models.TextField(blank=True,null=True)
+
+
+class Income(models.Model):
+    demo = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    invoice_number = models.CharField(max_length=255)
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    document = models.FileField(upload_to='income_documents/', blank=True, null=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.demo} - {self.name}"
+    
+
+class Expense(models.Model):
+    expense = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    invoice_number = models.CharField(max_length=255)
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    document = models.FileField(upload_to='expense_documents/', blank=True, null=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.expense} - {self.name}"
+    
+
+class TPA(models.Model):
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=20)
+    contact_no = models.CharField(max_length=15)
+    address = models.TextField()
+    contact_person_name = models.CharField(max_length=100)
+    contact_person_phone = models.CharField(max_length=15)
+
+
+
+class ChildBirth(models.Model):
+    child_name = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10)
+    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    child_photo = models.ImageField(upload_to='Birth/child_photos/', blank=True, null=True)
+    birth_date = models.DateField()
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    case_id = models.CharField(max_length=20)
+    mother_name = models.CharField(max_length=100)
+    mother_photo = models.ImageField(upload_to='Birth/mother_photo/', blank=True, null=True)
+    father_name = models.CharField(max_length=100, blank=True, null=True)
+    father_photo = models.ImageField(upload_to='Birth/father_photo/', blank=True, null=True)
+    report = models.TextField()
+    document_photo = models.ImageField(upload_to='Birth/document_photos/', blank=True, null=True)
+
+
+class DeathRecord(models.Model):
+    case_id = models.CharField(max_length=20)
+    patient_name = models.CharField(max_length=100)
+    death_date = models.DateField()
+    guardian_name = models.CharField(max_length=100)
+    attachment = models.FileField(upload_to='death_attachments/', blank=True, null=True)
+    report = models.TextField()
+
+
+# Referral 
+
+class ReferralCategory(models.Model):
+    name = models.CharField(max_length=20)
+
+
+
+class ReferralPerson(models.Model):
+    referrer_name = models.CharField(max_length=255)
+    referrer_contact = models.CharField(max_length=255)
+    contact_person_name = models.CharField(max_length=255)
+    contact_person_phone = models.CharField(max_length=15)
+    category = models.CharField(max_length=255)
+    standard_commission = models.DecimalField(max_digits=5, decimal_places=2,)
+    address = models.TextField()
+    commission_opd = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_ipd = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_pharmacy = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_pathology = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_radiology = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_blood_bank = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_ambulance = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+
+    def __str__(self):
+        return self.referrer_name   
+    
+
+class Referral(models.Model):
+
+    patient = models.CharField(max_length=20,default=None)
+    patient_type = models.CharField(max_length=255)
+    bill_no = models.CharField(max_length=255)
+    bill_amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+    payee = models.CharField(max_length=255)
+    commission_percentage = models.DecimalField(max_digits=5, decimal_places=2,null=True,blank=True)
+    commission_amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
+
+    def __str__(self):
+        return self.bill_no
+    
+
+
+class Ambulance(models.Model):
+
+    vehicle_number = models.CharField(max_length=20)
+    vehicle_model = models.CharField(max_length=255)
+    year_made = models.IntegerField()
+    driver_name = models.CharField(max_length=255)
+    driver_license = models.CharField(max_length=20)
+    driver_contact = models.CharField(max_length=15)
+    vehicle_type = models.CharField(max_length=255)
+    note = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.vehicle_number
+    
+
+    
+class add_ambulancecall(models.Model):
+    patient = models.CharField(max_length=100)
+    vehicle_model = models.CharField(max_length=100)
+    driver_name = models.CharField(max_length=100)
+    date = models.DateField()
+    charge_category = models.CharField(max_length=100)
+    charge_name = models.CharField(max_length=100)
+    standard_charge = models.DecimalField(max_digits=10, decimal_places=2)
+    note = models.TextField()
+
+    total = models.IntegerField(max_length=10)
+    tax = models.IntegerField(max_length=10)
+    net_amount = models.IntegerField(max_length=10)
+    payment_mode = models.CharField(max_length=255)
+    payment_amount = models.IntegerField(max_length=10)
+
+
+
+class ItemCategory(models.Model):
+    item_category = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+
+
+
+class Store(models.Model):
+    store_name = models.CharField(max_length=100)
+    stock_code = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.store_name
+    
+class SupplierDetails(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20,null=True,blank=True)
+    email = models.EmailField(null=True,blank=True)
+    contact_person_name = models.CharField(max_length=100,null=True,blank=True)
+    address = models.TextField(null=True,blank=True)
+    contact_person_phone = models.CharField(max_length=20,null=True,blank=True)
+    contact_person_email = models.EmailField(null=True,blank=True)
+    description = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Item(models.Model):
+    item = models.CharField(max_length=100)
+    item_category = models.CharField(max_length=100)
+    unit = models.CharField(max_length=50)
+    description = models.TextField(null=True,blank=True)
+
+    def __str__(self):  
+        return self.item
+    
+
+class ItemStock(models.Model):
+    item_category = models.CharField(max_length=100 ,blank=False)
+    item = models.CharField(max_length=100)
+    supplier = models.CharField(max_length=100)
+    store = models.CharField(max_length=100, null=True , blank=True)
+    quantity = models.PositiveIntegerField()
+    purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField(blank=True,null=True)
+    description = models.TextField(blank=True,null=True)
+    document = models.FileField(upload_to='documents/',blank=True,null=True )
+
+    def __str__(self):
+        return self.item
+
+
+class Path_Category(models.Model):
+    name = models.CharField(max_length=255,default=True)
+
+class Radio_Category(models.Model):
+    name = models.CharField(max_length=255,default=True)
+
+class Path_Parameter(models.Model):
+    parameter_name = models.CharField(max_length=255,null=True)
+    reference_range = models.CharField(max_length=255,null=True)
+    unit = models.CharField(max_length=50,null=True)
+    description = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.parameter_name
+    
+
+class Radio_Parameter(models.Model):
+    parameter_name = models.CharField(max_length=255,null=True)
+    reference_range = models.CharField(max_length=255,null=True)
+    unit = models.CharField(max_length=50,null=True)
+    description = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.parameter_name
+    
+
+
+class Radiology_test(models.Model):
+    test_name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=50)
+    test_type = models.CharField(max_length=100, blank=True, null=True)
+    category_name = models.CharField(max_length=100, blank=True, null=True)
+    
+    sub_category = models.CharField(max_length=100, blank=True, null=True)
+    method = models.CharField(max_length=100, blank=True, null=True)
+    report_days = models.PositiveIntegerField(default=0)
+    
+    charge_category = models.CharField(max_length=100, blank=True, null=True)
+    charge_name = models.CharField(max_length=100, blank=True, null=True)
+    tax_percentage = models.IntegerField(max_length=5, blank=True, null=True)
+    standard_charge = models.IntegerField(max_length=10)
+    amount = models.IntegerField(max_length=10)
+    
+    test_parameter_name = models.CharField(max_length=100)
+    reference_range = models.CharField(max_length=100)
+    unit = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.test_name
+    
+
+
+class OpdPatient(models.Model):
+    id = models.AutoField(primary_key=True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,blank=True,null=True)
+    height = models.FloatField()
+    weight = models.FloatField()
+    bp = models.CharField(max_length=20)
+    pulse = models.IntegerField()
+    temperature = models.FloatField()
+    respiration = models.IntegerField()
+    symptoms_type = models.CharField(max_length=255)
+    symptoms_title = models.CharField(max_length=255)
+    symptoms_description = models.CharField(max_length=255)
+    admission_date = models.DateTimeField()
+    is_case_casualty = models.BooleanField()
+    is_old_patient = models.BooleanField()
+    is_tpa = models.BooleanField()
+    credit_limit = models.DecimalField(max_digits=10, decimal_places=2)
+    reference = models.CharField(max_length=255)
+    consultant_doctor = models.CharField(max_length=255)
+
+    charge_category = models.CharField(max_length=100, blank=True, null=True)
+    charge_name = models.CharField(max_length=100, blank=True, null=True)
+    tax_percentage = models.IntegerField(max_length=5, blank=True, null=True)
+    standard_charge = models.IntegerField(max_length=10)
+    amount = models.IntegerField(max_length=100)
+    Applied_charges = models.IntegerField(max_length=100)
+    paid_amount = models.IntegerField(max_length=100)
+    note = models.TextField(null=True,blank=True)
+    any_known = models.TextField(null=True,blank=True)
+
+
+class NursingRecord(models.Model):
+    date = models.DateField()
+    nurse = models.CharField(max_length=100)
+    note = models.TextField()
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
+    comment = models.TextField()    
+
+
+class DoctorNote(models.Model):
+    date = models.DateField()
+    doctor = models.CharField(max_length=100)
+    note = models.TextField()
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
+    comment = models.TextField()    
+
+
+class MedicationDose(models.Model):
+    patient =  models.ForeignKey(Patient, on_delete=models.CASCADE)
+    date = models.DateField()
+    time = models.TimeField()
+    category = models.CharField(max_length=50)
+    medicine_name = models.CharField(max_length=100)
+    dosage = models.CharField(max_length=50)
+    remarks = models.TextField()
+
+
+
+class BloodDonation(models.Model):
+    donor_name = models.CharField(max_length=100)
+    donate_date = models.DateField()
+    bag = models.CharField(max_length=50)
+    volume = models.DecimalField(max_digits=5, decimal_places=2)
+    unit_type = models.CharField(max_length=50)
+    lot = models.CharField(max_length=50)
+    charge_category = models.CharField(max_length=100)
+    charge_name = models.CharField(max_length=100)
+    standard_charge = models.DecimalField(max_digits=10, decimal_places=2)
+    institution = models.CharField(max_length=100)
+    note = models.TextField()
+
+
+    total = models.IntegerField(max_length=10)
+    discount_percentage = models.IntegerField(max_length=10 )
+    discount = models.IntegerField(max_length=10 )
+    tax = models.IntegerField(max_length=10)
+    net_amount = models.IntegerField(max_length=10)
+    payment_mode = models.CharField(max_length=255)
+    payment_amount = models.IntegerField(max_length=10)
+
+    def __str__(self):  
+        return self.donor_name
+    
+
+class CustomUser(AbstractUser):
+    USER_ROLE_CHOICES = (
+        ('doctor', 'Doctor'),
+        ('admin', 'Administrator'),
+        # Add more role choices as needed
+    )
+
+    role = models.CharField(max_length=20, choices=USER_ROLE_CHOICES, default='doctor')
+
+
+class Referral_commission(models.Model):
+
+
+    category = models.CharField(max_length=20)
+    standard_commission = models.IntegerField(max_length=10)
+    commission_opd = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_ipd = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_pharmacy = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_pathology = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_radiology = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_blood_bank = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+    commission_ambulance = models.DecimalField(max_digits=5, decimal_places=0,null=True,blank=True)
+
+    
+
+    def __str__(self):
+        return self.category
+    
+
+
+class Task(models.Model):
+    title = models.CharField(max_length=200)
+    date = models.DateField()
+
+
+
+
+class Payroll(models.Model):
+    staff = models.ForeignKey(AddStaff, on_delete=models.CASCADE)
+    earning = models.IntegerField(default=0)
+    deduction = models.IntegerField(default=0)
+    gross_salary = models.IntegerField(default=0)
+    tax_percentage = models.FloatField( default=0.00)
+    tax = models.IntegerField(default=0)
+    net_salary = models.IntegerField(default=0)
+
+
+class Zoom(models.Model):
+    title = models.CharField(max_length=255)
+    meeting_date = models.DateField()
+    duration_minutes = models.PositiveIntegerField()
+    host_video = models.BooleanField(default=True)
+    client_video = models.BooleanField(default=True)
+    description = models.TextField()
+    staff_list = models.TextField()  # You can use a TextField to store a list of staff members
+
+    def __str__(self):
+        return self.title

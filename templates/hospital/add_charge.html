@@ -1,57 +1,221 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Charge</title>
-</head>
-<body>
-    {% include "layout/sidebar.html" %}
+
+
+<!-- charge_type_form.html -->
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+
+<div class="container">
     
-    <form method="POST" action="{% url 'add_charge' %}">
-        <h1>Add Charge</h1>
-        {% csrf_token %}
-        <label for="charge_type">Charge Type:</label>
-        <select name="charge_type">
-            <option value="Type 1">Type 1</option>
-            <option value="Type 2">Type 2</option>
-            <option value="Type 3">Type 3</option>
-        </select><br>
+    
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Charge Details</h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'charge_type' %}">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="charge_type">Charge Type:</label>
+                            <select name="charge_type" id="charge_type" class="form-control">
+                                <option value="">Select Charge Type</option>
+                    
+                                {% for type in type %}
+                                <option value={{type.id}}>{{type.charge_name}}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="charge_category">Charge Category:</label>
+                            <select name="charge_category" id="charge_category" class="form-control">
+                                <option value="Category 1">Select A Category</option>
+                          
+                            </select>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="unit_type">Unit Type:</label>
+                            <select name="unit_type" id="unit_type" class="form-control">
+                                
+                                {% for tax in tax %}
+                                <option value={{tax.unit}}>{{tax.unit}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="charge_name">Charge Name:</label>
+                            <input type="text" name="charge_name" id="charge_name" class="form-control">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="tax_category">Tax Category:</label>
+                            <select name="tax_category" id="tax_category" class="form-control">
+                                <option value="">Select A Option </option>
+                                {% for tax in tax %}
+                                <option value={{tax.id}}>{{tax.tax_category}}</option>
+                                {% endfor %}
+                                
+                            </select>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="tax_percentage">Tax (%):</label>
+                            <input type="number" name="tax_percentage" id="tax_percentage" class="form-control">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="standard_charge">Standard Charge (Rs.):</label>
+                            <input type="number" name="standard_charge" id="standard_charge" class="form-control">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <textarea name="description" id="description" class="form-control"></textarea>
+                        </div>
+                        
+        
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <label for="charge_category">Charge Category:</label>
-        <select name="charge_category">
-            <option value="Category 1">Category 1</option>
-            <option value="Category 2">Category 2</option>
-            <option value="Category 3">Category 3</option>
-        </select><br>
 
-        <label for="unit_type">Unit Type:</label>
-        <select name="unit_type">
-            <option value="Unit 1">Unit 1</option>
-            <option value="Unit 2">Unit 2</option>
-            <option value="Unit 3">Unit 3</option>
-        </select><br>
-
-        <label for="charge_name">Charge Name:</label>
-        <input type="text" name="charge_name"><br>
-
-        <label for="tax_category">Tax Category:</label>
-        <select name="tax_category">
-            <option value="Category A">Category A</option>
-            <option value="Category B">Category B</option>
-            <option value="Category C">Category C</option>
-        </select><br>
-
-        <label for="tax_percentage">Tax (%):</label>
-        <input type="number" name="tax_percentage"><br>
-
-        <label for="standard_charge">Standard Charge (Rs.):</label>
-        <input type="number" name="standard_charge"><br>
-
-        <label for="description">Description:</label>
-        <textarea name="description"></textarea><br>
-
-        <button type="submit">Save</button>
-    </form>
+<div class="main-header">
+  <h1 class="headline">Add Charge Details</h1>
+  <div class="side-btns">
 
  
-</body>
-</html>
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Charge Details</a>
+
+</div>
+
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Charge Type</th>
+          <th>Name</th>
+          <th>Description</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for charge in charge %}
+          <tr>
+            <td>{{ charge.charge_type }}</td>
+            <td>{{ charge.name }}</td>
+            <td>{{ charge.description }}</td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+    <script>
+      {% comment %} $(document).ready(function() {
+        $(".open-popup").click(function() {
+          $(".popup").fadeIn();
+        });
+      
+        $(".popup").click(function(event) {
+          if (event.target === this) {
+            $(this).fadeOut();
+          }
+        });
+      }); {% endcomment %}
+
+      
+
+      const openPopupBtn = document.getElementById("openPopupBtn");
+      const popupContainer = document.getElementById("popupContainer");
+      const closePopupBtn = document.getElementById("closePopupBtn");
+    {% comment %} console.log(openPopupBtn)
+    console.log(popupContainer)
+      openPopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "block";
+          console.log('hello')
+      }); {% endcomment %}
+      function change(){
+        popupContainer.style.display = "block";
+      }
+      closePopupBtn.addEventListener("click", function() {
+          popupContainer.style.display = "none";
+      });
+
+      
+$(document).ready(function () {
+    // Listen for changes in the vehicle_model select field 
+    var category = $('#charge_category  ')
+    $('#charge_type').change(function () {
+        var selected_charge_type = $(this).val();
+        // Make an AJAX request to fetch the driver name for the selected vehicle
+        $.ajax({
+            type: 'GET',
+            url: '/get_related_categories', // Replace with your actual URL
+            data: { 'charge_type': selected_charge_type },  
+            success: function (data) {
+                // Update the driver_name input field with the retrieved value
+            
+                $.each(data.name, function(index, name) {
+                    category.append('<option value="' + name + '">' + name + '</option>');
+                });
+                category.show();
+            } 
+           
+        });
+    });
+});
+
+$(document).ready(function() {
+    $('#tax_category').change(function() {
+        var selectedTaxCategory = $(this).val();
+        var taxPercentageInput = $('#tax_percentage');
+
+        $.ajax({
+            url: '/get_tax_percentage',  // Replace with the actual URL pattern name
+            method: 'GET',
+            data: { tax_category: selectedTaxCategory },
+            success: function(data) {
+                if (data.tax_percentage !== undefined) {
+                    taxPercentageInput.val(data.tax_percentage);
+                } else {
+                    taxPercentageInput.val('');
+                }
+            },
+            error: function() {
+                taxPercentageInput.val('');
+            }
+        });
+    });
+});
+
+
+
+
+
+    </script>
+  </div>
+
+
+

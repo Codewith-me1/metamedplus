@@ -1,28 +1,112 @@
-<!DOCTYPE html>
-<html>
-    {% include "layout/sidebar.html" %}
-<head>
-    <title>Add Product</title>
-</head>
-<body>
-    <h1>Add Product</h1>
-    <form method="POST" action="{% url 'issue_comp' %}">
-        {% csrf_token %}
-        <label for="category_name">Category Name:</label>
-        <input type="text" name="category_name"><br>
 
-        <label for="unit">Unit:</label>
-        <input type="text" name="unit"><br>
 
-        <button type="submit">Save</button>
-    </form>
 
-    {% for comp in comp %}
+<!-- create_death_record.html -->
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
 
-    <p>{{  comp.category_name}}</p>
-    <p>{{  comp.unit}}</p>
+<div class="container"> 
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Tax Category</h1>
+              </div>
+               
+                    <form  class="form_popup"method="POST" action="{% url 'issue_comp' %}">
+                        {% csrf_token %}
+                    
+                        <div class="form-group">
+                            <label for="category_name">Category Name:</label>
+                            <input type="text" id="category_name" name="category_name" class="form-control">
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="unit">Unit:</label>
+                            <input type="text" id="unit" name="unit" class="form-control">
+                        </div>
+                   
+                 
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
     
 
-{% endfor %} 
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Add Tax Category</h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Tax Category</a>
+
+</div>    
+</div>   
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+        <th>Category Name </th>
+        
+        <th>Unit</th>
+     
+       
+      </tr>
+    </thead>
+    <tbody>
+     
+      {% for comp in comp %}
+        <tr>
+            <td>{{comp.tax_category}}</td>
+            <td>{{ comp.unit}}</td>
+        
+
+          
+      
+        
+        </tr>
+      {% endfor %}  
+      
+      
+
+  
+     
+    </tbody>
+  </table>
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+});
+   
+</script>
 </body>
 </html>
