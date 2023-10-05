@@ -54,7 +54,7 @@
               {% if user.role == 'Doctor' %}
              
               <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
-              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}">Doctor</a></li>
+             
             <li><a href="{% url 'opd' %}">Opd</a></li>
             <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
             <li><a href="{% url 'path' %}">Pathology</a></li>
