@@ -1,4 +1,5 @@
 
+{% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 <form method="post" action="{% url 'pre' %}">
     {% csrf_token %}
