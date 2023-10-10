@@ -199,7 +199,7 @@
       
       {% for ipd in ipd %}
         <tr>
-          <td><a href=" {{ipd.id}}">{{ ipd.id }}</a></td>  
+          {% comment %} <td><a href=" /ipd/{{ipd.id}}/#overview">{{ ipd.id }}</a></td>   {% endcomment %}
           <td>{{ ipd.patient }}</td>
           <td>{{ ipd.consultant_doctor }}</td>
 

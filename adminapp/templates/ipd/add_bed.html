@@ -143,7 +143,7 @@ a:active{
 
     <div class="form-group">
         <label for="bed_pur">Purpose:</label>
-        <select id="bed_pur" name="bed_pur">
+        <select id="bed_pur" name="purpose">
             {% for bed in bed_pur %}
                 <option value="{{ bed.id }}">{{ bed.purpose }}</option>
             {% endfor %}

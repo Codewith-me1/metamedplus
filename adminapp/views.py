@@ -9,17 +9,28 @@ from .models import DeathRecord
 from .models import CustomUser
 from .models import Payroll
 from .models import Referral_commission
+from .models import Purchase
+from .models import Item_Acc
 from django.utils.datastructures import MultiValueDictKeyError
 import decimal
+from .models import Party
 from .models import NursingRecord ,DoctorNote
+from .models import Unit
+from .models import Sales_Invoice
 from .models import ChargeType
 from urllib.parse import unquote
+from django.template.loader import get_template
+from .models import Item_Invoice
+from django.shortcuts import render
+from xhtml2pdf import pisa
+
 from .models import Zoom
+from .models import Category
 from .models import MedicationDose
 from .models import Task
 from .models import OpdPatient
 from .models import Radiology
-from .models import purchase
+
 from django.shortcuts import render
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -62,7 +73,7 @@ appin = "appointment"
 def profile(request,id):
 
     staff  = AddStaff.objects.get(staff_id=id)
-    payroll = Payroll.objects.filter(staff=id)
+    payroll = Payroll.objects.get(staff=id)
     
     context ={
         'staff':staff,
@@ -449,6 +460,7 @@ def add_bed(request):
         floor =  request.POST.get('floor')
         purpose =  request.POST.get('purpose')
         mark_as_unused = request.POST.get('mark_as_unused')
+        print(purpose)
         
         bed = Bed(
           
@@ -503,13 +515,28 @@ def add_bedGroup(request):
         )
 
         bed.save()
+        beds = Bed.objects.all()
         beds = BedGroup.objects.all()
+        bed_pur = Bedtype.objects.all()
+        floor = Floor.objects.all()
         context = {
-           "bed_grp": beds,
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
         }
         return render(request,'ipd/add_bed.html',context)  # Redirect to bed details page
-
-    return render(request, 'ipd/add_bed.html')
+    beds = Bed.objects.all()
+    beds = BedGroup.objects.all()
+    bed_pur = Bedtype.objects.all()
+    floor = Floor.objects.all()
+    context = {
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
+        }
+    return render( request, 'ipd/add_bed.html')
 
 
 def add_purpose(request):
@@ -529,11 +556,28 @@ def add_purpose(request):
 
         bed.save()
         beds = Bedtype.objects.all()
+        beds = Bed.objects.all()
+        beds = BedGroup.objects.all()
+        bed_pur = Bedtype.objects.all()
+        floor = Floor.objects.all()
         context = {
-           "bed_pur": beds,
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
         }
+        
         return render(request,'ipd/add_bed.html',context)  # Redirect to bed details page
-
+    beds = Bed.objects.all()
+    beds = BedGroup.objects.all()
+    bed_pur = Bedtype.objects.all()
+    floor = Floor.objects.all()
+    context = {
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
+        }
     return render(request, 'ipd/add_bed.html')
 
 def add_floor(request):
@@ -554,12 +598,27 @@ def add_floor(request):
         )
 
         bed.save()
-        beds = Floor.objects.all()
+        beds = Bed.objects.all()
+        beds = BedGroup.objects.all()
+        bed_pur = Bedtype.objects.all()
+        floor = Floor.objects.all()
         context = {
-           "bed_floor": beds,
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
         }
         return render(request,'ipd/add_bed.html',context)  # Redirect to bed details page
-
+    beds = Bed.objects.all()
+    beds = BedGroup.objects.all()
+    bed_pur = Bedtype.objects.all()
+    floor = Floor.objects.all()
+    context = {
+           "bed": beds,
+            "bed_grp": beds,
+            'bed_pur':bed_pur,
+            'floor':floor,
+        }
     return render(request, 'ipd/add_bed.html')
 
 
@@ -2211,7 +2270,7 @@ def purchase_med(request):
     
     medicine  =  Medicine.objects.all()
     medicineCat = Med_Category.objects.all()
-    med = purchase.objects.all()
+    med = Purchase.objects.all()
     context ={
         'medicine':medicine,
         "cat":medicineCat,
@@ -2570,3 +2629,614 @@ def create_meeting(request):
         'meet':meet
     }
     return render(request, 'meeting/zoom.html',context)
+
+
+
+
+
+def party_create(request):
+    if request.method == 'POST':
+        # Retrieve data from the form and create a new account record
+        part_name = request.POST['part_name']
+        gstin = request.POST['gstin']
+        phone_number = request.POST['phone_number']
+        gst_type = request.POST['gst_type']
+        state = request.POST['state']
+        email_id = request.POST['email_id']
+        billing_address = request.POST['billing_address']
+        opening_balance = request.POST['opening_balance']
+        as_of_date = request.POST['as_of_date']
+        to_pay = request.POST.get('to_pay', False)
+        to_receive = request.POST.get('to_receive', False)
+
+        account = Party(
+            part_name=part_name,
+            gstin=gstin,
+            phone_number=phone_number,
+            gst_type=gst_type,
+            state=state,
+            email_id=email_id,
+            billing_address=billing_address,
+            opening_balance=opening_balance,
+            as_of_date=as_of_date,
+            to_pay=to_pay,
+            to_receive=to_receive
+        )
+        account.save()
+        return redirect('party')
+        # You can add a success message here if needed
+    party = Party.objects.all()
+    context ={
+        'party':party
+    }
+    return render(request, 'accounts/party.html',context)
+
+
+
+
+def add_category(request):
+    if request.method == 'POST':
+        category = request.POST['category']
+        Category.objects.create(category=category)
+        return redirect('add_   category')  # Redirect to a list view or any other page
+    cate = Category.objects.all()
+    context ={
+        'cate':cate
+    }
+    return render(request, 'accounts/category.html',context)
+
+
+
+def manage_items(request):
+    if request.method == 'POST':
+        # Retrieve data from the form and create a new item
+        item_name = request.POST['item_name']
+        
+        category = request.POST['category']
+        
+        sale_price = request.POST['sale_price']
+        disc_on_sale_price = request.POST['disc_on_sale_price']
+        
+        purchase_price = request.POST['purchase_price']
+        tax_rate = request.POST['tax_rate']
+        opening_quantity = request.POST['opening_quantity']
+        at_price = request.POST['at_price']
+        unit=request.POST['unit']
+        as_of_date = request.POST['as_of_date']
+        min_stock_to_maintain = request.POST['min_stock_to_maintain']
+        location = request.POST['location']
+
+
+        
+       
+
+        item = Item_Acc(
+            item_name=item_name,
+            unit=unit,
+            category=category,
+            
+            sale_price=sale_price,
+            disc_on_sale_price=disc_on_sale_price,
+            
+            purchase_price=purchase_price,
+            tax_rate=tax_rate,
+            opening_quantity=opening_quantity,
+            at_price=at_price,
+            as_of_date=as_of_date,
+            min_stock_to_maintain=min_stock_to_maintain,
+            location=location
+        )
+        item.save()
+        return redirect('item_acc')
+    Medicien = Med_Category.objects.all()
+    item_cat = ItemCategory.objects.all()
+    cat = Category.objects.all()
+    unit = Unit.objects.all()
+    item = Item_Acc.objects.all()
+
+    context ={
+        'medicine':Medicien,
+        'item_cat':item_cat,
+        'cat':cat,
+        'unit':unit,
+        'item':item
+    }
+
+    return render(request, 'accounts/item.html',context)
+
+
+def unit(request):
+    if request.method == 'POST':
+        # Retrieve data from the form and create a new unit
+        unit_name = request.POST['unit_name']
+
+        unit = Unit(unit_name=unit_name)
+        unit.save()
+        return redirect('unit')
+    unit = Unit.objects.all()
+    context={
+        'unit':unit
+    }
+    return render(request, 'setup/inventory/unit.html',context)
+
+
+
+
+def sales_invoice(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        item_counter = request.POST.get('item_counter', 0)
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+        # Create a new Invoice object
+        invoice = Sales_Invoice(
+            name=name,
+            phone_number=phone_number,
+            invoice_number=invoice_number,
+            invoice_date=invoice_date,
+            state_of_supply=state_of_supply,
+            type="sales",
+           
+        )
+        
+        # Save the invoice object to the database
+        invoice.save()
+        id = Sales_Invoice.objects.get(id=invoice.id)
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'item_{i}')
+            qty = request.POST.get(f'qty_{i}')
+            unit = request.POST.get(f'unit_{i}')
+            price = request.POST.get(f'price_{i}')
+            discount_percentage = request.POST.get(f'discount_{i}')
+            discount_amount = request.POST.get(f'discount_amount_{i}')
+            tax_percentage = request.POST.get(f'tax_{i}')
+            tax_amount = request.POST.get(f'tax_amount_{i}')
+            total = request.POST.get(f'total_{i}')
+            print(item)
+            
+            print(qty)
+            
+            item = Item_Invoice(
+            
+                invoice=id,
+                item=item,
+                qty=qty,
+                unit=unit,
+                price=price,
+                discount=discount_percentage,
+                discount_amount=discount_amount,
+                tax=tax_percentage,
+                tax_amount=tax_amount,
+                total=total,
+
+            )
+            item.save()
+
+        # Redirect to a success page or display a success message
+        ids = invoice.id
+        context = {
+            'id':ids
+        } 
+        url = reverse('edit_sales', args=[ids])
+        
+        return redirect(url)
+        
+    item = Item_Acc.objects.all()
+    party = Party.objects.all()
+    unit = Unit.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'unit':unit
+    }
+    return render(request, 'accounts/sales_invoice.html',context)
+
+
+
+def edit_sales(request,id):
+    invoice = get_object_or_404(Sales_Invoice, id=id)
+    products = Item_Invoice.objects.filter(invoice=id)
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        item = request.POST.get('item')
+        qty = request.POST.get('qty')
+        unit = request.POST.get('unit')
+        price = request.POST.get('price')
+        discount_percentage = request.POST.get('discount')
+        discount_amount = request.POST.get('discount_amount')
+        tax_percentage = request.POST.get('tax')
+        tax_amount = request.POST.get('tax_amount')
+        total = request.POST.get('total')
+
+        # Update the Sales_Invoice object with the new data
+        invoice.name = name
+        invoice.phone_number = phone_number
+        invoice.invoice_number = invoice_number
+        invoice.invoice_date = invoice_date
+        invoice.state_of_supply = state_of_supply
+        for product in products:
+            item_id = product.id  # Get the item's ID
+            item = request.POST.get(f'item_{item_id}')
+            qty = request.POST.get(f'qty_{item_id}')
+            unit = request.POST.get(f'unit_{item_id}')
+            price = request.POST.get(f'price_{item_id}')
+            discount_percentage = request.POST.get(f'discount_{item_id}')
+            discount_amount = request.POST.get(f'discount_amount_{item_id}')
+            tax_percentage = request.POST.get(f'tax_{item_id}')
+            tax_amount = request.POST.get(f'tax_amount_{item_id}')
+            total = request.POST.get(f'total_{item_id}')
+
+            # Update the Item_Invoice object with the new item data
+            product.item = item
+            product.qty = qty
+            product.unit = unit
+            product.price = price
+            product.discount = discount_percentage
+            product.discount_amount = discount_amount
+            product.tax = tax_percentage
+            product.tax_amount = tax_amount
+            product.total = total
+
+            # Save the updated Item_Invoice object
+            product.save()
+
+        # Save the updated Sales_Invoice object
+        invoice.save()
+
+        # Save the invoice object to the database
+        
+
+        # Redirect to a success page or display a success message
+        return redirect('sales_invoice')  # Replace 'success_page_url' with your actual success page URL
+
+    context= {
+            'invoice':invoice,
+            'product':products
+    }
+    return render(request, 'accounts/edit_invoice.html',context)
+
+
+
+
+def Party_User(request):
+    selected_value = request.GET.get('id')
+
+    # Query your database or data source to retrieve user data based on selected_value
+    # Replace this with your actual database query
+    try:
+        party = Party.objects.get(id=selected_value)
+        data = {
+            'success': True,
+            'user_name': party.part_name,
+            'phone_no': party.phone_number,
+            'billing': party.billing_address,
+            'opening_balance': party.opening_balance,
+        }
+    except Party.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+def Item_Details(request):
+    selected_value = request.GET.get('id')
+
+    # Query your database or data source to retrieve user data based on selected_value
+    # Replace this with your actual database query
+    try:
+        item = Item_Acc.objects.get(id=selected_value)
+        data = {
+            'success': True,
+            'sale_price': item.sale_price,
+            'tax': item.tax_rate,
+            'unit': item.unit,
+            
+        }
+    except Item_Acc.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+   
+
+
+def generate_invoice_pdf(request, id):
+    try:
+        # Retrieve the Sales_Invoice object based on the provided invoice_id
+        invoice = Sales_Invoice.objects.get(id=id)
+        products = Item_Invoice.objects.filter(invoice=id)
+    except Sales_Invoice.DoesNotExist:
+        return HttpResponse('Invoice not found', content_type='text/plain')
+
+    # Create a context dictionary with data from the Sales_Invoice object
+    items = []
+    total_amount = 0
+
+    for product in products:
+        item_data = {
+            'name': product.item,
+            'qty': product.qty,
+            'unit': product.unit,
+            'price': product.price,
+            'discount': product.discount,
+            'tax': product.tax, 
+            'tax_amount': product.tax_amount,
+            'total': product.total,
+        }
+        
+        items.append(item_data)
+        total_amount += product.total
+    context = {
+        'invoice_number': invoice.invoice_number,
+        'invoice_date': invoice.invoice_date,   
+        'customer_name': invoice.name,
+        'phone_number': invoice.phone_number,   
+        'state_of_supply': invoice.state_of_supply,
+        'items': items,
+        'total_amount': total_amount,
+    }
+
+    # Render the template
+    template = get_template('templat/sales_invoice.html')
+    html = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+
+
+def purchase_invoice(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        item_counter = request.POST.get('item_counter', 0)
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+        # Create a new Invoice object
+        invoice = Sales_Invoice(
+            name=name,
+            phone_number=phone_number,
+            invoice_number=invoice_number,
+            invoice_date=invoice_date,
+            state_of_supply=state_of_supply,
+            type="purchase",
+           
+        )
+        
+        # Save the invoice object to the database
+        invoice.save()
+        id = Sales_Invoice.objects.get(id=invoice.id)
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'item_{i}')
+            qty = request.POST.get(f'qty_{i}')
+            unit = request.POST.get(f'unit_{i}')
+            price = request.POST.get(f'price_{i}')
+            discount_percentage = request.POST.get(f'discount_{i}')
+            discount_amount = request.POST.get(f'discount_amount_{i}')
+            tax_percentage = request.POST.get(f'tax_{i}')
+            tax_amount = request.POST.get(f'tax_amount_{i}')
+            total = request.POST.get(f'total_{i}')
+            print(item)
+            
+            print(qty)
+            
+            item = Item_Invoice(
+            
+                invoice=id,
+                item=item,
+                qty=qty,
+                unit=unit,
+                price=price,
+                discount=discount_percentage,
+                discount_amount=discount_amount,
+                tax=tax_percentage,
+                tax_amount=tax_amount,
+                total=total,
+
+            )
+            item.save()
+
+        # Redirect to a success page or display a success message
+        ids = invoice.id
+        context = {
+            'id':ids
+        } 
+        url = reverse('edit_purchase', args=[ids])
+        
+        return redirect(url)
+        
+    item = Item_Acc.objects.all()
+    party = Party.objects.all()
+    unit = Unit.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'unit':unit
+    }
+    return render(request, 'accounts/purchase/purchase_invoice.html',context)
+
+
+
+
+def edit_purchase(request,id):
+    invoice = get_object_or_404(Sales_Invoice, id=id)
+    products = Item_Invoice.objects.filter(invoice=id)
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        item = request.POST.get('item')
+        qty = request.POST.get('qty')
+        unit = request.POST.get('unit')
+        price = request.POST.get('price')
+        discount_percentage = request.POST.get('discount')
+        discount_amount = request.POST.get('discount_amount')
+        tax_percentage = request.POST.get('tax')
+        tax_amount = request.POST.get('tax_amount')
+        total = request.POST.get('total')
+
+        # Update the Sales_Invoice object with the new data
+        invoice.name = name
+        invoice.phone_number = phone_number
+        invoice.invoice_number = invoice_number
+        invoice.invoice_date = invoice_date
+        invoice.state_of_supply = state_of_supply
+        for product in products:
+            item_id = product.id  # Get the item's ID
+            item = request.POST.get(f'item_{item_id}')
+            qty = request.POST.get(f'qty_{item_id}')
+            unit = request.POST.get(f'unit_{item_id}')
+            price = request.POST.get(f'price_{item_id}')
+            discount_percentage = request.POST.get(f'discount_{item_id}')
+            discount_amount = request.POST.get(f'discount_amount_{item_id}')
+            tax_percentage = request.POST.get(f'tax_{item_id}')
+            tax_amount = request.POST.get(f'tax_amount_{item_id}')
+            total = request.POST.get(f'total_{item_id}')
+
+            # Update the Item_Invoice object with the new item data
+            product.item = item
+            product.qty = qty
+            product.unit = unit
+            product.price = price
+            product.discount = discount_percentage
+            product.discount_amount = discount_amount
+            product.tax = tax_percentage
+            product.tax_amount = tax_amount
+            product.total = total
+
+            # Save the updated Item_Invoice object
+            product.save()
+
+        # Save the updated Sales_Invoice object
+        invoice.save()
+
+        # Save the invoice object to the database
+        
+
+        # Redirect to a success page or display a success message
+        return redirect('purchase_invoice')  # Replace 'success_page_url' with your actual success page URL
+
+    context= {
+            'invoice':invoice,
+            'product':products
+    }
+    return render(request, 'accounts/purchase/edit_purchase.html',context)
+
+
+
+
+
+
+def generate_purchase_pdf(request, id):
+    try:
+        # Retrieve the Sales_Invoice object based on the provided invoice_id
+        invoice = Sales_Invoice.objects.get(id=id)
+        products = Item_Invoice.objects.filter(invoice=id)
+    except Sales_Invoice.DoesNotExist:
+        return HttpResponse('Invoice not found', content_type='text/plain')
+
+    # Create a context dictionary with data from the Sales_Invoice object
+    items = []
+    total_amount = 0
+
+    for product in products:
+        item_data = {
+            'name': product.item,
+            'qty': product.qty,
+            'unit': product.unit,
+            'price': product.price,
+            'discount': product.discount,
+            'tax': product.tax, 
+            'tax_amount': product.tax_amount,
+            'total': product.total,
+        }
+        
+        items.append(item_data)
+        total_amount += product.total
+    context = {
+        'invoice_number': invoice.invoice_number,
+        'invoice_date': invoice.invoice_date,   
+        'customer_name': invoice.name,
+        'phone_number': invoice.phone_number,   
+        'state_of_supply': invoice.state_of_supply,
+        'items': items,
+        'total_amount': total_amount,
+    }
+
+    # Render the template
+    template = get_template('templat/purchase_invoice.html')
+    html = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+def invoice(request):
+    invoice = Sales_Invoice.objects.filter(type="sales")
+    context = {
+        'invoice':invoice
+    }
+    return render(request,'accounts/invoice.html',context)
+
+
+def purchase(request):
+    bill = Sales_Invoice.objects.filter(type="purchase")
+    context = {
+        'bill':bill
+    }
+    return render(request,'accounts/purchase.html',context)
+
+

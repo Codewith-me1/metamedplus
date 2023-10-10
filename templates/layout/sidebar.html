@@ -46,7 +46,7 @@
               
             </div>     {% endcomment %}
 
-            <li><a href="{% url 'ipd_pat' %}">IPD Dashboard </a></li>
+            
             {% endif %}
             
            
@@ -73,6 +73,7 @@
               
                 <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
                  <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
+
 
 
 
@@ -149,11 +150,12 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <a class="dropdown-a" href="{% url "add_income" %}">Income</a>
+              <a class="dropdown-a" href="{% url "income_head" %}">Income</a>
+              <a class="dropdown-a" href="{% url "expense_head" %}">Expense</a>
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
               <a  class="dropdown-a"href="{% url 'payroll' %}">Payroll</a>
-              <a class="dropdown-a" href="{% url "add_expense" %}">Expense</a>
+              
               <li><a href="{% url 'add_bed' %}"> Bed </a></li>
               
               <button class="dropdown-btn">Hospital Charges 
@@ -205,10 +207,24 @@
 
               </div>
               
+              <button class="dropdown-btn"> Accounting
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
+              
+                <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
+                 <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
+                 <a class="dropdown-a" href="{% url 'sale' %}">Sales Invoice</a>
+                 <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
+                
+
+
+              </div>
               
               
              
-
+              
+  
 
 
               
@@ -347,6 +363,11 @@
             <li><a href="{% url 'ipd_patient' %}">IPD Billing</a></li>
             <li><a href="{% url 'path' %}">Pathology Billing</a></li>
             <li><a href="{% url 'radiology' %}">Radiology Billing</a></li>
+            <li><a href="{% url 'Sales_Party' %}">Party</a></li>
+            <li><a href="{% url 'purchase' %}">Purchase Invoice</a></li>
+            <li><a href="{% url 'sale' %}">Sale Purchase </a></li>
+            <li><a href="{% url 'unit' %}">Add</a></li>
+
             <li><a href="{% url 'blood_donation' %}">Blood Billing</a></li>
               
               {% endif %}

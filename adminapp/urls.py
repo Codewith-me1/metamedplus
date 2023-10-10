@@ -89,6 +89,21 @@ urlpatterns = [
     path('payroll/', views.payroll, name='payroll'),
     path('payroll/<int:id>', views.payroll_id, name='payroll_id'),
     path('meeting/', views.create_meeting, name='meeting'),
+    path('party',views.party_create,name="party"),
+    path('add_category/', views.add_category, name='add_category'),
+    path('item_acc/', views.manage_items, name='item_acc'),
+    path('unit/', views.unit, name='unit'),
+    path('sales_invoice', views.sales_invoice, name='sales_invoice'),
+    path('purchase_invoice', views.purchase_invoice, name='purchase_invoice'),
+    path('Sales_Party', views.Party_User, name='Sales_Party'),
+    path('item_details', views.Item_Details, name='item_details'),
+    path('generate_invoice_pdf/<int:id>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
+    path('generate_purchase_pdf/<int:id>/', views.generate_purchase_pdf, name='generate_purchase_pdf'),
+    path('edit_sales/<int:id>/', views.edit_sales, name='edit_sales'),
+    path('edit_purchase/<int:id>/', views.edit_purchase, name='edit_purchase'),
+    path('sale', views.invoice, name='sale'),
+    path('purchase', views.purchase, name='purchase'),
+
 
     
     

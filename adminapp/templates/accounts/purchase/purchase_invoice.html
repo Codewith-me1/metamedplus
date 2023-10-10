@@ -1,0 +1,313 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class='container'>
+    <h2>Add Purchase</h2>
+    <form method="POST" id="invoiceForm">
+        {% csrf_token %}
+        <input type="hidden" name="item_counter" id="item_counter" value="0">
+            <div class="first-container">
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                
+                <select class="form-control" id="name" name="name">
+                    <option value="unit">Select A Unit</option>
+
+                    {% for party in party %}
+
+                        <option value="{{party.part_name}}_{{party.id}}" >{{party.part_name}}</option>
+
+                    
+                    <!-- Add more category options as needed -->
+                    {% endfor %}
+
+
+
+
+                </select>
+            </div>
+            <div class="form-group">
+            <label for="invoice_number">Bill Number</label>
+            <input type="text" class="form-control" id="invoice_number" name="invoice_number" required> 
+        </div>
+
+        <div class="form-group">
+            <label for="invoice_date">Bill Date</label>
+            <input type="date" class="form-control" id="invoice_date" name="invoice_date" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+        </div>
+
+   
+        <div class="form-group">
+            <label for="state_of_supply">State of Supply:</label>
+            <input type="text" class="form-control" id="state_of_supply" name="state_of_supply" required>
+        </div>
+        </div>
+       
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Item </th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Discount Percentage</th>
+                <th>Discount Amount</th>
+                <th>Tax Percentage</th>
+                <th>Tax Amount</th>
+                <th>Total Amount </th>
+    
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+               
+
+                
+            </tbody>
+          </table>
+
+
+
+        <button type="submit" class="btn btn-primary">Save Invoice</button>
+        
+    </form>
+
+    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
+
+
+    
+</div>
+
+
+
+
+
+<script>
+    
+    itemCounter = 0;
+        // Function to create a new row with item fields
+        function createNewItemRow() {
+           
+            itemCounter++;
+            $('#item_counter').val(itemCounter);
+
+            const newRow = `
+            <tr class="item-row" id="itemRow${itemCounter}">
+                <td>
+                    <select class="form-control" id="item_${itemCounter}" name="item_${itemCounter}">
+                        <option value="item">Select An Item</option>
+                        {% for item in item %}
+                            <option value="{{item.item_name}}_{{item.id}}" >{{item.item_name}}</option>
+                            <!-- Add more category options as needed -->
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" value="1" class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+                <td>
+                    <select class="form-control" id="unit_${itemCounter}" name="unit_${itemCounter}">
+                        <option value="unit">Select A Unit</option>
+                        {% for unit in unit %}
+                            <option value="{{unit.unit_name}}" >{{unit.unit_name}}</option>
+                            <!-- Add more category options as needed -->
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
+                <td><input type="number" step="0.01" class="form-control" id="discount_${itemCounter}" name="discount_${itemCounter}" required></td>
+                <td><input type="number" step="0.001" class="form-control" id="discount_amount_${itemCounter}" name="discount_amount_${itemCounter}" required></td>
+                <td><input type="number" step="0.01" class="form-control" id="tax_${itemCounter}" name="tax_${itemCounter}" required></td>
+                <td><input type="number" step="0.01" class="form-control" id="tax_amount_${itemCounter}" name="tax_amount_${itemCounter}" required></td>
+                <td><input type="number" step="0.01" class="form-control" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
+            </tr>
+        `;
+    
+        // Append the new row to the table body
+        $('tbody').append(newRow);
+            
+        }
+        createNewItemRow();
+        
+    
+        // Function to remove an item row
+        function removeItemRow(rowNumber) {
+            // Remove the specified item row
+            $(`#itemRow${rowNumber}`).remove();
+        }
+    
+        // Add an event listener to the "Add Item" button
+        $('#addItemButton').on('click', function () {
+            createNewItemRow();
+        });
+
+        $(document).ready(function () {
+            // Event delegation for select elements with IDs starting with 'item_'
+            $(document).on('change', '[id^="item_"]', function () {
+                var selectedValue = $(this).val();
+                var parts = selectedValue.split('_');
+                var selectId = $(this).attr('id');
+                var id = parts[1];
+                
+                $.ajax({
+                    url: '/item_details',
+                    method: 'GET',
+                    data: { id: id },
+                    success: function (data) {
+                        console.log(data);
+                        console.log(selectId);
+                        
+                        var rowNumber = selectId.split('_')[1];
+
+                        console.log(rowNumber)
+                        $('#tax_' + rowNumber).val(data.tax);
+                        $('#unit_' + rowNumber).val(data.unit);
+                        $('#price_' + rowNumber).val(data.sale_price);
+                      
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+            });
+        
+
+    
+    $('tbody').on('input', 'input', function () {
+        calculateTotal($(this));
+    });
+
+    // Trigger the initial calculation when the page loads
+    calculateTotal($('input'));
+
+    function calculateTotal(inputField) {
+        const row = inputField.closest('tr');
+        const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
+        const quantity = parseFloat(row.find('input[id^="qty_"]').val()) || 0;
+        const taxPercentage = parseFloat(row.find('input[id^="tax_"]').val()) || 0;
+        const discountPercentage = parseFloat(row.find('input[id^="discount_"]').val()) || 0;
+
+        // Calculate the tax amount and discount amount
+        const taxAmount = (price * (taxPercentage / 100)).toFixed(2);
+        const discountAmount = (price * (discountPercentage / 100)).toFixed(2);
+
+        // Calculate the total amount
+        const total = (price * quantity) + parseFloat(taxAmount) - parseFloat(discountAmount);
+
+        // Update the tax amount and discount amount fields within the same row
+        row.find('input[id^="tax_amount_"]').val(taxAmount);
+        row.find('input[id^="discount_amount_"]').val(discountAmount);
+
+        // Update the total field within the same row with the calculated value
+        row.find('input[id^="total_"]').val(total.toFixed(2));
+    }
+
+
+
+// Trigger the initial calculation when the page loads
+
+
+
+   // Add an item when the "Add Item" button is clicked
+ 
+
+
+    {% comment %} document.getElementById("discount").addEventListener("input", calculateDiscountAmount);
+
+
+    function calculateDiscountAmount() {
+        const originalPrice = parseFloat(document.getElementById("price").value);
+        const discountPercentage= parseFloat(document.getElementById("discount").value);
+        
+        
+        const taxAmount = (originalPrice * (discountPercentage / 100)).toFixed(2);
+        console.log(taxAmount)
+        document.getElementById("discount_amount").value = taxAmount;
+    }
+    
+    // Add event listeners to price and tax input fields
+    
+    console.log('hello world')
+    
+
+    document.getElementById("price").addEventListener("input", calculateTotal);
+    document.getElementById("qty").addEventListener("input", calculateTotal);
+    document.getElementById("tax").addEventListener("input", calculateTotal);
+    document.getElementById("discount").addEventListener("input", calculateTotal);
+        
+        // Trigger the initial calculation when the page loads
+    calculate();
+    
+     function calculate() {
+            const price = parseFloat(document.getElementById("price").value) || 0;
+            const quantity = parseFloat(document.getElementById("qty").value) || 0;
+            const taxPercentage = parseFloat(document.getElementById("tax").value) || 0;
+            const discountPercentage = parseFloat(document.getElementById("discount").value) || 0;
+        
+            // Calculate the tax amount and discount amount
+            const taxAmount = (price * (taxPercentage / 100)).toFixed(2);
+            const discountAmount = (price * (discountPercentage / 100)).toFixed(2);
+        
+            // Calculate the total amount
+            const total = (price * quantity) + parseFloat(taxAmount) - parseFloat(discountAmount);
+            console.log(total)
+            console.log(taxAmount+"sidfsd9ihf")
+            // Update the tax amount and discount amount fields
+            document.getElementById("tax_amount").value = taxAmount;
+            document.getElementById("discount_amount").value = discountAmount;
+        
+            // Update the total field with the calculated value
+            document.getElementById("total").value = total.toFixed(2);
+        }
+    
+    
+    
+    document.getElementById("price").addEventListener("input", updateTotal);
+    document.getElementById("qty").addEventListener("input", updateTotal);
+    document.getElementById('tax')
+    
+    function updateTotal() {
+        const price = parseFloat(document.getElementById("price").value) ;
+        const quantity = parseFloat(document.getElementById("qty").value) ;
+        const tax = parseFloat(document.getElementById('tax').value);
+        const discount_amount =parseFloat(document.getElementById('discount_amount').value);
+        
+        // Calculate the total based on the formula (price * quantity) - discountAmount + taxAmount
+        const changed_price = price * quantity
+    
+        calculateTax(changed_price,tax)
+                        function calculateTax(price,tax) {
+                            const price_amount = parseFloat(price);
+                            const taxPercentage = parseFloat(tax);
+                        
+                            if (!isNaN(price) && !isNaN(taxPercentage)) {
+                                const taxAmount = (price * (taxPercentage / 100)).toFixed(2);
+                                document.getElementById("tax_amount").value = taxAmount;
+                                console.log(taxAmount+"hello")
+                            }
+                        }
+    
+    
+    
+        return changed_price
+    }
+    
+    
+                        
+    
+    const price = document.getElementById('price').innerHTML
+    const qty = document.getElementById('qty').innerHTML 
+    
+    const amount = price*qty
+    console.log(amount)
+     {% endcomment %}
+</script>

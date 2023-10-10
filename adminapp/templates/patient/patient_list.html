@@ -1,68 +1,94 @@
 
-{% include "layout/header.html" %}
-{% include "layout/sidebar.html" %}
-<div class ="content">
-<div class="container">
-  <div class="main-header">
-    <h1 class="headline">Patient list </h1>
-    <div class="side-btns">
 
+
+
+
+  {% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Pathology Test</title>
+</head>
+<body>
    
-      <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Patient  </a>
+    
+<div class="container">
     <div id="popupContainer" class="form-popup-back">
-      <div class="form-Contain">
-          <div class="POP">
-              <div class="cards">
-                <div class="popup-header">
-                  <span id="closePopupBtn" class="close-button">Close</span>
-                  <h1>Patient Form</h1>
-                </div>
-                  <form class="form_popup" method="post" action="{% url 'patient_form' %}">
-                      {% csrf_token %}
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Patient</h1>
+                  </div>
+
+
+
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'patient_form' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="name">Name:</label>
+                          <input type="text" id="name" name="name" required>
+                      </div>
+                  
                       
                       <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" required>
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="gender">Gender:</label>
-                        <select id="gender" name="gender" required>
-                            <option value="M">Male</option>
-                            <option value="F">Female</option>
-                        </select>
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="date_of_birth">Date of Birth:</label>
-                      <input type="date" id="date_of_birth" name="date_of_birth" required>
-                  </div>
-              
-
-                      <!-- Your form fields go here -->
-                      
-                      <div style="text-align: center;">
-                          <input type="submit" value="Submit">
+                          <label for="phone">Phone:</label>
+                          <input type="text" id="phone" name="phone" required>
                       </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-
-</div>
+                  
+                      <div class="form-group">
+                          <label for="gender">Gender:</label>
+                          <select id="gender" name="gender" required>
+                              <option value="M">Male</option>
+                              <option value="F">Female</option>
+                          </select>
+                      </div>
+                  
+                      <div class="form-group">
+                          <label for="address">Address:</label>
+                          <input type="text" id="address" name="address" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" required>
+                    </div>
+                     
     
+                       
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Pathology</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Patient </a>
+
+    
+    </div>    
+    </div>   
+
+
+
     <table class="table">
       <thead>
         <tr>
@@ -91,31 +117,65 @@
         {% endfor %}
       </tbody>
     </table>
-  </div>
-</div>
-</div>
-<script>
     
-  function toggleSidebar() {
-      const sidebar = document.querySelector(".sidebar");
-      const content = document.querySelector(".content");
-  
-      sidebar.classList.toggle("active");
-      content.classList.toggle("active");
-  }
-  const openPopupBtn = document.getElementById("openPopupBtn");
-      const popupContainer = document.getElementById("popupContainer");
-      const closePopupBtn = document.getElementById("closePopupBtn");
-    {% comment %} console.log(openPopupBtn)
-    console.log(popupContainer)
-      openPopupBtn.addEventListener("click", function() {
-          popupContainer.style.display = "block";
-          console.log('hello')
-      }); {% endcomment %}
-      function change(){
-        popupContainer.style.display = "block";
-      }
-      closePopupBtn.addEventListener("click", function() {
-          popupContainer.style.display = "none";
-      });
-  </script>
+
+    </div>
+<script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+
+    {% comment %} document.getElementById('test_name').addEventListener('change', function () {
+        var selectedTestName = this.value;
+        if (selectedTestName) {
+            // Send an AJAX request to retrieve tax information for the selected test name
+            fetch('/get_tax_info/', {
+                method: 'POST',
+                data:selectedTestName,
+                body: JSON.stringify({'test_name': selectedTestName}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Fill the tax input field with the retrieved tax information
+                document.getElementById('tax_percentage').value = data.tax_percentage;
+            });
+        } else {
+            // Clear the tax input field if no test name is selected
+            document.getElementById('tax_percentage').value = '';
+        }
+    }); {% endcomment %}
+
+    $(document).ready(function () {
+        // Listen for changes in the vehicle_model select field
+        $('#test_name').change(function () {
+            var selectedVehicle = $(this).val();
+            // Make an AJAX request to fetch the driver name for the selected vehicle
+            $.ajax({
+                type: 'GET',
+                url: 'get_tax_info',
+                data: { 'test_name': selectedVehicle },
+                success: function (data) {
+                    // Update the driver_name input field with the retrieved value
+                    $('#tax_percentage').val(data.tax);
+                },
+                error: function () {
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+       
+    </script>
+</body>
+</html>

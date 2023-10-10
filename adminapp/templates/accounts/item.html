@@ -1,0 +1,241 @@
+
+
+
+
+
+    <!-- create_child.html -->
+    {% include "layout/sidebar.html" %}
+    {% include "layout/header.html" %}
+    <div class="container">
+    
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Item </h1>
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'ambulance_call' %}">
+               
+    
+                    
+    {% csrf_token %}<div class="form-group">
+        <label for="item_name">Item Name:</label>
+        <input type="text" class="form-control" id="item_name" name="item_name" required>
+    </div>
+
+
+    <div class="form-group">
+        <label for="category">Category:</label>
+        
+        <select class="form-control" id="category" name="category">
+            <option value="Category1">Category 1</option>
+            {% for med in medicine %}
+
+            <option value="{{med.medicine_category}}" >{{med.medicine_category}}</option>
+
+          
+            <!-- Add more category options as needed -->
+            {% endfor %}
+
+            {% for item_cat in item_cat %}
+
+            <option value="{{item_cat.item_category}}" >{{item_cat.item_category}}</option>
+
+            <!-- Add more category options as needed -->
+            {% endfor %}
+
+
+            {% for cat in cat %}
+
+            <option value="{{cat.category}}" >{{cat.category}}</option>
+
+            <!-- Add more category options as needed -->
+            {% endfor %}
+
+
+
+
+        </select>
+    </div>
+
+
+    <div class="form-group">
+        <label for="unit">Select A Unit </label>
+        
+        <select class="form-control" id="unit" name="unit">
+            <option value="unit">Select A Unit</option>
+
+            {% for unit in unit %}
+
+            <option value="{{unit.unit_name}}" >{{unit.unit_name}}</option>
+
+            
+            <!-- Add more category options as needed -->
+            {% endfor %}
+
+
+
+
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="item_image">Add Item Image:</label>
+        <input type="file" class="form-control-file" id="item_image" name="item_image">
+    </div>
+
+    <div class="form-group">
+        <label for="sale_price">Sale Price:</label>
+        <input type="number" step="0.01" class="form-control" id="sale_price" name="sale_price" required>
+    </div>
+
+    <div class="form-group">
+        <label for="disc_on_sale_price">Discount on Sale Price (%):</label>
+        <input type="number" step="0.01" class="form-control" id="disc_on_sale_price" name="disc_on_sale_price" required>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="purchase_price">Purchase Price:</label>
+        <input type="number" step="0.01" class="form-control" id="purchase_price" name="purchase_price" required>
+    </div>
+
+    <div class="form-group">
+        <label for="tax_rate">Tax Rate (%):</label>
+        <input type="number" step="0.01" class="form-control" id="tax_rate" name="tax_rate" required>
+    </div>
+
+    <div class="form-group">
+        <label for="opening_quantity">Opening Quantity:</label>
+        <input type="number" step="0.01" class="form-control" id="opening_quantity" name="opening_quantity" required>
+    </div>
+
+    <div class="form-group">
+        <label for="at_price">At Price:</label>
+        <input type="number" step="0.01" class="form-control" id="at_price" name="at_price" required>
+    </div>
+
+    <div class="form-group">
+        <label for="as_of_date">As of Date:</label>
+        <input type="date" class="form-control" id="as_of_date" name="as_of_date" required>
+    </div>
+
+    <div class="form-group">
+        <label for="min_stock_to_maintain">Min Stock To Maintain:</label>
+        <input type="number" step="0.01" class="form-control" id="min_stock_to_maintain" name="min_stock_to_maintain" required>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location:</label>
+        <input type="text" class="form-control" id="location" name="location" required>
+    </div>
+
+   
+
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">  Add Item</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Item </a>
+    
+    </div>    
+    </div>    
+    
+    
+    
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th> Name</th>
+            <th>Sale Price</th>
+            <th>Opening Quantity</th>
+            <th>Price</th>
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for item in item %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+               <td>{{ item.sale_price }}</td>
+              <td>{{ item.opening_quantity }}</td>
+              <td>{{ item.at_price }}</td>
+            
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    <script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+    const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+
+    $(document).ready(function () {
+        // Listen for changes in the vehicle_model select field
+        $('#vehicle_model').change(function () {
+            var selectedVehicle = $(this).val();
+            // Make an AJAX request to fetch the driver name for the selected vehicle
+            $.ajax({
+                type: 'GET',
+                url: '/get_driver_name', // Replace with your actual URL
+                data: { 'vehicle_model': selectedVehicle },
+                success: function (data) {
+                    // Update the driver_name input field with the retrieved value
+                    $('#driver_name').val(data.driver_name);
+                },
+                error: function () {
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+       </script> 
+       
+  

@@ -1,0 +1,191 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class='container'>
+    <h2>Add Purchase</h2>   
+    <form method="post" >
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ invoice.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ invoice.phone_number }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="invoice_number">Bill Number:</label>
+            <input type="text" class="form-control" id="invoice_number" name="invoice_number" value="{{ invoice.invoice_number }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="invoice_date">Bill Date:</label>
+            <input type="date" class="form-control" id="invoice_date" name="invoice_date" value="{{ invoice.invoice_date }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="state_of_supply">State of Supply:</label>
+            <input type="text" class="form-control" id="state_of_supply" name="state_of_supply" value="{{ invoice.state_of_supply }}" required>
+        </div>
+
+
+
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Item </th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Discount Percentage</th>
+                <th>Discount Amount</th>
+                <th>Tax Percentage</th>
+                <th>Tax Amount</th>
+                <th>Total Amount </th>
+    
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+                {% for product in product %}
+                <tr>
+                <td><input type="text" class="form-control" id="item" name="item" value="{{ product.item }}" required> </td>
+               <td> <input type="number" step="0.01" class="form-control" id="qty" name="qty" value="{{ product.qty }}" required></td>
+                <td>  <input type="text" class="form-control" id="unit" name="unit" value="{{ product.unit }}" required> </td>
+                <td>  <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ product.price }}" required></td>
+                <td>  <input type="number" step="0.01" class="form-control" id="discount" name="discount" value="{{ product.discount }}" required> </td>
+                <td>  <input type="number" step="0.001" class="form-control" id="discount_amount" name="discount_amount" value="{{ product.discount_amount }}" required> </td>
+                <td><input type="number" step="0.01" class="form-control" id="tax" name="tax" value="{{ product.tax }}" required> </td>
+                <td> <input type="number" step="0.01" class="form-control" id="tax_amount" name="tax_amount" value="{{ product.tax_amount }}" required>  </td>
+                <td> <input type="number" step="0.01" class="form-control" id="total" name="total" value="{{ product.total }}" required> </td>
+                </tr>
+                {% endfor %}
+            
+            </tbody>
+
+          </table>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+    <button type="none" class="btn btn-primary"><a href="{% url 'generate_purchase_pdf' invoice.id %}">Generate Invoice</a></button>
+    
+    
+</div>
+
+
+<script>
+
+    
+
+const amount = document.querySelector('#tax_amount')
+    var phone = document.querySelector('#phone_number')
+    $(document).ready(function () {
+        // Add an event listener to the select element
+        $('#name').on('change', function () {
+            // Get the selected value
+            var selectedValue = $(this).val();
+            
+            var parts = selectedValue.split('_');
+            var id = parts[1];
+            // Make an AJAX request to retrieve user data based on the selected value
+            $.ajax({
+                url: '/Sales_Party', // Replace with the actual API endpoint URL
+                method: 'GET',
+                data: { id: id },
+                success: function (data) {
+                    // Handle the retrieved data
+                    console.log(data);
+                    $('#phone_number').val(data.phone_no);
+                    
+                    
+                    // You can manipulate the data here and display it as needed
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+
+
+
+     $(document).ready(function () {
+        // Add an event listener to the select element
+        $('#item').on('change', function () {
+            // Get the selected value
+            var selectedValue = $(this).val();
+            
+            var parts = selectedValue.split('_');
+            var id = parts[1];
+            // Make an AJAX request to retrieve user data based on the selected value
+            $.ajax({
+                
+                url: '/item_details', // Replace with the actual API endpoint URL
+                method: 'GET',
+                data: { id: id },
+                success: function (data) {
+                    // Handle the retrieved data
+                    console.log(data);
+                   
+                    $('#tax').val(data.tax);
+                    $('#unit').val(data.unit);
+                    $('#price').val(data.sale_price);
+
+
+                    calculateTax(data.sale_price,data.tax)
+                    function calculateTax(price,tax) {
+                        const price_amount = parseFloat(price);
+                        const taxPercentage = parseFloat(tax);
+                    
+                        if (!isNaN(price) && !isNaN(taxPercentage)) {
+                            const taxAmount = (price * (taxPercentage / 100)).toFixed(2);
+                            document.getElementById("tax_amount").value = taxAmount;
+                            console.log(taxAmount+"hello")
+                        }
+                    }
+                    
+                    
+                    // You can manipulate the data here and display it as needed
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    }); 
+
+    
+    // Add event listeners to price and tax input fields
+    document.getElementById("discount").addEventListener("input", calculateDiscountAmount);
+
+    function calculateDiscountAmount() {
+        const originalPrice = parseFloat(document.getElementById("price").value);
+        const discountPercentage= parseFloat(document.getElementById("discount").value);
+        
+        console.log('manpoj')
+        console.log(discountPercentage)
+        console.log(originalPrice)
+        const taxAmount = (originalPrice * (discountPercentage / 100)).toFixed(2);
+        console.log(taxAmount)
+        document.getElementById("discount_amount").value = taxAmount;
+    }
+    // Add event listeners to price and tax input fields
+    
+
+    document.getElementById("discount").addEventListener("input", updateTotal);
+    function updateTotal() {
+        const totalTax = document.getElementById("tax_amount").value;
+        const totalDis = document.getElementById("discount_amount").value;
+        const totalPrice = document.getElementById("price").value;
+    
+
+        
+        const total = (parseFloat(totalPrice)+parseFloat(totalTax)-parseFloat(totalDis))
+        document.getElementById("total").value = total;
+    }
+
+
+</script>

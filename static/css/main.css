@@ -149,8 +149,7 @@ font-weight: bold;
 .close-button {
   background:none;
   color: #fff;
-  width: 40px;
-  height: 40px;
+ 
   position: absolute;
   top: 0;
   right: 0;
@@ -351,7 +350,7 @@ transition: .3s;
 }
 .main-header{
   border-color: #979999;
-  border-width:1px 0px 1px 0px ;
+  border-width:1px 0px 0px 0px ;
   border-style: solid;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -451,6 +450,7 @@ transition: .3s;
 .close-button {
   position: absolute !important;
   top: 10px !important;
+ 
   right: 10px !important;
   cursor: pointer !important;
   color: red !important ;
@@ -465,7 +465,7 @@ transition: .3s;
 }
 
 .close-button{
-  padding-top: 10px;
+ 
 }
 body{
   text-decoration: none !important;

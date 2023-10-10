@@ -192,9 +192,9 @@ class Medicine(models.Model):
     composition = models.CharField(max_length=255)
     group = models.CharField(max_length=255)
     unit = models.CharField(max_length=255)
-    min_level = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    reorder_level = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
-    tax = models.DecimalField(max_digits=5, decimal_places=2,blank=True,null=True)
+    min_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
+    reorder_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
+    tax = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
     unit_packing = models.CharField(max_length=255)
     vat_account = models.CharField(max_length=255,blank=True,null=True)
     note = models.TextField(blank=True, null=True)
@@ -226,7 +226,7 @@ class Med_Details(models.Model):
 
 
     
-class purchase(models.Model):
+class Purchase(models.Model):
     category = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     batch_no = models.CharField(max_length=50)
@@ -842,3 +842,72 @@ class Zoom(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+
+
+class Party(models.Model):
+    part_name = models.CharField(max_length=255)
+    gstin = models.CharField(max_length=15,null=True,blank=True)
+    phone_number = models.CharField(max_length=15,null=True,blank=True)
+    gst_type = models.CharField(max_length=10)
+    state = models.CharField(max_length=255)
+    email_id = models.EmailField()
+    billing_address = models.TextField()
+    opening_balance = models.DecimalField(max_digits=13, decimal_places=3)
+    as_of_date = models.DateField()
+    to_pay = models.BooleanField(default=False)  # To Pay as a Boolean Field
+    to_receive = models.BooleanField(default=False)
+
+
+class Category(models.Model):
+        category = models.CharField(max_length=20)
+
+
+
+
+
+class Sales_Invoice(models.Model):
+    name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+    invoice_number = models.CharField(max_length=10)
+    invoice_date = models.DateField()
+    type = models.CharField(max_length=100,default='sales')
+    state_of_supply = models.CharField(max_length=255)
+
+class Item_Invoice(models.Model):
+    invoice = models.ForeignKey(Sales_Invoice, on_delete=models.CASCADE)
+    item = models.CharField(max_length=255)
+    qty = models.DecimalField(max_digits=13, decimal_places=3)
+    unit = models.CharField(max_length=13)
+    price = models.DecimalField(max_digits=13, decimal_places=3)
+    
+    discount = models.DecimalField(max_digits=13, decimal_places=3)
+    discount_amount = models.DecimalField(max_digits=13, decimal_places=3)
+    tax = models.DecimalField(max_digits=5, decimal_places=3)
+    tax_amount = models.DecimalField(max_digits=10, decimal_places=3)
+    total = models.DecimalField(max_digits=13, decimal_places=3)
+
+
+
+class Item_Acc(models.Model):
+    item_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+
+    item_image = models.ImageField(upload_to='item_images/', blank=True, null=True)
+    sale_price = models.DecimalField(max_digits=13, decimal_places=3)
+    disc_on_sale_price = models.DecimalField(max_digits=13, decimal_places=3, default=0)
+    unit = models.CharField(max_length=100,blank=True, null=True)
+    purchase_price = models.DecimalField(max_digits=13, decimal_places=3)
+    tax_rate = models.DecimalField(max_digits=13, decimal_places=3)
+    opening_quantity = models.DecimalField(max_digits=13, decimal_places=3)
+    at_price = models.DecimalField(max_digits=13, decimal_places=3)
+    as_of_date = models.DateField()
+    min_stock_to_maintain = models.DecimalField(max_digits=13, decimal_places=3)
+    location = models.CharField(max_length=255)
+
+
+
+class Unit(models.Model):
+    unit_name = models.CharField(max_length=255)
+
