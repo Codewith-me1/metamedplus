@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Item</title>
-</head>
-<body>
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<div class="container">
     <h1>Add Item</h1>
     <form method="POST" action="{% url 'add_itemcat' %}">
         {% csrf_token %}
@@ -43,5 +40,4 @@
           {% endfor %}
         </tbody>
       </table>
-</body>
-</html>
+    </div>

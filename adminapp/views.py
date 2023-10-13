@@ -707,7 +707,7 @@ def ipd_patient(request):
             bed_number=bed_number,
         )
         ipd.save()
-        doctors = AddStaff.objects.filter(designation='doctor')
+        doctors = AddStaff.objects.filter(role='Doctor')
         type = IpdPatient.objects.all()
         bedtype = Bedtype.objects.all()
         bed = Bed.objects.all()
@@ -1787,7 +1787,7 @@ def add_supplierdet(request):
 
 
 
-def add_item(request):
+def     add_item(request):
     if request.method == 'POST':
         item = request.POST['item']
         item_category = request.POST['item_category']
@@ -2738,11 +2738,11 @@ def manage_items(request):
             disc_on_sale_price=disc_on_sale_price,
             
             purchase_price=purchase_price,
-            tax_rate=tax_rate,
+            tax_rate=tax_rate,      
             opening_quantity=opening_quantity,
             at_price=at_price,
             as_of_date=as_of_date,
-            min_stock_to_maintain=min_stock_to_maintain,
+            min_stock_to_maintain=min_stock_to_maintain, 
             location=location
         )
         item.save()
@@ -3653,20 +3653,6 @@ def search_appointments(request):
 
         return render(request, 'reports/appointment.html', {'results': results, 'doctor':appointment,'patient':patient })
     return render(request, 'reports/appointment.html')
-    # doctor = request.GET.get('doctor', '')
-    
-    # try:
-    #     appointments = AppointmentDetails.objects.filter(doctor=doctor)
-    #     appointments_json = serializers.serialize('json', appointments)
-    #     data = {
-    #         'success': True,
-    #         'data':appointments_json,
-    #     }
-    # except AppointmentDetails.DoesNotExist:
-    #     data = {
-    #         'success': False,
-    #         'message': 'Details not found for the given Case ID.',
-    #     }
-    # return JsonResponse(data)
+   
 
 
