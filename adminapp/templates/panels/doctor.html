@@ -332,95 +332,26 @@ h1{
 
     <div class="chart">
       <div class="chart-heading">
+       
+        {% if user.role == 'Admin' %}
         <div class="slider">
-          <div class="slide_viewer">
-            <div class="slide_group">
-              <div class="slide">
-                <div class="card_income card">
-                  <img src="{% static "css/images/icons8-money-100.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      General Income
-                  </h3>
-                  <h1>RS 0.00</h1>
+            <div class="slide_viewer">
+              <div class="slide_group">
+                <div class="slide">
+                  <h1>Ads</h1>
                 </div>
+                <div class="slide">
+                  <h1>Ads</h1>
                 </div>
+                <div class="slide">
                 </div>
-              
-              
-              
-              
-
-              <div class="slide">
-                <div class="card_bank card">
-                  <img src="{% static "/css/images/icons8-water-16.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      Blood Bank Income
-                  </h3>
-                  <h1>RS 0.00</h1>
-                  </div>
+                <div class="slide">
+                  <h1>Ads</h1>
+                </div>
               </div>
-              </div>
-              
-
-              <div class="slide">
-                <div class="card_ambulance card">
-                  <img src="{% static "css\images\icons8-ambulance-50.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      Ambulance Income
-                  </h3>   
-                  <h1>RS 0.00</h1>
-                  </div>
-              </div>
-              </div>
-              <div class="slide">
-                <div class="card_pharma card">
-                  <img src="{% static "css/images/icons8-microscope-50.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      Pharmacy Income
-                  </h3>
-                  <h1>RS 0.00</h1>
-                  </div>
-
-
-              </div>
-              </div>
-
-              <div class="slide">
-                <div class="card_ipd card">
-                  <img src="{% static "/css/images/icons8-bed-50.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      IPD Income 
-                  </h3>
-                  <h1>RS 0.00</h1>
-                  </div>
-
-
-              </div>
-              </div>
-
-              <div class="slide">
-                
-                <div class="card_opd card">
-                  <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt="">
-                  <div class="box-content">
-                  <h3>
-                      OPD Income 
-                  </h3>
-                  <h1>RS 0.00</h1>
-              </div>
-              </div>
-              </div>
-
-
             </div>
           </div>
-        </div>
-      
+      {% endif %}
   </div>
   </div>
   </div>  
@@ -677,3 +608,95 @@ var chrt = document.getElementById("chartId").getContext("2d");
 
 
 </html>
+
+
+
+{% comment %} 
+<div class="slider">
+  <div class="slide_viewer">
+    <div class="slide_group">
+      <div class="slide">
+        <div class="card_income card">
+          <img src="{% static "css/images/icons8-money-100.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              General Income
+          </h3>
+          <h1>RS 0.00</h1>
+        </div>
+        </div>
+        </div>
+      
+      
+      
+      
+
+      <div class="slide">
+        <div class="card_bank card">
+          <img src="{% static "/css/images/icons8-water-16.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              Blood Bank Income
+          </h3>
+          <h1>RS 0.00</h1>
+          </div>
+      </div>
+      </div>
+      
+
+      <div class="slide">
+        <div class="card_ambulance card">
+          <img src="{% static "css\images\icons8-ambulance-50.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              Ambulance Income
+          </h3>   
+          <h1>RS 0.00</h1>
+          </div>
+      </div>
+      </div>
+      <div class="slide">
+        <div class="card_pharma card">
+          <img src="{% static "css/images/icons8-microscope-50.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              Pharmacy Income
+          </h3>
+          <h1>RS 0.00</h1>
+          </div>
+
+
+      </div>
+      </div>
+
+      <div class="slide">
+        <div class="card_ipd card">
+          <img src="{% static "/css/images/icons8-bed-50.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              IPD Income 
+          </h3>
+          <h1>RS 0.00</h1>
+          </div>
+
+
+      </div>
+      </div>
+
+      <div class="slide">
+        
+        <div class="card_opd card">
+          <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt="">
+          <div class="box-content">
+          <h3>
+              OPD Income 
+          </h3>
+          <h1>RS 0.00</h1>
+      </div>
+      </div>
+      </div>
+
+
+    </div>
+  </div>
+</div> {% endcomment %}
