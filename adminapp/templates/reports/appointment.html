@@ -1,0 +1,91 @@
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+        <div class="form-group">
+            <label for="name"> Doctor Name</label>
+            <input type="text" id="name" name="name" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label for="patient">Patient Name</label>
+            <input type="text" id="patient" name="patient" placeholder="name">
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Appointment</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Patient</th>
+            <th>Doctor</th>
+            
+            <th>Gender</th>
+            <th>Fees</th>
+            <th>Priority</th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.patient_name }}</td>
+                <td>{{ item.doctor }}</td>
+            
+               <td>{{ item.gender }}</td>
+             
+              <td>{{ item.fees }}</td>
+              <td>{{ item.priority }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

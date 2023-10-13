@@ -8,18 +8,28 @@ from django.urls import reverse
 from .models import DeathRecord
 from .models import CustomUser
 from .models import Payroll
+from .models import Asset
+from datetime import date
 from .models import Referral_commission
+from django.db.models import Sum
+from django.db.models.functions import Coalesce 
 from .models import Purchase
 from .models import Item_Acc
+from .models import Consultant_register
+from .models import Operation
+from .models import MedicationDoseage
 from django.utils.datastructures import MultiValueDictKeyError
 import decimal
+from .models import Ipd_Payments
 from .models import Party
+from django.core import serializers
 from .models import NursingRecord ,DoctorNote
 from .models import Unit
 from .models import Sales_Invoice
 from .models import ChargeType
 from urllib.parse import unquote
 from django.template.loader import get_template
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from .models import Item_Invoice
 from django.shortcuts import render
 from xhtml2pdf import pisa
@@ -27,6 +37,7 @@ from xhtml2pdf import pisa
 from .models import Zoom
 from .models import Category
 from .models import MedicationDose
+from django.db.models import F, Sum, DecimalField
 from .models import Task
 from .models import OpdPatient
 from .models import Radiology
@@ -134,7 +145,7 @@ def appointment(request):
 
   appointments = AppointmentDetails.objects.all()
   patients = Patient.objects.all()
-  doctors = AddStaff.objects.filter(designation='doctor')
+  doctors = AddStaff.objects.filter(role='Doctor')
 
 
   context = {
@@ -2339,12 +2350,20 @@ def ipd_dashboard(request,ipd_id):
     nurse= NursingRecord.objects.all()
     staff = AddStaff.objects.filter(designation="nurse")
     doctor  = AddStaff.objects.filter(designation="doctor")
+    medicine = MedicationDoseage.objects.all()
+    consultant = Consultant_register.objects.all()
+    operation = Operation.objects.all()
+    payment = Ipd_Payments.objects.all()
 
     context ={
         'nurse':nurse,
         'staff':staff,
         'ipd':ipd,
         'doctor':doctor,
+        'medicine':medicine,
+        'consultant':consultant,
+        'operation':operation,
+        'payment':payment
     }
     return render(request,'ipd/pat_dash.html',context)
 
@@ -3238,5 +3257,416 @@ def purchase(request):
         'bill':bill
     }
     return render(request,'accounts/purchase.html',context)
+
+
+
+def balance_sheet(request):
+    # Calculate total sales and purchases
+
+    start_date = date.today()
+    total_sales = Item_Invoice.objects.filter(invoice__type='sales').aggregate(
+        total_sales=Sum(F('total'))
+    )['total_sales'] or 0
+
+    total_purchases = Item_Invoice.objects.filter(invoice__type='purchase').aggregate(
+        total_purchases=Sum(F('total'))
+    )['total_purchases'] or 0
+
+    
+    total_sales_tax = Item_Invoice.objects.filter(invoice__type='sales').aggregate(
+        total_sales_tax=Sum(F('tax_amount'))
+    )['total_sales_tax'] or 0
+
+    total_purchase_tax = Item_Invoice.objects.filter(invoice__type='purchase').aggregate(
+        total_purchase_tax=Sum(F('tax_amount'))
+    )['total_purchase_tax'] or 0
+
+
+    opening_stock = Item_Acc.objects.aggregate(
+        opening_stock=Sum(ExpressionWrapper(F('opening_quantity') * F('purchase_price'), output_field=DecimalField(max_digits=13, decimal_places=3)))
+    )['opening_stock'] or 0
+
+    total_short_term_assets = Asset.objects.filter(asset_type='Short-Term').aggregate(
+        total_short_term_assets=Sum('price')
+    )['total_short_term_assets'] or 0
+
+    total = Asset.objects.filter(asset_type="Long-term")
+    print(total)
+    total_long_term_assets = Asset.objects.filter(asset_type='Long-Term').aggregate(
+        total_long_term_assets=Sum('price')
+    )['total_long_term_assets'] or 0
+    print(total_long_term_assets)
+
+    closing_stock = opening_stock + total_purchases - total_sales
+
+    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets
+
+    
+    print(closing_stock)
+    print(opening_stock)
+
+    context = {
+        'total_sales': total_sales,
+        'total_purchases': total_purchases,
+        'balance': balance,
+        'opening_stock': opening_stock,
+        'closing_stock': closing_stock,
+        'total_sales_tax': total_sales_tax,
+        'total_short_term_assets': total_short_term_assets,
+        'total_long_term_assets': total_long_term_assets,
+        'total_purchase_tax': total_purchase_tax,
+        'start_date':start_date,
+    }
+
+    return render(request, 'accounts/report/balancesheet.html', context)
+
+
+
+def create_asset(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+        asset_type = request.POST.get("asset_type")
+        asset = Asset(name=name, description=description,asset_type=asset_type, price=price,)
+        asset.save()
+        return redirect("create_asset")  # Redirect to a list view of assets
+    asset = Asset.objects.all()
+    context={
+        'asset':asset,
+    }
+    return render(request, "accounts/create_asset.html",context)
+
+
+def purchase_report(request):
+    bill = Sales_Invoice.objects.filter(type="purchase")
+    context={ 
+        'bill':bill,
+    }
+    return render(request,'accounts/report/purchase.html',context)
+
+
+
+def sales_report(request):
+    bill = Sales_Invoice.objects.filter(type="sales")
+    context={ 
+        'bill':bill,
+    }
+    return render(request,'accounts/report/sales.html',context)
+
+
+# Reports 
+
+
+def report_appointment(request):
+    return render(request, 'reports/appointment.html')
+
+
+
+
+def add_medication_dose(request,id):
+    if request.method == 'POST':
+        date = request.POST['date']
+        time = request.POST['time']
+        medicine_category = request.POST['medicine_category']
+        medicine_name = request.POST['medicine_name']
+        dosage = request.POST['dosage']
+        remarks = request.POST['remarks']
+        patient = get_object_or_404(Patient, id=id)
+        # Create a new NursingRecord object and save it to the database
+       
+        medication_dose = MedicationDoseage(
+            date=date,
+            time=time,
+            medicine_category=medicine_category,
+            medicine_name=medicine_name,
+            dosage=dosage,
+            remarks=remarks,
+            patient= patient
+        )
+        medication_dose.save()
+        
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+       
+    medicine = MedicationDoseage.objects.all()
+    context ={
+        'medicine':medicine,
+        
+    }
+    return render(request, 'ipd/pat_dash.html',context)
+
+          # Redirect to a success page or another view
+
+    
+
+def consultant_register(request,id):
+    if request.method == 'POST':
+        applied_date = request.POST['applied_date']
+        instruction_date = request.POST['instruction_date']
+        consultant_doctor = request.POST['consultant_doctor']
+        instruction = request.POST['instruction']
+        patient = get_object_or_404(Patient, id=id)
+
+        consultant  = Consultant_register(
+            applied_date=applied_date,
+            instruction_date=instruction_date,
+            consultant_doctor=consultant_doctor,
+            instruction=instruction,
+            patient=patient
+        )
+        consultant.save()
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+
+    return render(request, 'appointment_create.html')
+
+
+
+
+
+def operation_create(request,id):
+
+    if request.method == 'POST':
+        operation_category = request.POST['operation_category']
+        operation_name = request.POST['operation_name']
+        operation_date = request.POST['operation_date']
+        consultant_doctor = request.POST['consultant_doctor']
+        operation_assistant = request.POST['operation_assistant']
+        anesthesia_type = request.POST.get('anesthesia_type', '')
+        ot_technician = request.POST.get('ot_technician', '')
+        ot_assistant = request.POST.get('ot_assistant', '')
+        assistant2 = request.POST.get('assistant2', '')
+        remark = request.POST.get('remark', '')
+        result = request.POST.get('result', '')
+        patient = get_object_or_404(Patient, id=id)
+
+
+
+        operation = Operation(
+            patient=patient,
+            operation_category=operation_category,
+            operation_name=operation_name,
+            operation_date=operation_date,
+            ot_assistant=ot_assistant,
+            consultant_doctor=consultant_doctor,
+            anesthesia_type=anesthesia_type,
+            ot_technician=ot_technician,
+            assistant=ot_assistant,
+            assistant2=assistant2,
+            remark=remark,
+            result=result
+        )
+        operation.save()
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+        
+
+    return HttpResponse('Not Done ')
+
+
+
+
+
+def ipd_payment(request,id):
+    if request.method == 'POST':
+        date = request.POST['date']
+        amount = request.POST['amount']
+        payment_mode = request.POST['payment_mode']
+        note = request.POST.get('note', '')
+        patient = get_object_or_404(Patient,id=id)
+
+
+        payment = Ipd_Payments(
+            date=date,
+            amount=amount,
+            payment_mode=payment_mode,
+            patient = patient,
+            note=note
+        )
+        payment.save()
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+        
+
+    return render(request, 'ipd/ipd.html')
+
+
+
+
+def search_OPD(request):
+    if request.method == 'GET':
+        doctor = request.GET.get('name', '')
+        patient  = request.GET.get('patient', '')
+        systoms  = request.GET.get('systoms', '')
+
+        opd = OpdPatient.objects.all()
+        
+
+        if doctor:
+            results = opd.filter(consultant_doctor=doctor)
+            print(results)
+              # Replace field_to_search with the field you want to search
+        elif patient:
+            patients = get_object_or_404(Patient,name=patient)
+            results = opd.filter(patient=patients)
+        elif systoms:
+            results = opd.filter(symptoms_type=systoms)
+        else:
+            results = None
+
+        return render(request, 'reports/opd.html', {'results': results, 'doctor':opd,'patient':patient })
+
+    return render(request, 'reports/opd.html')
+
+
+
+def search_IPD(request):
+    if request.method == 'GET':
+        doctor = request.GET.get('name', '')
+        patient  = request.GET.get('patient', '')
+        systoms  = request.GET.get('systoms', '')
+        
+
+        opd = IpdPatient.objects.all()
+        
+
+        if doctor:
+            results = opd.filter(consultant_doctor=doctor)
+            print(results)
+              # Replace field_to_search with the field you want to search
+        elif patient:   
+
+            patients = get_object_or_404(Patient,name=patient)
+            results = opd.filter(patient=patients)
+            
+        elif systoms:   
+            results = opd.filter(symptoms_type=systoms)
+
+        else:
+            results = None
+
+        return render(request, 'reports/ipd.html', {'results': results, 'doctor':opd,'patient':patient })
+
+    return render(request, 'reports/ipd.html')
+
+
+def search_patient(request):
+    if request.method == 'GET':
+        
+        patient  = request.GET.get('patient', '')
+       
+        
+
+        opd = Patient.objects.all()
+        
+
+        if patient:
+            results = opd.filter(name=patient)
+
+              # Replace field_to_search with the field you want to search
+
+        else:
+            results = None
+
+        return render(request, 'reports/patient.html', {'results': results, 'doctor':opd,'patient':patient })
+
+    return render(request, 'reports/patient.html')
+
+
+
+
+def search_tpa(request):
+    if request.method == 'GET':
+        
+        tpa  = request.GET.get('name', '')
+
+        
+
+        opd = TPA.objects.all()
+        
+
+        if tpa:
+            results = opd.filter(name=tpa)
+
+              # Replace field_to_search with the field you want to search
+
+        else:
+            results = None
+
+        return render(request, 'reports/tpa.html', {'results': results, 'tpas':opd,'patient':tpa })
+    
+    
+
+    return render(request, 'reports/tpa.html')
+
+def search_medicine(request):
+    if request.method == 'GET':
+        
+        medicine = request.GET.get('medicine','')
+        medicine_cat = request.GET.get('category','')
+        print(medicine)
+
+        
+
+        opd = Medicine.objects.all()
+        cat = MedicineCategory.objects.all()
+        
+
+        if medicine:
+            results = opd.filter(name=medicine)
+
+              # Replace field_to_search with the field you want to search
+        elif medicine_cat:
+            results = opd.filter(category=medicine_cat)
+        else:
+            results = None
+
+        return render(request, 'reports/medicine.html', {'results': results, 'med':opd, 'cat':cat })
+    
+    
+
+    return render(request, 'reports/medicine.html')
+
+
+
+def search_appointments(request):
+    if request.method == 'GET':
+        doctor = request.GET.get('name', '')
+        patient  = request.GET.get('patient', '')
+        appointment = AppointmentDetails.objects.all()
+        print(doctor)
+
+        if doctor:
+            results = appointment.filter(doctor=doctor)
+            print(results)
+              # Replace field_to_search with the field you want to search
+        elif patient:
+            results = appointment.filter(patient_name=patient)
+
+        else:
+            results = None
+
+        return render(request, 'reports/appointment.html', {'results': results, 'doctor':appointment,'patient':patient })
+    return render(request, 'reports/appointment.html')
+    # doctor = request.GET.get('doctor', '')
+    
+    # try:
+    #     appointments = AppointmentDetails.objects.filter(doctor=doctor)
+    #     appointments_json = serializers.serialize('json', appointments)
+    #     data = {
+    #         'success': True,
+    #         'data':appointments_json,
+    #     }
+    # except AppointmentDetails.DoesNotExist:
+    #     data = {
+    #         'success': False,
+    #         'message': 'Details not found for the given Case ID.',
+    #     }
+    # return JsonResponse(data)
 
 

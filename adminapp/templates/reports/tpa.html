@@ -1,0 +1,95 @@
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+      
+        
+        <div class="form-group">
+            <label for="category_name">TPA Name*</label>
+           <select id= "name" name="name">
+            <option value="">Select A Category</option>
+            {% for tpa in tpas %}
+            <option value="{{tpa.name}}">{{ tpa.name}}</option>
+            {% endfor %}
+            </select>
+        
+         </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">TPA</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Medicine Name</th>
+            
+            
+            <th>Medication Category </th>
+            <th>Price</th>
+            <th>Name</th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.name }}</td>
+                
+            
+               <td>{{ item.date_of_birth }}</td>
+             
+              <td>{{ item.phone  }}</td>
+              <td>{{ item.gender }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

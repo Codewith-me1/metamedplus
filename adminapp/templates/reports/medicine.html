@@ -1,0 +1,104 @@
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+      
+        
+        <div class="form-group">
+            <label for="category_name">Medicine Name*</label>
+           <select id= "name" name="medicine">
+            
+            {% for med in med %}
+            <option value="{{med.name}} ">{{ med.name}}</option>
+            {% endfor %}
+            </select>
+        
+         </div>
+
+         <div class="form-group">
+            <label for="category_name">Medicine Category*</label>
+           <select id= "name" name="name">
+            <option value="">Select A Category</option>
+            {% for cat in cat %}
+            <option value="{{med.category}}">{{ med.category}}</option>
+            {% endfor %}
+            </select>
+        
+         </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Medicine</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Medicine Name</th>
+            
+            
+            <th>Medication Category </th>
+            <th>Composition</th>
+            <th>Unit</th>
+            
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.name }}</td>
+                
+            
+               <td>{{ item.category }}</td>
+             
+              <td>{{ item.composition  }}</td>
+              <td>{{ item.unit }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

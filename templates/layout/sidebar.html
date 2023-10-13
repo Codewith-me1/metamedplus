@@ -124,6 +124,21 @@
             <a class="dropdown-a" href="{% url "add_death" %}">Death Record</a>
             
           </div>    
+          <button class="dropdown-btn">Reports 
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-container">
+            <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
+            <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
+            <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
+            <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
+            <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
+            <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
+
+            
+          </div>   
+
+
           <li><a href="{% url 'referral' %}">Referral</a></li>
           <li><a href="{% url 'add_tpa' %}">TPA</a></li>
           <li><a href="{% url 'add_itemstock' %}">Inventory</a></li>
@@ -155,6 +170,32 @@
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
               <a  class="dropdown-a"href="{% url 'payroll' %}">Payroll</a>
+              
+              <button class="dropdown-btn"> Accounting
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
+              
+                <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
+                 <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
+                 <a class="dropdown-a" href="{% url 'sale' %}">Sales Invoice</a>
+                 <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
+
+                 <button class="dropdown-btn"> Report
+                  <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                
+                  <a class="dropdown-a" href="{% url 'balance_sheet' %}"> Balance Sheet</a>
+                   <a class="dropdown-a" href="{% url 'sales_report' %}"> Sales Report </a>
+                   <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
+                   
+  
+                </div>
+
+
+              </div>
+              
               
               <li><a href="{% url 'add_bed' %}"> Bed </a></li>
               
@@ -207,19 +248,6 @@
 
               </div>
               
-              <button class="dropdown-btn"> Accounting
-                <i class="fa fa-caret-down"></i>
-              </button>
-              <div class="dropdown-container">
-              
-                <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
-                 <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
-                 <a class="dropdown-a" href="{% url 'sale' %}">Sales Invoice</a>
-                 <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
-                
-
-
-              </div>
               
               
              
@@ -363,10 +391,30 @@
             <li><a href="{% url 'ipd_patient' %}">IPD Billing</a></li>
             <li><a href="{% url 'path' %}">Pathology Billing</a></li>
             <li><a href="{% url 'radiology' %}">Radiology Billing</a></li>
-            <li><a href="{% url 'Sales_Party' %}">Party</a></li>
-            <li><a href="{% url 'purchase' %}">Purchase Invoice</a></li>
-            <li><a href="{% url 'sale' %}">Sale Purchase </a></li>
-            <li><a href="{% url 'unit' %}">Add</a></li>
+            
+            
+
+            <button class="dropdown-btn"> Accounting
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+            
+              <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
+               <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
+               <a class="dropdown-a" href="{% url 'sale' %}">Sales Invoice</a>
+               <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
+
+               <button class="dropdown-btn"> Report
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+              
+                <a class="dropdown-a" href="{% url 'balance_sheet' %}"> Balance Sheet</a>
+                 <a class="dropdown-a" href="{% url 'sales_report' %}"> Sales Report </a>
+                 <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
+                 
+
+              </div>
 
             <li><a href="{% url 'blood_donation' %}">Blood Billing</a></li>
               

@@ -159,8 +159,8 @@ class IpdPatient(models.Model):
     weight = models.FloatField()
     bp = models.CharField(max_length=20)
     pulse = models.IntegerField()
-    temperature = models.FloatField()
-    respiration = models.IntegerField()
+    temperature = models.FloatField(null=True,blank=True)
+    respiration = models.IntegerField(null=True,blank=True)
     symptoms_type = models.CharField(max_length=255)
     symptoms_title = models.CharField(max_length=255)
     symptoms_description = models.CharField(max_length=255)
@@ -438,7 +438,7 @@ class Radiology(models.Model):
 
 class MedicineCategory(models.Model):
     category_name = models.CharField(max_length=255)
-    medicine = models.ForeignKey('Medicine', on_delete=models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     dosage = models.CharField(max_length=255)
     dose_interval = models.CharField(max_length=255)
     dose_duration = models.CharField(max_length=255)
@@ -877,7 +877,7 @@ class Sales_Invoice(models.Model):
 
 class Item_Invoice(models.Model):
     invoice = models.ForeignKey(Sales_Invoice, on_delete=models.CASCADE)
-    item = models.CharField(max_length=255)
+    item = models.CharField(max_length=255) 
     qty = models.DecimalField(max_digits=13, decimal_places=3)
     unit = models.CharField(max_length=13)
     price = models.DecimalField(max_digits=13, decimal_places=3)
@@ -911,3 +911,69 @@ class Item_Acc(models.Model):
 class Unit(models.Model):
     unit_name = models.CharField(max_length=255)
 
+
+
+class Asset(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True,blank=True)    
+    price = models.DecimalField(max_digits=13, decimal_places=3)  # Add a price field
+    asset_type = models.CharField(max_length=20)
+    
+
+    def __str__(self):
+        return self.name
+    
+
+class MedicationDoseage(models.Model):
+    date = models.DateField()
+    time = models.TimeField()
+    medicine_category = models.CharField(max_length=100)
+    medicine_name = models.CharField(max_length=100)
+    dosage = models.CharField(max_length=50)
+    remarks = models.TextField()
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.medicine_name} - {self.date} {self.time}"
+
+
+class Consultant_register(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True)
+    applied_date = models.DateField()
+    instruction_date = models.DateField()
+    consultant_doctor = models.CharField(max_length=100)
+    instruction = models.TextField()
+
+
+class Operation(models.Model):
+   
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    operation_category = models.CharField(max_length=50)
+    operation_name = models.CharField(max_length=100)
+    operation_date = models.DateField()
+    consultant_doctor = models.CharField(max_length=100)
+    assistant = models.CharField(max_length=50,null=True)
+    assistant2 = models.CharField(max_length=50,null=True)
+
+    anesthesia_type = models.CharField(max_length=100, blank=True)
+    ot_technician = models.CharField(max_length=100, blank=True)
+    ot_assistant = models.CharField(max_length=100, blank=True)
+    remark = models.TextField(blank=True)
+    result = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.operation_name} - {self.operation_date}"
+    
+
+
+
+    
+class Ipd_Payments(models.Model):
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    payment_mode = models.CharField(max_length=10)
+    note = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Payment on {self.date} - ${self.amount}"

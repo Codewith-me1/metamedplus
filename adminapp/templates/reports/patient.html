@@ -1,0 +1,88 @@
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+      
+        <div class="form-group">
+            <label for="patient">Patient Name</label>
+            <input type="text" id="patient" name="patient" placeholder="name">
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Patient</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Patient</th>
+            
+            
+            <th>Date OF Birth </th>
+            <th>Phone</th>
+            <th>Gender</th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.name }}</td>
+                
+            
+               <td>{{ item.date_of_birth }}</td>
+             
+              <td>{{ item.phone  }}</td>
+              <td>{{ item.gender }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

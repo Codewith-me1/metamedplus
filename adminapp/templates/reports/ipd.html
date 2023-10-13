@@ -1,0 +1,98 @@
+
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+        <div class="form-group">
+            <label for="name"> Doctor Name</label>
+            <input type="text" id="name" name="name" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label for="patient">Patient Name</label>
+            <input type="text" id="patient" name="patient" placeholder="name">
+        </div>
+
+        <div class="form-group">
+            <label for="systoms">Systoms</label>
+            <input type="text" id="systoms" name="systoms" placeholder="name">
+        </div>
+
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">IPD</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Patient</th>
+            <th>Doctor</th>
+            
+            <th>Admission Date</th>
+            <th>Systoms Description</th>
+            <th>Systoms Title </th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+          {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.patient }}</td>
+                <td>{{ item.consultant_doctor}}</td>
+            
+               <td>{{ item.admission_date }}</td>
+             
+              <td>{{ item.symptoms_description }}</td>
+              <td>{{ item.symptoms_title }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<style>
+
+        .container {
+            max-width: 800px;
+            margin-left:50rem !important;
+            margin-top:10rem !important;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        #assets-header {
+            background-color: #66bb6a;
+            color: #fff;
+        }
+        
+        #liabilities-header {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+    
+    </style>
+
+    <style type="text/css" media="print">
+        /* print_styles.css */
+
+body {
+    display: none;
+}
+
+.container {
+    max-width: 800px;
+    margin-left: 50rem !important;
+    margin-top: 10rem !important;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+#assets-header {
+    background-color: #66bb6a;
+    color: #fff;
+}
+
+#liabilities-header {
+    background-color: #ff6f61;
+    color: #fff;
+}
+
+    </style>
+
+
+        <title>Balance Sheet</title>
+       
+    </head>
+    <body>
+        <div class="container">
+            <h1>Balance Sheet As on {{start_date}}</h1>
+    
+            <table>
+                <tr>
+                    <th id="assets-header" colspan="2">Assets</th>
+                </tr>
+                <tr>
+                    <td>Total Sales:</td>
+                    <td>{{ total_sales }}</td>
+                </tr>
+                <tr>
+                    <td>Output Tax</td>
+                    <td>{{ total_sales_tax }}</td>
+                </tr>
+
+                <tr>
+                    <td>Opening Stock:</td>
+                    <td>{{ opening_stock }}</td>
+                </tr>
+                <tr>
+                    <td>Closing Stock:</td>
+                    <td>{{ closing_stock }}</td>
+                </tr>   
+
+                <tr>
+                    <td>Short-term Assets:</td>
+                    <td>{{ total_short_term_assets }}</td>
+                </tr>
+                <tr>
+                    <td>Long-term Assets:</td>
+                    <td>{{ total_long_term_assets }}</td>
+                </tr>
+                
+                <tr>
+                    <th id="liabilities-header" colspan="2">Liabilities</th>
+                </tr>
+                <tr>
+                    <td>Total Purchases:</td>
+                    <td>{{ total_purchases }}</td>
+                </tr>
+                <tr>
+                    <td>Input Tax</td>
+                    <td>{{ total_purchase_tax }}</td>
+                </tr>
+            </table>
+    
+            <h3 class="balance">Balance: {{ balance }}</h3>
+            <button type="button" id="print-button">Print</button>
+        </div>
+
+
+        <script>
+            document.getElementById("print-button").addEventListener("click", function () {
+                // Remove the "display: none" style from the body element
+                document.body.style.display = "block";      
+                window.print();
+            });
+        </script>
+
+    </body>
+    </html>
+    
