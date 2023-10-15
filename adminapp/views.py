@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from .models import DeathRecord
 from .models import CustomUser
+from .models import Expense_Category
 from .models import Payroll
 from .models import Asset
 from datetime import date
@@ -16,10 +17,14 @@ from django.db.models.functions import Coalesce
 from .models import Purchase
 from .models import Item_Acc
 from .models import Consultant_register
+from django.core.mail import send_mail
 from .models import Operation
 from .models import MedicationDoseage
 from django.utils.datastructures import MultiValueDictKeyError
 import decimal
+from .models import Expense_inv_Item
+from .models import Expense_Item
+from .models import Expense_Invoice
 from .models import Ipd_Payments
 from .models import Party
 from django.core import serializers
@@ -78,7 +83,8 @@ from .models import Item
 from .models import ItemStock
 from .models import Path_Category
 from .models import Radio_Category,Radio_Parameter, Radiology_test
-
+import secrets
+import string
 appin = "appointment"
 
 def profile(request,id):
@@ -139,6 +145,15 @@ def index(request):
    return render(request,'index.html')
 
 # Appointment 
+
+
+def generate_random_password(length=12):
+    password_characters = string.ascii_letters + string.digits + string.punctuation
+    print(password_characters)
+    return ''.join(secrets.choice(password_characters) for i in range(length))
+
+
+
 
 def appointment(request):
   
@@ -246,14 +261,25 @@ def patient_list(request):
   return render(request,  "patient/patient_list.html",context)
 
 
+def pass_email(email, password):
+    subject = 'Your New Account Password'
+    message = f'Your new password is: {password}'
+    from_email = 'programmer62563@gmail.com'  
+    recipient_list = [email]
 
+    try:
+        send_mail(subject, message, from_email, recipient_list)
+    except Exception as e:
+       
+        pass  
 
 def add_staff(request):
+    
     if request.method == 'POST':
         
         # role = request.POST.get('role')
         # designation = request.POST.get('designation')
-        # department = request.POST.get('department')
+        # department = request.POST.get('department')   
         # specialist = request.POST.get('specialist')
         # if patient_id:
         #     patient = Patient.objects.get(id=patient_id)
@@ -262,23 +288,23 @@ def add_staff(request):
         # Get data from the POST request
         staff_id = request.POST.get('staff_id')
         role = request.POST.get('role')
-        designation = request.POST.get('designation')
-        department = request.POST.get('department')
-        specialist = request.POST.get('specialist')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        father_name = request.POST.get('father_name')
-        mother_name = request.POST.get('mother_name')
-        gender = request.POST.get('gender')
-        marital_status = request.POST.get('marital_status')
-        blood_group = request.POST.get('blood_group')
-        date_of_birth = request.POST.get('date_of_birth')
-        date_of_joining = request.POST.get('date_of_joining')
+        designation = request.POST.get('designation','')
+        department = request.POST.get('department','')
+        specialist = request.POST.get('specialist','')
+        first_name = request.POST.get('first_name','')
+        last_name = request.POST.get('last_name','')
+        father_name = request.POST.get('father_name','')
+        mother_name = request.POST.get('mother_name','')
+        gender = request.POST.get('gender','')
+        marital_status = request.POST.get('marital_status','')
+        blood_group = request.POST.get('blood_group','')
+        date_of_birth = request.POST.get('date_of_birth','')
+        date_of_joining = request.POST.get('date_of_joining','')
         phone = request.POST.get('phone')
-        emergency_contact = request.POST.get('emergency_contact')
+        emergency_contact = request.POST.get('emergency_contact','')
         email = request.POST.get('email')
-        current_address = request.POST.get('current_address')
-        permanent_address = request.POST.get('permanent_address')
+        current_address = request.POST.get('current_address','')
+        permanent_address = request.POST.get('permanent_address','')
         photo = request.FILES.get('photo')
         
         
@@ -295,16 +321,29 @@ def add_staff(request):
         # Payroll and Salary
         payroll = request.POST.get('payroll', '')
         epf_no = request.POST.get('epf_no', '')
-        basic_salary = request.POST.get('basic_salary', '')
-        contract_type = request.POST.get('contract_type', '')
+        basic_salary = request.POST.get('basic_salary',0)
+        try:
+             basic_salary = float(basic_salary)  # Try to convert the value to a float
+        except ValueError:
+            basic_salary = 0
+        
+        contract_type = request.POST.get('contract_type')
 
         # Work Details
-        work_shift = request.POST.get('work_shift', '')
-        work_location = request.POST.get('work_location', '')
+        work_shift = request.POST.get('work_shift')
+        work_location = request.POST.get('work_location')
 
         # Leave Information
-        paid_leave = request.POST.get('paid_leave', False)
-        number_of_leaves = request.POST.get('number_of_leaves', None)
+        if 'paid_leave' in request.POST:
+            paid_leave = True
+        else:
+            paid_leave = False
+        number_of_leaves = request.POST.get('number_of_leaves')
+        try:
+            number_of_leaves = float(number_of_leaves)
+            
+        except ValueError:
+            number_of_leaves
 
         # Bank Account Details
         account_title = request.POST.get('account_title', '')
@@ -379,12 +418,16 @@ def add_staff(request):
 
         # Save the Staff object to the database
         staff.save()
-        
-
+    
 
         # Redirect to a success page or staff list page
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
+        password = generate_random_password()
+
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
+        pass_email(email,password)
+
         User.save()
+        
         return HttpResponse("Staff information saved successfully.")
        
 
@@ -394,6 +437,7 @@ def add_staff(request):
         context = {
            "role":role, 
         }
+       
         return render(request, 'hr/hr.html',context)
     
 
@@ -2811,6 +2855,8 @@ def sales_invoice(request):
         # Save the invoice object to the database
         invoice.save()
         id = Sales_Invoice.objects.get(id=invoice.id)
+        total_all_products =0
+
         for i in range(1, item_counter + 1):
             
             
@@ -2823,6 +2869,7 @@ def sales_invoice(request):
             tax_percentage = request.POST.get(f'tax_{i}')
             tax_amount = request.POST.get(f'tax_amount_{i}')
             total = request.POST.get(f'total_{i}')
+            
             print(item)
             
             print(qty)
@@ -2840,11 +2887,16 @@ def sales_invoice(request):
                 tax_amount=tax_amount,
                 total=total,
 
+
             )
+            
             item.save()
+            total_all_products += int(float(total))
 
         # Redirect to a success page or display a success message
         ids = invoice.id
+        invoice.total = total_all_products
+        invoice.save()
         context = {
             'id':ids
         } 
@@ -2875,6 +2927,8 @@ def edit_sales(request,id):
         invoice_date = request.POST.get('invoice_date')
         state_of_supply = request.POST.get('state_of_supply')
         item = request.POST.get('item')
+        print(item)
+        print(item)
         qty = request.POST.get('qty')
         unit = request.POST.get('unit')
         price = request.POST.get('price')
@@ -2890,17 +2944,18 @@ def edit_sales(request,id):
         invoice.invoice_number = invoice_number
         invoice.invoice_date = invoice_date
         invoice.state_of_supply = state_of_supply
+        total_all_products=0
         for product in products:
             item_id = product.id  # Get the item's ID
-            item = request.POST.get(f'item_{item_id}')
-            qty = request.POST.get(f'qty_{item_id}')
-            unit = request.POST.get(f'unit_{item_id}')
-            price = request.POST.get(f'price_{item_id}')
-            discount_percentage = request.POST.get(f'discount_{item_id}')
-            discount_amount = request.POST.get(f'discount_amount_{item_id}')
-            tax_percentage = request.POST.get(f'tax_{item_id}')
-            tax_amount = request.POST.get(f'tax_amount_{item_id}')
-            total = request.POST.get(f'total_{item_id}')
+            item = request.POST.get('item')
+            qty = request.POST.get(f'qty')
+            unit = request.POST.get(f'unit')
+            price = request.POST.get(f'price')
+            discount_percentage = request.POST.get(f'discount')
+            discount_amount = request.POST.get(f'discount_amount')
+            tax_percentage = request.POST.get(f'tax')
+            tax_amount = request.POST.get(f'tax_amount')
+            total = request.POST.get(f'total')
 
             # Update the Item_Invoice object with the new item data
             product.item = item
@@ -2915,6 +2970,8 @@ def edit_sales(request,id):
 
             # Save the updated Item_Invoice object
             product.save()
+            total_all_products += int(float(total))
+        invoice.total = total_all_products
 
         # Save the updated Sales_Invoice object
         invoice.save()
@@ -2989,7 +3046,7 @@ def generate_invoice_pdf(request, id):
 
     # Create a context dictionary with data from the Sales_Invoice object
     items = []
-    total_amount = 0
+    total_all_products = 0
 
     for product in products:
         item_data = {
@@ -3004,7 +3061,7 @@ def generate_invoice_pdf(request, id):
         }
         
         items.append(item_data)
-        total_amount += product.total
+        total_all_products += int(float(product.total))
     context = {
         'invoice_number': invoice.invoice_number,
         'invoice_date': invoice.invoice_date,   
@@ -3012,7 +3069,8 @@ def generate_invoice_pdf(request, id):
         'phone_number': invoice.phone_number,   
         'state_of_supply': invoice.state_of_supply,
         'items': items,
-        'total_amount': total_amount,
+        'total_amount': total_all_products,
+        
     }
 
     # Render the template
@@ -3064,6 +3122,7 @@ def purchase_invoice(request):
         
         # Save the invoice object to the database
         invoice.save()
+        total_all_products =0
         id = Sales_Invoice.objects.get(id=invoice.id)
         for i in range(1, item_counter + 1):
             
@@ -3096,6 +3155,8 @@ def purchase_invoice(request):
 
             )
             item.save()
+            total_all_products += int(float(total))
+        invoice.total = total_all_products
 
         # Redirect to a success page or display a success message
         ids = invoice.id
@@ -3144,7 +3205,8 @@ def edit_purchase(request,id):
         invoice.phone_number = phone_number
         invoice.invoice_number = invoice_number
         invoice.invoice_date = invoice_date
-        invoice.state_of_supply = state_of_supply
+        invoice.state_of_supply = state_of_supply   
+        total_all_products = 0
         for product in products:
             item_id = product.id  # Get the item's ID
             item = request.POST.get(f'item_{item_id}')
@@ -3170,14 +3232,16 @@ def edit_purchase(request,id):
 
             # Save the updated Item_Invoice object
             product.save()
+            total_all_products += int(float(product.total))
 
-        # Save the updated Sales_Invoice object
+
+        # Save the updated Sales_Invoice obje
+        invoice.total = total_all_products
         invoice.save()
 
         # Save the invoice object to the database
         
 
-        # Redirect to a success page or display a success message
         return redirect('purchase_invoice')  # Replace 'success_page_url' with your actual success page URL
 
     context= {
@@ -3201,8 +3265,8 @@ def generate_purchase_pdf(request, id):
 
     # Create a context dictionary with data from the Sales_Invoice object
     items = []
-    total_amount = 0
 
+    total_all_product = 0
     for product in products:
         item_data = {
             'name': product.item,
@@ -3216,7 +3280,7 @@ def generate_purchase_pdf(request, id):
         }
         
         items.append(item_data)
-        total_amount += product.total
+        total_all_products += int(float(product.total))
     context = {
         'invoice_number': invoice.invoice_number,
         'invoice_date': invoice.invoice_date,   
@@ -3224,7 +3288,7 @@ def generate_purchase_pdf(request, id):
         'phone_number': invoice.phone_number,   
         'state_of_supply': invoice.state_of_supply,
         'items': items,
-        'total_amount': total_amount,
+        'total_amount': total_all_product,
     }
 
     # Render the template
@@ -3653,6 +3717,147 @@ def search_appointments(request):
 
         return render(request, 'reports/appointment.html', {'results': results, 'doctor':appointment,'patient':patient })
     return render(request, 'reports/appointment.html')
-   
 
 
+def all_transcation(request):
+    transcation = Sales_Invoice.objects.all()
+
+    context = {
+        "transcation":transcation
+    }
+
+    return render(request,'accounts/all_transcation.html',context)
+
+
+def all_party(request):
+    party = Party.objects.all()
+    context ={
+        'party':party
+    }
+
+    return render(request,'accounts/all_party.html',context)
+
+
+def create_expense_category(request):
+    if request.method == "POST":
+        expense_category = request.POST.get("expense_category")
+        expense_type = request.POST.get("expense_type")
+        
+        # Create a new ExpenseCategory instance and save it to the database
+        expense_category_obj = Expense_Category(
+            expense_category=expense_category,
+            expense_type=expense_type
+        )
+        expense_category_obj.save()
+        
+        # Redirect to a success page or another appropriate view
+        return redirect('expense_category')  # Change 'success_page' to your desired URL name
+    expense = Expense_Category.objects.all()
+    context={
+        'expense':expense
+    }
+    return render(request, 'accounts/expense_cat.html',context)
+
+
+def expense_item(request):
+    if request.method == 'POST':
+        item_name = request.POST.get('item_name')
+        price = request.POST.get('price')
+        tax_rate = request.POST.get('tax_rate')
+
+        if item_name and price and tax_rate:  # Check if all required fields are filled
+            # Create and save the model instance
+            Expense_Item.objects.create(item_name=item_name, price=price, tax=tax_rate)
+
+            # Handle form submission, e.g., save the data to the database
+            return redirect('expense_item')  # Redirect to a success page after submission
+    item = Expense_Item.objects.all()
+    context={
+        'item':item
+    }
+    return render(request, 'accounts/expense_item.html',context)
+
+
+
+
+def sales_invoice(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        payment_type = request.POST.get('payment_type')
+        item_counter = request.POST.get('item_counter', 0)
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+        # Create a new Invoice object
+        invoice = Expense_Invoice(
+            name=name,
+            phone_number=phone_number,
+            invoice_number=invoice_number,
+            invoice_date=invoice_date,
+            payment_type = payment_type
+            
+        
+           
+        )
+        
+        # Save the invoice object to the database
+        invoice.save()
+        id = Expense_Invoice.objects.get(id=invoice.id)
+        total_all_products =0
+
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'item')
+            qty = request.POST.get(f'qty')
+            unit = request.POST.get(f'unit')
+            price = request.POST.get(f'price')
+            
+            
+            total = request.POST.get(f'total')
+            
+            print(item)
+            
+            print(qty)
+            
+            item = Expense_inv_Item(
+            
+                invoice=id,
+                item=item,
+                qty=qty,
+                unit=unit,
+                price=price,
+                
+                total=total,
+
+
+            )
+            
+            item.save()
+            total_all_products += int(float(total))
+
+        # Redirect to a success page or display a success message
+        ids = invoice.id
+        invoice.total = total_all_products
+        invoice.save()
+        
+        
+        return redirect('expense_invoice')
+        
+    item = Expense_Item.objects.all()
+    party = Party.objects.all()
+    unit = Category.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'category':unit
+    }
+    return render(request, 'accounts/expense_invoice.html',context)

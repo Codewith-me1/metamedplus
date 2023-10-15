@@ -60,7 +60,7 @@ class AddStaff(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     father_name = models.CharField(max_length=100, blank=True, null=True)
-    mother_name = models.CharField(max_length=100, blank=True, null=True)
+    mother_name = models.CharField(max_length=100, blank=True, null=True)   
     gender = models.CharField(max_length=10)
     marital_status = models.CharField(max_length=20)
     blood_group = models.CharField(max_length=5)
@@ -87,7 +87,7 @@ class AddStaff(models.Model):
     # Payroll and Salary
     payroll_new = models.CharField(max_length=100, blank=True, null=True)
     epf_no = models.CharField(max_length=20, blank=True, null=True)
-    basic_salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    basic_salary = models.IntegerField( max_length=10, blank=True, null=True,default='0')
     contract_type = models.CharField(max_length=100, blank=True, null=True)
 
     # Work Details
@@ -96,7 +96,7 @@ class AddStaff(models.Model):
 
     # Leave Information
     paid_leave = models.BooleanField(default=False)
-    number_of_leaves = models.PositiveIntegerField(blank=True, null=True)
+    number_of_leaves = models.PositiveIntegerField(blank=True, null=True,default=0)
 
     # Bank Account Details
     account_title = models.CharField(max_length=100, blank=True, null=True)
@@ -199,6 +199,7 @@ class Medicine(models.Model):
     vat_account = models.CharField(max_length=255,blank=True,null=True)
     note = models.TextField(blank=True, null=True)
     medicine_photo = models.ImageField(upload_to='medicine_photos/', blank=True, null=True)
+
 
 
 class Med_Category(models.Model):
@@ -867,6 +868,7 @@ class Category(models.Model):
 
 
 
+
 class Sales_Invoice(models.Model):
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
@@ -874,6 +876,10 @@ class Sales_Invoice(models.Model):
     invoice_date = models.DateField()
     type = models.CharField(max_length=100,default='sales')
     state_of_supply = models.CharField(max_length=255)
+    balance = models.IntegerField(max_length=20,null=True,blank=True)
+    total = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+
+
 
 class Item_Invoice(models.Model):
     invoice = models.ForeignKey(Sales_Invoice, on_delete=models.CASCADE)
@@ -977,3 +983,44 @@ class Ipd_Payments(models.Model):
 
     def __str__(self):
         return f"Payment on {self.date} - ${self.amount}"
+
+
+
+class Expense_Category(models.Model):
+    expense_category = models.CharField(max_length=100)
+    expense_type = models.CharField(max_length=20)
+    
+
+
+
+
+class Expense_Invoice(models.Model):
+
+    invoice_number = models.CharField(max_length=10)
+    invoice_date = models.DateField()
+    expense_category = models.ForeignKey(Expense_Category,on_delete=models.CASCADE)
+    balance = models.IntegerField(max_length=20,null=True,blank=True)
+    total = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    payment_type = models.CharField(max_length=20)
+
+
+class Expense_inv_Item(models.Model):
+    invoice = models.ForeignKey(Expense_Invoice, on_delete=models.CASCADE)
+    item = models.CharField(max_length=255) 
+    qty = models.DecimalField(max_digits=13, decimal_places=3)
+    unit = models.CharField(max_length=13)
+    price = models.DecimalField(max_digits=13, decimal_places=3)
+    total = models.DecimalField(max_digits=13, decimal_places=3)
+
+
+
+
+class Expense_Item(models.Model):
+    item_name = models.CharField(max_length=255)
+
+    
+    price = models.DecimalField(max_digits=13, decimal_places=3)
+    tax = models.DecimalField(max_digits=13, decimal_places=3)
+   
+
+

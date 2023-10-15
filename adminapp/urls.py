@@ -115,9 +115,13 @@ urlpatterns = [
     path('search_medicine/', views.search_medicine, name='search_medicine'),
     path('search_patient/', views.search_patient, name='search_patient'),
     path('report_appointment/', views.report_appointment, name='report_appointment'),
-    path('consultant_register/<int:id>/', views.consultant_register, name='consultant_register'),
+    path('consultant_register/<int:id>/', views.consultant_register, name='consultant_registe   r'),
     path('ipd_operation/<int:id>/', views.operation_create, name='ipd_operation'),
     path('ipd_payment/<int:id>/', views.ipd_payment, name='ipd_payment'),
+    path('transcations/', views.all_transcation, name='transcation'),
+    path('all_party/',views.all_party,name="all_party"),
+    path('expense_category/',views.create_expense_category,name="expense_category"),
+    path('expense_item/',views.expense_item,name="expense_item"),
 
 
     
