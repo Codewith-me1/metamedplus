@@ -122,6 +122,15 @@ urlpatterns = [
     path('all_party/',views.all_party,name="all_party"),
     path('expense_category/',views.create_expense_category,name="expense_category"),
     path('expense_item/',views.expense_item,name="expense_item"),
+    path('expense_invoice/',views.expense_invoice,name="expense_invoice"),
+    path('expense_details/',views.Expense_details,name="expense_details"),
+    path('sales_order/',views.sales_order,name="sales_order"),
+    path('cash_flow/',views.cash_flow,name="cash_flow"),
+    path('payment_in/',views.payment_in,name="payment_in"),
+    path('sales_estimate/',views.sales_estimate,name="sales_estimate"),
+    path('edit_salesorder/<int:id>',views.edit_sales_order,name="edit_sales_order"),
+    path('edit_salesestimate/<int:id>',views.edit_sales_estimate,name="edit_sales_estimate"),
+
 
 
     

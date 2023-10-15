@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 # Create your models here.
+from datetime import timezone
 class User(models.Model):
   firstname = models.CharField(max_length=255)
   lastname = models.CharField(max_length=255)
@@ -876,8 +877,13 @@ class Sales_Invoice(models.Model):
     invoice_date = models.DateField()
     type = models.CharField(max_length=100,default='sales')
     state_of_supply = models.CharField(max_length=255)
+    due_date = models.DateField(auto_now_add=True,null=True)
     balance = models.IntegerField(max_length=20,null=True,blank=True)
+    advance_amount = models.CharField(max_length=20,default=True,null=True)
     total = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    
+    def __str__(self):
+        return self.due_date
 
 
 
@@ -1024,3 +1030,11 @@ class Expense_Item(models.Model):
    
 
 
+
+class Payment_In(models.Model):
+    name = models.CharField(max_length=100)
+    
+    payment_type = models.CharField(max_length=50)
+    receipt_no = models.CharField(max_length=10)
+    date = models.DateField()
+    received = models.DecimalField(max_digits=10, decimal_places=2)
