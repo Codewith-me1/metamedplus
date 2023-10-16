@@ -876,6 +876,7 @@ class Sales_Invoice(models.Model):
     invoice_number = models.CharField(max_length=10)
     invoice_date = models.DateField()
     type = models.CharField(max_length=100,default='sales')
+    payment_type = models.CharField(max_length=100,default='cash')
     state_of_supply = models.CharField(max_length=255)
     due_date = models.DateField(auto_now_add=True,null=True)
     balance = models.IntegerField(max_length=20,null=True,blank=True)
@@ -1032,9 +1033,44 @@ class Expense_Item(models.Model):
 
 
 class Payment_In(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=20)
     
     payment_type = models.CharField(max_length=50)
     receipt_no = models.CharField(max_length=10)
     date = models.DateField()
     received = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+
+    
+class BankAccount(models.Model):
+    
+    account_number = models.CharField(max_length=20, unique=True)
+    balance = models.DecimalField(max_digits=13, decimal_places=3)
+    as_of_date=models.DateField()
+
+
+
+class Transaction(models.Model):
+    account = models.ForeignKey(BankAccount, on_delete=models.CASCADE)
+    transaction_type = models.CharField(max_length=10)  # 'Deposit' or 'Withdrawal'
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateTimeField(auto_now_add=True)
+
+
+
+class SMTPServer(models.Model):
+    name = models.CharField(max_length=100)
+    host = models.CharField(max_length=100)
+    port = models.PositiveIntegerField()
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class header(models.Model):
+    name = models.CharField(max_length=20,default="Your Hospital Name")
+    image = models.ImageField(upload_to='cms')

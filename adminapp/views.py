@@ -4,12 +4,19 @@ from decimal import Decimal
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+from .models import SMTPServer
 from django.urls import reverse
 from .models import DeathRecord
 from .models import CustomUser
+import re
+from .models import BankAccount
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from .models import Expense_Category
 from .models import Payroll
 from .models import Asset
+from .models import Transaction
 from datetime import date
 from .models import Referral_commission
 from django.db.models import Sum
@@ -20,6 +27,7 @@ from .models import Consultant_register
 from django.core.mail import send_mail
 from .models import Operation
 from .models import MedicationDoseage
+from .models import header
 from django.utils.datastructures import MultiValueDictKeyError
 import decimal
 from .models import Expense_inv_Item
@@ -91,11 +99,20 @@ appin = "appointment"
 def profile(request,id):
 
     staff  = AddStaff.objects.get(staff_id=id)
-    payroll = Payroll.objects.get(staff=id)
+    
+    
+    try:
+        payroll = Payroll.objects.get(staff=id)
+        context = {
+            'payroll':payroll
+        }
+    except Payroll.DoesNotExist:
+            # Handle the case where the patient does not exist
+            print('none found')
     
     context ={
         'staff':staff,
-        'payroll':payroll,  
+        
     }
     return render(request,'admin/admin_profile.html',context)
 
@@ -425,7 +442,10 @@ def add_staff(request):
         password = generate_random_password()
 
         User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
-        pass_email(email,password)
+        message = "Your Password Is " + password
+        subject = "Password"
+        send_email(message,email,subject)
+        
 
         User.save()
         
@@ -441,6 +461,7 @@ def add_staff(request):
        
         return render(request, 'hr/hr.html',context)
     
+
 
 def staff(request):
   staff = AddStaff.objects.all()
@@ -2835,6 +2856,8 @@ def sales_invoice(request):
         invoice_date = request.POST.get('invoice_date')
         state_of_supply = request.POST.get('state_of_supply')
         item_counter = request.POST.get('item_counter', 0)
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
         print(item_counter)
         if item_counter.isdigit():
             item_counter = int(item_counter)
@@ -2863,6 +2886,9 @@ def sales_invoice(request):
             
             item = request.POST.get(f'item_{i}')
             qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
             unit = request.POST.get(f'unit_{i}')
             price = request.POST.get(f'price_{i}')
             discount_percentage = request.POST.get(f'discount_{i}')
@@ -3103,6 +3129,8 @@ def purchase_invoice(request):
         invoice_date = request.POST.get('invoice_date')
         state_of_supply = request.POST.get('state_of_supply')
         item_counter = request.POST.get('item_counter', 0)
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
         print(item_counter)
         if item_counter.isdigit():
             item_counter = int(item_counter)
@@ -3130,6 +3158,9 @@ def purchase_invoice(request):
             
             item = request.POST.get(f'item_{i}')
             qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
             unit = request.POST.get(f'unit_{i}')
             price = request.POST.get(f'price_{i}')
             discount_percentage = request.POST.get(f'discount_{i}')
@@ -3210,15 +3241,15 @@ def edit_purchase(request,id):
         total_all_products = 0
         for product in products:
             item_id = product.id  # Get the item's ID
-            item = request.POST.get(f'item_{item_id}')
-            qty = request.POST.get(f'qty_{item_id}')
-            unit = request.POST.get(f'unit_{item_id}')
-            price = request.POST.get(f'price_{item_id}')
-            discount_percentage = request.POST.get(f'discount_{item_id}')
-            discount_amount = request.POST.get(f'discount_amount_{item_id}')
-            tax_percentage = request.POST.get(f'tax_{item_id}')
-            tax_amount = request.POST.get(f'tax_amount_{item_id}')
-            total = request.POST.get(f'total_{item_id}')
+            item = request.POST.get(f'item')
+            qty = request.POST.get(f'qty')
+            unit = request.POST.get(f'unit')
+            price = request.POST.get(f'price')
+            discount_percentage = request.POST.get(f'discount')
+            discount_amount = request.POST.get(f'discount_amount')
+            tax_percentage = request.POST.get(f'tax')
+            tax_amount = request.POST.get(f'tax_amount')
+            total = request.POST.get(f'total')
 
             # Update the Item_Invoice object with the new item data
             product.item = item
@@ -3268,7 +3299,7 @@ def generate_purchase_pdf(request, id):
     items = []
 
     total_all_product = 0
-    for product in products:
+    for product in products:    
         item_data = {
             'name': product.item,
             'qty': product.qty,
@@ -3281,7 +3312,7 @@ def generate_purchase_pdf(request, id):
         }
         
         items.append(item_data)
-        total_all_products += int(float(product.total))
+        total_all_product    += int(float(product.total))
     context = {
         'invoice_number': invoice.invoice_number,
         'invoice_date': invoice.invoice_date,   
@@ -3319,7 +3350,7 @@ def invoice(request):
 def purchase(request):
     bill = Sales_Invoice.objects.filter(type="purchase")
     context = {
-        'bill':bill
+        'bill':bill 
     }
     return render(request,'accounts/purchase.html',context)
 
@@ -3661,9 +3692,13 @@ def search_appointments(request):
 
 def all_transcation(request):
     transcation = Sales_Invoice.objects.all()
+    payment_in = Payment_In.objects.all()
+    expense = Expense_Invoice.objects.all()
 
     context = {
-        "transcation":transcation
+        "transcation":transcation,
+        'payment':payment_in,
+        'expense':expense
     }
 
     return render(request,'accounts/all_transcation.html',context)
@@ -3728,6 +3763,8 @@ def expense_invoice(request):
         invoice_number = request.POST.get('invoice_number')
         invoice_date = request.POST.get('invoice_date')
         expense_category = request.POST.get('expense_category')
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
         payment_type = request.POST.get('payment_type')
         item_counter = request.POST.get('item_counter', 0)
 
@@ -3764,7 +3801,11 @@ def expense_invoice(request):
         for i in range(1, item_counter + 1):
             
             
+
             item = request.POST.get(f'item_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
             qty = request.POST.get(f'qty_{i}')
             
             price = request.POST.get(f'price_{i}')
@@ -3844,6 +3885,8 @@ def sales_order(request):
         invoice_date = request.POST.get('invoice_date')
         due_date = request.POST.get('due_date')
         advance_amount = request.POST.get('advance_amount')
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
         state_of_supply = request.POST.get('state_of_supply')
         item_counter = request.POST.get('item_counter', 0)
         print(item_counter)
@@ -3876,6 +3919,9 @@ def sales_order(request):
             
             item = request.POST.get(f'item_{i}')
             qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
             unit = request.POST.get(f'unit_{i}')
             price = request.POST.get(f'price_{i}')
             discount_percentage = request.POST.get(f'discount_{i}')
@@ -3952,6 +3998,7 @@ def edit_sales_order(request,id):
         discount_amount = request.POST.get('discount_amount')
         tax_percentage = request.POST.get('tax')
         tax_amount = request.POST.get('tax_amount')
+        
         total = request.POST.get('total')
 
         # Update the Sales_Invoice object with the new data
@@ -4020,6 +4067,8 @@ def sales_estimate(request):
         
         state_of_supply = request.POST.get('state_of_supply')
         item_counter = request.POST.get('item_counter', 0)
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
         print(item_counter)
         if item_counter.isdigit():
             item_counter = int(item_counter)
@@ -4050,6 +4099,9 @@ def sales_estimate(request):
             item = request.POST.get(f'item_{i}')
             qty = request.POST.get(f'qty_{i}')
             unit = request.POST.get(f'unit_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
             price = request.POST.get(f'price_{i}')
             discount_percentage = request.POST.get(f'discount_{i}')
             discount_amount = request.POST.get(f'discount_amount_{i}')
@@ -4178,7 +4230,7 @@ def edit_sales_estimate(request,id):
             'invoice':invoice,
             'product':products
     }
-    return render(request, 'accounts/sales/edit_salesestiamte.html',context)
+    return render(request, 'accounts/sales/edit_salesestimate.html',context)
 
 
 
@@ -4202,7 +4254,7 @@ def payment_in(request):
 
         
         Payment_In.objects.create(
-            name=balance,
+            name=name,
             payment_type=payment_type,
             receipt_no=receipt_no,
             date=date,
@@ -4213,11 +4265,13 @@ def payment_in(request):
 
     payment = Payment_In.objects.all()
     party = Party.objects.all()
+    
 
     
     context={
         'party':party,
         'payment':payment,
+
     }
 
 
@@ -4259,19 +4313,43 @@ def balance_sheet(request):
     )['total_short_term_assets'] or 0
 
     total = Asset.objects.filter(asset_type="Long-term")
+
+    total_receivable = Party.objects.filter(to_receive = True).aggregate(
+        total_receivable=Sum('opening_balance')
+    )['total_receivable'] or 0
+
+    total_payable = Party.objects.filter(to_pay = True).aggregate(
+        total_payable=Sum('opening_balance')
+    )['total_payable'] or 0
+    
     print(total)
     total_long_term_assets = Asset.objects.filter(asset_type='Long-Term').aggregate(
         total_long_term_assets=Sum('price')
     )['total_long_term_assets'] or 0
-    print(total_long_term_assets)
+
+
+    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
+        total_indirect=Sum(F('expense_invoice'))
+    )['total_indirect'] or 0
+
+    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
+        total_direct=Sum(F('expense_invoice'))
+    )['total_direct'] or 0
+
+    total_back_account = BankAccount.objects.all().aggregate(
+        total_balance=Sum(F('balance'))
+    )['total_balance'] or 0
+    withdraw = Transaction.objects.filter(transaction_type='Withdrawl').aggregate(
+        total_withdrawl= Sum(F('amount'))
+    )['total_withdrawl']or 0
 
     closing_stock = opening_stock + total_purchases - total_sales
+    equity =   opening_stock + total_receivable  + total_back_account -withdraw
 
-    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets
+    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets -indirect_expense+direct_expense +equity
 
     
-    print(closing_stock)
-    print(opening_stock)
+
 
     context = {
         'total_sales': total_sales,
@@ -4284,6 +4362,12 @@ def balance_sheet(request):
         'total_long_term_assets': total_long_term_assets,
         'total_purchase_tax': total_purchase_tax,
         'start_date':start_date,
+        'receivable':total_receivable,
+        'payable':total_payable,
+        'indirect_expense':indirect_expense,
+        'direct_expense':direct_expense,
+        'withdraw':withdraw,
+        'equity':equity,
     }
 
     return render(request, 'accounts/report/balancesheet.html', context)
@@ -4304,3 +4388,736 @@ def cash_flow(request):
 
 
 
+
+
+
+
+
+
+
+def delivery_challan(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
+        
+        state_of_supply = request.POST.get('state_of_supply')
+        item_counter = request.POST.get('item_counter', 0)
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+        # Create a new Invoice object
+        invoice = Sales_Invoice(
+            name=name,
+            phone_number=phone_number,
+            invoice_number=invoice_number,
+            invoice_date=invoice_date,
+            state_of_supply=state_of_supply,
+        
+            type="delivery_challan",
+           
+        )
+        
+        # Save the invoice object to the database
+        invoice.save()
+        id = Sales_Invoice.objects.get(id=invoice.id)
+        total_all_products =0
+
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'item_{i}')
+            qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
+            unit = request.POST.get(f'unit_{i}')
+            price = request.POST.get(f'price_{i}')
+            discount_percentage = request.POST.get(f'discount_{i}')
+            discount_amount = request.POST.get(f'discount_amount_{i}')
+            tax_percentage = request.POST.get(f'tax_{i}')
+            tax_amount = request.POST.get(f'tax_amount_{i}')
+            total = request.POST.get(f'total_{i}')
+            
+            print(item)
+            
+            print(qty)
+            
+            item = Item_Invoice(
+            
+                invoice=id,
+                item=item,
+                qty=qty,
+                unit=unit,
+                price=price,
+                discount=discount_percentage,
+                discount_amount=discount_amount,
+                tax=tax_percentage,
+                tax_amount=tax_amount,
+                total=total,
+
+
+            )
+            
+            item.save()
+            total_all_products += int(float(total))
+
+        # Redirect to a success page or display a success message
+        ids = invoice.id
+        invoice.total = total_all_products
+        invoice.save()
+        context = {
+            'id':ids
+        } 
+        url = reverse('edit_challan', args=[ids])
+        
+        return redirect(url)
+        
+    item = Item_Acc.objects.all()
+    party = Party.objects.all()
+    unit = Unit.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'unit':unit
+    }
+    return render(request, 'accounts/delivery_challan.html',context)
+
+
+
+
+
+
+def edit_delivery_challan(request,id):
+    invoice = get_object_or_404(Sales_Invoice, id=id)
+    products = Item_Invoice.objects.filter(invoice=id)
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        
+        item = request.POST.get('item')
+        qty = request.POST.get('qty')
+        unit = request.POST.get('unit')
+        price = request.POST.get('price')
+        discount_percentage = request.POST.get('discount')
+        discount_amount = request.POST.get('discount_amount')
+        tax_percentage = request.POST.get('tax')
+        tax_amount = request.POST.get('tax_amount')
+        total = request.POST.get('total')
+
+        # Update the Sales_Invoice object with the new data
+        invoice.name = name
+        invoice.phone_number = phone_number
+        invoice.invoice_number = invoice_number
+        invoice.invoice_date = invoice_date
+        invoice.state_of_supply = state_of_supply   
+    
+        
+        total_all_products = 0
+        for product in products:
+            item_id = product.id  # Get the item's ID
+            item = request.POST.get(f'item')
+            qty = request.POST.get(f'qty')
+            unit = request.POST.get(f'unit')
+            price = request.POST.get(f'price')
+            discount_percentage = request.POST.get(f'discount')
+            discount_amount = request.POST.get(f'discount_amount')
+            tax_percentage = request.POST.get(f'tax')
+            tax_amount = request.POST.get(f'tax_amount')
+            total = request.POST.get(f'total')
+
+            # Update the Item_Invoice object with the new item data
+            product.item = item
+            product.qty = qty
+            product.unit = unit
+            product.price = price
+            product.discount = discount_percentage
+            product.discount_amount = discount_amount
+            product.tax = tax_percentage
+            product.tax_amount = tax_amount
+            product.total = total
+
+            # Save the updated Item_Invoice object
+            product.save()
+            total_all_products += int(float(product.total))
+
+
+        # Save the updated Sales_Invoice obje
+        invoice.total = total_all_products
+        invoice.save()
+
+        # Save the invoice object to the database
+        
+
+        return redirect('delivery_challan')  # Replace 'success_page_url' with your actual success page URL
+
+    context= {
+            'invoice':invoice,
+            'product':products
+    }
+    return render(request, 'accounts/sales/edit_challan.html',context)
+
+
+
+
+
+
+
+def credit_note(request):
+    if request.method == 'POST':
+        # Retrieve data from the forms
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        names = re.sub(r'\d', '',name)
+        name  = names.replace("_", "")
+        
+        state_of_supply = request.POST.get('state_of_supply')
+        item_counter = request.POST.get('item_counter', 0)
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+        # Create a new Invoice object
+        invoice = Sales_Invoice(
+            name=name,
+            phone_number=phone_number,
+            invoice_number=invoice_number,
+            invoice_date=invoice_date,
+            state_of_supply=state_of_supply,
+        
+            type="credit_note",
+           
+        )
+        
+        # Save the invoice object to the database
+        invoice.save()
+        id = Sales_Invoice.objects.get(id=invoice.id)
+        total_all_products =0
+
+        for i in range(1, item_counter + 1):
+
+
+            
+            
+            item = request.POST.get(f'item_{i}')
+
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
+
+            
+            qty = request.POST.get(f'qty_{i}')
+            unit = request.POST.get(f'unit_{i}')
+            price = request.POST.get(f'price_{i}')
+            discount_percentage = request.POST.get(f'discount_{i}')
+            discount_amount = request.POST.get(f'discount_amount_{i}')
+            tax_percentage = request.POST.get(f'tax_{i}')
+            tax_amount = request.POST.get(f'tax_amount_{i}')
+            total = request.POST.get(f'total_{i}')
+            
+            print(item)
+            
+            print(qty)
+            
+            item = Item_Invoice(
+            
+                invoice=id,
+                item=item,
+                
+                qty=qty,
+                unit=unit,
+                price=price,
+                discount=discount_percentage,
+                discount_amount=discount_amount,
+                tax=tax_percentage,
+                tax_amount=tax_amount,
+                total=total,
+
+
+            )
+            
+            item.save()
+            total_all_products += int(float(total))
+
+        # Redirect to a success page or display a success message
+        ids = invoice.id
+        invoice.total = total_all_products
+        invoice.save()
+        context = {
+            'id':ids
+        } 
+        url = reverse('edit_credit_note', args=[ids])
+        
+        return redirect(url)
+        
+    item = Item_Acc.objects.all()
+    party = Party.objects.all()
+    unit = Unit.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'unit':unit
+    }
+    return render(request, 'accounts/credit_note.html',context)
+
+
+
+
+
+def edit_credit_note(request,id):
+    invoice = get_object_or_404(Sales_Invoice, id=id)
+    products = Item_Invoice.objects.filter(invoice=id)
+    if request.method == 'POST':
+        # Retrieve data from the form
+        name = request.POST.get('name')
+        phone_number = request.POST.get('phone_number')
+        invoice_number = request.POST.get('invoice_number')
+        invoice_date = request.POST.get('invoice_date')
+        state_of_supply = request.POST.get('state_of_supply')
+        
+        item = request.POST.get('item')
+        qty = request.POST.get('qty')
+        unit = request.POST.get('unit')
+        price = request.POST.get('price')
+        discount_percentage = request.POST.get('discount')
+        discount_amount = request.POST.get('discount_amount')
+        tax_percentage = request.POST.get('tax')
+        tax_amount = request.POST.get('tax_amount')
+        total = request.POST.get('total')
+
+        # Update the Sales_Invoice object with the new data
+        invoice.name = name
+        invoice.phone_number = phone_number
+        invoice.invoice_number = invoice_number
+        invoice.invoice_date = invoice_date
+        invoice.state_of_supply = state_of_supply   
+    
+        
+        total_all_products = 0
+        for product in products:
+            item_id = product.id  # Get the item's ID
+            item = request.POST.get(f'item')
+            qty = request.POST.get(f'qty')
+            unit = request.POST.get(f'unit')
+            price = request.POST.get(f'price')
+            discount_percentage = request.POST.get(f'discount')
+            discount_amount = request.POST.get(f'discount_amount')
+            tax_percentage = request.POST.get(f'tax')
+            tax_amount = request.POST.get(f'tax_amount')
+            total = request.POST.get(f'total')
+
+            # Update the Item_Invoice object with the new item data
+            product.item = item
+            product.qty = qty
+            product.unit = unit
+            product.price = price
+            product.discount = discount_percentage
+            product.discount_amount = discount_amount
+            product.tax = tax_percentage
+            product.tax_amount = tax_amount
+            product.total = total
+
+            # Save the updated Item_Invoice object
+            product.save()
+            total_all_products += int(float(product.total))
+
+
+        # Save the updated Sales_Invoice obje
+        invoice.total = total_all_products
+        invoice.save()
+
+        # Save the invoice object to the database
+        
+
+        return redirect('credit_note')  # Replace 'success_page_url' with your actual success page URL
+
+    context= {
+            'invoice':invoice,
+            'product':products
+    }
+    return render(request, 'accounts/sales/edit_creditnote.html',context)
+
+
+
+def bank_account(request):
+
+    if request.method == 'POST':
+        account_number = request.POST.get('account_number')
+        balance = request.POST.get('balance')
+        as_of_date = request.POST.get('as_of_date')
+        # Validate and save the data as needed
+        if account_number and balance and as_of_date:
+            BankAccount.objects.create(account_number=account_number, balance=balance, as_of_date=as_of_date)
+            return redirect('bank_account_list')  # Redirect to a list view or another page
+        else:
+            print('canhelp1')
+    bank = BankAccount.objects.all()
+    context ={
+        'bank':bank
+    }
+    return render(request, 'accounts/bank_account.html',context)
+
+def bank_account_list(request,id):
+    bank_id = BankAccount.objects.get(id=id)
+    transaction = Transaction.objects.filter(account=id)
+    
+    context = {
+        'bank':bank_id,
+        'transaction':transaction,
+    }
+    return render(request,'accounts/bank_accountlist.html',context)
+
+
+
+
+def deposit(request, id):
+    if request.method == 'POST':
+        amount = Decimal(request.POST['amount'])
+        account = BankAccount.objects.get(id=id)
+        account.balance += amount
+        account.save()
+        Transaction.objects.create(account=account, transaction_type='Deposit', amount=amount)
+
+        return redirect('bank_accountlist', id=id)
+    return render(request, 'account/bank_account.html')
+
+def withdrawal(request, id):
+    if request.method == 'POST':
+        amount = Decimal(request.POST['amount'])
+        account = BankAccount.objects.get(id=id)
+        if account.balance >= amount:
+            account.balance -= amount
+            account.save()
+            Transaction.objects.create(account=account, transaction_type='Withdrawal', amount=amount)
+            return redirect('bank_accountlist', id=id)
+        else:
+            return render(request, 'insufficient_funds.html')
+    return render(request, 'withdrawal.html')
+
+
+
+
+def profit_and_loss_statement(request):
+    # Query the database for relevant data
+    
+
+    # Initialize variables for different sections of the profit and loss statement
+ 
+
+    # Iterate through the entries and calculate the totals for each section
+    total_sales = Item_Invoice.objects.filter(invoice__type='sales').aggregate(
+        total_sales=Sum(F('total'))
+    )['total_sales'] or 0
+
+
+    total_purchase = Item_Invoice.objects.filter(invoice__type='purchase').aggregate(
+        total_sales=Sum(F('total'))
+    )['total_sales'] or 0
+
+    
+
+    total_return = Item_Invoice.objects.filter(invoice__type='credit_note').aggregate(
+        total_sales=Sum(F('total'))
+    )['total_sales'] or 0
+    opening_stock = Item_Acc.objects.aggregate(
+        opening_stock=Sum(ExpressionWrapper(F('opening_quantity') * F('purchase_price'), output_field=DecimalField(max_digits=13, decimal_places=3)))
+    )['opening_stock'] or 0
+
+    total_sales_tax = Item_Invoice.objects.filter(invoice__type='sales').aggregate(
+        total_sales_tax=Sum(F('tax_amount'))
+    )['total_sales_tax'] or 0
+
+    total_purchase_tax = Item_Invoice.objects.filter(invoice__type='purchase').aggregate(
+        total_purchase_tax=Sum(F('tax_amount'))
+    )['total_purchase_tax'] or 0
+
+    
+    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
+        total_indirect=Sum(F('expense_invoice'))
+    )['total_indirect'] or 0
+
+    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
+        total_direct=Sum(F('expense_invoice'))
+    )['total_direct'] or 0
+
+  
+    total_short_term_assets = Asset.objects.filter(asset_type='Short-Term').aggregate(
+        total_short_term_assets=Sum('price')
+    )['total_short_term_assets'] or 0
+
+    closing_stock = Sales_Invoice.objects.filter(type='sales').aggregate(
+        total_short_term_assets=Sum('item_invoice')
+    )['total_short_term_assets'] or 0
+
+    
+
+
+    # Calculate Gross Profit
+    gross_profit = total_sales - total_return - direct_expense
+
+    # Calculate Net Profit
+    closing= opening_stock + total_purchase - closing_stock
+
+    net_profit = gross_profit  - direct_expense
+
+    return render(request, 'accounts/report/profit_loss.html', {
+        'sales': total_sales,
+        'credit_notes': total_return,
+        'opening_stock': opening_stock,
+        'closing_stock': closing_stock,
+        'direct_expenses': direct_expense,
+        'tax_payable': total_purchase_tax,
+        'short_asset':total_short_term_assets,
+        'tax_receivable': total_sales_tax,
+        'indirect_expenses': indirect_expense,
+        'gross_profit': gross_profit,
+        'net_profit': net_profit
+    })
+
+
+
+def get_bed_details(request):
+    beds = Bed.objects.all()
+    data = serializers.serialize("json", beds)
+    return JsonResponse(data, safe=False)
+
+
+
+def expense_list(request):
+    expense = Expense_Invoice.objects.all()
+    context ={
+        'expense':expense
+    }
+    return render(request,'accounts/list/expense.html',context)
+
+
+def sales_orderlist(request):
+    order = Sales_Invoice.objects.filter(type="sales_order")
+    context ={
+        'order':order,
+    }
+    return render(request,'accounts/list/sale_order.html',context)
+
+
+
+def sales_invoice_list(request):
+    sales = Sales_Invoice.objects.filter(type="sales")
+    context ={
+        'sales':sales,
+    }
+    return render(request,'accounts/list/sales_invoices.html',context)
+
+
+
+def estimate_list(request):
+    estimate = Sales_Invoice.objects.filter(type="sales_estimate")
+    context ={
+        'estimate':estimate,
+    }
+    return render(request,'accounts/list/estimate_list.html',context)
+
+
+
+
+def challan_list(request):
+    challan = Sales_Invoice.objects.filter(type="delivery_challan")
+    context ={
+        'challan':challan,
+    }
+    return render(request,'accounts/list/challan_list.html',context)
+
+
+def return_list(request):
+    sales_return = Sales_Invoice.objects.filter(type="credit_note")
+    context ={
+        'return':sales_return,
+    }
+    return render(request,'accounts/list/sales_return.html',context)
+
+
+
+
+def payment_list(request):
+    payment = Payment_In.objects.all()
+    context ={
+        'payment':payment,
+    }
+    return render(request,'accounts/list/payment_in.html',context)
+
+
+
+
+def edit_party(request, party_id=None):
+    # Check if an 'id' is provided. If provided, it's for editing.
+    if party_id is not None:
+        party = get_object_or_404(Party, id=party_id)
+    else:
+        # If 'id' is not provided, it's for creating a new party.
+        party = None
+
+    if request.method == 'POST':
+        # Retrieve data from the form and create/update a party record
+        part_name = request.POST['part_name']
+        gstin = request.POST['gstin']
+        phone_number = request.POST['phone_number']
+        gst_type = request.POST['gst_type']
+        state = request.POST['state']
+        email_id = request.POST['email_id']
+        billing_address = request.POST['billing_address']
+        opening_balance = request.POST['opening_balance']
+        as_of_date = request.POST['as_of_date']
+        to_pay = request.POST.get('to_pay', False)
+        
+        to_receive = request.POST.get('to_receive', False)
+        if to_pay == 'on':
+           to_pay = True
+        else:
+            to_pay = False
+        
+        if to_receive == 'on':
+           to_receive = True
+        else:
+            to_receive = False
+
+        if party:
+            # If 'party' exists, it's an update operation
+            party.part_name = part_name
+            party.gstin = gstin
+            party.phone_number = phone_number
+            party.gst_type = gst_type
+            party.state = state
+            party.email_id = email_id
+            party.billing_address = billing_address
+            party.opening_balance = opening_balance
+            party.as_of_date = as_of_date
+            party.to_pay = to_pay
+            party.to_receive = to_receive
+            party.save()
+        
+
+        return redirect('party')
+
+    context = {
+        'party': party
+    }
+    return render(request, 'accounts/edit/edit_party.html', context)
+
+
+def add_smtp_server(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        host = request.POST.get('host')
+        port = request.POST.get('port')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        SMTPServer.objects.create(
+            name=name,
+            host=host,
+            port=port,
+            username=username,
+            password=password
+        )
+        return redirect('smtp')
+    
+    smtp_list = SMTPServer.objects.all()
+    context ={
+        'smtp_list':smtp_list
+    }
+    return render(request,'setting/smtp.html',context)
+
+# def edit_smtp_server(request, server_id):
+#     server = SMTPServer.objects.get(pk=server_id)
+
+#     if request.method == 'POST':
+#         form = SMTPServerForm(request.POST, instance=server)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('smtp_server_list')
+#     else:
+#         form = SMTPServerForm(instance=server)
+    
+#     return render(request, 'edit_smtp_server.html', {'form': form, 'server': server})
+
+
+
+def send_email(message_text,recipient,subject):
+    
+    
+    server = SMTPServer.objects.get(pk=1)
+
+        # Creating an SMTP connection
+    try:
+            smtp_connection = smtplib.SMTP(server.host, server.port)
+            smtp_connection.starttls()
+            smtp_connection.login(server.username, server.password)
+
+            # Composing the email
+            msg = MIMEMultipart()
+            msg['From'] = server.username
+            msg['To'] = recipient
+            msg['Subject'] = subject
+            msg.attach(MIMEText(message_text,'plain'))
+
+            # Sending the email
+            smtp_connection.sendmail(server.username, recipient, msg.as_string())
+            smtp_connection.quit()
+
+            return HttpResponse('Email sent successfully!')
+    except Exception as e:
+            return HttpResponse(f'Error sending email: {str(e)}')
+
+
+
+
+def add_hospital(request,hospital_id):
+    hospital = header.objects.get(pk=hospital_id)
+    if request.method == 'POST':
+        hospital.name = request.POST.get('name')
+        hospital.image = request.FILES.get('image')
+
+        
+        hospital.save()
+        return redirect('hospital')
+
+    return render(request, 'setting/add_hospital.html')
+
+
+
+def search_patient(request):
+    query = request.GET.get('q', '')
+
+    if query:
+        patients = Patient.objects.filter(name__icontains=query)
+    else:
+        patients = Patient.objects.all()
+
+    # Create a list of patient data
+    patient_data = [
+        {
+            'name': patient.name,
+            'date_of_birth': patient.date_of_birth.strftime('%Y-%m-%d'),
+            'phone': patient.phone,
+        }
+        for patient in patients
+    ]
+
+    # Return the patient data as JSON
+    return JsonResponse({'patients': patient_data})

@@ -1,6 +1,6 @@
 
 
-  
+
 
 
     <!-- create_child.html -->
@@ -8,57 +8,54 @@
     {% include "layout/header.html" %}
     <div class="container">
     
+
     
-      
+    
+    
     
     
     
     
     <div class="main-header">
-    <h1 class="headline"> All Party
+    <h1 class="headline">  Expense </h1>
     <div class="side-btns">
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    
+    <a  class="btn-primary btn" href="/expense_invoice" >Add  Expense Item </a>
     
     </div>    
-    </div>   
+    </div>    
+    
+    
+    
     
     <table class="table">
         <thead>
           <tr>
-
-            <th>#</th>
-            
-            <th>Party Name</th>
-            <th>Phone Number</th>
-            
-            <th>State</th>
+            <th> Date</th>
+            <th> Expense</th>
+            <th>Party</th>
+            <th>Payment Type </th>
             <th>Balance</th>
-            <th>Edit</th>
-      
-          
-
-              
+            
+            
+           
               
            
           </tr>
         </thead>
         <tbody>
           
-          {% for party in party %}
+          {% for expense in expense %}
             <tr>
-                <td>{{ party.id }}</td>
-                <td>{{ party.part_name }}</td>
-                <td>{{ party.phone_number }}</td>
-                <td>{{ party.state }}</td>
+                <td>{{ expense.invoice_date }}</td>
+                <td>{{ expense.expense_category.expense_category }}</td>
                 
-                <td>{{ party.opening_balance }}</td>
-                <td><a href="/edit_party/{{party.id}}">edit</a></td>
-            
-               
-              
+                <td>{{ expense.payment_type }}</td>
+                <td>{{ expense.total }}</td>
+                <td>{{ expense.balance }}</td>
+             
               
           
             
@@ -66,7 +63,9 @@
           {% endfor %}
         </tbody>
       </table>
+    
     </div>
+    
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -85,7 +84,7 @@
         popupContainer.style.display = "none";
     });
 
-    $(document).ready(function () { 
+    $(document).ready(function () {
         // Listen for changes in the vehicle_model select field
         $('#vehicle_model').change(function () {
             var selectedVehicle = $(this).val();

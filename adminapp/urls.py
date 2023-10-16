@@ -126,10 +126,30 @@ urlpatterns = [
     path('expense_details/',views.Expense_details,name="expense_details"),
     path('sales_order/',views.sales_order,name="sales_order"),
     path('cash_flow/',views.cash_flow,name="cash_flow"),
+    path('deposit/<int:id>',views.deposit,name="deposit"),
     path('payment_in/',views.payment_in,name="payment_in"),
     path('sales_estimate/',views.sales_estimate,name="sales_estimate"),
+    path('bank_accountlist/<int:id>', views.bank_account_list, name='bank_accountlist'),
+    path('bank_account/',views.bank_account,name="bank_account"),
+    path('delivery_challan/',views.delivery_challan,name="delivery_challan"),
+    path('credit_note',views.credit_note,name="credit_note"),
+    path('profit_loss',views.profit_and_loss_statement,name="profit"),
+    path('edit_creditnote/<int:id>',views.edit_credit_note,name="edit_credit_note"),
+    path('edit_challan/<int:id>',views.edit_delivery_challan,name="edit_challan"),
     path('edit_salesorder/<int:id>',views.edit_sales_order,name="edit_sales_order"),
     path('edit_salesestimate/<int:id>',views.edit_sales_estimate,name="edit_sales_estimate"),
+    path('get_bed_details/', views.get_bed_details, name='get_bed_details'),
+    path('expense_list/', views.expense_list, name='expense_list'),
+    path('saleorder_list/', views.sales_orderlist, name='sale_order_list'),
+    path('sales_invoicelist/', views.sales_invoice_list, name='sale_invoice_list'),
+    path('estimate_list/', views.estimate_list, name='estimate_list'),
+    path('delivery_list/', views.challan_list, name='challan_list'),
+    path('sales_returnlist/', views.return_list, name='sales_returnlist'),
+    path('payment_inlist/', views.payment_list, name='payment_list'),
+    path('edit_party/<int:party_id>',views.edit_party,name="edit_party"),
+    path('smtp',views.add_smtp_server,name="smtp")
+
+    
 
 
 

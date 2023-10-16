@@ -64,7 +64,7 @@
         }
         a.logo img{
           float:left;
-          width:50%;
+          width:14rem;
       }
 
         .navbar a:hover {
@@ -224,14 +224,14 @@
 
     <div class="header-btn">
         <a href="/profile/{{user.id}}" id="myBtns">Profile</a>
-    <a href="#"  id="myBtn">Bed Status</a>
+    <a href="#"  id="myBtn loadBedDetails">Bed Status</a>
     <a href="{% url "add_task" %}" id="myBtns">Task</a>
     <a href="#" id="myBtns">Calender</a>
 
     
     
-
-    <!-- The Modal -->
+    {% for bed in bed %}<h1>{{bed.name}} Hello</h1>{% endfor %}
+        <!-- The Modal -->
     <div id="myModal" class="modal">
     
       <!-- Modal content -->
@@ -242,7 +242,9 @@
 
         <div class="bed_details">
             <div class="beds">
+              
                 <div class="bed_det">
+                  
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
                     <p>1E</p>
                 </div>
@@ -369,4 +371,38 @@ function showSlides() {
   slides[slideIndex-1].style.display = "block";
   setTimeout(showSlides, 2000); // Change image every 2 seconds
 }
+
+
+$(document).ready(function() {
+  // Function to load bed details
+  function loadBedDetails() {
+      // Make an AJAX request to get bed details
+      $.ajax({
+          url: '{% url "get_bed_details" %}',
+          type: 'GET',
+          success: function(data) {
+              // Parse the JSON data
+              var bedDetails = JSON.parse(data);
+              
+              // Clear the bed container
+              $('#beds-container').empty();
+              
+              // Loop through the bed details and create HTML elements
+              bedDetails.forEach(function(bed) {
+                  var bedDet = '<div class="bed_det" onclick="handleBedClick(this)">';
+                  bedDet += '<img src="{% static "css/images/icons8-occupied-bed-100.png" %}">';
+                  bedDet += '<p>' + bed.fields.name + '</p>';
+                  bedDet += '</div>';
+                  
+                  // Append the bed details to the container
+                  $('#beds-container').append(bedDet);
+              });
+          }
+      });
+  }
+
+  // Attach the click event to the button
+  $('#loadBedDetails').click(loadBedDetails);
+});
+
 </script> 

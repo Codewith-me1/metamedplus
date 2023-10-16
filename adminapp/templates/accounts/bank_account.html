@@ -1,0 +1,116 @@
+
+
+
+
+<!-- create_death_record.html -->
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<div class="container"> 
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Bank Accounts </h1>
+              </div>
+                <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'bank_account' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="account_number">Account Number:</label>
+                        <input type="text" id="account_number" name="account_number" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="balance">Balance:</label>   
+                        <input type="number" id="balance" name="balance" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="as_of_date">As of Date:</label>
+                        <input type="date" id="as_of_date" name="as_of_date" class="form-control" required>
+                    </div>
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Bank Account</h1>
+<div class="side-btns">
+
+
+
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Bank Account</a>
+
+</div>    
+</div>   
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+        <th>Opening Balance </th>
+        <th>Balance </th>
+        <th>As Of Date </th>
+
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for bank in bank %}
+        <tr>
+            <td><a href="/bank_accountlist/{{bank.id}}" >{{  bank.account_number}}</a></td>
+            
+            <td>{{  bank.balance}}</td>
+            <td>{{  bank.as_of_date}}</td>
+
+
+          
+      
+        
+        </tr>
+      {% endfor %}  
+      
+      
+
+  
+     
+    </tbody>
+  </table>
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+});
+   
+</script>
+</body>
+</html>

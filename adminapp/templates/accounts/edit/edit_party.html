@@ -1,0 +1,118 @@
+
+
+  
+
+
+    <!-- create_child.html -->
+    {% include "layout/sidebar.html" %}
+    {% include "layout/header.html" %}
+    <div class="container">
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline"> Edit Party</h1>
+    </div>
+    <div class="side-btns">
+    
+        <form method="post" action="{% url 'edit_party' party.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="part_name">Party Name</label>
+                <input type="text" name="part_name" id="part_name" class="form-control" value="{{ party.part_name }}">
+            </div>
+            <div class="form-group">
+                <label for="gstin">GSTIN</label>
+                <input type="text" name="gstin" id="gstin" class="form-control" value="{{ party.gstin }}">
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number</label>
+                <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{ party.phone_number }}">
+            </div>
+            <div class="form-group">
+                <label for="gst_type">GST Type</label>
+                <input type="text" name="gst_type" id="gst_type" class="form-control" value="{{ party.gst_type }}">
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" name="state" id="state" class="form-control" value="{{ party.state }}">
+            </div>
+            <div class="form-group">
+                <label for="email_id">Email</label>
+                <input type="text" name="email_id" id="email_id" class="form-control" value="{{ party.email_id }}">
+            </div>
+            <div class="form-group">
+                <label for="billing_address">Billing Address</label>
+                <textarea name="billing_address" id="billing_address" class="form-control">{{ party.billing_address }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="opening_balance">Opening Balance</label>
+                <input type="text" name="opening_balance" id="opening_balance" class="form-control" value="{{ party.opening_balance }}">
+            </div>
+            <div class="form-group">
+                <label for="as_of_date">As of Date</label>
+                <input type="date" name="as_of_date" id="as_of_date" class="form-control" value="{{ party.as_of_date }}">
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="to_pay" id="to_pay" class="form-check-input" {% if party.to_pay %}checked{% endif %}>
+                <label class="form-check-label" for="to_pay">To Pay</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="to_receive" id="to_receive" class="form-check-input" {% if party.to_receive %}checked{% endif %}>
+                <label class="form-check-label" for="to_receive">To Receive</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    
+    
+    </div>    
+    </div>   
+    
+   
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    <script>
+        const openPopupBtn = document.getElementById("openPopupBtn");
+    const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    });
+
+    $(document).ready(function () { 
+        // Listen for changes in the vehicle_model select field
+        $('#vehicle_model').change(function () {
+            var selectedVehicle = $(this).val();
+            // Make an AJAX request to fetch the driver name for the selected vehicle
+            $.ajax({
+                type: 'GET',
+                url: '/get_driver_name', // Replace with your actual URL
+                data: { 'vehicle_model': selectedVehicle },
+                success: function (data) {
+                    // Update the driver_name input field with the retrieved value
+                    $('#driver_name').val(data.driver_name);
+                },
+                error: function () {
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+       </script> 
+       
+  

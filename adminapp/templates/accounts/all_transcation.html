@@ -34,9 +34,9 @@
             <th>Party Name</th>
             <th>Type</th>
             
-            <th>received/paid</th>
+            <th>Phone Number</th>
             <th>Action</th>
-            <th>Total</th>
+            <th>Received/Paid</th>
             
 
               
@@ -65,6 +65,66 @@
             
             </tr>
           {% endfor %}
+          {% for payment in payment %}
+            <tr>
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.date }}</td>
+                <td>{{ payment.name }}</td>
+                <td>{{ payment.payment_type }}</td>
+                
+                <td>{{  payment.new}}</td>
+                <td></td>
+               
+               
+               <td>{{ payment.received }}</td>
+         
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+
+          {% for invoice in invoice %}
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.date }}</td>
+                <td>{{ invoice.name }}</td>
+                <td>{{ invoice.payment_type }}</td>
+                
+                <td>{{  invoice.new}}</td>
+                <td></td>
+               
+               
+               <td>{{ invoice.total }}</td> 
+         
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+
+
+          {% for expense in expense %}
+          <tr>
+              <td>{{ expense.id }}</td>
+              <td>{{ expense.invoice_date }}</td>
+              <td>{{ expense.name }}</td>
+              <td>{{ expense.payment_type }}</td>
+              
+              <td>{{  expense.new}}</td>
+              <td></td>
+             
+             
+             <td>{{ expense.total }}</td> 
+       
+            
+            
+        
+          
+          </tr>
+        {% endfor %}
         </tbody>
       </table>
     </div>
