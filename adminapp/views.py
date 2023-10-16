@@ -444,7 +444,8 @@ def add_staff(request):
         User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
         message = "Your Password Is " + password
         subject = "Password"
-        send_email(message,email,subject)
+        print(password)
+        # send_email(message,email,subject)
         
 
         User.save()
