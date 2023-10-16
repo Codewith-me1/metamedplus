@@ -441,7 +441,7 @@ def add_staff(request):
         # Redirect to a success page or staff list page
         password = generate_random_password()
 
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password="password", role=role)
         message = "Your Password Is " + password
         subject = "Password"
         print(password)
