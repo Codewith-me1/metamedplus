@@ -151,6 +151,11 @@ urlpatterns = [
     path('search_patient/', views.search_patient, name='search_patient'),
     path('edit_staff/<int:id>/', views.edit_staff, name='edit_staff'),
     path('logout/', views.user_logout, name='logout'),
+    path('add_hospital/', views.add_hospital, name='add_hospital'),
+    path('add_ads/', views.add_ads, name='add_ads'),
+    path('add_ads/<int:id>', views.edit_ads, name='edit_ads'),
+    path('get_header_data/', views.get_header_data, name='get_header_data'),
+    path('get_ads_data/', views.get_ads_data, name='get_ads_data'),
 
 
     

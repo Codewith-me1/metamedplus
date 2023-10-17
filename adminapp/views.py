@@ -12,6 +12,7 @@ import re
 from .models import BankAccount
 import smtplib
 from email.mime.text import MIMEText
+from .models import Ads
 from email.mime.multipart import MIMEMultipart
 from .models import Expense_Category
 from django.contrib.auth import logout
@@ -5089,15 +5090,20 @@ def send_email(message_text,recipient,subject):
 
 
 
-def add_hospital(request,hospital_id):
-    hospital = header.objects.get(pk=hospital_id)
-    if request.method == 'POST':
-        hospital.name = request.POST.get('name')
-        hospital.image = request.FILES.get('image')
+def add_hospital(request):
 
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+
+        hosptial = header(
+            name=name,
+            image=image
+
+        )
         
-        hospital.save()
-        return redirect('hospital')
+        hosptial.save()
+        return redirect('doctor')
 
     return render(request, 'setting/add_hospital.html')
 
@@ -5212,3 +5218,81 @@ def user_logout(request):
     # user = CustomUser.objects.get(id=id)
     logout(request)
     return redirect('login') 
+
+
+
+def get_header_data(request):
+    header_data = header.objects.first()  # Assuming you have only one record in the header model
+    print(header_data.image.url)
+    if header_data:
+        data = {
+            'name': header_data.name,
+            'image': header_data.image.url,
+        }
+        return JsonResponse(data)
+    return JsonResponse({'error': 'No header data found'}, status=404)
+
+
+def get_ads_data(request):
+    ads_data = Ads.objects.all()
+    ads_list = []
+
+    for ad in ads_data:
+        ads_list.append({
+            'id': ad.id,  # Include the ID if needed
+            'image': ad.ads.url if ad.ads else '',
+            # Add other fields you want to include in the JSON
+        })
+
+    data = {
+        'ads': ads_list,
+    }
+
+    return JsonResponse(data, safe=False)
+
+def add_ads(request):
+
+    if request.method == 'POST':
+    
+        image = request.FILES.get('image')
+
+        ads = Ads(
+            
+            ads=image
+
+        )
+        
+        ads.save()
+        return redirect('doctor')
+    ads = Ads.objects.all()
+    context ={
+        'img':ads
+    }
+    return render(request, 'setting/ads.html',context)
+
+
+
+def edit_ads(request,id):
+    ad = Ads.objects.get(id=id)
+
+
+    if request.method == 'POST':
+    
+        image = request.FILES.get('image')
+
+        
+        
+        ad.ads=image
+        ad.save()
+        return redirect('add_ads')
+    
+    context ={
+        'img':ad
+    }
+    return render(request, 'setting/edit_ads.html',context)
+
+
+
+
+
+

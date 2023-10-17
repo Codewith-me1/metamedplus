@@ -203,7 +203,7 @@
 
               </div>
 
-
+             
               
               <button class="dropdown-btn"> Expense
                 <i class="fa fa-caret-down"></i>
@@ -254,7 +254,7 @@
               <a class="dropdown-a" href="{% url "expense_head" %}">Expense</a>
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
-              <a  class="dropdown-a"href="{% url 'smtp' %}">SMTP</a>
+              
               <a  class="dropdown-a"href="{% url 'payroll' %}">Payroll</a>
               
               
@@ -272,6 +272,18 @@
 
 
               </div>
+              <button class="dropdown-btn"> CMS
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                
+                <a class="dropdown-a" href="{% url 'add_ads' %}">Ads </a>
+                <a class="dropdown-a" href="{% url 'add_hospital' %}">Header</a>
+                 
+
+              </div>
+
+
 
               <button class="dropdown-btn"> Pharmacy
                 <i class="fa fa-caret-down"></i>
@@ -661,7 +673,7 @@
         
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script defer src="{% static "javascript/index.js" %}"></script>
+    {% comment %} <script defer src="{% static "javascript/index.js" %}"></script> {% endcomment %}
     {% comment %} <script src="htt  ps://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> {% endcomment %}
     {% comment %} <script>
         $(document).ready(function() {

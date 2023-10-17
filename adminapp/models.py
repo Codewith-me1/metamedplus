@@ -82,7 +82,7 @@ class AddStaff(models.Model):
 
     # Identification Numbers
     pan_number = models.CharField(max_length=20, blank=True, null=True)
-    national_id_number = models.CharField(max_length=20, blank=True, null=True)
+    national_id_number = models.CharField(max_length=20, blank=True, null=True) 
     local_id_number = models.CharField(max_length=20, blank=True, null=True)
 
     # Payroll and Salary
@@ -1073,4 +1073,9 @@ class SMTPServer(models.Model):
 
 class header(models.Model):
     name = models.CharField(max_length=20,default="Your Hospital Name")
-    image = models.ImageField(upload_to='cms')
+    image = models.ImageField(upload_to='static/cms')
+
+
+
+class Ads(models.Model):
+    ads = models.ImageField(upload_to="static/ads")

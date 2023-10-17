@@ -26,7 +26,7 @@
                 <form class="form_popup" method="post" action="{% url 'ipd_patient' %}">
                     {% csrf_token %}
                      <!-- Basic Information -->
-    <select id="patient" name="patient">
+    <select required id="patient" name="patient">
                 
         {% for patient in patient %}
             <option value="{{ patient.id }}">{{ patient.name }}</option>
@@ -80,7 +80,7 @@
 
 <div class="form-group">
     <label for="symptoms_title">Symptoms Title:</label>
-    <select class="form-control" id="symptoms_title" name="symptoms_title">
+    <select  required class="form-control" id="symptoms_title" name="symptoms_title">
         <option value="">Select Symptoms Title</option>
         {% for type in type %}
             <option>{{ type.symptoms_title }}</option>
@@ -121,7 +121,7 @@
 
 <div class="form-group">
     <label for="consultant_doctor">Consultant Doctor:</label>
-        <select id="consultant_doctor" name="consultant_doctor">
+        <select required id="consultant_doctor" name="consultant_doctor">
             <option value="">Select a doctor</option>
             {% for doctor in doctor %}
                 <option value="{{ doctor.staff_id }}">{{ doctor.first_name }}</option>
@@ -133,7 +133,7 @@
     
     
     <label for="bed_grp">Bed Group:</label>
-        <select id="bed_group" name="bed_group">
+        <select required id="bed_group" name="bed_group">
             <option value="">Select a Bed</option>
             {% for bed in bedtype %}
                 <option value="{{ bed.name }}">{{ bed.name }}</option>
@@ -144,7 +144,7 @@
 
 <div class="form-group">
     <label for="bed_number">Bed Number:</label>
-    <select id="bed_number" name="bed_number">
+    <select required id="bed_number" name="bed_number">
         <option value="">Select a Bed Number</option>
         {% for bed in bed %}
             <option value="{{ bed.name }}">{{ bed.name }}</option>

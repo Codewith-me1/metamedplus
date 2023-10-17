@@ -64,7 +64,7 @@
             display: block;
           }
           
-          .slide:nth-of-type(1) {
+          {% comment %} .slide:nth-of-type(1) {
             background: #D7A151;
           }
           
@@ -78,7 +78,7 @@
           
           .slide:nth-of-type(4) {
             background: #D1D1D4;
-          }
+          } {% endcomment %}
           
           .slide .card{
             width:50%;
@@ -217,6 +217,9 @@ h1{
     margin-right:10px;
 
 }
+.slide img{
+  width:100%;
+}
 .box-content h3{
     font-size:2rem;
 }
@@ -330,30 +333,7 @@ h1{
 
 
 
-    <div class="chart">
-      <div class="chart-heading">
-       
-        {% if user.role == 'Admin' %}
-        <div class="slider">
-            <div class="slide_viewer">
-              <div class="slide_group">
-                <div class="slide">
-                  <h1>Ads</h1>
-                </div>
-                <div class="slide">
-                  <h1>Ads</h1>
-                </div>
-                <div class="slide">
-                </div>
-                <div class="slide">
-                  <h1>Ads</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-      {% endif %}
-  </div>
-  </div>
+   
   </div>  
 
  
@@ -438,6 +418,7 @@ h1{
      </div>
      </div>
 
+     <button id="changeadsButton" onClick="changeads()">Change ads</button>
 </body>
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
@@ -599,7 +580,36 @@ var chrt = document.getElementById("chartId").getContext("2d");
   advance();
 });
 
+function changeads() {
+  // Replace 'new_logo_url' with the URL of the new logo image
+  
+
+
+// Attach a click event listener to the button
+$('#changeadsButton').click(changeLogo);
+console.log('heelo')
+// Fetch and update hospital name as before
+$.get('/get_ads_data/', function (data) {
+
+  if (data.name) {
       
+      $('.logo img').attr('src',data.image);
+      console.log(data.image+"image")
+      
+      
+  } else {
+      $('#hospitalName').text('Your Hospital Name');
+      console.log('new')
+  }
+});
+}
+console.log('hello')
+function newClick(){
+console.log('ads')
+const m = document.querySelector('#changeadsButton').click()
+console.log(m)
+}
+newClick() 
      
 
 </script>

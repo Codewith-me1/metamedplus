@@ -4,7 +4,7 @@
 
    
    {% load static %} 
-    <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" href="{% static 'css/style-main.css' %}">  
     <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
     {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
@@ -200,6 +200,10 @@
             padding:5rem;
           }
 
+          #changeLogoButton{
+            display:none;
+          }
+
         
     </style>
 
@@ -239,7 +243,7 @@
     
     {% for bed in bed %}<h1>{{bed.name}} Hello</h1>{% endfor %}
         <!-- The Modal -->
-    <div id="myModal" class="modal">
+    <div id="myModal" class="modal">s
     
       <!-- Modal content -->
       <div class="modal-content">
@@ -313,6 +317,9 @@
         <button id="search-button"class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
       </form>
 
+      <button id="changeLogoButton" onClick="changeLogo()">Change Logo</button>
+
+
 
     </div>
 
@@ -329,16 +336,47 @@
 
 
 
-
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.3.1/swiper-bundle.js" integrity="sha512-4mlFrp9qno3Tz7HfKNi6hTnBS9Bb+Uzw6frb2U/4Jc0wHdL36LprwQqgDemKNvLVWSfoeQfrgLDDQA0N4oHxgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script> 
+<script>  
 
   const swiper = new Swiper('.swiper', {
     speed: 400,
     spaceBetween: 100,
   });
 
- 
+    // Function to update the logo image source
+    function changeLogo() {
+        // Replace 'new_logo_url' with the URL of the new logo image
+        
+    
+
+    // Attach a click event listener to the button
+    $('#changeLogoButton').click(changeLogo);
+    console.log('heelo')
+    // Fetch and update hospital name as before
+    $.get('/get_header_data/', function (data) {
+      
+        if (data.name) {
+            $('.navbar-brand').text(data.name);
+            $('.logo img').attr('src',data.image);
+            console.log(data.image)
+            
+            
+        } else {
+            $('#hospitalName').text('Your Hospital Name');
+            console.log('new')
+        }
+    });
+  }
+  console.log('hello')
+  function newClick(){
+    console.log('hello')
+    const m = document.querySelector('#changeLogoButton').click()
+    console.log(m)
+  }
+newClick() 
+
     var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal
@@ -375,9 +413,12 @@ function showSlides() {
   }
   slideIndex++;
   if (slideIndex > slides.length) {slideIndex = 1}
-  slides[slideIndex-1].style.display = "block";
+  slides[slideIndex-1].style.display = "bolck";
   setTimeout(showSlides, 2000); // Change image every 2 seconds
 }
 
 console.log('hello')
+
+
+
 </script> 

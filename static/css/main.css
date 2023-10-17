@@ -26,6 +26,10 @@
   background-color: #333;
 
 }
+
+.navbar{
+  height: 10% !important;
+}
 a:hover{
   text-decoration: none !important;
 }
@@ -55,6 +59,9 @@ a:hover ,a:focus{
 .sidebar a {
   text-decoration: none;
   
+}
+.sidebar{
+  margin-top: 2rem !important;
 }
 .sidebar {
   overflow-y: auto;
@@ -598,3 +605,63 @@ textarea.form-control {
   height: 35px !important;
   width: 196px !important;
 }
+
+
+
+
+
+@media screen and (max-width: 1500px) and (min-width: 1000px) {
+  .sidebar{
+    padding-top: 15rem !important;
+  }
+
+  .POP{
+      width: 80%;
+  }
+ 
+}
+
+@media screen and (max-width: 1000px) and (min-width: 768px) {
+  .sidebar{
+    padding-top: 15rem !important;
+    width: 15%;
+  }
+
+  .POP{
+      width: 80%;
+  }
+  .main-cards{
+    display: grid !important;
+    margin: 1rem;
+    margin-top: 5rem !important;
+    flex-wrap: nowrap;
+    /* align-content: center; */
+    align-items: center;
+   
+    justify-items: stretch;
+    gap: 10px;
+    /* display: inline-grid; */
+    justify-content: start;
+    grid-column-start: 1;
+    grid-template-columns: auto auto auto;
+  }
+ 
+}
+
+
+
+
+/* 
+@media screen and (max-width: 768px) and (min-width: 400px) {
+  .sidebar{
+    padding-top: 15rem !important;
+  }
+
+  .POP{
+      width: 80%;
+  }
+  .navbar {
+    height: 5% !important;
+}
+
+} */
