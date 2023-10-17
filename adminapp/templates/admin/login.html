@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Login</title>
+    {% load static %}
     <style>
         /* Basic CSS styles for the form */
         form {
@@ -64,9 +65,7 @@
             text-align:center;
             color:white;
         }
-        body{
-            background-color:#1cb88e ;
-        }
+   
         form{
             padding:3rem;
         }
@@ -76,6 +75,17 @@
             margin-left:7rem;
             background-color:#ee9d1f ;
 
+        }
+        body{
+            
+
+
+            background-image: url('{% static "css/bg.png" %}');
+            background-size: 100%;
+background-repeat: no-repeat;
+background-position: top;
+background-attachment: fixed;
+           
         }
     </style>
 

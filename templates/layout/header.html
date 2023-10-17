@@ -1,13 +1,19 @@
 
-    {% load static %} 
+<!DOCTYPE html>
+<html>
+
+   
+   {% load static %} 
     <link rel="stylesheet" href="{% static 'backend/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style-main.css' %}">  
     <link rel="stylesheet" href="{% static "css/jquery.mCustomScrollbar.min.css" %}">
     {% comment %} <link rel="stylesheet" href="{% static "css/all.css" %}"> {% endcomment %}
      <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
       <link rel="stylesheet" href=" {% static "css/ionicons.min.css" %}">
       <link rel="stylesheet" href=" {% static "css/custom_style.css" %}">
-      <link rel="stylesheet" href=" {% static "css/all.css" %}"> 
+      {% comment %} <link rel="stylesheet" href=" {% static "css/all.css" %}">  {% endcomment %}
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -302,8 +308,8 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       
       <form class="form-inline search my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input id="search-input"class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button id="search-button"class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
       </form>
 
 
@@ -372,37 +378,5 @@ function showSlides() {
   setTimeout(showSlides, 2000); // Change image every 2 seconds
 }
 
-
-$(document).ready(function() {
-  // Function to load bed details
-  function loadBedDetails() {
-      // Make an AJAX request to get bed details
-      $.ajax({
-          url: '{% url "get_bed_details" %}',
-          type: 'GET',
-          success: function(data) {
-              // Parse the JSON data
-              var bedDetails = JSON.parse(data);
-              
-              // Clear the bed container
-              $('#beds-container').empty();
-              
-              // Loop through the bed details and create HTML elements
-              bedDetails.forEach(function(bed) {
-                  var bedDet = '<div class="bed_det" onclick="handleBedClick(this)">';
-                  bedDet += '<img src="{% static "css/images/icons8-occupied-bed-100.png" %}">';
-                  bedDet += '<p>' + bed.fields.name + '</p>';
-                  bedDet += '</div>';
-                  
-                  // Append the bed details to the container
-                  $('#beds-container').append(bedDet);
-              });
-          }
-      });
-  }
-
-  // Attach the click event to the button
-  $('#loadBedDetails').click(loadBedDetails);
-});
-
+console.log('hello')
 </script> 

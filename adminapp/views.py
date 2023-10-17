@@ -5122,3 +5122,85 @@ def search_patient(request):
 
     # Return the patient data as JSON
     return JsonResponse({'patients': patient_data})
+
+
+
+
+def edit_staff(request, id):
+    staff = get_object_or_404(AddStaff, staff_id=id)
+    user = get_object_or_404(CustomUser,id=id)
+
+    if request.method == 'POST':
+        # Update the staff information based on the POST data
+        staff.role = request.POST.get('role')
+        staff.designation = request.POST.get('designation', '')
+        staff.department = request.POST.get('department', '')
+        staff.specialist = request.POST.get('specialist', '')
+        staff.first_name = request.POST.get('first_name', '')
+        staff.last_name = request.POST.get('last_name', '')
+        staff.father_name = request.POST.get('father_name', '')
+        staff.mother_name = request.POST.get('mother_name', '')
+        staff.gender = request.POST.get('gender', '')
+        staff.marital_status = request.POST.get('marital_status', '')
+        staff.blood_group = request.POST.get('blood_group', '')
+        staff.date_of_birth = request.POST.get('date_of_birth', '')
+        staff.date_of_joining = request.POST.get('date_of_joining', '')
+        staff.phone = request.POST.get('phone')
+        staff.emergency_contact = request.POST.get('emergency_contact', '')
+        staff.email = request.POST.get('email')
+        staff.current_address = request.POST.get('current_address', '')
+        staff.permanent_address = request.POST.get('permanent_address', '')
+        staff.photo = request.FILES.get('photo')
+
+        staff.qualification = request.POST.get('qualification', '')
+        staff.work_experience = request.POST.get('work_experience', '')
+        staff.specialization = request.POST.get('specialization', '')
+        staff.note = request.POST.get('note', '')
+
+        staff.pan_number = request.POST.get('pan_number', '')
+        staff.national_id_number = request.POST.get('national_id_number', '')
+        staff.local_id_number = request.POST.get('local_id_number', '')
+
+        staff.payroll = request.POST.get('payroll', '')
+        staff.epf_no = request.POST.get('epf_no', '')
+        basic_salary = request.POST.get('basic_salary', 0)
+        try:
+            staff.basic_salary = float(basic_salary)
+        except ValueError:
+            staff.basic_salary = 0
+
+        staff.contract_type = request.POST.get('contract_type', '')
+
+        staff.work_shift = request.POST.get('work_shift', '')
+        staff.work_location = request.POST.get('work_location', '')
+
+        if 'paid_leave' in request.POST:
+            staff.paid_leave = True
+        else:
+            staff.paid_leave = False
+
+        number_of_leaves = request.POST.get('number_of_leaves')
+        try:
+            staff.number_of_leaves = float(number_of_leaves)
+        except ValueError:
+            staff.number_of_leaves = 0
+
+        staff.account_title = request.POST.get('account_title', '')
+        staff.bank_account_no = request.POST.get('bank_account_no', '')
+        staff.bank_name = request.POST.get('bank_name', '')
+        staff.ifsc_code = request.POST.get('ifsc_code', '')
+        staff.bank_branch_name = request.POST.get('bank_branch_name', '')
+
+        staff.facebook_url = request.POST.get('facebook_url', '')
+        staff.twitter_url = request.POST.get('twitter_url', '')
+        staff.linkedin_url = request.POST.get('linkedin_url', '')
+        staff.instagram_url = request.POST.get('instagram_url', '')
+
+        staff.resume = request.FILES.get('resume')
+        staff.joining_letter = request.FILES.get('joining_letter')
+        staff.other_documents = request.FILES.get('other_documents')
+
+        staff.save()  # Save the changes to the database
+
+        return redirect('/hr/list/')  # Redirect to the staff list page or another appropriate page
+    return render(request, 'hr/edit_staff.html', {'staff': staff})

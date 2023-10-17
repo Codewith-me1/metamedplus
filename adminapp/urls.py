@@ -147,7 +147,10 @@ urlpatterns = [
     path('sales_returnlist/', views.return_list, name='sales_returnlist'),
     path('payment_inlist/', views.payment_list, name='payment_list'),
     path('edit_party/<int:party_id>',views.edit_party,name="edit_party"),
-    path('smtp',views.add_smtp_server,name="smtp")
+    path('smtp',views.add_smtp_server,name="smtp"),
+    path('search_patient/', views.search_patient, name='search_patient'),
+    path('edit_staff/<int:id>/', views.edit_staff, name='edit_staff'),
+
 
     
 

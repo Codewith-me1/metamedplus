@@ -30,6 +30,7 @@
           <th>Role</th>
           <th>Gender</th>
           <th>Address</th>
+          <th>Action</th>
          
         </tr>
       </thead>
@@ -37,12 +38,14 @@
         
         {% for staff in staff %}
           <tr>
+            
             <td>{{ staff.id }}</td>
             <td>{{ staff.first_name }}</td>
             <td>{{ staff.role }}</td>
             <td>{{ staff.phone }}</td>
             <td>{{ staff.gender }}</td>
             <td>{{ staff.address}}</td>
+            <td><a href="/edit_staff/{{ staff.id }}">Edit</a></td>
           
           </tr>
         {% endfor %}

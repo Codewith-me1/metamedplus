@@ -1,7 +1,9 @@
 
 *{
-  text-decoration: none;
+  text-decoration: none !important;
 }
+
+
 
 /* button{
   background-color: #069c74   !important;
@@ -24,9 +26,13 @@
   background-color: #333;
 
 }
+a:hover{
+  text-decoration: none !important;
+}
 .sidebar li:hover ,a:hover{
   background-color: #1cb88e;
   color: white !important;
+  text-decoration: none !important;
 }
 
 .dropdown-btn:hover ,a:hover{
