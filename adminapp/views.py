@@ -5128,8 +5128,8 @@ def search_patient(request):
 
 
 def edit_staff(request, id):
-    staff = get_object_or_404(AddStaff, staff_id=id)
-    user = get_object_or_404(CustomUser,id=id)
+    staff = get_object_or_404(AddStaff, id=id)
+    
 
     if request.method == 'POST':
         # Update the staff information based on the POST data
@@ -5162,7 +5162,7 @@ def edit_staff(request, id):
         staff.national_id_number = request.POST.get('national_id_number', '')
         staff.local_id_number = request.POST.get('local_id_number', '')
 
-        staff.payroll = request.POST.get('payroll', '')
+ 
         staff.epf_no = request.POST.get('epf_no', '')
         basic_salary = request.POST.get('basic_salary', 0)
         try:
@@ -5202,7 +5202,7 @@ def edit_staff(request, id):
         staff.other_documents = request.FILES.get('other_documents')
 
         staff.save()  # Save the changes to the database
-
+        
         return redirect('/hr/list/')  # Redirect to the staff list page or another appropriate page
     return render(request, 'hr/edit_staff.html', {'staff': staff})
 

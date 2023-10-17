@@ -52,7 +52,7 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: #007bff;
+            
             border-radius: 50%;
             transform: translate(-50%, -50%) scale(0);
             transition: transform 0.3s ease;
@@ -76,6 +76,9 @@
             background-color:#ee9d1f ;
 
         }
+        .background{
+            margin-top:25%;
+        }
         body{
             
 
@@ -83,14 +86,32 @@
             background-image: url('{% static "css/bg.png" %}');
             background-size: 100%;
 background-repeat: no-repeat;
-background-position: top;
+background-position: center;
 background-attachment: fixed;
            
         }
+
+
+
+          @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+            form {
+              -webkit-backdrop-filter: blur(10px);
+              backdrop-filter: blur(1px);
+              background-color: rgba(255, 255, 255, 0.5);  
+            }
+           
+          }
+
+    .privacy{
+        position:absolute;
+        bottom:10px;
+        right:50px;
+    }
     </style>
 
 </head>
 <body>
+    <div class="background">
     <h1> Login</h1>
     <form method="post" action="{% url "login" %}">
         {% csrf_token %}
@@ -102,7 +123,10 @@ background-attachment: fixed;
         <br>
         <button type="submit">Login</button>
     </form>
-
+</div>
+<div class="privacy">
+<p>@Saiph Technologies Pvt Ltd</p>
+</div>
 
 </body>
 </html>
