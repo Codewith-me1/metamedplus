@@ -14,6 +14,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from .models import Expense_Category
+from django.contrib.auth import logout
 from .models import Payroll
 from .models import Asset
 from .models import Transaction
@@ -5204,3 +5205,10 @@ def edit_staff(request, id):
 
         return redirect('/hr/list/')  # Redirect to the staff list page or another appropriate page
     return render(request, 'hr/edit_staff.html', {'staff': staff})
+
+
+
+def user_logout(request):
+    # user = CustomUser.objects.get(id=id)
+    logout(request)
+    return redirect('login') 

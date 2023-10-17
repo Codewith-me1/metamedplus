@@ -150,6 +150,7 @@ urlpatterns = [
     path('smtp',views.add_smtp_server,name="smtp"),
     path('search_patient/', views.search_patient, name='search_patient'),
     path('edit_staff/<int:id>/', views.edit_staff, name='edit_staff'),
+    path('logout/', views.user_logout, name='logout'),
 
 
     

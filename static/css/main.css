@@ -29,17 +29,19 @@
 a:hover{
   text-decoration: none !important;
 }
-.sidebar li:hover ,a:hover{
-  background-color: #1cb88e;
+.sidebar li:hover ,.sidebar a:hover , .sidebar li:hover a{
+  background-color: #0f83ff;
   color: white !important;
   text-decoration: none !important;
 }
 
 .dropdown-btn:hover ,a:hover{
-  background-color: #1cb88e;
+  background-color: #0f83ff;
   color: white !important;
 }
-
+a:hover ,a:focus{
+  color: white !important;
+}
 .sidebar ul {
   list-style-type: none;
   padding: 0;
@@ -275,9 +277,10 @@ margin-left:20rem;
 }
 
 .sidebar .active{
-  background-color: #1cb88e  !important;
+  background-color: #0f83ff    !important;
+
 }
-/* Dropdown container styles */
+/* Dropdown container 1cb88e styles */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -361,11 +364,14 @@ margin-left:20rem;
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
 .dropdown-container {
   display: none;
-  background-color: #1cb88e;
+  background-color: #0f83ff;
   padding: 10px;
   padding-left: 8px;
   color: white;
 
+}
+a.dropdown-a{
+  color:white !important;
 }
 
 /* Optional: Style the caret down icon */
