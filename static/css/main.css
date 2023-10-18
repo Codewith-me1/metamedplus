@@ -10,7 +10,7 @@
 } */
 .dropdown-btn{
   font-size: 15px;
-  color:white ;
+  color:rgb(151, 151, 151) ;
   margin-top: 10px;
 }
 .sidebar li:hover{
@@ -570,7 +570,9 @@ label {
   font-family: 'Open Sans', sans-serif !important;
 }
 
-
+button#changeadsButton{
+  display: none  !important;
+}
 .hr_from{
   padding: 20px;
 }
@@ -610,8 +612,8 @@ textarea.form-control {
 
 
 
-@media screen and (max-width: 1500px) and (min-width: 1000px) {
-  .sidebar{
+/* @media screen and (max-width: 1500px) and (min-width: 1000px) { */
+  /* .sidebar{
     padding-top: 15rem !important;
   }
 
@@ -636,17 +638,17 @@ textarea.form-control {
     margin-top: 5rem !important;
     flex-wrap: nowrap;
     /* align-content: center; */
-    align-items: center;
+    /* align-items: center; */
    
-    justify-items: stretch;
-    gap: 10px;
+    /* justify-items: stretch; */
+    /* gap: 10px; */
     /* display: inline-grid; */
-    justify-content: start;
+    /* justify-content: start;
     grid-column-start: 1;
     grid-template-columns: auto auto auto;
-  }
+  } */
  
-}
+/* } */ 
 
 
 
