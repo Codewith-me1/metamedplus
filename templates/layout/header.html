@@ -70,7 +70,7 @@
         }
         a.logo img{
           float:left;
-          width:14rem;
+          width:17rem;
       }
 
         .navbar a:hover {
@@ -187,7 +187,7 @@
 
           }
           .sidebar{
-            padding-top:10rem;
+            padding-top:14rem;
           }
           .container{
             margin-top:13rem;
@@ -202,6 +202,13 @@
 
           #changeLogoButton{
             display:none;
+          }
+          li .active a{
+              color:white !important;
+
+          }
+          .active a{
+            color:white !important;
           }
 
         
@@ -234,22 +241,21 @@
 
     <div class="header-btn">
         <a href="/profile/{{user.id}}" id="myBtns">Profile</a>
-    <a href="#"  id="myBtn loadBedDetails">Bed Status</a>
+    <a href="#"  id="myBtn">Bed Status</a>
     <a href="{% url "add_task" %}" id="myBtns">Task</a>
     <a href="#" id="myBtns">Calender</a>
     <a href="{% url 'logout' %}" id="myBtns">Logout</a>
 
     
     
-    {% for bed in bed %}<h1>{{bed.name}} Hello</h1>{% endfor %}
-        <!-- The Modal -->
-    <div id="myModal" class="modal">s
+
+    <div id="myModal" class="modal">
     
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
         <div class="nobed">
-        <h4 class="bed"> First<h4>
+        {% comment %} <h4 class="bed"> First<h4>
 
         <div class="bed_details">
             <div class="beds">
@@ -273,25 +279,25 @@
                 </div>
             </div>
 
-        </div>
+        </div> {% endcomment %}
         <h4 class="bed"> Second<h4>
         <div class="bed_details">
             <div class="beds">
                 <div class="bed_det">
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
+                    <p class="bed_des" >1E</p>
                 </div>
                 <div class="bed_det">
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
+                    <p class="bed_des" >1E</p>
                 </div>
                 <div class="bed_det">
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
+                    <p class="bed_des">1E</p>
                 </div>
                 <div class="bed_det ">
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
+                    <p class="bed_des" >1E</p>
                 </div>
             </div>
 
@@ -350,10 +356,27 @@
         // Replace 'new_logo_url' with the URL of the new logo image
         
     
-
+    
     // Attach a click event listener to the button
     $('#changeLogoButton').click(changeLogo);
     console.log('heelo')
+
+    $.get('/get_bed_data/', function (data) {
+      
+      if (data.name) {
+          $('.bed_des').text(data.name);
+
+         
+          
+          
+      } else {
+          $('.bed_des').text('Empty');
+          console.log('bed')
+      }
+     });
+
+
+
     // Fetch and update hospital name as before
     $.get('/get_header_data/', function (data) {
       
@@ -422,3 +445,5 @@ console.log('hello')
 
 
 </script> 
+
+{% include "layout/footer.html" %}

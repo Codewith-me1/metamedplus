@@ -156,6 +156,13 @@ urlpatterns = [
     path('add_ads/<int:id>', views.edit_ads, name='edit_ads'),
     path('get_header_data/', views.get_header_data, name='get_header_data'),
     path('get_ads_data/', views.get_ads_data, name='get_ads_data'),
+    path('get_bed_data/', views.get_bed_data, name='get_bed_data'),
+    path('admin_notice/', views.admin_notice_board, name='admin_notice'),
+    path('public_notice/', views.public_notice_board, name='public_notice'),
+    
+    path('send_message/<int:receiver_id>/', views.send_message, name='send_message'),
+    path('message_list/', views.message_list, name='message_list'),
+    path('calculator/', views.calculator_view, name='calculator'),
 
 
     

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost:8000"]
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clearcache',
     'django_seed',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
     )
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 8000)],
+        },
+    },
+}
+
+ASGI_APPLICATION = 'metamed.routing.application'

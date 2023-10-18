@@ -3,13 +3,17 @@ from decimal import Decimal
 # Create your views here.
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from django.shortcuts import get_object_or_404
 from .models import SMTPServer
 from django.urls import reverse
+from .models import Message
 from .models import DeathRecord
 from .models import CustomUser
 import re
 from .models import BankAccount
+from .models import Notice
 import smtplib
 from email.mime.text import MIMEText
 from .models import Ads
@@ -5232,6 +5236,18 @@ def get_header_data(request):
         return JsonResponse(data)
     return JsonResponse({'error': 'No header data found'}, status=404)
 
+def get_bed_data(request):
+    bed_data = IpdPatient.objects.all()  # Assuming you have only one record in the header model
+    print(bed_data)
+    if bed_data:
+        data = {
+            'name': bed_data.bed_number,
+            'patient': bed_data.patient,
+            
+            
+        }
+        return JsonResponse(data)
+    return JsonResponse({'error': 'No header data found'}, status=404)
 
 def get_ads_data(request):
     ads_data = Ads.objects.all()
@@ -5296,3 +5312,55 @@ def edit_ads(request,id):
 
 
 
+
+
+
+def admin_notice_board(request):
+    if request.method == 'POST':
+        title = request.POST['title']
+        content = request.POST['content']
+        notice = Notice(title=title, content=content)
+        notice.save()
+        # message = 'New Notice By Admin: {}'.format(title)
+        # channel_layer = get_channel_layer()
+        # async_to_sync(channel_layer.group_send)(
+        #     'notifications_group',
+        #     {'type': 'send_notification', 'message': message}
+        # )
+        return redirect('admin_notice')  # Redirect to the same page after adding a notice
+
+    if request.method == 'GET' and 'delete' in request.GET:
+        notice_id = request.GET['delete']
+        notice = Notice.objects.get(pk=notice_id)
+        notice.is_deleted = True
+        notice.save()
+
+    notices = Notice.objects.filter(is_deleted=False)
+    notice = Notice.objects.filter(is_deleted=True).delete()
+ 
+    return render(request, 'panels/notice.html', {'notices': notices})
+
+def public_notice_board(request):
+    notices = Notice.objects.all()
+    return render(request, 'panels/public_notice.html', {'notices': notices})
+
+
+
+def send_message(request, receiver_id):
+    if request.method == 'POST':
+        content = request.POST['content']
+        receiver = AddStaff.objects.get(pk=receiver_id)
+        Message.objects.create(sender=request.user, receiver=receiver, content=content)
+        return redirect('message_list')
+
+    receiver = AddStaff.objects.get(pk=receiver_id)
+    return render(request, 'messaging/send_message.html', {'receiver': receiver})
+
+
+def message_list(request):
+    user_messages = Message.objects.filter(receiver=request.user).order_by('-timestamp')
+    return render(request, 'messaging/message_list.html', {'user_messages': user_messages})
+
+
+def calculator_view(request):
+    return render(request, 'others/calculator.html')
