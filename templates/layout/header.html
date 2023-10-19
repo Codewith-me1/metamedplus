@@ -156,13 +156,14 @@
             
 
           }
+
           #myBtn:hover{
             color:white !important;
-            background-color:#1cb88e  !important; 
+            background-color:#0084B4  !important; 
           }
           #myBtns:hover{
             color:white !important;
-            background-color:#1cb88e  !important;
+            background-color:#0084B4  !important;
           }
           .beds{
             display:flex;
@@ -244,6 +245,14 @@
     <a href="#"  id="myBtn">Bed Status</a>
     <a href="{% url "add_task" %}" id="myBtns">Task</a>
     <a href="#" id="myBtns">Calender</a>
+    {% if user.role != 'Admin' %}
+    
+    <a href="{% url 'public_notice' %}" id="myBtns">Notice</a>
+    {% endif %}
+    {% if user.role == 'Admin' %}
+    
+    <a href="{% url 'admin_notice' %}" id="myBtns">Notice</a>
+    {% endif %}
     <a href="{% url 'logout' %}" id="myBtns">Logout</a>
 
     
