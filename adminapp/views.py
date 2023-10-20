@@ -4900,6 +4900,38 @@ def profit_and_loss_statement(request):
 
 
 
+def gstreport(request):
+    # Query the database for relevant data
+    
+
+    # Initialize variables for different sections of the profit and loss statement
+ 
+
+    # Iterate through the entries and calculate the totals for each section
+  
+
+    total_sales_tax = Item_Invoice.objects.filter(invoice__type='sales').aggregate(
+        total_sales_tax=Sum(F('tax_amount'))
+    )['total_sales_tax'] or 0
+
+    total_purchase_tax = Item_Invoice.objects.filter(invoice__type='purchase').aggregate(
+        total_purchase_tax=Sum(F('tax_amount'))
+    )['total_purchase_tax'] or 0
+
+    tax_diffrence = total_sales_tax - total_purchase_tax
+
+
+
+
+    return render(request, 'accounts/report/gstreport.html', {
+
+        'tax_payable': total_purchase_tax,
+
+        'tax_receivable': total_sales_tax,
+        'total':tax_diffrence,
+       
+    })
+
 def get_bed_details(request):
     beds = Bed.objects.all()
     data = serializers.serialize("json", beds)
@@ -5236,18 +5268,47 @@ def get_header_data(request):
         return JsonResponse(data)
     return JsonResponse({'error': 'No header data found'}, status=404)
 
+
 def get_bed_data(request):
-    bed_data = IpdPatient.objects.all()  # Assuming you have only one record in the header model
-    print(bed_data)
-    if bed_data:
-        data = {
-            'name': bed_data.bed_number,
-            'patient': bed_data.patient,
-            
-            
-        }
-        return JsonResponse(data)
-    return JsonResponse({'error': 'No header data found'}, status=404)
+    bed_data = Bed.objects.all()  # Fetch all records from the Bed model
+    data_list = []
+
+    for bed in bed_data:
+        data_list.append({
+            'name': bed.name,
+            # Add more fields here if needed
+        })
+
+    if data_list:
+        return JsonResponse(data_list, safe=False)
+    return JsonResponse({'error': 'No bed data found'}, status=404)
+
+
+# def get_ads_data(request):
+#     ads_data = Ads.objects.all() 
+#      # Assuming you have only one record in the header model
+#     ads_list = []
+#     print(ads_data)
+
+#     for ad in ads_data:
+#         ads_list.append({
+# #               # Include the ID if needed
+#             'image': ad.ads.url if ad.ads else '',
+# #             # Add other fields you want to include in the JSON
+#         })
+
+#     data = {
+#         'ads': ads_list,
+#     }
+#     if ads_data:
+#         data = {
+         
+#             'image': ads_data.ads.url,
+#         }
+#         return JsonResponse(data)
+#     return JsonResponse({'error': 'No header data found'}, status=404)
+
+
 
 def get_ads_data(request):
     ads_data = Ads.objects.all()
@@ -5255,7 +5316,7 @@ def get_ads_data(request):
 
     for ad in ads_data:
         ads_list.append({
-            'id': ad.id,  # Include the ID if needed
+              # Include the ID if needed
             'image': ad.ads.url if ad.ads else '',
             # Add other fields you want to include in the JSON
         })

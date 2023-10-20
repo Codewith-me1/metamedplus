@@ -1,8 +1,114 @@
 
 {% load static %}
+<style>
+
+  
 
 
+@media only screen and (max-width:768px) and (min-width:300px) {
+
+  .sidebar {
+      transform: translateX(-1000px);
+      width: 35% !important;
+  }
+
+
+  .toggle-btn {
+      display: block;
+      position: fixed;
+      z-index:100;
+      top: 10%;
+      left: 10px;
+      color:rgb(0, 0, 0);
+  }
+
+  .container{
+    padding: 1rem !important;
+    margin-top: 5rem !important;
+    width: 90% !important;
+    margin-left: 0px !important;
+  }
+  .calender-section{
+    display: flex;
+    flex-direction: column;
+  }
+  #calendar{
+    width: 100% !important;
+  }
+  .main-second{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-left: 0px !important;
+  }
+  .charts{
+    display: flex;
+    flex-direction: column;
+    height: 90rem !important;
+  }
+
+  .navbar-brand{
+    display: none !important;
+  }
+
+}
+
+
+
+
+@media only screen and (max-width:500px) and (min-width:300px) {
+
+  .sidebar {
+      transform: translateX(-1000px);
+      width: 35% !important;
+  }
+
+
+  .toggle-btn {
+      display: block;
+      position: fixed;
+      z-index:100;
+      top: 10%;
+      left: 10px;
+      color:rgb(0, 0, 0);
+  }
+
+  .container{
+    padding: 1rem !important;
+    margin-top: 5rem !important;
+    width: 90% !important;
+    margin-left: 0px !important;
+  }
+  .calender-section{
+    display: flex;
+    flex-direction: column;
+  }
+  #calendar{
+    width: 100% !important;
+  }
+  .main-second{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-left: 0px !important;
+  }
+  .charts{
+    display: flex;
+    flex-direction: column;
+    height: 90rem !important;
+  }
+
+  .navbar-brand{
+    display: none !important;
+  }
+
+}
+
+</style>
+
+
+    <div class="wrapper">
+      <button class="toggle-btn">&#9776; Hello</button>
     <div class="sidebar">
+
         <ul>
             {% if user.role != 'New' %}
           
@@ -55,7 +161,7 @@
              
               <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
              
-            <li><a href="{% url 'opd' %}">Opd</a></li>
+            <li><a href="{% url 'opd' %}">OPD</a></li>
             <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
             <li><a href="{% url 'path' %}">Pathology</a></li>
           
@@ -79,7 +185,7 @@
 
               </div>
 
-              <button class="dropdown-btn"> radiology
+              <button class="dropdown-btn"> Radiology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -107,7 +213,7 @@
             <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
            
           
-            <li><a href="{% url 'opd' %}">Opd</a></li>
+            <li><a href="{% url 'opd' %}">OPD</a></li>
             <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
             <li><a href="{% url 'path' %}">Pathology</a></li>
             <li><a href="{% url 'radiology' %}">Radiology</a></li>
@@ -124,7 +230,7 @@
             <a class="dropdown-a" href="{% url "add_death" %}">Death Record</a>
             
           </div>    
-          <button class="dropdown-btn">Reports 
+          <button class="dropdown-btn">Medical Reports 
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-container">
@@ -712,6 +818,7 @@
         </ul>
         
     </div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% comment %} <script defer src="{% static "javascript/index.js" %}"></script> {% endcomment %}
     {% comment %} <script src="htt  ps://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> {% endcomment %}
@@ -774,6 +881,13 @@ function closeForm() {
         $(this).removeClass('is-visible');
       }
     });
+});
+
+$(document).ready(function() {
+  $(".toggle-btn").on("click", function() {
+    $(".sidebar").toggleClass("btn-active");
+    $(this).toggleClass("btn-active");
+  });
 });
 
 </script>
