@@ -45,8 +45,9 @@
 </form>
 </div>
 
+<script src="{% static "/css/javscript/index.js" %}"></script>
 <script>
-    const openPopupBtn = document.getElementById("openPopupBtn");
+    {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
     const popupContainer = document.getElementById("popupContainer");
 const closePopupBtn = document.getElementById("closePopupBtn");
 
@@ -55,7 +56,7 @@ function change(){
 }
 closePopupBtn.addEventListener("click", function() {
     popupContainer.style.display = "none";
-});
+}); {% endcomment %}
    
 </script>
 </body>

@@ -6,6 +6,7 @@
 
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+{% load static %}
 <div class="container">
     
     
@@ -95,6 +96,7 @@
   </div>
 
 
+  <script src="{% static "/css/javscript/index.js" %}"></script>
 
     <script>
       {% comment %} $(document).ready(function() {
@@ -111,7 +113,7 @@
 
       
 
-      const openPopupBtn = document.getElementById("openPopupBtn");
+      {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
       const popupContainer = document.getElementById("popupContainer");
       const closePopupBtn = document.getElementById("closePopupBtn");
     {% comment %} console.log(openPopupBtn)
@@ -120,12 +122,12 @@
           popupContainer.style.display = "block";
           console.log('hello')
       }); {% endcomment %}
-      function change(){
+      {% comment %} function change(){
         popupContainer.style.display = "block";
       }
       closePopupBtn.addEventListener("click", function() {
           popupContainer.style.display = "none";
-      });
+      }); {% endcomment %} 
     </script>
   </div>
 

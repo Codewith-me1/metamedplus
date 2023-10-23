@@ -1,14 +1,18 @@
 from django.shortcuts import render
 from decimal import Decimal
 # Create your views here.
+import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.core.mail import EmailMessage, get_connection
+from django.conf import settings
 from django.shortcuts import get_object_or_404
+
 from .models import SMTPServer
 from django.urls import reverse
-from .models import Message
+from .models import ChatMessages
 from .models import DeathRecord
 from .models import CustomUser
 import re
@@ -97,6 +101,7 @@ from .models import SupplierDetails
 from .models import Item
 from .models import ItemStock
 from .models import Path_Category
+from django.contrib.auth.decorators import login_required
 from .models import Radio_Category,Radio_Parameter, Radiology_test
 import secrets
 import string
@@ -493,15 +498,16 @@ def role_form(request):
         # Get data from the POST request
         
         
-        role = request.POST.get('role')
+        role = request.POST.get('role') 
         designation = request.POST.get('designation')
         department = request.POST.get('department')
         specialist = request.POST.get('specialist')
+        roles = role.strip()
 
         # Create a Staff object and save it to the database
         staff = Role(
           
-            role=role,
+            role=roles,
             designation=designation,
             department=department,
             specialist=specialist,
@@ -799,7 +805,7 @@ def ipd_patient(request):
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
     patient =  Patient.objects.all()
-    doctors = AddStaff.objects.filter(designation="doctor")
+    doctors = AddStaff.objects.filter(role="Doctor")
     ipd = IpdPatient.objects.all()
     context = {
         "type": type,
@@ -5246,7 +5252,15 @@ def edit_staff(request, id):
         staff.save()  # Save the changes to the database
         
         return redirect('/hr/list/')  # Redirect to the staff list page or another appropriate page
-    return render(request, 'hr/edit_staff.html', {'staff': staff})
+    
+
+    role = Role.objects.all()
+    context = { 
+           "role":role, 
+           'staff':staff,
+
+        }
+    return render(request, 'hr/edit_staff.html',context)
 
 
 
@@ -5407,21 +5421,84 @@ def public_notice_board(request):
 
 
 
-def send_message(request, receiver_id):
-    if request.method == 'POST':
-        content = request.POST['content']
-        receiver = AddStaff.objects.get(pk=receiver_id)
-        Message.objects.create(sender=request.user, receiver=receiver, content=content)
-        return redirect('message_list')
+# def send_message(request, receiver_id):
+#     if request.method == 'POST':
+#         content = request.POST['content']
+#         receiver = AddStaff.objects.get(pk=receiver_id)
+#         Message.objects.create(sender=request.user, receiver=receiver, content=content)
+#         return redirect('message_list')
 
-    receiver = AddStaff.objects.get(pk=receiver_id)
-    return render(request, 'messaging/send_message.html', {'receiver': receiver})
+#     receiver = AddStaff.objects.get(pk=receiver_id)
+#     return render(request, 'messaging/send_message.html', {'receiver': receiver})
 
 
-def message_list(request):
-    user_messages = Message.objects.filter(receiver=request.user).order_by('-timestamp')
-    return render(request, 'messaging/message_list.html', {'user_messages': user_messages})
+# def message_list(request):
+#     user_messages = Message.objects.filter(receiver=request.user).order_by('-timestamp')
+#     return render(request, 'messaging/message_list.html', {'user_messages': user_messages})
 
 
 def calculator_view(request):
     return render(request, 'others/calculator.html')
+
+
+
+from .models import ChatRoom, ChatMessages
+@login_required(login_url='/login')
+def chat_room(request, room_name):
+
+    user = CustomUser.objects.all()
+    context = {
+        'all': user,
+        
+    }
+
+    return render(request, 'chat/room.html', context)
+
+def send_message(request,receiver_id,sender_id):
+    if request.method =="POST":
+        message = request.POST['message']
+
+        receiver = CustomUser.objects.get(id=receiver_id)
+        sender = CustomUser.objects.get(id=sender_id)
+
+        message = ChatMessages(receiver=receiver, sender=sender, content=message)
+        message.save()
+        url = reverse('send', args=[receiver_id,sender_id])
+        
+
+        return redirect(url)
+    messges = ChatMessages.objects.filter(receiver_id=receiver_id)
+    context = {
+        'receiver':receiver_id,
+        'message':messges
+
+    }
+    return render(request,'chat/chat.html',context)
+
+
+def chat_list(request):
+    messges = ChatMessages.objects.all()
+    context ={
+        'message':messges
+    }
+    return render(request,'chat/message.html',context)
+
+
+
+def send_email(request):  
+   if request.method == "POST": 
+    time.sleep(3)
+    with get_connection(  
+           host=settings.EMAIL_HOST, 
+     port=settings.EMAIL_PORT,  
+     username=settings.EMAIL_HOST_USER, 
+     password=settings.EMAIL_HOST_PASSWORD, 
+     use_tls=settings.EMAIL_USE_TLS  
+       ) as connection:  
+           subject = request.POST.get("subject")  
+           email_from = settings.EMAIL_HOST_USER  
+           recipient_list = [request.POST.get("email"), ]  
+           message = request.POST.get("message")  
+           EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()  
+ 
+   return render(request, 'chat/email.html')

@@ -3,6 +3,7 @@
 
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+{% load static %}
 <div class='container'>
     <div id="popupContainer" class="form-popup-back">
         <div class="form-Contain">
@@ -154,8 +155,10 @@
     
 
     </div>
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
 <script>
-        const openPopupBtn = document.getElementById("openPopupBtn");
+        {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
         const popupContainer = document.getElementById("popupContainer");
     const closePopupBtn = document.getElementById("closePopupBtn");
     
@@ -164,7 +167,7 @@
     }
     closePopupBtn.addEventListener("click", function() {
         popupContainer.style.display = "none";
-    });
+    }); {% endcomment %}
        
     function calculateCommission() {
         // Get the input values

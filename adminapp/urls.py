@@ -28,7 +28,7 @@ urlpatterns = [
     path('med-det/', views.medicationDetails_form, name='med_det'),
     path('med-cat/', views.medicineCategory, name='med_cat'),
     path('add_donor/', views.add_donor, name='add_donor'),
-    path('show/', views.show, name='s   ow'),
+    path('show/', views.show, name='show'),
     path('issue_blood/', views.add_blood_donation, name='issue_blood'),
     path('issue_comp/', views.issue_comp, name='issue_comp'),
     path('add_charge/', views.add_charge, name='add_charge'),
@@ -115,7 +115,7 @@ urlpatterns = [
     path('search_medicine/', views.search_medicine, name='search_medicine'),
     path('search_patient/', views.search_patient, name='search_patient'),
     path('report_appointment/', views.report_appointment, name='report_appointment'),
-    path('consultant_register/<int:id>/', views.consultant_register, name='consultant_registe   r'),
+    path('consultant_register/<int:id>/', views.consultant_register, name='consultant_register'),
     path('ipd_operation/<int:id>/', views.operation_create, name='ipd_operation'),
     path('ipd_payment/<int:id>/', views.ipd_payment, name='ipd_payment'),
     path('transcations/', views.all_transcation, name='transcation'),
@@ -162,11 +162,13 @@ urlpatterns = [
     path('public_notice/', views.public_notice_board, name='public_notice'),
     
     path('send_message/<int:receiver_id>/', views.send_message, name='send_message'),
-    path('message_list/', views.message_list, name='message_list'),
+    # path('message_list/', views.message_list, name='message_list'),
     path('calculator/', views.calculator_view, name='calculator'),
-
-
-    
+    path('chat_list/', views.chat_list, name='chat_list'),
+    path('send_emails/', views.send_email, name='send_email'),
+    path('chat/<str:room_name>', views.chat_room, name='room'),
+    path('chat/<int:receiver_id>/<int:sender_id>',views.send_message,name="send")
+  
 
 
 

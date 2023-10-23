@@ -24,8 +24,7 @@ SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost:8000"]
+ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost"]
 
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clearcache',
     'django_seed',
-    'channels',
+    # 'channels',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +54,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'metamed.urls'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com'
+EMAIL_USE_TLS = False
+EMAIL_PORT = 587
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'devshandilaya1@gmail.com'
+EMAIL_HOST_PASSWORD = 'WrNwXC8M9kA1BFUs'
 
 TEMPLATES = [
     {
@@ -135,13 +144,11 @@ AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
     )
 
+ASGI_APPLICATION = 'metamed.routing.application'
+
+# Use Redis as the channel layer
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 8000)],
-        },
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"  # Use a production-ready layer in a real application.
     },
 }
-
-ASGI_APPLICATION = 'metamed.routing.application'

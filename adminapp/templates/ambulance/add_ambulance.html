@@ -4,8 +4,9 @@
 
 
     <!-- create_child.html -->
-    {% include "layout/sidebar.html" %}
     {% include "layout/header.html" %}
+    {% include "layout/sidebar.html" %}
+    {% load static %}
     <div class="container">
     
     <div id="popupContainer" class="form-popup-back">
@@ -131,9 +132,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
-    
+    <script src="{% static "/css/javscript/index.js" %}"></script> 
     <script>
-        const openPopupBtn = document.getElementById("openPopupBtn");
+        {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
     const popupContainer = document.getElementById("popupContainer");
     const closePopupBtn = document.getElementById("closePopupBtn");
     
@@ -142,7 +143,7 @@
     }
     closePopupBtn.addEventListener("click", function() {
         popupContainer.style.display = "none";
-    });
+    }); {% endcomment %}
 
     $(document).ready(function () {
         // Listen for changes in the vehicle_model select field

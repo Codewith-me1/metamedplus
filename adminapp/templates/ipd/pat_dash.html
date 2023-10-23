@@ -113,7 +113,7 @@
                 <ul class="ipd-navbar-nav">
                     <li class="ipd-nav-item {% if request.resolver_match.url_name == '#nurse' %}clicked{% endif %}"><a href="#nurse" class="ipd-nav-link">Home</a></li>
                     <li class="ipd-nav-item"><a href="#overview" class="ipd-nav-link">overview</a></li>
-                    <li class="ipd-nav-item"><a href="" class="ipd-nav-link">Services</a></li>
+             
                     <li class="ipd-nav-item"><a href="#doctor" class="ipd-nav-link">Doctor Note</a></li>
                     <li class="ipd-nav-item"><a href="#medicine" class="ipd-nav-link">Medication</a></li>
                     <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consul  tant</a></li>
@@ -917,7 +917,7 @@
 
 <script>
 
-
+toggle()
     document.addEventListener('DOMContentLoaded', function () {
         const openPopupBtns = document.querySelectorAll('.openPopupBtn');
         console.log(openPopupBtns)
@@ -946,7 +946,20 @@ function openPopup(popupId) {
 });
 
 
-    function toggleSection(sectionId) {
+function toggle(){
+    var sections = document.querySelectorAll('.toggeable')
+    sections.forEach(function(section) {
+        section.classList.add('off');
+    });
+
+    var selectedSection = document.querySelector('#overview');
+        if (selectedSection) {
+            selectedSection.classList.remove('off');
+        }
+
+}
+
+    {% comment %} function toggleSection(sectionId) {
         // Hide all sections with class "toggleable"
         var sections = document.querySelectorAll('.toggeable');
         sections.forEach(function(section) {
@@ -958,7 +971,7 @@ function openPopup(popupId) {
         if (selectedSection) {
             selectedSection.classList.remove('off');
         }
-    }
+    } {% endcomment %}
 
     // Add an event listener to each navigation link
     function toggleSection(sectionId) {

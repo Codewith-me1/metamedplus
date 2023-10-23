@@ -1,7 +1,7 @@
 
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
-
+{% load static %}
 <style>
     select {
         display: block;
@@ -10,6 +10,18 @@
         width:60% !important;
         margin-top:20rem;
     }
+    
+
+@media only screen and (max-width:768px) and (min-width:300px) {
+    .form-group{
+        margin:0px !important;
+    }
+    .POP{
+        width:90% !important;
+        margin-top:40rem;
+    }
+    
+}
 </style>
 <div class="container"> 
 
@@ -263,8 +275,9 @@
 
 
 
+<script src="{% static "/css/javscript/index.js" %}"></script>
 <script>
-    const openPopupBtn = document.getElementById("openPopupBtn");
+    {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
 const popupContainer = document.getElementById("popupContainer");
 const closePopupBtn = document.getElementById("closePopupBtn");
 
@@ -274,7 +287,7 @@ function change(){
 closePopupBtn.addEventListener("click", function() {
     popupContainer.style.display = "none";
 });
-  
+   {% endcomment %}
 $(document).ready(function () {
     // Listen for changes in the vehicle_model select field
     $('#charge_name').change(function () {

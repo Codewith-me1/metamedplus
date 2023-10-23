@@ -52,21 +52,25 @@
 
 }
 
+body{
+  display:block !important;
+}
 
 
 
-@media only screen and (max-width:500px) and (min-width:300px) {
+@media only screen and (max-width:768px) and (min-width:300px) {
 
   .sidebar {
       transform: translateX(-1000px);
       width: 35% !important;
+      z-index:10000;
   }
 
 
   .toggle-btn {
       display: block;
       position: fixed;
-      z-index:100;
+      z-index:100000;
       top: 10%;
       left: 10px;
       color:rgb(0, 0, 0);
@@ -75,7 +79,7 @@
   .container{
     padding: 1rem !important;
     margin-top: 5rem !important;
-    width: 90% !important;
+    width: 100% !important;
     margin-left: 0px !important;
   }
   .calender-section{
@@ -100,13 +104,101 @@
     display: none !important;
   }
 
+  .container {
+    margin-top:15rem !important;
+  }
+  .main-header{
+    display:flex;
+    justify-content:space-between;
+    border:none !important;
+    position:relative !important;
+    z-index:1 ;
+  }
+  .POP{
+    width:90%;
+  
+    
+
+  }
+  .form-Contain{
+    overflow:scroll;
+    position:absolute !important;
+    z-index:100;
+    
+
+    
+  }
+  th:nth-child(7),th:nth-child(8), th:nth-child(9){
+    display:none !important;
+  }
+
 }
 
+@media only screen and (max-width:1500px) and (min-width:300px) {
+    .left{
+      width:40% !important;
+      margin-left:1rem !important;
+      padding:0rem !important;
+
+    }
+    .ipd-navbar-nav{
+      overflow:scroll;
+    }
+  
+    
+}
+@media only screen and (max-width:1250px) and (min-width:300px) {
+  .main-content{
+    display:flex;
+    flex-direction:column;
+  }
+  .side_admin{
+    width:90% !important;
+  }
+  .left{
+    width:90% !important;
+  }
+  ..main-content section{
+    width:90% !important; 
+  }
+  .char{
+    width:90% !important;
+  }
+  .charts{
+    width:90% !important;
+  }
+  .main-second{
+    margin-left:1rem !important;
+  }
+  
+}
+
+@media only screen and (max-width:1350px) and (min-width:300px) {
+
+  ..main-content section{
+    width:90% !important; 
+  }
+  .char{
+    width:90% !important;
+  }
+  .charts{
+    width:90% !important;
+  }
+.main-second{
+  margin-left:1rem !important;
+}
+}
+
+
+@media only screen and (max-width:600px) and (min-width:200px) {
+
+  .main-second{grid-template-columns: auto !important;   justify-content: space-around;}
+}
 </style>
 
 
     <div class="wrapper">
-      <button class="toggle-btn">&#9776; Hello</button>
+      <button class="toggle-btn">&#9776; </button>
     <div class="sidebar">
 
         <ul>
@@ -344,6 +436,7 @@
                  <a class="dropdown-a" href="{% url 'cash_flow' %}"> Cash Flow  </a>
                  <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
                  <a class="dropdown-a" href="{% url 'transcation' %}">Trading </a>
+                 <a class="dropdown-a" href="{% url 'gst' %}">GST Report  </a>
                  
 
               </div>
@@ -829,7 +922,7 @@
             $(this).parent().toggleClass("active");
           });
         });
-        </script> {% endcomment %}<script>
+        </script> {% endcomment %}<script defer>
 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
 var dropdown = document.getElementsByClassName("dropdown-btn");
 var i;
@@ -887,6 +980,15 @@ $(document).ready(function() {
   $(".toggle-btn").on("click", function() {
     $(".sidebar").toggleClass("btn-active");
     $(this).toggleClass("btn-active");
+  });
+});
+
+
+const popup = document.querySelector('#openPopupBtn')
+$(document).ready(function() {
+  popup.on("click", function() {
+    $(".main-header").style.display="none !important";
+    
   });
 });
 

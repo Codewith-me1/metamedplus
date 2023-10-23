@@ -1,6 +1,7 @@
 <!-- supplier_form.html -->
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+{% load static %}
 <style> 
 .table{
     margin-top:4rem;    
@@ -109,8 +110,10 @@ textarea{
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+        
+<script src="{% static "/css/javscript/index.js" %}"></script>
     <script>
-            const openPopupBtn = document.getElementById("openPopupBtn");
+            {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
             const popupContainer = document.getElementById("popupContainer");
         const closePopupBtn = document.getElementById("closePopupBtn");
         
@@ -119,7 +122,7 @@ textarea{
         }
         closePopupBtn.addEventListener("click", function() {
             popupContainer.style.display = "none";
-        });
+        }); {% endcomment %}
       
 
 

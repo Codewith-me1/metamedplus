@@ -316,16 +316,12 @@ h1{
         <div class="slide_viewer">
           <div class="slide_group">
             <div class="slide">
-              <img class="ad" src="">
+              <img class="ad_0" src="">
             </div>
             <div class="slide">
-              <h1>Ads</h1>
+              <img class="ad_1" src="">
             </div>
-            <div class="slide">
-            </div>
-            <div class="slide">
-              <h1>Ads</h1>
-            </div>
+          
           </div>
         </div>
       </div>
@@ -596,15 +592,31 @@ $('#changeadsButton').click(changeLogo);
 console.log('heelo')
 // Fetch and update hospital name as before
 $.get('/get_ads_data/', function (data) {
+
+  
   if (data.ads) {
+  
+   
+
+
+          
+          // Initial population of the slider
+          
       for (let i = 0; i < data.ads.length; i++) {
-          setTimeout(function () {
-              $('.ad').attr('src', data.ads[i].image);
-          }, i * 2000); // Change the image every 2 seconds (2000 milliseconds)
+         
+        setTimeout(function () {
+            $('.ad_'+i).attr('src', data.ads[i].image);
+
+           
+        
+              
+              console.log('ad_'+i)
+
+            }, i * 2000);
+          // Change the image every 2 seconds (2000 milliseconds)
       }
   } else {
-      $('#hospitalName').text('Your Hospital Name');
-      console.log('new');
+      
   }
 });
 }
@@ -617,42 +629,8 @@ console.log(m)
 newClick() 
      
 
-const imageUrls = [
-    'image1.jpg',
-    'image2.jpg',
-    'image3.jpg',
-    // Add more image URLs as needed
-];
-
-function createSlide(imageUrl) {
-  const slide = document.createElement('div');
-  slide.className = 'slide';
-  const img = document.createElement('img');
-  img.className = 'ad';
-  img.src = imageUrl;
-  slide.appendChild(img);
-  return slide;
-}
 
 
-// Function to populate the slider with slides
-function populateSlider() {
-  const slideGroup = document.querySelector('.slide_group');
-  
-  // Clear existing slides
-  while (slideGroup.firstChild) {
-      slideGroup.removeChild(slideGroup.firstChild);
-  }
-  
-  // Create new slides for each image URL
-  imageUrls.forEach(imageUrl => {
-      const newSlide = createSlide(imageUrl);
-      slideGroup.appendChild(newSlide);
-  });
-}
-
-// Initial population of the slider
-populateSlider();
 </script>
 
 
