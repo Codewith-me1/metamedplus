@@ -452,11 +452,11 @@ def add_staff(request):
         # Redirect to a success page or staff list page
         password = generate_random_password()
 
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password="password", role=role)
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
         message = "Your Password Is " + password
         subject = "Password"
         print(password)
-        # send_email(message,email,subject)
+        send_email(email,message)
         
 
         User.save()
@@ -5485,8 +5485,8 @@ def chat_list(request):
 
 
 
-def send_email(request):  
-   if request.method == "POST": 
+def send_email(request,email,messages):  
+    
     time.sleep(3)
     with get_connection(  
            host=settings.EMAIL_HOST, 
@@ -5495,10 +5495,9 @@ def send_email(request):
      password=settings.EMAIL_HOST_PASSWORD, 
      use_tls=settings.EMAIL_USE_TLS  
        ) as connection:  
-           subject = request.POST.get("subject")  
-           email_from = settings.EMAIL_HOST_USER  
-           recipient_list = [request.POST.get("email"), ]  
-           message = request.POST.get("message")  
+           subject = "Account Password"
+           email_from = "info@phoneixhms.com"
+           recipient_list = [email]  
+           message =messages
            EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()  
- 
-   return render(request, 'chat/email.html')
+    
