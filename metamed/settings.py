@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost"]
+DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost",'143.110.184.9']
 
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
@@ -130,9 +130,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#   os.path.join(BASE_DIR, "static"),
+# ]
+STATIC_ROOT = '/home/projectdir/metamedplus/metamed/static'
 STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
+    "/home/projectdir/metamedplus/metamed/static",
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
