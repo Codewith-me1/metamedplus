@@ -71,6 +71,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.template import loader
 from .form import AppointmentDetailsForm
+
+
 from .models import AppointmentDetails
 from .models import Patient
 from .models import AddStaff
@@ -144,12 +146,24 @@ def login(request):
         print(password)
         print(username)
         user = authenticate( request,username=username, password=password)
-        print(user)
         
+        total_opd = OpdPatient.objects.all().aggregate(
+        total_opd=Sum(F('amount'))
+        )['total_opd'] or 0
+
+       
+        total_ipd = Ipd_Payments.objects.all().aggregate(
+        total_balance=Sum(F('amount'))
+        )['total_balance'] or 0
+
+        context ={
+            'opd':total_opd,
+            'ipd':total_ipd,
+        }
         if user is not None:
             log(request, user)  # Corrected login function call
             if user.role == 'doctor':
-                return render(request, 'doctor/dashboard.html')  # Redirect to the doctor's dashboard
+                return render(request, 'doctor/dashboard.html',context)  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
                 return redirect('add_staff') 
             elif user.role == 'New':
@@ -160,8 +174,12 @@ def login(request):
                 return redirect('doctor')
 
             # Redirect to the admin's dashboard or other role-specific redirects as needed
-     else:
+
+        
+     else:  
+            
             form = AuthenticationForm()
+
      return render(request, 'admin/login.html', {'form': form})
 
 
@@ -530,7 +548,42 @@ def role_form(request):
     
  
 def doctor(request):
-    return render(request,'panels/doctor.html')
+    total_opd = OpdPatient.objects.all().aggregate(
+    total_opd=Sum(F('amount'))
+        )['total_opd'] or 0
+
+       
+    total_ipd = Ipd_Payments.objects.all().aggregate(
+        total_balance=Sum(F('amount'))
+        )['total_balance'] or 0
+    
+    total_path = Pathology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+    total_blood = BloodDonation.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+    total_ambu = add_ambulancecall.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+    total_med = Purchase.objects.all().aggregate(
+        total_balance=Sum(F('amount'))
+        )['total_balance'] or 0
+
+    context ={
+            'opd':total_opd,
+            'ipd':total_ipd,
+            'path':total_path,
+            'blood':total_blood,
+            'ambulance':total_ambu,
+            'med':total_med,
+
+        }
+     
+    return render(request,'panels/doctor.html',context)
 def search_staff(request):
     if 'q' in request.GET:
         query = request.GET['q']
@@ -5496,8 +5549,8 @@ def send_email(request,email,messages):
      use_tls=settings.EMAIL_USE_TLS  
        ) as connection:  
            subject = "Account Password"
-           email_from = "info@phoneixhms.com"
+           from_email = "info@phoneixhms.com"
            recipient_list = [email]  
            message =messages
-           EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()  
+           send_mail(subject, message, from_email, recipient_list, connection=connection)
     
