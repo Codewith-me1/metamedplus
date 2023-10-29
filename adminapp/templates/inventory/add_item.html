@@ -1,12 +1,14 @@
-<!-- myapp/templates/myapp/add_item.html -->
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Item</title>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item</title>
+
+
     <h1>Add Item</h1>
     <form method="post" action="{% url "add_item" %}">
         {% csrf_token %}

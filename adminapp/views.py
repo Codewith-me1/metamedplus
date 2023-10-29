@@ -5521,9 +5521,11 @@ def send_message(request,receiver_id,sender_id):
 
         return redirect(url)
     messges = ChatMessages.objects.filter(receiver_id=receiver_id)
+    name = CustomUser.objects.get(id=receiver_id)
     context = {
         'receiver':receiver_id,
-        'message':messges
+        'message':messges,
+        'receiver_name':name.username,
 
     }
     return render(request,'chat/chat.html',context)

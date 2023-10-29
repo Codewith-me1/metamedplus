@@ -470,7 +470,7 @@ transition: .3s;
 }
 .sidebar{
   overflow: scroll;
-  height: 100% !important;
+  height: 70% !important;
   position: fixed !important;
   z-index: 10;
 }

@@ -188,7 +188,7 @@
 
           }
           .sidebar{
-            padding-top:14rem;
+            padding-top:6rem;
           }
           .container{
             margin-top:13rem;
@@ -211,6 +211,8 @@
           .active a{
             color:white !important;
           }
+
+
           .sidebar.btn-active{
             transform: translateX(1px);
             width:20%;
@@ -221,6 +223,55 @@
   align-items: stretch;
           }
 
+
+          .calc{
+        
+     
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+    }
+.calculator{
+    background: #3a4452;
+    padding: 20px;
+    border-radius: 10px;
+}
+.calculator form input{
+    border: 0;
+    outline: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1),5px 5px 15px rgba(0, 0, 0, 0.2);
+    background: transparent;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+}
+
+form .display{
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+}
+form .display input{
+    text-align: right;
+    flex: 1;
+    font-size: 45px;
+    box-shadow: none;
+}
+form input.equal{
+    width: 145px;
+}
+
+
+
+form input.operator{
+    color: #33ffd8;
+}
           
     </style>
 
@@ -236,7 +287,7 @@
 
 </nav> {% endcomment %}
 
-
+<body>
 
 <div>
   
@@ -251,7 +302,9 @@
 
     <div class="header-btn">
         <a href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
-        <a href="/calculator" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>
+        <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>
+        <a href="/chat/new" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></a>
+        
     <a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i></a>
     <a href="{% url "add_task" %}" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
     <a href="#" id="myBtns"><i  aria-hidden="true" class="fa fa-solid fa-calendar"></i></a>
@@ -355,6 +408,76 @@
       
   </nav>
   
+
+
+
+  <div id="calContainer" class="form-popup-back">
+      <div class="form-Contain">
+          <div class="POP">
+              <div class="cards">
+                <div class="popup-header">
+                  <span id="calPopupBtn" class="close-button">Close</span>
+                  <h1>calculator</h1>
+                </div>
+
+                <div class="calc">
+                  <div class="calculator">
+                    <form>
+                      <div class="display">
+                        <input type="text" name="display">
+                      </div>
+                      <div>
+                        <input type="button" value="AC" onclick="display.value = '' " class="operator">
+                        <input type="button" value="DE" onclick="display.value =  display.value.toString().slice(0,-1)" class="operator">
+                        <input type="button" value="." onclick="display.value += '.' " class="operator">
+                        <input type="button" value="/" onclick="display.value += '/' " class="operator">
+                      </div>
+                      <div>
+                        <input type="button" value="7" onclick="display.value += '7' ">
+                        <input type="button" value="8" onclick="display.value += '8' ">
+                        <input type="button" value="9" onclick="display.value += '9' ">
+                        <input type="button" value="*" onclick="display.value += '*' " class="operator">
+                      </div>
+                      <div>
+                        <input type="button" value="4" onclick="display.value += '4' ">
+                        <input type="button" value="5" onclick="display.value += '5' ">
+                        <input type="button" value="6" onclick="display.value += '6' ">
+                        <input type="button" value="-" onclick="display.value += '-' " class="operator">
+                      </div>
+                      <div>
+                        <input type="button" value="1" onclick="display.value += '1' ">
+                        <input type="button" value="2" onclick="display.value += '2' ">
+                        <input type="button" value="3" onclick="display.value += '3' ">
+                        <input type="button" value="+" onclick="display.value += '+' " class="operator">
+                      </div>
+                      <div>
+                        <input type="button" value="00" onclick="display.value += '00' ">
+                        <input type="button" value="0" onclick="display.value += '0' ">
+                        <input type="button" value="=" onclick="display.value = eval(display.value)" class="equal operator">
+                       
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                </div>
+                
+
+              </div>
+          </div>
+      </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+
+
   
   
 </div>
@@ -371,6 +494,31 @@
   });
 
     // Function to update the logo image source
+  
+  
+  
+    
+
+
+    var opencal = document.getElementById("opencal");
+     var cal = document.getElementById("calContainer");
+    var closecal = document.getElementById("calPopupBtn");
+    
+
+
+    let zIndexState = 1;
+    function pop(){
+      cal.style.display = "block";
+      if (zIndexState === 1) {
+       
+        zIndexState = -1;
+    }
+    }
+    closecal.addEventListener("click", function() {
+        cal.style.display = "none";
+        
+        
+    });
     function changeLogo() {
         // Replace 'new_logo_url' with the URL of the new logo image
         
@@ -471,5 +619,5 @@ console.log('hello')
 
 
 </script> 
-
+</body>
 {% include "layout/footer.html" %}

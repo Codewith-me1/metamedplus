@@ -5,7 +5,7 @@
     var  mainHeader = document.querySelector('.main-header');
 
 
-    let zIndexState = 1;
+    // let zIndexState = 1;
     function change(){
       popupContainer.style.display = "block";
       if (zIndexState === 1) {

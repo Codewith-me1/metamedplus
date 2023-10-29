@@ -1,5 +1,14 @@
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance Sheet</title>
+
+    
 <style>
 
         
@@ -64,6 +73,7 @@ th {
     </head>
     <body>
         <div class="container">
+            <button class="btn-primary btn" id="printButton">Print Table</button>
             <h1>Balance Sheet As on {{start_date}}</h1>
     
             <table class="table">
@@ -143,11 +153,28 @@ th {
 
 
         <script>
-            document.getElementById("print-button").addEventListener("click", function () {
-                // Remove the "display: none" style from the body element
-                document.body.style.display = "block";      
-                window.print();
-            });
+            function printTable() {
+                // Get the table element
+                var table = document.querySelector('table');
+                
+                // Create a new window for printing
+                var printWindow = window.open('', '', 'width=600,height=600');
+                
+                // Write the table to the new window
+                printWindow.document.write('<html><head><title>Print Table</title></head><body>');
+                printWindow.document.write('<h2>Balance Sheet</h2>');
+                printWindow.document.write(table.outerHTML);
+                printWindow.document.write('</body></html>');
+                
+                // Close the new window after printing
+                printWindow.document.close();
+                printWindow.print();
+                printWindow.close();
+            }
+    
+            // Attach the print function to the button click event
+            var printButton = document.getElementById('printButton');
+            printButton.addEventListener('click', printTable);
         </script>
 
     </body>

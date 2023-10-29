@@ -7,11 +7,20 @@
 
 @media only screen and (max-width:768px) and (min-width:300px) {
 
+  .setup-sidebar{
+    width:100% !important;
+  }
+.setup-rightbar{
+  width:100% !important;
+
+}
   .sidebar {
       transform: translateX(-1000px);
       width: 35% !important;
   }
-
+.sidebar{
+  height: 80% !important;
+}
 
   .toggle-btn {
       display: block;
@@ -115,7 +124,8 @@ body{
     z-index:1 ;
   }
   .POP{
-    width:90%;
+    width:100%;
+    margin-top:6rem;
   
     
 
@@ -197,7 +207,6 @@ body{
 </style>
 
 
-    <div class="wrapper">
       <button class="toggle-btn">&#9776; </button>
     <div class="sidebar">
 
@@ -440,9 +449,8 @@ body{
                  
 
               </div>
-  
-            </div>
-            
+              </div>
+ 
 
           
             <button class="dropdown-btn">Setup 
@@ -626,7 +634,7 @@ body{
 
                 </div>
 
-              </div>    
+                 
               {% endif %}
 
               {% if user.role == 'Receptionist' %}
@@ -642,7 +650,7 @@ body{
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url "supplier_form" %}">Supplier  </a>
+                  <a class="dropdown-a" href="{% url "supplier_form" %}">Supplier  </a> 
                   
                   <a class="dropdown-a" href="{% url 'med_det' %}">Medication Details</a>
                    <a class="dropdown-a" href="{% url 'med_cat' %}">Medicine Category</a>
@@ -653,7 +661,7 @@ body{
                
               </div>    
               
-                </div>
+                
               {% endif %}
 
 
@@ -745,7 +753,8 @@ body{
               <li><a href="{% url 'radiology' %}">Radiology</a></li>
               <li><a href="{% url 'blood_donation' %}">Blood Bank</a></li>
 
-            </div>
+            
+            
             <button class="dropdown-btn">Setup 
               <i class="fa fa-caret-down"></i>
             </button>
@@ -909,9 +918,9 @@ body{
              {% endif %}
             
         </ul>
-        
-    </div>
-    </div>
+
+   
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     {% comment %} <script defer src="{% static "javascript/index.js" %}"></script> {% endcomment %}
     {% comment %} <script src="htt  ps://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> {% endcomment %}
@@ -993,9 +1002,5 @@ $(document).ready(function() {
 });
 
 </script>
-<div> 
-{% block content %}
 
-
-{% endblock  %}
-</div>  
+</div>
