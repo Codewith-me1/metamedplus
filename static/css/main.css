@@ -484,10 +484,6 @@ transition: .3s;
   
 }
 
-.cards {
-  /* Card styling */
-  /* width: 90%; */
-}
 
 .close-button {
   position: absolute !important;
@@ -506,9 +502,7 @@ transition: .3s;
   margin: 5px;
 }
 
-.close-button{
- 
-}
+
 body{
   text-decoration: none !important;
 }

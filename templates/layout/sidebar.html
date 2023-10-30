@@ -3,7 +3,9 @@
 <style>
 
   
-
+  .dropdown-nested{
+    color:white !important;
+  }
 
 @media only screen and (max-width:768px) and (min-width:300px) {
 
@@ -124,7 +126,7 @@ body{
     z-index:1 ;
   }
   .POP{
-    width:100%;
+    width:100% !important;
     margin-top:6rem;
   
     
@@ -273,7 +275,7 @@ body{
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
-              <button class="dropdown-btn"> Pathology
+              <button class="dropdown-btn dropdown-nested"> Pathology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -286,7 +288,7 @@ body{
 
               </div>
 
-              <button class="dropdown-btn"> Radiology
+              <button class="dropdown-btn dropdown-nested"> Radiology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -386,7 +388,7 @@ body{
                <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
 
 
-               <button class="dropdown-btn"> Sales
+               <button class="dropdown-btn dropdown-nested"> Sales
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -400,7 +402,7 @@ body{
 
               </div>
 
-              <button class="dropdown-btn"> Bank
+              <button class="dropdown-btn dropdown-nested"> Bank
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -412,7 +414,7 @@ body{
 
              
               
-              <button class="dropdown-btn"> Expense
+              <button class="dropdown-btn dropdown-nested"> Expense
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -424,7 +426,7 @@ body{
                  
 
               </div>
-              <button class="dropdown-btn"> Asset
+              <button class="dropdown-btn dropdown-nested "> Asset
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -434,7 +436,7 @@ body{
               </div>
               
 
-               <button class="dropdown-btn"> Report
+               <button class="dropdown-btn dropdown-nested"> Report
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -465,9 +467,9 @@ body{
               <a  class="dropdown-a"href="{% url 'payroll' %}">Payroll</a>
               
               
-              <li><a href="{% url 'add_bed' %}"> Bed </a></li>
+              <li><a class="dropdown-nested" href="{% url 'add_bed' %}"> <p class="dropdown-nested">Bed</p> </a></li>
               
-              <button class="dropdown-btn">Hospital Charges 
+              <button class="dropdown-btn dropdown-nested">Hospital Charges 
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -479,7 +481,7 @@ body{
 
 
               </div>
-              <button class="dropdown-btn"> CMS
+              <button class="dropdown-btn dropdown-nested "> CMS
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -492,7 +494,7 @@ body{
 
 
 
-              <button class="dropdown-btn"> Pharmacy
+              <button class="dropdown-btn dropdown-nested"> Pharmacy
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -504,7 +506,7 @@ body{
 
 
               </div>
-              <button class="dropdown-btn"> Pathology
+              <button class="dropdown-btn dropdown-nested"> Pathology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -516,7 +518,7 @@ body{
 
               </div>
 
-              <button class="dropdown-btn"> radiology
+              <button class="dropdown-btn dropdown-nested"> radiology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -536,7 +538,7 @@ body{
 
 
               
-              <button class="dropdown-btn"> Referral
+              <button class="dropdown-btn dropdown-nested"> Referral
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -560,9 +562,9 @@ body{
               <div class="dropdown-container">
                 <a class="dropdown-a" href="{% url "add_income" %}">Income</a>
                 <a class="dropdown-a" href="{% url "add_expense" %}">Expense</a>
-                <li><a href="{% url 'add_bed' %}"> Bed </a></li>
+                <li><a href="{% url 'add_bed dropdown-nested' %}"> Bed </a></li>
                 
-                <button class="dropdown-btn">Hospital Charges 
+                <button class="dropdown-btn dropdown-nested">Hospital Charges 
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -577,7 +579,7 @@ body{
 
                 </div>
 
-                <button class="dropdown-btn"> Pharmacy
+                <button class="dropdown-btn dropdown-nested"> Pharmacy
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -589,7 +591,7 @@ body{
 
 
                 </div>
-                <button class="dropdown-btn"> Pathology
+                <button class="dropdown-btn dropdown-nested"> Pathology
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -601,7 +603,7 @@ body{
 
                 </div>
 
-                <button class="dropdown-btn"> radiology
+                <button class="dropdown-btn dropdown-nested"> radiology
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -622,7 +624,7 @@ body{
 
 
                 
-                <button class="dropdown-btn"> Referral
+                <button class="dropdown-btn dropdown-nested"> Referral
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -646,7 +648,7 @@ body{
                 <i class="fa fa-caret-down"></i>
               </button>
              
-                <button class="dropdown-btn"> Pharmacy
+                <button class="dropdown-btn dropdown-nested"> Pharmacy
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-container">
@@ -700,7 +702,7 @@ body{
                  <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
   
   
-                 <button class="dropdown-btn"> Sales
+                 <button class="dropdown-btn dropdown-nested"> Sales
                   <i class="fa fa-caret-down"></i>
                 </button> 
                 <div class="dropdown-container">
@@ -714,7 +716,7 @@ body{
   
                 </div>
   
-                <button class="dropdown-btn"> Bank
+                <button class="dropdown-btn dropdown-nested "> Bank
                   <i class="fa fa-caret-down"></i>
                 </button> 
                 <div class="dropdown-container">
@@ -729,7 +731,7 @@ body{
                <a class="dropdown-a" href="{% url 'item_acc' %}">Item</a>
                <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
 
-               <button class="dropdown-btn"> Report
+               <button class="dropdown-btn dropdown-nested"> Report
                 <i class="fa fa-caret-down"></i>
               </button> 
               <div class="dropdown-container">
@@ -764,7 +766,7 @@ body{
 
 
               </div>
-              <button class="dropdown-btn"> Pathology
+              <button class="dropdown-btn dropdown-nested"> Pathology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -776,7 +778,7 @@ body{
 
               </div>
 
-              <button class="dropdown-btn"> radiology
+              <button class="dropdown-btn dropdown-nested"> radiology
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-container">
@@ -812,7 +814,7 @@ body{
                             <i class="fa fa-caret-down"></i>
                           </button>
                          
-                            <button class="dropdown-btn"> Pharmacy
+                            <button class="dropdown-btn dropdown-nested"> Pharmacy
                               <i class="fa fa-caret-down"></i>
                             </button>
                             <div class="dropdown-container">
@@ -846,7 +848,7 @@ body{
 
 
              </div>
-             <button class="dropdown-btn"> Pathology
+             <button class="dropdown-btn dropdown-nested"> Pathology
                <i class="fa fa-caret-down"></i>
              </button>
              <div class="dropdown-container">
@@ -890,7 +892,7 @@ body{
 
              </div>
         
-             <button class="dropdown-btn"> radiology
+             <button class="dropdown-btn dropdown-nested"> radiology
                <i class="fa fa-caret-down"></i>
              </button>
              <div class="dropdown-container">
