@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1','139.59.38.140',"localhost",'143.110.184.9']
+ALLOWED_HOSTS = ['127.0.0.1','167.71.235.236',"localhost",'143.110.184.9']
 
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
@@ -45,11 +45,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -140,7 +141,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
  ]
-STATIC_ROOT = '/home/projectdir/metamedplus/metamed/static'
+STATIC_ROOT = '/root/projectdir/metamedplus/metamed/static'
 
 
 # Default primary key field type
