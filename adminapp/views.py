@@ -470,16 +470,19 @@ def add_staff(request):
         # Redirect to a success page or staff list page
         password = generate_random_password()
 
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
+        User = CustomUser.objects.create_user(id=staff_id,username=first_name, email=email, password=password, role=role)
         message = "Your Password Is " + password
         subject = "Password"
         print(password)
-        send_email(email,message)
+        send_email(request,email,message)
+        
+
         
 
         User.save()
         
-        return HttpResponse("Staff information saved successfully.")
+        return redirect("staff_list")
+       
        
 
     else:
@@ -779,7 +782,7 @@ def submit_symptom(request):
         )
         symptom.save()
 
-        return HttpResponse('Hello Done')  # Redirect to a success page
+        return render(request, 'ipd/systoms.html')  
 
     return render(request, 'ipd/systoms.html')
 
@@ -5156,31 +5159,31 @@ def add_smtp_server(request):
 
 
 
-def send_email(message_text,recipient,subject):
+# def send_email(message_text,recipient,subject):
     
     
-    server = SMTPServer.objects.get(pk=1)
+#     server = SMTPServer.objects.get(pk=1)
 
-        # Creating an SMTP connection
-    try:
-            smtp_connection = smtplib.SMTP(server.host, server.port)
-            smtp_connection.starttls()
-            smtp_connection.login(server.username, server.password)
+#         # Creating an SMTP connection
+#     try:
+#             smtp_connection = smtplib.SMTP(server.host, server.port)
+#             smtp_connection.starttls()
+#             smtp_connection.login(server.username, server.password)
 
-            # Composing the email
-            msg = MIMEMultipart()
-            msg['From'] = server.username
-            msg['To'] = recipient
-            msg['Subject'] = subject
-            msg.attach(MIMEText(message_text,'plain'))
+#             # Composing the email
+#             msg = MIMEMultipart()
+#             msg['From'] = server.username
+#             msg['To'] = recipient
+#             msg['Subject'] = subject
+#             msg.attach(MIMEText(message_text,'plain'))
 
-            # Sending the email
-            smtp_connection.sendmail(server.username, recipient, msg.as_string())
-            smtp_connection.quit()
+#             # Sending the email
+#             smtp_connection.sendmail(server.username, recipient, msg.as_string())
+#             smtp_connection.quit()
 
-            return HttpResponse('Email sent successfully!')
-    except Exception as e:
-            return HttpResponse(f'Error sending email: {str(e)}')
+#             return HttpResponse('Email sent successfully!')
+#     except Exception as e:
+#             return HttpResponse(f'Error sending email: {str(e)}')
 
 
 
@@ -5520,18 +5523,24 @@ def send_message(request,receiver_id,sender_id):
         
 
         return redirect(url)
-    messges = ChatMessages.objects.filter(receiver_id=receiver_id)
+    messges = ChatMessages.objects.filter(receiver=receiver_id,sender=sender_id)
     name = CustomUser.objects.get(id=receiver_id)
+    user = CustomUser.objects.all()
+    
+    received_message = ChatMessages.objects.filter(receiver=sender_id,sender=receiver_id)
     context = {
         'receiver':receiver_id,
         'message':messges,
         'receiver_name':name.username,
+        'all': user,
+        'received_message':received_message,
 
     }
     return render(request,'chat/chat.html',context)
 
 
 def chat_list(request):
+  
     messges = ChatMessages.objects.all()
     context ={
         'message':messges
@@ -5555,4 +5564,13 @@ def send_email(request,email,messages):
            recipient_list = [email]  
            message =messages
            send_mail(subject, message, from_email, recipient_list, connection=connection)
-    
+
+
+
+def deletestaff(request,user_id):
+    user = CustomUser.objects.get(id=user_id)
+    staff = AddStaff.objects.get(staff_id=user_id)
+    staff.delete()
+    user.delete()
+
+    return redirect('staff_list')

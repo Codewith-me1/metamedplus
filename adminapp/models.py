@@ -70,7 +70,7 @@ class AddStaff(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     emergency_contact = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField()
-    photo = models.FileField(upload_to='staff_photos/', blank=True, null=True)
+    photo = models.FileField(upload_to='static/staff_photos', blank=True, null=True)
     current_address = models.TextField(blank=True, null=True)
     permanent_address = models.TextField(blank=True, null=True)
 

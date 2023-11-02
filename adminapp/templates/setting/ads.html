@@ -19,6 +19,7 @@
   .preview{
     width:10rem;
   }
+  
   {% load static %}
   </style>
   <div class='container'>
@@ -34,7 +35,8 @@
                           {% csrf_token %}
   
                           <div class="form-group">
-                            <label for="image">Ads Image:</label>
+                            <label for="">Ads Image:</label>
+                            <label for="image" class="file_type">Drop A File</label>
                             <input type="file" id="image" name="image" class="form-control-file" accept="image/*" required>
                         </div>
                           
@@ -89,7 +91,7 @@
             {% for img in img %}
               <tr>
   
-                  <td><img class="preview" src= "/{{img.ads}}"  ></td>
+                  <td><img class="preview" src= "/root/projectdir/metamedplus/{{img.ads}}"  ></td>
                   <td><a href="{{img.id}}" >Edit</a></td>
           
                 

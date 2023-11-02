@@ -1,5 +1,5 @@
-
-
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
 <style>
 
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
@@ -426,6 +426,9 @@ img {
     border:none;
     outline:none;
  }
+ .received{
+  background-color:white !important;
+ }
   </style>
 <div class="container">
   <div class="background-green"></div>
@@ -433,7 +436,7 @@ img {
 
 <div class="main-container">
   
-
+{% include "chat/room.html" %}
 
 
   <div class="right-container">
@@ -451,24 +454,27 @@ img {
 <!--chat-container -->
 
 <div class="chat-container">
-{% for message in message %}
-    
-      <div class="message-box my-message">
+  {% for received_message in received_message %}
+    <div class="message-box other-message">
+      <p class="received">{{ received_message.content }}</p>
+    </div>
+  {% endfor %}
 
-        <p>{{message.content}}</p>
-      </div>
-     
-    
-    {% endfor %}  
+  {% for message in message %}
+    <div class="message-box my-message">
+      <p>{{ message.content }}</p>
+    </div>
+  {% endfor %}
 </div>
+
 <!--input-bottom -->
     <div class="chatbox-input">
         <form action="/chat/{{receiver}}/{{user.id}}" method="post">
             {% csrf_token %}
          <input type="text" name="message" placeholder="Type a message">
-                
+       
             </form>
-            <input type="submit" value="Send">
+            
   
     </div>
   </div>

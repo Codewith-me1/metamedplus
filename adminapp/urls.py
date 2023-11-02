@@ -167,8 +167,8 @@ urlpatterns = [
     path('chat_list/', views.chat_list, name='chat_list'),
     path('send_emails/', views.send_email, name='send_email'),
     path('chat/<str:room_name>', views.chat_room, name='room'),
-    path('chat/<int:receiver_id>/<int:sender_id>',views.send_message,name="send")
-  
+    path('chat/<int:receiver_id>/<int:sender_id>',views.send_message,name="send"),
+    path('delete_staff/<int:user_id>',views.deletestaff,name="staff_delete")
 
 
 

@@ -57,7 +57,7 @@
                         {% csrf_token %}
                         
                         <label for="patient">Patient</label>
-                        <input type="text" id="patient_id_input" name="patient_search" placeholder="Search for a patient">
+                        {% comment %} <input type="text" id="patient_id_input" name="patient_search" placeholder="Search for a patient"> {% endcomment %}
                   
                     
                     
@@ -183,27 +183,42 @@
 
 
 <script src="{% static "/css/javscript/index.js" %}"></script>
-    <script>
-      {% comment %} $(document).ready(function() {
-        $(".open-popup").click(function() {
-          $(".popup").fadeIn();
-        });
-      
-        $(".popup").click(function(event) {
-          if (event.target === this) {
-            $(this).fadeOut();
-          }
-        });
-      }); {% endcomment %}
-
-      
-
+<script>
+  const patientSearchInput = document.getElementById('patient_id_input');
+  const patientDropdown = document.getElementById('patient');
   
+  patientSearchInput.addEventListener('input', () => {
+      const enteredText = patientSearchInput.value.toLowerCase();
+      
+      // Clear the current dropdown options
+      patientDropdown.innerHTML = '<option value="">Select a patient</option>';
+      
+      // Filter and add matching patients to the dropdown
+      {% for patient in patients %}
+          const patientId = '{{ patient.id }}';
+          const patientName = '{{ patient.name }}';
+          
+          if (patientId.startsWith(enteredText) || patientName.toLowerCase().includes(enteredText)) {
+              const option = document.createElement('option');
+              option.value = patientId;
+              option.textContent = `${patientName} (ID: ${patientId})`;
+              patientDropdown.appendChild(option);
+          }
+      {% endfor %}
 
-
-
-     
-    </script>
+      {% for doctor in doctor %}
+      const patientId = '{{ doctor.staff_id }}';
+      const patientName = '{{ doctor.first_name }}';
+      
+      if (patientId.startsWith(enteredText) || patientName.toLowerCase().includes(enteredText)) {
+          const option = document.createElement('option');
+          option.value = patientId;
+          option.textContent = `${patientName} (ID: ${patientId})`;
+          patientDropdown.appendChild(option);
+      }
+  {% endfor %}
+  });
+</script>
   </div>
 
 

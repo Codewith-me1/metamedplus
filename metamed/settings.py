@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1','167.71.235.236',"localhost",'143.110.184.9']
 
 
@@ -31,6 +31,7 @@ AUTH_USER_MODEL = 'adminapp.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     'adminapp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -141,7 +142,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "static"),
  ]
-STATIC_ROOT = '/root/projectdir/metamedplus/metamed/static'
+
+
+# STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
+# STATIC_URL = '/static/'
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# STATIC_ROOT = '/root/projectdir/metamedplus/metamed/static'
 
 
 # Default primary key field type

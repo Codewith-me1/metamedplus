@@ -49,6 +49,14 @@
             width: 100%;
             z-index: 2000;
         }
+        .POP_cal{
+          padding: 10px !important;
+    z-index: 99999 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    position: relative !important;
+    width: 45%;
+        }
         h1 , h2 {
           font-family: Ubuntu !important;
         }
@@ -159,11 +167,11 @@
 
           #myBtn:hover{
             color:white !important;
-            background-color:#0084B4  !important; 
+            background-color:#009bf6 !important; 
           }
           #myBtns:hover{
             color:white !important;
-            background-color:#0084B4  !important;
+            background-color:#009bf6 !important;
           }
           .beds{
             display:flex;
@@ -188,7 +196,7 @@
 
           }
           .sidebar{
-            padding-top:6rem;
+            padding-top:3rem;
           }
           .container{
             margin-top:13rem;
@@ -223,7 +231,9 @@
   align-items: stretch;
           }
 
-
+          .close-button{
+            border:none;
+          }
           .calc{
         
      
@@ -232,6 +242,18 @@
             align-items: center;
             justify-content: center;
         
+    }
+    .form-popup-back-cal{
+      display: none;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      z-index: 99999 !important;
+      height: 100% !important;
+      background-color: rgb(149 149 149 / 13%) !important;
+      backdrop-filter: blur(10px);
+      z-index: 99999 !important;
     }
 .calculator{
     background: #3a4452;
@@ -296,14 +318,14 @@ form input.operator{
 
  
     
-    <a href="#" class="logo"><img src="{% static "css/images/Pheonix.png" %}" alt="Logo"></a>
+    <a href="#" class="logo"><img src="/root/projectdir/metamedplus/static/css/images/Pheonix.png" alt="Logo"></a>
     <a class="navbar-brand" href="#">Your Hospital Name</a>
    
 
     <div class="header-btn">
         <a href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
         <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>
-        <a href="/chat/new" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></a>
+        <a href="/chat/1/1" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></a>
         
     <a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i></a>
     <a href="{% url "add_task" %}" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
@@ -411,13 +433,13 @@ form input.operator{
 
 
 
-  <div id="calContainer" class="form-popup-back">
+  <div id="calContainer" class="form-popup-back-cal">
       <div class="form-Contain">
-          <div class="POP">
+          <div class="POP_cal">
               <div class="cards">
                 <div class="popup-header">
-                  <span id="calPopupBtn" class="close-button">Close</span>
-                  <h1>calculator</h1>
+                  <span id="calPopupBtn" class="close-button"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg></span>
+                
                 </div>
 
                 <div class="calc">
@@ -555,7 +577,7 @@ form input.operator{
       
         if (data.name) {
             $('.navbar-brand').text(data.name);
-            $('.logo img').attr('src',data.image);
+            $('.logo img').attr('src',"/root/projectdir/metamedplus/"+data.image);
             console.log(data.image)
             
             

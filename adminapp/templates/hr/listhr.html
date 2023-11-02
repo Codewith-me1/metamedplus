@@ -39,7 +39,8 @@
           <th>Role</th>
           <th>Gender</th>
           <th>Address</th>
-          <th>Action</th>
+          <th>Edit</th>
+          <th>Delete</th>
          
         </tr>
       </thead>
@@ -55,6 +56,7 @@
             <td>{{ staff.gender }}</td>
             <td>{{ staff.address}}</td>
             <td><a href="/edit_staff/{{ staff.id }}">Edit</a></td>
+            <td><a class="btn" href="/delete_staff/{{ staff.staff_id }}">Delete</a></td>
           
           </tr>
         {% endfor %}

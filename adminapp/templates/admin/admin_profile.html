@@ -82,7 +82,7 @@
             padding: 1.4rem;
             border: solid  rgb(173, 160, 160) ;
             border-width: 0px 0px 1px 0px;
-            background-color: aliceblue;
+            background-color: #3796e9;
             font-size: 10px;
         }
         .ipd-navbar {
@@ -134,8 +134,8 @@
   
           .ipd-nav-link:hover {
               text-decoration: none;
-              color: #ff6600;
-              background:#1cb88e ;
+              color: #009bf6;
+              background:# ;
               border: #f39c12  solid;
               border-width: 0px 0px 5px 0px;
               border-radius:10px 10px 0px 0px;
@@ -163,7 +163,7 @@
           }
           .payroll-card{
             padding: 1rem;
-            background-color: #1cb88e;
+            background-color: #3796e9;
             margin: 1rem;
             color: #fff;
             border-radius: 5px;
@@ -181,7 +181,7 @@
           }
 
           .main-alert{
-            background-color: #1cb88e;
+            background-color: #3796e9;
             border-radius: 5px;
             color: #ffffff;
             padding: 1rem;
@@ -189,6 +189,17 @@
           }
           .table{
             margin-top:3rem;
+          }
+          .ipd-active{
+            text-decoration: none;
+    
+    background: #009bf6;
+    border: #f39c12 solid;
+    border-width: 0px 0px 5px 0px;
+    border-radius: 10px 10px 0px 0px;
+          }
+          .ipd-active a{
+            color: white !important;
           }
     </style>
 </head>
@@ -200,14 +211,7 @@
         <div class="admin-img">
             <img src="{{staff.photo}}{{staff.id}}" alt="None">
             <h1>{{staff.first_name}}</h1>
-            <div class="admin-icons">
-                <a href="#"><img src="main" alt="First"></a>
-                <a href="#"> <img src="second" alt="Second">Second</a>
-
-
-            
-
-        </div>
+           
         </div>
 
     
@@ -274,8 +278,8 @@
 
 <div class="left">
     <ul class="ipd-navbar-nav">
-        <li class="ipd-nav-item "><a href="#profile" class="ipd-nav-link">Profile</a></li>
-        <li class="ipd-nav-item  "><a href="#payroll" class="ipd-nav-link">payroll</a></li>
+        <li class="ipd-nav-item ipd-active"><a href="#profile" class="ipd-nav-link">Profile</a></li>
+        <li class="ipd-nav-item  "><a href="#payroll" class="ipd-nav-link">Payroll</a></li>
         <li class="ipd-nav-item"><a href="#leaves" class="ipd-nav-link">Leaves</a></li>
         <li class="ipd-nav-item"><a href="#document" class="ipd-nav-link">Document</a></li>
         
@@ -504,9 +508,9 @@
             
                  
             
-            <th>paitnet </th>
+            <th>Staff </th>
             <th>Date</th>
-            <th>Nurse Name</th>
+            <th>Hospital Name</th>
             
            
           </tr>
@@ -539,6 +543,21 @@
 
 
 <script>
+
+    const navItems = document.querySelectorAll('.ipd-nav-item');
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    // Remove the 'ipd-active' class from all list items
+    navItems.forEach(item => {
+      item.classList.remove('ipd-active');
+    });
+
+    // Add the 'ipd-active' class to the clicked list item
+    item.classList.add('ipd-active');
+  });
+});
+
      function toggleSection(sectionId) {
         // Hide all sections with class "toggleable"
         var sections = document.querySelectorAll('.toggeable');

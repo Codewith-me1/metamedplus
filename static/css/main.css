@@ -40,13 +40,11 @@ a:hover{
   text-decoration: none !important;
 }
 
-.dropdown-btn:hover ,a:hover{
+.dropdown-btn:hover ,.ipd-nav-link:hover{
   background-color: #0f83ff;
   color: white !important;
 }
-a:hover ,a:focus{
-  color: white !important;
-}
+
 .sidebar ul {
   list-style-type: none;
   padding: 0;
@@ -247,6 +245,8 @@ margin-top:2rem;
 h1{
 margin-left:20rem;
 }
+
+
 
 
 .sidebar a{
@@ -452,9 +452,9 @@ transition: .3s;
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.194) !important;
   backdrop-filter: blur(10px);
-  z-index: 1 !important;
+  z-index: 999999 !important;
 }
 .btn-primary{
   border: none !important;
@@ -470,7 +470,7 @@ transition: .3s;
 }
 .sidebar{
   overflow: scroll;
-  height: 70% !important;
+  height: 85% !important;
   position: fixed !important;
   z-index: 10;
 }

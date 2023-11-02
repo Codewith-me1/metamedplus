@@ -27,7 +27,7 @@
       
       
       {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-      <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Hospital Header</a>
+      
     
       
       </div>    
@@ -40,7 +40,8 @@
             <input type="text" id="name" name="name" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="image">Hospital Image:</label>
+            <label for="">Hospital Image:</label>
+            <label for="image" class="file_type">Drop A File</label>
             <input type="file" id="image" name="image" class="form-control-file" accept="image/*" required>
         </div>
         <button type="submit" class="btn btn-primary">Add Hospital</button>

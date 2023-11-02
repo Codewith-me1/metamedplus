@@ -377,7 +377,7 @@ h1{
                     Doctor
                 </h3>
 
-                <h1>Rs 000</h1>
+                <h1>0</h1>
             </div>
             </div>
             <div class="card">
@@ -386,7 +386,7 @@ h1{
                 <h3>
                     Accountant
                 </h3>
-                <h1>RS 0.00</h1>
+                <h1>0</h1>
                 </div>
             </div>
             <div class="card">
@@ -395,16 +395,16 @@ h1{
                 <h3>
                     Pathologist 
                 </h3>
-                <h1>RS 0.00</h1>
+                <h1>0</h1>
                 </div>
             </div>
             <div class="card">
-                <img src="{% static "/css/images/doctor/icons8-Radiologist-64(1).png" %}" alt="">
+                <img src="{% static "/css/images/doctor/icons8-microscope-65.png" %}" alt="">
                 <div class="box-content">
                 <h3>
                     Radiologist
                 </h3>
-                <h1>RS 0.00</h1>
+                <h1>0</h1>
                 </div>
             </div>
             <div class="card">
@@ -413,7 +413,7 @@ h1{
                 <h3>
                     Nurse
                 </h3>
-                <h1>RS 0.00</h1>
+                <h1>0</h1>
                 </div>
     
             </div>
@@ -433,7 +433,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 <script>
 
 
-
+var static = "{% static '";
    const xValues = ['Jan', 'feb','march','april','may','june','july','august','september','october','november','december'];
 const yValues = [0, 1000, 2000,3000,4000,5000 ];
 const barColors = ["#1cb88e", "#e67e22"];
@@ -607,7 +607,7 @@ $.get('/get_ads_data/', function (data) {
       for (let i = 0; i < data.ads.length; i++) {
          
         setTimeout(function () {
-            $('.ad_'+i).attr('src', data.ads[i].image);
+            $('.ad_'+i).attr('src', "/root/projectdir/metamedplus/"+data.ads[i].image);
 
            
         
