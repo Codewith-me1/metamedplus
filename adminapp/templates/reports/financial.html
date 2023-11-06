@@ -16,10 +16,6 @@
       body{
         background-color: #f6f4fb !important;
       }
-      .main-cards{
-        overflow:scroll;
-      }
-      
       .content_card{
         display:flex;
         width:80% !important;
@@ -91,10 +87,6 @@
 
         div#calendar{
             width:70%;
-            margin:2rem;
-            padding:2rem;
-            background-color:white;
-            border-radius:20px;
         }
         .main-second{
             margin-left:15rem;
@@ -329,131 +321,6 @@ color:#6A727A !important;
     </style>
 
     <div class="container">
-
-    <div class="main-cards">
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt=""> {% endcomment %}
-            <img class=" img_icon img-1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEcElEQVR4nN2ZTWgdVRSAx9/WH/xZKGgVtf4iRSKibtSqoARtMudMfBt/iKuCCxEUlW7ahYu6EeymIILUIiiRuLASSPLmnBejVWpQ0ZZCsJl75/WXihQ1Un/aJ+fOTHz5mfdmXm5mXjxwmGHm3nPPN/fcn3PHcSxJMFC7W7n0mgb6WCNPaeATGukXhXRWVO7lmQL6Rsoo4FcDl3ucbpF6P91vnENudKIKaF+ItXtLhTgM47cpoD86hZiDQZ6te7VbSwMJPHpluRCJii2nLNHAO9o5OFe2fa+8XSIIfWILRCMPlwaSZZBnBZFB75QlGvl4K+db1FsMA3TMKUOme0fWROuDHRCxNd07sqYY75udAf/mLLNRK+cXqTe+vnCQwOWHbYOEQBsLB1EeP2cbRAE/WziIBt6ikX5VQD8q4AmzvzJ7LDqogQ/N7bWAzogme63oHR1MyktdsSG2NPCWwkHCSnXd1OapC2zZE1thpbrOKUP2V4YuDJE3aKB7Aq/2iFxVf/VOGbRHK59fpZ+cvLLhNM4RlXvzzBtfH/bxLVI20cDjO8SWU4Yo4E0a+FSm2SjL+EA6GXj+EyWASFzbgWiC+aF4EORZ+yA8WziImYXsg/xcAggf+H+EFvD71kGA3iscJADfsw2igdziQQZ5rQbW9iBYlbL7FdFAg/bCqoR9ViKyYivgjyyADIstp0w59tjoJRr5y2WE1BdHNn16sdMNEpjxQrvzT7e8S+o63SYhcq8G/r49BH2nwX/c6XYJXO5RQFtl/CikSaNAH8qzrjrvbScyjcq2Xbbssq0XnfH8G+SZzRzGqpyo8KVy1W6tTwORrC1RRpg6zf6jkWYU0JhCekbqymBvbNt2rlOkNDby+cZp5HcUUqiBP5s70E45HkrT0PMfkroKaaf55YC8SyE/taILY+DyjQppuxykLdgfnVF9EzcZh4DG8m4Qp3tHLjP5+vx3JxXyW1ZP6A+7E9fHh9WnWzi13cBiDbOvH7TZwCO/mB6GJIcWQ5IadwwgMSuNZUmgTJo6yGsl7BRQPcMieEoW0qgXeX8G6L808Ju5Jwo5zdBAX+WJ98Dzn44co60ZQHZEveE/mmsBBdpXR74uGwTyBjOIc6/SNCn1df/YteYLppc7O9Pv327KIg/nbgeoLj62hFA4cY1CPpLXeKL1gepdxsHoh2gKCI8mY08h/d1hW8dTeyYeE7nCaYmvvbNtyMTJk0Z6YzltaaS9S649yqWB5Rk23f6bTKepgxhYNypD58lhXNq/FZ1DZZZcDJJjDWipwC/E4fXSEu/M2a5MDDbaUnGYzhMbXyjWA2LvUGX8coX8e9Pz0z/h6NVxW53nLzgvTI8uBWIDIvnyD8S98m5To7tNb7jcY7MtZ4VBPljodAjV+xbBrQKQP5MwUshfa6BvY7ArFoRbl4OgKL0e98Cgdvn5+P5l2+04BYDMyDwfVvZeJBqduND0KgThRvP/DpPPr0AbThEgGmnPf/Zpz6oFUZLWurUHJROMUtyVA/kXkBaptrZn/CsAAAAASUVORK5CYII=">
-            <div class="box-content">
-            <h3>
-                OPD Income 
-            </h3>
-            <h1>₹ <span class="amount">{{opd}}</span></h1>
-        </div>
-        </div>
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "/css/images/icons8-bed-50.png" %}"  alt=""> {% endcomment %}
-            <img class="img_icon img-2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABYUlEQVR4nO2Vz0rDQBCH90EU8eRDePfixZvQGZyh+CpeBG+CvkJLwWfoUR9CEK8q/oO20F9WNhaMbVKiSUxW5oMhh4TN79uZbJwzDMMwjAXCOBPCVBmnLkaUMVNOfLi6GNE0/Ge5GFETaBm1DrSMWgdaRv9zB/TQbyphJITXUEq46pPfyVtHen5XGWMlvGfXLFeYC+NeGJfMfrsWgRBeGI85L3sK93LCz38ePFmpsFFH5PeqCxBGhS8iDL+vgXEd4TUj0e/5rUoC6cgUt/xlSfYXY5OsL8JFYwLCeC5ao0aBu0oC4YNd04FB0wJCmFYSCKdN+sGu7szDMfmNP+jAbSWBzDE6DDO/qMFy+AYFzisLRIGaQMtoE/NbS2EmjBshvx+pQPJ1pLI/iFpAGddRC8i6n1rb4bRkmYBaB5LmR8h1DC0lQJikDxEmrmNomWzCOBHGW7i6jiEdzmYYhmG41vgApwTOod3wx8MAAAAASUVORK5CYII=">
-            <div class="box-content">
-            <h3>
-                IPD Income 
-            </h3>
-            <h1>₹ <span class="amount">{{ipd}}</span></h1>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt=""> {% endcomment %}
-            <img class="img_icon img-3" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADOUlEQVR4nOVZS2sUQRBuJT4QH4maTNXmsYKC4MGTBiGICh4FEf+AKAoeBPHmwbN6UHxhEEREf4AHVw8qTLJVeaCLD+JBCQZEkfi4KIJmqpOWXpLNAzazPenZ3eAHBcPC9nxfd9U33dVKpYSxfOt2YXgvBO/ss1pMMNy8WRi/aEZjQwi/Gs5sVYsBhtszwjgyRb4kguGj6c20q3qGoY4mTTg0l3wpCIdMmG1U9QhTUMs0w9Oy5Kejx7zdtlzVG4TwZgXkp9LptqonaIYzlZKfkU6nVT1AKNgrjNpVgP2PUGZ/TcmbgZZgpl06iyActa5VG/KhatCEvUnJzyrqUDVUXYAwXPBA3kwW9fmqko/y2CWE494EEI5HedhTFfKmgKuEYNgXeT1d1CMmbF6dugBhvOGbvC6tBFxNmXywTwgn0hOA6aWSCbMrhfFDWuT19CoMm8dbVngXoAnOpU1eTwXhWa/kTX9bqzD+rpYAIfxlejeiNwFC2F212edSKl3zQt4QdgjD3xoIGDMDwaaFzz7D9QQEHkZ9sNPu+23YZ02Yq7qtGt6wRgh/upIvN55meOBcC4Pr1yYWoBlPuc5axLCj3HhRf9DpvppwMrkAgj7XF853XLT+7iyAIJ/cOhN8dWMnxbkOcDzRmUFT5miC4vUuQBcjOOIsQBhvubiN6/gu7iSE3c4CNGMhjrzzoOXeRTEiCJ87DyoEn5O6jSuiGHcSgk/uAhj+JHUbV5gYd7Jc/kcB+K1+UghHnQe1hRNTWDlfAjThoxjDGHAeVBjvxtooYc7OXmIb7Q86KyBvi/iOswBNeGxRf8jMYGtbkt6PbwHCqBO3HzXBs5pv5hieqKQQxoO13k5LPjiQWIAxaokmeOntQFNBwerZJvHCclAe+qBu2+oZ7uTiNnpuk4tadikfEMLL7rm7sBCCi8oX7Czak1EVBYT20tCbgKKIMNuoGV6nTp7glSk0rfNKftY9MAOlKKAn9Xtkm07CcMVnl1oIJ4Twkve0mQ8R427N8MZHykR57FK1gDFqqTActkvvsiKTW5RQCA8t2Od9wfRBVhOeEML79jwtBD9sf7MYDN+LvzHe04zHbb/V14v/AZEZgMoACIMGAAAAAElFTkSuQmCC">
-            <div class="box-content">
-            <h3>
-                Phathalogy Income
-            </h3>
-            <h1>₹<span class="amount">{{path}}</span></h1>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "css/images/icons8-microscope-50.png" %}" alt=""> {% endcomment %}
-            <img class="img_icon img-4" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABRklEQVR4nO2Wv0oDMRjAfyhWJ92kk2LBTegzdHCpk2t1s6/g4NY+ga9QKBTaoUMn6xO4V60dxD9TBRG72G4ngS8Qjl4vvZyphf4gw5F83y+XS74crFgijoEG8AaMgSFwC5SBjb8Q7gAdIJjRBsBRmtJdoCfJP4FLIAesS1/J6B+lJTel98BexLhNoCnjnlyX3ZT25HkWWzK5ALjwJdWcScyNT6kiK3FDn1JFRmJ/fEoVhxL/4lOquJIcdRdpHqgCRUvpPvAleQo2FWma9ASYGFWpYjF5fZTaNrPUZfDBkBZD0jh5eMW2bQq+TnoeI42SJ9obDSPhI3AdIw3LE2/IdwtJVFNX4WvSUzBxEAcuR+/DUdqXEjk3Xd9vqikvQopc1gPfUo36Tfn2LdUcAHcx0raU19RZA06BFvAsxV59hppNwV/xb/gFMJ7mf5eQb7sAAAAASUVORK5CYII=">
-            <div class="box-content">
-            <h3>
-                Pharmacy Income
-            </h3>
-            <h1>₹<span class="amount">{{med}}</span></h1>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "/css/images/icons8-water-16.png" %}" alt=""> {% endcomment %}
-            <img class="img_icon img-6" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACXElEQVR4nO2Zz0sVQRzAxy6ZCJ1SvKX9A0FgYEURJJQdOlWXEI8hkUXQQYmCgi5192SHCFIIn0a36FQHvYnawUIiFCk6JJU/iveJiW+01Ox7vrffmdmVPrCw7Cwz82H2OzPfHWP+Ux2gGXglV7MpIkAD8Jg/PLHPTNEArvEvV02RAI4B3x0i9tlRUwSAPcAy6awAraYAcTFJdZ7lOl5wx0UaAyaPAAeAjRpE1oH9Jk8AO4EZamcOaDR5AbhL/dw2eQA4CPzIIGKn5M7YEo3APNmJ+4kBt9DjRiyJfcCaosg3oCOGyFP0KYWWOIM/ToeS2AUsehR5a9elECID+Kc/xHS7FEBk2Y68T5ErhONS0UfD76gEHo3fXPaRMC0QnjfADk2Rk8TjhKbIaESRR5pBvhpRZFVlZ2y3DMTnVOzsT4s7GiIvYlsAzzVE3sW2ABY1RL46Ku4CDgUU+aIh4vpX9WsWUc4QK7GuIfLRUXGblL0PJPJBQ2TaUfFxj+muiykNkQeOioek7CJhGNEQ6XNUPCtlu4FPAUR6NURaUw5teqT8gmeJTXvmkllEOltyNPAaaJLy+x5FxlUkpKOHUxp5KLmKvQYz/gNOo0tNRGTSTqJGEuuKFX6Z6x92QHuF7bydotsT7x4BhjNmlZ+Bveoi0sHzQDmlYbvK3/s7MOvcypSBs14kEh0b2sKR2phItwHddYgMepVIyFyvMDJZKAM3g0gkZM4pp8A2Jvx+TlUmgAkFiZK3wK4FCeiSrMJbxb47rr5OaAC02H2RrC3TkgJsyGXvp6SsV23bYbYZPwHOMrfI+ccJzAAAAABJRU5ErkJggg==">
-            <div class="box-content">
-            <h3>
-                Blood Bank Income
-            </h3>
-            <h1>₹<span class="amount">{{blood}}</span></h1>
-            </div>
-            </div>
-
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "css\images\icons8-ambulance-50.png" %}" alt=""> {% endcomment %}
-
-            <img class="img_icon img-5" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9klEQVR4nO1Vuw0CMQyNADEK2BkBDtEyBatcBZTElIzAGDAEEnRwbEAB1UPhI50uCRfdQQVPchO952dbtqLUz8EwpkI4C2HyFQMhXIUBw7jEizRGhnC0wqphGBdhLFOFhq+qQ53kkos5Yewa1EionrCJ72+EfTpEK86gi57RSGIMVgpNIey8XZSJJcLgbRe+yotjNIFO8pxgF85GaCRFgwVj4N2eAvfVhWFsPzIiiRlfcLc1klDlHzGoG38DxI+IsPHdwqKDfumsAzxDWBdX/XFQjJMlWFFOmFXlORDGzKmS3M8llucg1Whb8bPCzIrsW1XeH6oMN2TKQNnTiURoAAAAAElFTkSuQmCC">
-            <div class="box-content">
-            <h3>
-                Ambulance Income
-            </h3>   
-            <h1>₹ <span class="amount">{{ambulance}}</span></h1>
-            </div>
-            </div>
-        </div>
-        <div class="card">
-          <div class="content_card">
-            {% comment %} <img src="{% static "css/images/icons8-money-100.png" %}" alt=""> {% endcomment %}
-            <img class="img_icon img-7" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEEUlEQVR4nO2ZXYhWRRjHj2aaZCiYGn4QISmiWaJbiKKJZiZKIoneCOmFpalpKGqihSjh6oWICNpFFxIqEUEqhhp+FehFN0GZoIXkVqbsiraKm/aTh/6HhtO77pyZ8+5ZYX+wsO+ZOc/M/5yZ52NOkrTTPMBA4EvgT+AsMD15SEX8wf/ZDHRIHgaAQcAPNM9+YB6wUW/sMnAHWFvWhEcCO4GjwHfAReAq8A/5+QroWpaQGRTDx0Bn2exUlhh7Iw/iVy2dStwFlstOB+Bt4PGyhDwC7K0wSZv8BGeStif+dtqvA1PU3gXYY0JKEZGiiS4FftckjwF91fZk+pSBN4C/gJPmEHStF3AaOF6qN+PfN9JF/3cCejhtE4EGebDeFe59DvhZzqEmKRtgLjAHeMx5yh/JpaZcsKUmsX2A1UCj2s4mbQHgUeB7bV6L4nlZmbQVgNmE86JsdASmauPbkrsN3FB6sx54qrXeiu2HEFLH8E0L/e4Ar7WGGIvwebmeOghgDXANuASsMAeh/TZJLr6htYQ8DxzyFGBP9xOgX8ZGd2Cr2hvVp3/VJ6/B+wIDnN8vALVa27bOUxoUY1aly0n9xwAHgFm2T5L/Ek/Lv1DsmVlNAT3kZhv1t9kV5PTrmsaazPVhwKfAPUfsT+nyUaBdK29ofaZWQ8RoreUsloYcBpYBI9xAaBEeeMnyK+DbFrLkPUBP3TcZ+CVNaYoUsRhowp+mzBLz5ZLtu0In74gwz9Ka3Cy8RC5BhLtcpxUlYnpmU+bhQ9n4gnBuAeNiRTyrwEWJQoz64JgiF3iKMM4Ar6a1OPAM8L7iQijH0liTV8ibgQPucIKbpRqDnbq8JiIvM5bkFWGB7Ar5sdOUzrrfIrbrgebL9hLCuZKrtgcWBA5Uq/sXNuOBhloRphQ9lBV59saPgYMslY1tzbRbVN8F/BYh5LJXja/EL5QNsvFK5uSkaGp8hFiGGso5K7RkZ7xSe7d+L4oNPkLSFDqUzzIJYzfgdWC3Nn0RnPARYk81lps6DjUB3R3bvXQ9ljofITGRvBJWU3ztFkjA55E2b/sIyZOm52WhxrBzrhiaqv1GXrZs9QHtpzXG08RR7yPkfMQAY3WUaqeLlTikMUYRxzkfIQcjBtgtG1MqVIYWVyar/YNIIQd8hFjRH7OxJzrfEtcoyr9nB9e6PqQAN7zaR8jwyEGsEFqX/ZymZHKRPtHFMrRFIRo0tA5xsdpjnuxtikzfXY57iXA2oy2TWIqqEN19NsJbiAZ/l7bHO7lEOGIWVTlA+tIEvBUkIvOZLOS0vSiO2BFrlIgKdcoWFV2hx0M+3NMYtVU7bXREPaF6w+LDdmCfpdb6+Fmn45t6ueKUW871OvU9oXu3y9Y4s13VybfTTpKL+zvQjcjfEomWAAAAAElFTkSuQmCC">
-            <div class="box-content">
-            <h3>
-                General Income
-            </h3>
-            <h1>₹ <span class="amount">0<span></h1>
-            </div>
-            </div>
-        </div>
-    </div>
-
-
-<div class="char">
-      <div class="chart">
-          <div class="chart-heading">
-             
-           
-    {% if user.role == 'Admin' %}
-    <div class="slider">
-        <div class="slide_viewer">
-          <div class="slide_group">
-            <div class="slide">
-              <img class="ad_0" src="">
-            </div>
-            <div class="slide">
-              <img class="ad_1" src="">
-            </div>
-          
-          </div>
-        </div>
-      </div>
-  {% endif %}
-
-
-
-    </div>
-    </div>
-  
-
-
-
-   
-  </div>  
-
- 
-
 
 
 

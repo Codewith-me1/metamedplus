@@ -15,6 +15,13 @@
     <div class="container">
         <style>
             /* Navbar Styles */
+            .container{
+                background-color: #f6f4fb !important;
+              }
+            .third{
+                
+
+            }
             .ipd-navbar {
               
                 color: #fff;
@@ -23,9 +30,15 @@
                 border-width: 1px 0px 0px 0px;
             }
             .ipd-left{
-                border:solid black;
-                border-width:0px 0px 1px 0px;
+                margin:3rem;
                 padding:3rem;
+                background-color:white;
+                border-radius:20px;
+                
+                box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+            }
+            .ipd-left h2{
+                margin-top:5px;
             }
             .ipd{
                 display:flex;
@@ -432,7 +445,7 @@
             <ul> {{ipd.findings}}</ul>
         </li>
     </div>
-    <div class="doctor">
+    <div class="doctor ipd-left">
         <h1>
             Consultant doctor
         </h1>

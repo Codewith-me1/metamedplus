@@ -1,6 +1,6 @@
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +11,24 @@
 
 
 <style>
+  .main-header{
+    border:none;
+    margin-top: 1px !important;
+  }
   .container{
     margin-top:10rem !important;
   }
+  body , .container{
+    background-color: #f6f4fb !important;
+  }
+  .main-content {
+    padding: 3rem;
+    margin: 2rem;
+    border-radius:20px;
+    border:1px solid #dfdfdf;
+    background-color:white;
+}
+
 </style>
 
 <div class="container">
@@ -37,8 +52,9 @@
           <th>Staff ID </th>
           <th>Staff Name</th>
           <th>Role</th>
+          <th>Phone No</th>
           <th>Gender</th>
-          <th>Address</th>
+        
           <th>Edit</th>
           <th>Delete</th>
          
@@ -54,7 +70,7 @@
             <td>{{ staff.role }}</td>
             <td>{{ staff.phone }}</td>
             <td>{{ staff.gender }}</td>
-            <td>{{ staff.address}}</td>
+            
             <td><a href="/edit_staff/{{ staff.id }}">Edit</a></td>
             <td><a class="btn" href="/delete_staff/{{ staff.staff_id }}">Delete</a></td>
           

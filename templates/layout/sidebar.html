@@ -6,7 +6,23 @@
   .dropdown-nested{
     color:white !important;
   }
+.side_text{
+  margin-left:12px;
+}
+.spin{
+  transition: transform .7s ease-in-out;
+}
+.dropdown-btn:hover .spin{
+  transform: rotate(360deg);
+  
+}
+.fa-solid{
+  transition: transform .6s ease-in-out;
+}
 
+.sidebar li:hover .fa-solid{
+  transform: scale(1.2);
+}
 @media only screen and (max-width:768px) and (min-width:300px) {
 
   .setup-sidebar{
@@ -16,6 +32,7 @@
   width:100% !important;
 
 }
+
   .sidebar {
       transform: translateX(-1000px);
       width: 35% !important;
@@ -49,6 +66,7 @@
   .main-second{
     display: grid;
     grid-template-columns: auto auto;
+    
     margin-left: 0px !important;
   }
   .charts{
@@ -198,9 +216,14 @@ body{
   }
 .main-second{
   margin-left:1rem !important;
-}
+  width: 40% !important;
 }
 
+
+}
+@media only screen and(max-width:768px) and (min-width:300px){
+  .main-second{margin-left: 10rem !important;}
+}
 
 @media only screen and (max-width:600px) and (min-width:200px) {
 
@@ -312,20 +335,20 @@ body{
               {% endif %}
 
             {% if user.role == 'Admin' %}
-            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}">Dashboard</a></li>  
-            <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
+            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+            <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Appointment</span></a></li>
            
           
-            <li><a href="{% url 'opd' %}">OPD</a></li>
-            <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
-            <li><a href="{% url 'path' %}">Pathology</a></li>
-            <li><a href="{% url 'radiology' %}">Radiology</a></li>
-            <li><a href="{% url 'blood_donation' %}">Blood Bank</a></li>
-            <li  class="{% if request.resolver_match.url_name == 'add_med' %}active{% endif %}" ><a href="{% url 'add_med' %}">Pharmacy</a></li>  
-          <li><a href="{% url 'add_ambulance' %}">Ambulance</a></li>
-          <li  class="{% if request.resolver_match.url_name == 'meeting' %}active{% endif %}" ><a href="{% url 'meeting' %}">Meeting</a></li>
+            <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
+            <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
+            <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
+            <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
+            <li><a href="{% url 'blood_donation' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+            <li  class="{% if request.resolver_match.url_name == 'add_med' %}active{% endif %}" ><a href="{% url 'add_med' %}"><i class="fa-solid fa-mortar-pestle"></i><span class="side_text">Pharmacy</span></a></li>  
+          <li><a href="{% url 'add_ambulance' %}"><i class="fa-solid fa-truck-medical"></i>   <span class="side_text">Ambulance</span></a></li>
+          <li  class="{% if request.resolver_match.url_name == 'meeting' %}active{% endif %}" ><a href="{% url 'meeting' %}"><i class="fa-solid fa-globe"></i>   <span class="side_text">Meeting</span></a></li>
 
-          <button class="dropdown-btn">Birth & Death Record 
+          <button class="dropdown-btn"> <i class="fa-solid fa-baby"></i>   <span class="side_text">Birth & Death Record</span> 
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-container">
@@ -333,7 +356,7 @@ body{
             <a class="dropdown-a" href="{% url "add_death" %}">Death Record</a>
             
           </div>    
-          <button class="dropdown-btn">Medical Reports 
+          <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
             <i class="fa fa-caret-down"></i>
           </button>
           <div class="dropdown-container">
@@ -348,16 +371,16 @@ body{
           </div>   
 
 
-          <li><a href="{% url 'referral' %}">Referral</a></li>
-          <li><a href="{% url 'add_tpa' %}">TPA</a></li>
-          <li><a href="{% url 'add_itemstock' %}">Inventory</a></li>
+          <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i>   <span class="side_text">Refferal</span>  </a></li>
+          <li><a href="{% url 'add_tpa' %}"><i class="fa-solid fa-person"></i>   <span class="side_text">TPA </span> </a></li>
+          <li><a href="{% url 'add_itemstock' %}"><i class="fa-solid fa-boxes-stacked"></i>   <span class="side_text">Inventory</span> </a></li>
 
-          <li class="{% if request.resolver_match.url_name == 'staff_list' %}active{% endif %}"><a href="{% url 'staff_list' %}">Human Resource</a></li>
+          <li class="{% if request.resolver_match.url_name == 'staff_list' %}active{% endif %}"><a href="{% url 'staff_list' %}"><i class="fa-solid fa-user-group"></i>   <span class="side_text">Human Resource</span> </a></li>
 
    
-          <li class="{% if request.resolver_match.url_name == 'patient_list' %}active{% endif %}" ><a href="{% url 'patient_list' %}">Patient</a></li>
+          <li class="{% if request.resolver_match.url_name == 'patient_list' %}active{% endif %}" ><a href="{% url 'patient_list' %}"><i class="fa-solid fa-hospital-user"></i>   <span class="side_text">Patient</span></a></li>
             
-            <button class="dropdown-btn">Finance 
+            <button class="dropdown-btn"><i class="fa-solid fa-money-bill"></i>   <span class="side_text">Finance</span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
@@ -368,7 +391,7 @@ body{
           
           
             
-            <button class="dropdown-btn"> Accounting
+            <button class="dropdown-btn"> <i class="fa-solid fa-divide"></i>   <span class="side_text">Accounting</span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
@@ -455,7 +478,7 @@ body{
  
 
           
-            <button class="dropdown-btn">Setup 
+            <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">

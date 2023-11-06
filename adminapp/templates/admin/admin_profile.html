@@ -7,6 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:wght@300&display=swap" rel="stylesheet">
 
 
     <style>
@@ -15,6 +18,8 @@
             justify-content: center;
             text-align: center;
             padding: 1rem;
+
+            height:100%;
         }
 
         .container{
@@ -43,18 +48,28 @@
         }
         .main-content{
             display: flex;
-
+            background-color: #e1e1e15e;
+            padding: 2rem;
+            border-radius:20px;
+            margin: 2rem;
         }
+
+        
         .left-admin{
-            width: 90%;
+            
+            padding:2rem;
+            {% comment %} width: 90%; {% endcomment %}
     
         
         }
         .left{
+
             width: 70%;
+            margin-top:1rem;
     margin-left: 13rem;
-    border: solid #b3b3b3 1px;
-    padding: 1rem;
+    margin-right: 7rem;
+    border-radius:20px;
+    padding: 4rem;
         
         }
         .main-content section{
@@ -161,6 +176,7 @@
               border-width: 0px 0px 5px 0px;
               border-radius:10px 10px 0px 0px;
           }
+
           .payroll-card{
             padding: 1rem;
             background-color: #3796e9;
@@ -201,6 +217,37 @@
           .ipd-active a{
             color: white !important;
           }
+          .admin-img{
+            display :flex;
+          }
+          .admin-img img{
+            width:40%;
+            padding:20px;
+          }
+          .admin-img h1{
+            margin-left:10px;
+          }
+          .container{
+            background-color: #f6f4fb !important;
+          }
+          .side_admin{
+            margin:2rem !important;
+            padding:2rem !important;
+            background-color:white !important;
+            border-radius:10px;
+          }
+          .side_admin .details{
+                border:none !important;
+          }
+          li b{
+            font-family: 'Roboto', sans-serif !important;
+
+          }
+          .left{
+            background-color:white;
+
+          }
+
     </style>
 </head>
 <body>

@@ -411,9 +411,10 @@ transition: .3s;
   width: 100% !important;
   padding: 0px;
 
+
 }
 .container{
-  width: 85% !important ;
+  width: 80% !important ;
   background-color: white;
   padding-bottom: 30rem;
   margin-left: 25rem ;
@@ -462,6 +463,31 @@ transition: .3s;
 .btn{
   border: none !important;
 }
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  border-radius:10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius:10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius:10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  border-radius:10px;
+}
+
 .form-Contain {
   display: flex !important;
   justify-content: center !important;
@@ -511,11 +537,14 @@ body{
   -webkit-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
   box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75); 
+
 }
 
 form.hr_add{
   border: blue 0px 1px 1px 1px solid;
-  padding: 0px;
+  padding: 1rem;
+  margin:3rem;
+  border-radius: 15px;
   -webkit-box-shadow: 7px 65px 134px -21px rgba(0,0,0,0.75);
 -moz-box-shadow: 7px 65px 134px -21px rgba(0,0,0,0.75);
 box-shadow: 7px 65px 134px -21px rgba(0,0,0,0.75);
@@ -540,6 +569,7 @@ button#changeadsButton{
 }
 .hr_from{
   padding: 20px;
+  
 }
 .alert-main{
   background-color: #36ad77 !important;
