@@ -147,6 +147,7 @@
             border:none;
             color:black !important;
             margin:0.5rem;
+            transition: transform .7s ease-in-out;
 
             
           }
@@ -166,10 +167,22 @@
             
 
           }
-
+          #myBtn i{
+            transition: transform .5s ease-in-out;
+          }
+          #myBtn:hover i{
+            transform: scale(1.2);
+          }
+          #myBtns i , svg{
+            transition: transform .5s ease-in-out;
+          }
+          #myBtns:hover i , svg{
+            transform: scale(1.2);
+          }
           #myBtn:hover{
             color:white !important;
             background-color:#009bf6 !important; 
+          
           }
           #myBtns:hover{
             color:white !important;
@@ -224,6 +237,7 @@
 
 
           .sidebar.btn-active{
+            transition: transform .6s ease-in-out;
             transform: translateX(1px);
             width:20%;
           }

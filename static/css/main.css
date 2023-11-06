@@ -414,7 +414,7 @@ transition: .3s;
 
 }
 .container{
-  width: 80% !important ;
+  width: 70% !important ;
   background-color: white;
   padding-bottom: 30rem;
   margin-left: 25rem ;
@@ -505,6 +505,8 @@ transition: .3s;
   padding: 10px !important;
   border-radius: 10px !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  height: 90%;
+  overflow: scroll;
   position: relative !important;
   width: 45%;
   

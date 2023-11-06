@@ -53,7 +53,7 @@
   .container{
     padding: 1rem !important;
     margin-top: 5rem !important;
-    width: 90% !important;
+    width: 70% !important;
     margin-left: 0px !important;
   }
   .calender-section{
@@ -72,7 +72,7 @@
   .charts{
     display: flex;
     flex-direction: column;
-    height: 90rem !important;
+    height: 70rem !important;
   }
 
   .navbar-brand{
@@ -94,7 +94,9 @@ body{
       width: 35% !important;
       z-index:10000;
   }
-
+  .delete{
+    display:none !important;
+  }
 
   .toggle-btn {
       display: block;
@@ -118,7 +120,7 @@ body{
   #calendar{
     width: 100% !important;
   }
-  .main-second{
+  .main-second{ 
     display: grid;
     grid-template-columns: auto auto;
     margin-left: 0px !important;
@@ -126,9 +128,17 @@ body{
   .charts{
     display: flex;
     flex-direction: column;
-    height: 90rem !important;
+    height: 70rem !important;
   }
-
+  a.logo{
+    width:30% !important;
+  }
+  .navbar a{
+    padding:6px !important;
+  }
+  .main-second {
+    margin-left: 13rem !important;
+}
   .navbar-brand{
     display: none !important;
   }
@@ -145,7 +155,10 @@ body{
   }
   .POP{
     width:100% !important;
-    margin-top:6rem;
+        {% comment %} margin-top:50rem ; {% endcomment %}
+    height: 90%;
+    overflow: scroll;
+
   
     
 
@@ -198,7 +211,7 @@ body{
     width:90% !important;
   }
   .main-second{
-    margin-left:1rem !important;
+    
   }
   
 }
@@ -215,7 +228,7 @@ body{
     width:90% !important;
   }
 .main-second{
-  margin-left:1rem !important;
+  
   width: 40% !important;
 }
 
@@ -223,6 +236,7 @@ body{
 }
 @media only screen and(max-width:768px) and (min-width:300px){
   .main-second{margin-left: 10rem !important;}
+  
 }
 
 @media only screen and (max-width:600px) and (min-width:200px) {
