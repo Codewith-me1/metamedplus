@@ -25,7 +25,7 @@
             <div class="cards">
               <div class="popup-header">
                 <span id="closePopupBtn" class="close-button">Close</span>
-                <h1>Add Zoom Meeting</h1>
+                <h1>Add Live Meeting</h1>
               </div>
                 <form class="form_popup" method="post" action="{% url 'meeting' %}">
                     {% csrf_token %}
@@ -95,12 +95,12 @@
 
 
 <div class="main-header">
-<h1 class="headline">Add Zoom Meeting</h1>
+<h1 class="headline">Add Live Meeting</h1>
 <div class="side-btns">
 
 
 {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Zoom Meeting</a>
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Live Meeting</a>
 
 </div>    
 </div>

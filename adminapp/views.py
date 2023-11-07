@@ -3832,15 +3832,14 @@ def expense_invoice(request):
     if request.method == 'POST':
         # Retrieve data from the form
         
-        
+        name = request.POST.get('name')
         invoice_number = request.POST.get('invoice_number')
         invoice_date = request.POST.get('invoice_date')
         expense_category = request.POST.get('expense_category')
-        names = re.sub(r'\d', '',name)
-        name  = names.replace("_", "")
+      
         payment_type = request.POST.get('payment_type')
         item_counter = request.POST.get('item_counter', 0)
-
+ 
 
         print(item_counter)
         if expense_category:
@@ -5592,7 +5591,7 @@ def pos(request):
         'product_json' : json.dumps(product_json)
     }
     # return HttpResponse('')
-    return render(request, 'pos/pointofsale.html',context)
+    return render(request, 'accounts/pos.html',context)
     
 
 
@@ -5715,6 +5714,3 @@ def dashboard(request):
     wallet = Wallet.objects.get(user=request.user)
     context = {'wallet': wallet}
     return render(request, 'wallet/dashboard.html', context)
-
-
-
