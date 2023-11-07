@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Funds to Wallet</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Add Funds to Your Wallet</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="amount">Amount (USD)</label>
+        <input type="text" id="amount" name="amount">
+        <button id="add-funds-button" data-secret="{{ client_secret }}">Add Funds</button>
+    </form>
+    <script>
+        var stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+        var elements = stripe.elements();
+
+        var addFundsButton = document.getElementById("add-funds-button");
+        var clientSecret = addFundsButton.getAttribute("data-secret");
+
+        addFundsButton.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement("card"),
+                    billing_details: {
+                        name: "{{ request.user.username }}"
+                    }
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    // Show error message to the user
+                    console.error(result.error.message);
+                } else {
+                    // Payment successful, you can redirect to a success page
+                    console.log("Payment successful");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

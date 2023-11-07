@@ -351,8 +351,7 @@ body{
             {% if user.role == 'Admin' %}
             <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
             <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Appointment</span></a></li>
-           
-          
+
             <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
             <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
@@ -490,13 +489,14 @@ body{
               </div>
               </div>
  
-
+              <li  class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" ><a href="{% url 'dashboard' %}"><i class="fa-solid fa-wallet"></i><span class="side_text">Wallet</span></a></li>  
           
             <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
               <a class="dropdown-a" href="{% url "income_head" %}">Income</a>
+              
               <a class="dropdown-a" href="{% url "expense_head" %}">Expense</a>
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
@@ -569,7 +569,7 @@ body{
               
               
               
-             
+              
               
   
 
@@ -584,6 +584,7 @@ body{
                  <a class="dropdown-a" href="{% url 'referral_commission' %}">Referral Commission</a>
 
 
+                
 
               </div>
 

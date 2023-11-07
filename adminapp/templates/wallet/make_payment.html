@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Make Payment from Wallet</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="amount">Amount (USD)</label>
+        <input type="text" id="amount" name="amount">
+        <div id="card-element">
+            <!-- A Stripe Element will be inserted here. -->
+        </div>
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+        <button id="make-payment-button">Make Payment</button>
+    </form>
+    <script>
+        var stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+        var elements = stripe.elements();
+
+        var card = elements.create("card");
+
+        // Add an instance of the card Element into the `card-element` div.
+        card.mount("#card-element");
+
+        var makePaymentButton = document.getElementById("make-payment-button");
+
+        makePaymentButton.addEventListener("click", function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    // Inform the user if there was an error.
+                    var errorElement = document.getElementById("card-errors");
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server and charge the user.
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            // Insert the token ID into the form so it gets submitted to the server.
+            var form = document.querySelector("form");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("name", "stripeToken");
+            hiddenInput.setAttribute("value", token.id);
+            form.appendChild(hiddenInput);
+
+            // Submit the form
+            form.submit();
+        }
+    </script>
+</body>
+</html>

@@ -168,7 +168,15 @@ urlpatterns = [
     path('send_emails/', views.send_email, name='send_email'),
     path('chat/<str:room_name>', views.chat_room, name='room'),
     path('chat/<int:receiver_id>/<int:sender_id>',views.send_message,name="send"),
-    path('delete_staff/<int:user_id>',views.deletestaff,name="staff_delete")
+    path('delete_staff/<int:user_id>',views.deletestaff,name="staff_delete"),
+    path('pos',views.pos,name="pos"),
+    path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
+    path('remove_from_cart/', views.remove_from_cart, name='remove_from_cart'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    #  path('balance/', views.wallet_balance, name='wallet_balance'),
+    path('add-funds/', views.add_funds, name='add_funds'),
+    path('make-payment/', views.make_payment, name='make_payment'),
+      
 
 
 

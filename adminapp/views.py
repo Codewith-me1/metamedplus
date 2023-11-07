@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import json, sys
 from decimal import Decimal
 # Create your views here.
 import time
@@ -7,7 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.core.mail import EmailMessage, get_connection
+import stripe
 from django.conf import settings
+from .models import Wallet
+from .models import Wallet_Transactions
 from django.shortcuts import get_object_or_404
 
 from .models import SMTPServer
@@ -5574,3 +5578,140 @@ def deletestaff(request,user_id):
     user.delete()
 
     return redirect('staff_list')
+
+
+
+def pos(request):
+    products = Item_Acc.objects.all()
+    product_json = []
+    for product in products:
+        product_json.append({'id':product.id, 'name':product.item_name, 'price':float(product.sale_price)})
+    context = {
+        'page_title' : "Point of Sale",
+        'products' : products,
+        'product_json' : json.dumps(product_json)
+    }
+    # return HttpResponse('')
+    return render(request, 'accounts/pos.html',context)
+    
+
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = Item_Acc.objects.get(pk=product_id)
+
+        if 'cart' not in request.session:
+            request.session['cart'] = []
+
+        # Add the selected item to the cart
+        request.session['cart'].append({
+            'product_id': product.id,
+            'product_name': product.name,
+            'quantity': 1,
+            'item_total': float(product.price),
+        })
+
+        # Calculate order summary
+        cart = request.session['cart']
+        total = sum(item['item_total'] for item in cart)
+        tax_rate = 0.08
+        tax = total * tax_rate
+        grand_total = total + tax
+
+        return JsonResponse({
+            'cart_items': render_cart_items(cart),
+            'total': total,
+            'tax': tax,
+            'grand_total': grand_total,
+        })
+
+def remove_from_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+
+        # Remove the selected item from the cart
+        if 'cart' in request.session:
+            request.session['cart'] = [item for item in request.session['cart'] if item['product_id'] != product_id]
+
+        # Calculate order summary
+        cart = request.session['cart']
+        total = sum(item['item_total'] for item in cart)
+        tax_rate = 0.08
+        tax = total * tax_rate
+        grand_total = total + tax
+
+        return JsonResponse({
+            'cart_items': render_cart_items(cart),
+            'total': total,
+            'tax': tax,
+            'grand_total': grand_total,
+        })
+
+def render_cart_items(cart):
+    # Create an HTML string for the cart items
+    cart_html = ""
+    for item in cart:
+        cart_html += f"<tr>"
+        cart_html += f"<td>{item['product_name']}</td>"
+        cart_html += f"<td>{item['quantity']}</td>"
+        cart_html += f"<td>${item['item_total']:.2f}</td>"
+        cart_html += f"<td><button class='remove-from-cart' data-product-id='{item['product_id']}'>Remove</button></td>"
+        cart_html += f"</tr>"
+    return cart_html
+
+
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@login_required
+def add_funds(request):
+    if request.method == 'POST':
+        amount = request.POST['amount']
+        amount_in_cents = int(float(amount) * 100)
+
+        # Create a payment intent using Stripe
+        intent = stripe.PaymentIntent.create(
+            amount=amount_in_cents,
+            currency='inr',
+            metadata={'user_id': request.user.id},
+        )
+
+        return render(request, 'wallet/add_funds.html', {'client_secret': intent.client_secret})
+
+    return render(request, 'wallet/add_funds.html')
+
+@login_required
+def make_payment(request):
+    if request.method == 'POST':
+        amount = request.POST['amount']
+        amount_in_cents = int(float(amount) * 100)
+        user = request.user
+
+        # Charge the user using Stripe
+        charge = stripe.Charge.create(
+            amount=amount_in_cents,
+            currency='usd',
+            source=request.POST['stripeToken'],
+            description='Payment from Wallet',
+        )
+
+        # Update the user's wallet balance
+        wallet = Wallet.objects.get(user=user)
+        wallet.balance -= amount_in_cents / 100
+        wallet.save()
+
+        # Create a transaction record
+        Transaction.objects.create(user=user, amount=-amount_in_cents / 100)
+
+        return redirect('wallet_balance')
+
+    return render(request, 'wallet/make_payment.html')
+
+
+
+def dashboard(request):
+    wallet = Wallet.objects.get(user=request.user)
+    context = {'wallet': wallet}
+    return render(request, 'wallet/dashboard.html', context)

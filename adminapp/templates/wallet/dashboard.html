@@ -1,0 +1,220 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet</title>
+
+    <style>
+        .container{
+            background-color: #f6f4fb !important;
+        }
+        .card_1{
+            padding:2rem;
+            margin:2rem;
+            background-color:white;
+            width:40%;
+            border-radius:20px;
+            border:solid 1px #e6d0d0;
+        }
+        .card_1 h2{
+            font-weight:500;
+
+            
+        }
+        @media only screen and (max-width:768px) and (min-width:300px) {
+            .wallet_side{
+                display:block !important;
+            }
+            .wallet_left{
+                width:100%;
+            }
+            .card_1{
+                width:100%;
+            }
+            .wallet_cards{
+                display:block !important;
+            }
+            .wallet_card{
+                width:100% !important;
+            }
+            .chart{
+                display:none !important;
+            }
+            .wallet_right{
+                width:100% !important;
+                margin:1px !important;
+                height:30rem;
+            }
+            .wallet_svg svg{
+                width:100% !important;
+            }
+            
+        }
+        
+        .wallet_card{
+            padding:2rem;
+            margin:2rem;
+            background-color:white;
+            width:40%;
+            border-radius:20px;
+            border:solid 1px #e6d0d0;
+            display:flex;
+        }
+        .wallet_cards{
+            display:flex;
+        }
+        .wallet_svg svg{
+            width:60%;
+        }
+        .wallet_icon{
+            width:50%;
+            margin-top:10px;
+        }
+        .wallet_text h2{ 
+            margin:5px;
+
+        }
+        .wallet_svg svg{
+            
+            padding:1rem;
+        }
+        #myChart{
+            width:50%;
+        }
+        .chart{
+            width:100%;
+            background-color:white;
+            padding:2rem;
+            
+            border-radius:20px;
+        }
+        .wallet_side{
+            display:flex;
+        }
+        .wallet_right{
+            width:40%;
+            background-color:white;
+            margin:2rem;
+            border:solid 1px #dddddd;
+            border-radius:30px;
+            padding:1rem;
+        }
+        .wallet_left{
+            width:60%;
+        }
+        .trans{
+            border:solid #bcbbbb;
+            border-width:0px 0px 1px 0px  ;
+        }
+    </style>
+<div class="container">
+    <div class="wallet_side">
+    <div class="wallet_left">
+<div class="wallet_cards">
+    <div class="card_1">
+    <p>My Balance</p>
+
+    <h2>₹{{ wallet.balance }}</h2>
+
+    </div>
+<div class="wallet_card">
+
+    <div class="wallet_icon">
+        <div class="wallet_svg">
+        <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 318" viewBox="0 0 45.33 45.33" id="sent"><path fill="#4361ee" d="M18.51 24.82 41.29 2.04a1.19 1.19 0 0 0-1.26-2L.77 14.72a1.19 1.19 0 0 0-.1 2.19L17.15 25a1.17 1.17 0 0 0 1.36-.18Z"></path><path fill="#4cc9f0" d="M20.51 26.82 43.29 4.04a1.19 1.19 0 0 1 2 1.26L30.61 44.55a1.19 1.19 0 0 1-2.19.11l-8.09-16.48a1.18 1.18 0 0 1 .18-1.36Z"></path></svg>
+    </div>
+    </div>
+    <div class="wallet_text">
+    <p>Sent</p>
+    <h2>₹{{ wallet.balance }}</h2>
+
+</div>
+</div>
+</div>
+
+<div class="wallet_card">
+    <div class="wallet_icon">
+        <div class="wallet_svg">
+<img src="data:image/png;base64,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">
+        
+    </div>
+    </div>
+    <div class="wallet_text">
+    <p>Received</p>
+    <h2>₹{{ wallet.balance }}</h2>
+
+</div>
+</div>
+
+<div class="chart">
+<canvas id="myChart"></canvas>
+
+</div>
+</div>
+<div class="wallet_right">
+    <div class="trans">
+<h1>Recent Transactions</h1>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<script>
+  // Sample data for the chart
+  const data = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','July','August','September','October','November','December'],
+    datasets: [
+      {
+        label: 'Sent',
+        backgroundColor: 'rgba(41,81,251)',
+        
+        borderWidth: 1,
+        data: [12, 19, 3, 5],
+      },
+      {
+        label: 'Received',
+        backgroundColor: 'rgba(246, 109, 67)',
+        
+        borderWidth: 1,
+        data: [5, 7, 15, 10],
+      },
+    ],
+  };
+
+  let delayed;
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      animation: {
+        onComplete: () => {
+          delayed = true;
+        },
+        delay: (context) => {
+          let delay = 0;
+          if (context.type === 'data' && context.mode === 'default' && !delayed) {
+            delay = context.dataIndex * 300 + context.datasetIndex * 100;
+          }
+          return delay;
+        },
+      },
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    },
+  };
+
+  // Create the chart
+  const ctx = document.getElementById('myChart').getContext('2d');
+  const myChart = new Chart(ctx, config);
+</script>
