@@ -5592,7 +5592,7 @@ def pos(request):
         'product_json' : json.dumps(product_json)
     }
     # return HttpResponse('')
-    return render(request, 'accounts/pos.html',context)
+    return render(request, 'pos/pointofsale.html',context)
     
 
 
@@ -5715,3 +5715,6 @@ def dashboard(request):
     wallet = Wallet.objects.get(user=request.user)
     context = {'wallet': wallet}
     return render(request, 'wallet/dashboard.html', context)
+
+
+

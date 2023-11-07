@@ -379,9 +379,14 @@ transition: .3s;
 .main-header{
   display: flex;
   flex-wrap: nowrap;
+  margin-left: 2rem;
+  margin-top: 3rem;
   flex-grow: none;
   justify-content: space-between;
 
+}
+.table{
+  margin-left: 2rem;
 }
 .side-btns{
   margin-top: 1.5rem;
@@ -391,10 +396,8 @@ transition: .3s;
   font-size: 3rem !important;
 }
 .main-header{
-  border-color: #979999;
-  border-width:1px 0px 0px 0px ;
-  border-style: solid;
-  margin-top: 1rem;
+  
+  margin-top: 5rem;
   margin-bottom: 1rem;
   padding: 1rem;
 }
@@ -496,7 +499,7 @@ transition: .3s;
 }
 .sidebar{
   overflow: scroll;
-  height: 85% !important;
+  height: 90% !important;
   position: fixed !important;
   z-index: 10;
 }
@@ -505,14 +508,16 @@ transition: .3s;
   padding: 10px !important;
   border-radius: 10px !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
-  height: 90%;
+  
   overflow: scroll;
   position: relative !important;
   width: 45%;
   
 }
 
-
+.patient_form{
+  display:none ;
+}
 .close-button {
   position: absolute !important;
   top: 10px !important;

@@ -214,7 +214,7 @@
             padding-top:3rem;
           }
           .container{
-            margin-top:13rem;
+            margin-top:5rem;
           }
           .navbar{
             border:solid #d2d1d1;
@@ -309,6 +309,18 @@ form input.equal{
 
 form input.operator{
     color: #33ffd8;
+}
+#search-button{
+
+  border:none !important;
+  background-color:white !important;
+ 
+}
+#search-button i{
+  width
+}
+.search i{
+  padding-top:20px !important;
 }
           
     </style>
@@ -429,8 +441,10 @@ form input.operator{
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       
       <form class="form-inline search my-2 my-lg-0">
+       
         <input id="search-input"class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button id="search-button"class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+
+        <button id="search-button"class=" my-2 my-sm-0 " type="submit"> <i class="fa-solid fa-magnifying-glass fa-lg icon"></i></button>
       </form>
 
       <button id="changeLogoButton" onClick="changeLogo()">Change Logo</button>
