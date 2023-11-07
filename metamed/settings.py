@@ -30,6 +30,11 @@ STRIPE_SECRET_KEY = 'sk_test_51MxUFkSI3RvJrBdpm1QB3iy1dwwiC3OVe2PsANRA1OGycvIlxY
 
 AUTH_USER_MODEL = 'adminapp.CustomUser'
 # Application definition
+STATIC_URL = 'root/projectdir/metamedplus/static/'
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, "static"),
+ ]
+STATIC_ROOT = '/root/projectdir/metamedplus/staticfiles'
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
