@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <!-- Add your CSS styling here -->
+</head>
+<body>
+    <h1>Bill</h1>
+    <table>
+        <tr>
+            <td><strong>Sub Total</strong></td>
+            <td>{{ sub_total }}</td>
+        </tr>
+        <tr>
+            <td><strong>Tax Percentage</strong></td>
+            <td>{{ tax }}</td>
+        </tr>
+     
+    </table>
+    
+    <h2>Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item  in products %}
+                <tr>
+                    <td>{{ item.item }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <h3>Total Amount: {{ grand_total }}</h3>
+</body>
+</html>

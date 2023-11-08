@@ -97,6 +97,7 @@ urlpatterns = [
     path('purchase_invoice', views.purchase_invoice, name='purchase_invoice'),
     path('Sales_Party', views.Party_User, name='Sales_Party'),
     path('item_details', views.Item_Details, name='item_details'),
+    path('pos_details', views.POS_Details, name='pos_details'),
     path('generate_invoice_pdf/<int:id>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
     path('generate_purchase_pdf/<int:id>/', views.generate_purchase_pdf, name='generate_purchase_pdf'),
     path('edit_sales/<int:id>/', views.edit_sales, name='edit_sales'),
@@ -181,6 +182,7 @@ urlpatterns = [
     path('items/', views.item_list, name='item_list'),
     path('add_to_cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
     path('view_cart/', views.view_cart, name='view_cart'),
+    path('pos_pdf/', views.pos_pdf, name='pos_pdf'),
       
 
 

@@ -3181,6 +3181,29 @@ def Item_Details(request):
 
    
 
+def POS_Details(request):
+    selected_value = request.GET.get('id')
+
+    # Query your database or data source to retrieve user data based on selected_value
+    # Replace this with your actual database query
+    try:
+        item = Item_Acc.objects.get(id=selected_value)
+        data = {
+            'success': True,
+            'sale_price': item.sale_price,
+            'tax': item.tax_rate,
+            'unit': item.unit,
+            
+        }
+    except Item_Acc.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+   
+
 
 def generate_invoice_pdf(request, id):
     try:
@@ -5843,3 +5866,71 @@ def create_liablity(request):
         'liablity':liablity,
     }
     return render(request, "accounts/create_liablity.html",context)
+
+
+
+def pos_pdf(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+       
+        item_counter = request.POST.get('item_counter')
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+            item = request.POST.get(f'item_{i}')
+            qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+            item  = items.replace("_", "")
+            price = request.POST.get(f'price_{i}')
+            total = request.POST.get(f'total_{i}')
+           
+            
+            product = {
+                'item': item,
+                'quantity': qty,
+                'price': price,
+                'total': total
+                }
+    
+   
+            product_list.append(product)
+        print(product_list)
+
+        # Redirect to a success page or display a success message
+      
+        
+    
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'grand_total':grand_total,
+    }
+
+    # Render the template
+    template = get_template('templat/pos_pdf.html')
+    html = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response

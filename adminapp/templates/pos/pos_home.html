@@ -1,11 +1,310 @@
 <!-- pos/templates/pos/item_list.html -->
-<h1>Items</h1>
-<ul>
-  {% for item in items %}
-    <li>
-      {{ item.item_name }} - ${{ item.item_price }}
-      <a href="{% url 'add_to_cart' item.id %}">Add to Cart</a>
-    </li>
-  {% endfor %}
-</ul>
-<a href="{% url 'view_cart' %}">View Cart</a>
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+
+<style>
+form{
+  display:flex;
+}
+.pos_left{
+  width:60%;
+  margin:2rem;
+  background-color:white;
+  border-radius:20px;
+}
+.table{
+  margin-top:3rem;
+}
+.pos_right{
+  width:30%;
+  background-color:white;  
+  border-radius:20px;
+  padding:2rem;
+}
+.pos_right h1{
+  margin:2px !important;
+  
+}
+.pos_text{
+  margin:3rem;
+}
+.pos_text input{
+  color:black !important;
+}
+.pos_text h1{
+ padding:1rem;
+}
+</style>
+
+<div class='container'>
+    <h2>Point Of Sale</h2>
+
+    <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
+        {% csrf_token %}
+        <input type="hidden" name="item_counter" id="item_counter" value="0">
+            <div class="first-container">
+
+            
+        </div>
+       <div class="pos_left">
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Item </th>
+                <th>Quantity</th>
+                
+                <th>Price</th>
+                <th>Total</th>
+           
+    
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+               
+
+                
+            </tbody>
+          </table>
+
+
+        </div>
+        <div class="pos_right">
+          
+            <div class="pos_text">
+              <h1> Sub Total</h1>
+              <input type="text" name="sub_total" id="sub_total" >
+         
+          </div>
+
+          <div class="pos_text">
+            <h1> Tax Exclusive(%)</h1>
+            <input type="text" name="tax" id="tax" >
+       
+        </div>
+
+        <div class="pos_text">
+          <h1> Tax Amount</h1>
+          <input type="text" name="tax_amt" id="tax_amt" >
+     
+      </div>
+
+      {% comment %} <div class="pos_text">
+        <h1>Discount Amount</h1>
+        <input type="text" name="disc" id="disc" >
+   
+    </div> {% endcomment %}
+
+      <div class="pos_text">
+        <h1> Grand Total</h1>
+        <input type="text" name="grand_total" id="total" >
+   
+    </div>
+    <button type="submit" class="btn btn-primary">Save Invoice</button>
+        </div>
+        
+        
+    </form>
+
+    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
+
+
+    
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    
+    itemCounter = 0;
+        // Function to create a new row with item fields
+        function createNewItemRow() {
+           
+            itemCounter++;
+            $('#item_counter').val(itemCounter);
+            
+            const newRow = `
+            <tr class="item-row" id="itemRow${itemCounter}">
+                <td>
+                    <select class="form-control" id="item_${itemCounter}" name="item_${itemCounter}">
+                        <option value="item">Select An Item</option>
+                        {% for item in items %}
+                            <option value="{{item.item_name}}_{{item.id}}" >{{item.item_name}}</option>
+                            <!-- Add more category options as needed -->
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" value="1" class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+               
+                <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
+             
+                <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
+            </tr>
+        `;
+    
+        // Append the new row to the table body
+        $('tbody').append(newRow);
+            
+        }
+        
+       
+
+        createNewItemRow();
+        
+    
+        // Function to remove an item row
+        function removeItemRow(rowNumber) {
+            // Remove the specified item row
+            $(`#itemRow${rowNumber}`).remove();
+        }
+    
+        // Add an event listener to the "Add Item" button
+        $('#addItemButton').on('click', function () {
+            createNewItemRow();
+        });
+
+        $(document).ready(function () {
+            // Event delegation for select elements with IDs starting with 'item_'
+            $(document).on('change', '[id^="item_"]', function () {
+                var selectedValue = $(this).val();
+                var parts = selectedValue.split('_');
+                var selectId = $(this).attr('id');
+                var id = parts[1];
+                
+                $.ajax({
+                    url: '/item_details',
+                    method: 'GET',
+                    data: { id: id },
+                    success: function (data) {
+                        console.log(data);
+                        console.log(selectId);
+                        
+                        var rowNumber = selectId.split('_')[1];
+
+                        console.log(rowNumber)
+                        $('#tax_' + rowNumber).val(data.tax);
+                        $('#unit_' + rowNumber).val(data.unit);
+                        $('#price_' + rowNumber).val(data.sale_price);
+                      
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+            });
+        
+
+    
+    $('tbody').on('input', 'input', function () {
+        calculateTotal($(this));
+    });
+
+    // Trigger the initial calculation when the page loads
+    calculateTotal($('input'));
+
+    function calculateTotal(inputField) {
+        const row = inputField.closest('tr');
+        const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
+        const quantity = parseFloat(row.find('input[id^="qty_"]').val()) || 0;
+        
+        
+    
+        // Calculate the tax amount and discount amount
+     
+       
+        // Calculate the total amount
+        const total = (price * quantity) ;
+
+        // Update the tax amount and discount amount fields within the same row
+
+
+        // Update the total field within the same row with the calculated value
+        row.find('input[id^="total_"]').val(total.toFixed(2));
+
+        const totals = document.querySelectorAll('input[id^="total_"]');
+
+        let grandTotal = 0;
+                totals.forEach(totalInput => {
+                    grandTotal += parseFloat(totalInput.value) || 0;
+                });
+            console.log(grandTotal)
+                // Update a grand total field with the calculated total
+                const grandTotalField = document.getElementById('sub_total'); // Assuming you have an input field with this ID
+                if (grandTotalField) {
+                    grandTotalField.value = grandTotal.toFixed(2);
+                }
+        
+    }
+
+
+    const taxInclusiveInput = document.getElementById('tax');
+    const subTotalInput = document.getElementById('sub_total');
+    const discInput = document.getElementById('disc');
+    
+    taxInclusiveInput.addEventListener('input', calculateTaxAndGrandTotal);
+    discInput.addEventListener('input', calculateTaxAndGrandTotal);
+    subTotalInput.addEventListener('input', calculateTaxAndGrandTotal);
+
+
+   
+    
+
+
+    function calculateTaxAndGrandTotal() {
+    const subTotalInput = document.getElementById('sub_total');
+    const taxInclusiveInput = document.getElementById('tax');
+    const taxAmountInput = document.getElementById('tax_amt');
+    const grandTotalInput = document.getElementById('total');
+
+    const subTotal = parseFloat(subTotalInput.value) || 0;
+    const taxInclusive = parseFloat(taxInclusiveInput.value) || 0;
+
+    // Calculate the tax amount as a percentage of the sub total
+    const taxAmount = (subTotal * taxInclusive) / 100;
+    taxAmountInput.value = taxAmount.toFixed(2);
+
+    // Calculate the grand total by subtracting the tax amount from the sub total
+    const grandTotal = subTotal + taxAmount;
+    grandTotalInput.value = grandTotal.toFixed(2);
+      
+     
+
+  }
+
+
+  {% comment %} function calculateDiscount(){
+    const grandTotalInput = document.getElementById('total');
+    const subTotalInput = document.getElementById('sub_total');
+    const discInput = document.getElementById('disc');
+    const subTotal = parseFloat(subTotalInput.value) || 0;
+    const dicAmt = parseFloat(discInput.value) || 0;
+
+    
+
+    const grandTotal = subTotal/discInput ;
+    grandTotalInput.value = grandTotal.toFixed(2);
+  }
+   {% endcomment %}
+  // Add event listeners to the "Tax Inclusive(%)" and "Sub Total" inputs
+ 
+
+
+
+</script>
