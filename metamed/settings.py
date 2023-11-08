@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-p8j028^j53mvw6z*^=akodb2#f^1)an3z7@u%cl0db5hz9yd0&
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1','167.71.235.236',"localhost",'143.110.184.9']
+ALLOWED_HOSTS = ['127.0.0.1','phoenixhis.com','167.71.235.236',"localhost",'143.110.184.9']
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51MxUFkSI3RvJrBdpGBTgexZC4TdmVH0ZqhfXF8jaSIkhxWKTAGSR6Ss944SgYgyiY2JRLoKkmve1KQQ1bldxEUWa006X3Rs4xa'
 STRIPE_SECRET_KEY = 'sk_test_51MxUFkSI3RvJrBdpm1QB3iy1dwwiC3OVe2PsANRA1OGycvIlxYHxxVUXpxbo8WC6AEfolbq3FzWA4pbgjlAfOq6p00fFlO0UA9'
 

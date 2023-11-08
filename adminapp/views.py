@@ -10,6 +10,7 @@ from asgiref.sync import async_to_sync
 from django.core.mail import EmailMessage, get_connection
 import stripe
 from django.conf import settings
+from .models import Liablity
 from .models import Wallet
 from .models import Wallet_Transactions
 from django.shortcuts import get_object_or_404
@@ -240,20 +241,64 @@ def appointment_details_form_view(request):
    if request.method == 'POST':
         
         patient_id = request.POST.get('patient')
+        
+        
         if patient_id:
             patient = Patient.objects.get(id=patient_id)
             patient_name = patient
 
 
+        new = request.POST['new']
+        print(new)
+        if new == 'on':
+            name = request.POST['name']
+            p_phone = request.POST['patient_phone']
+            p_gender = request.POST['patient_gender']
+            address = request.POST['patient_address']
+            date_of_birth = request.POST['date_of_birth']
+            patient = Patient(
+                name = name,
+                phone = p_phone,
+                gender = p_gender,
+                address = address,
+                date_of_birth = date_of_birth,
 
-        appointment_date = request.POST['appointment_date']
-        phone = request.POST['phone']
-        gender = request.POST['gender']
-        doctor = request.POST['doctor']
-        source = request.POST['source']
-        priority = request.POST['priority']
-        fees = request.POST['fees']
-        status = request.POST['status']
+            )
+            patient.save()
+            appointment_date = request.POST['appointment_date']
+            phone = request.POST['phone']
+            gender = request.POST['gender']
+            doctor = request.POST['doctor']
+            source = request.POST['source']
+            priority = request.POST['priority']
+            fees = request.POST['fees']
+            status = request.POST['status']
+            appointment = AppointmentDetails(
+            patient_name=name,
+            appointment_date=appointment_date,
+            phone=phone,
+            gender=gender,
+            doctor=doctor,
+            source=source,
+            priority=priority,
+            fees=fees,
+            status=status
+            )
+            appointment.save()
+            return redirect("appointment")
+        else:
+            
+
+            appointment_date = request.POST['appointment_date']
+            phone = request.POST['phone']
+            gender = request.POST['gender']
+            doctor = request.POST['doctor']
+            source = request.POST['source']
+            priority = request.POST['priority']
+            fees = request.POST['fees']
+            status = request.POST['status']
+
+
 
         # Create a new AppointmentDetails instance and save it to the database
         appointment = AppointmentDetails(
@@ -269,6 +314,7 @@ def appointment_details_form_view(request):
         )
         appointment.save()
         return redirect("appointment")
+   
    else:
         # Load the list of patients for the search input
       patients = AppointmentDetails.objects.all()
@@ -4394,7 +4440,16 @@ def balance_sheet(request):
         total_payable=Sum('opening_balance')
     )['total_payable'] or 0
     
-    print(total)
+    
+
+    total_short_term_liablity = Liablity.objects.filter(liablity_type='Short-Term').aggregate(
+        total_short_term_liablity=Sum('price')
+    )['total_short_term_liablity'] or 0
+
+    total_long_term_liablity = Liablity.objects.filter(liablity_type='Long-Term').aggregate(
+        total_long_term_liablity=Sum('price')
+    )['total_long_term_liablity'] or 0
+
     total_long_term_assets = Asset.objects.filter(asset_type='Long-Term').aggregate(
         total_long_term_assets=Sum('price')
     )['total_long_term_assets'] or 0
@@ -4418,7 +4473,7 @@ def balance_sheet(request):
     closing_stock = opening_stock + total_purchases - total_sales
     equity =   opening_stock + total_receivable  + total_back_account -withdraw
 
-    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets -indirect_expense+direct_expense +equity
+    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets -indirect_expense+direct_expense +equity -(total_long_term_liablity+total_short_term_liablity)
 
     
 
@@ -4431,6 +4486,8 @@ def balance_sheet(request):
         'closing_stock': closing_stock,
         'total_sales_tax': total_sales_tax,
         'total_short_term_assets': total_short_term_assets,
+        'total_long_term_liablity':total_long_term_liablity,
+        'total_short_term_liablity':total_short_term_liablity,
         'total_long_term_assets': total_long_term_assets,
         'total_purchase_tax': total_purchase_tax,
         'start_date':start_date,
@@ -4933,6 +4990,13 @@ def profit_and_loss_statement(request):
     total_short_term_assets = Asset.objects.filter(asset_type='Short-Term').aggregate(
         total_short_term_assets=Sum('price')
     )['total_short_term_assets'] or 0
+
+    total_short_term_liablity = Liablity.objects.filter(liablity_type='Short-Term').aggregate(
+        total_short_term_liablity=Sum('price')
+    )['total_short_term_liablity'] or 0
+    
+
+
 
     closing_stock = Sales_Invoice.objects.filter(type='sales').aggregate(
         total_short_term_assets=Sum('item_invoice')
@@ -5763,3 +5827,19 @@ def view_cart(request):
     cart = request.session.get('cart', [])
     total = sum(cart)
     return render(request, 'pos/pos_checkout.html', {'cart': cart, 'total': total})
+
+
+def create_liablity(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+        liablity_type = request.POST.get("liablity_type")
+        liablity = Liablity(name=name, description=description,liablity_type=liablity_type, price=price,)
+        liablity.save()
+        return redirect("create_liablity")  # Redirect to a list view of assets
+    liablity = Liablity.objects.all()
+    context={
+        'liablity':liablity,
+    }
+    return render(request, "accounts/create_liablity.html",context)

@@ -937,6 +937,18 @@ class Asset(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Liablity(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True,blank=True)    
+    price = models.DecimalField(max_digits=13, decimal_places=3)  # Add a price field
+    liablity_type = models.CharField(max_length=20)
+    
+
+    def __str__(self):
+        return self.name
+    
     
 
 class MedicationDoseage(models.Model):

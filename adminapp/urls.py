@@ -106,6 +106,7 @@ urlpatterns = [
     path('purchase', views.purchase, name='purchase'),
     path('balance_sheet/', views.balance_sheet, name='balance_sheet'),
     path('create_asset/', views.create_asset, name='create_asset'),
+    path('create_liablity/', views.create_liablity, name='create_liablity'),
     path('purchase_report/', views.purchase_report, name='purchase_report'),
     path('sales_report/', views.sales_report, name='sales_report'),
     path('search_appointment/', views.search_appointments, name='search_appointments'),
