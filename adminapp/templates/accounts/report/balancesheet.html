@@ -66,6 +66,34 @@ th {
 } {% endcomment %}
 
     </style>
+    <style>
+        .container{
+            background-color: #f6f4fb !important;
+        }
+.balance{
+    text-align:center;
+}        
+.print{
+    display:flex;
+
+    justify-content: center;
+}
+
+tr{
+    font-weight:900;
+}
+.balance_sheet{
+    background-color:white;
+    padding:4rem;
+    margin:2rem;
+    border-radius:20px;
+    -webkit-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
+    box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75); 
+
+}
+
+    </style>
 
 
         <title>Balance Sheet</title>
@@ -74,8 +102,8 @@ th {
     <body>
         <div class="container">
            
-            <h1>Balance Sheet As on {{start_date}}</h1>
-    
+            <h1 class="report_header">Balance Sheet As on {{start_date}}</h1>
+    <div class="balance_sheet">
             <table class="table">
                 <tr>
                     <th id="assets-header" colspan="2">Assets</th>
@@ -148,7 +176,10 @@ th {
             </table>
     
             <h3 class="balance">Balance: {{ balance }}</h3>
-            <button class="btn-primary btn" id="printButton">Print Table</button>
+            <div class="print">
+            <button class="btn-primary btn" id="printButton"><i class="fa-solid fa-download"></i><span class="side_text">Download</span></button>
+            </div>
+            </div>
         </div>
 
 
@@ -185,7 +216,7 @@ th {
     
 
     
-
+    {% include "layout/footer.html" %}
 
 
   

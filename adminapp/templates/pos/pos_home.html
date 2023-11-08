@@ -1,0 +1,11 @@
+<!-- pos/templates/pos/item_list.html -->
+<h1>Items</h1>
+<ul>
+  {% for item in items %}
+    <li>
+      {{ item.item_name }} - ${{ item.item_price }}
+      <a href="{% url 'add_to_cart' item.id %}">Add to Cart</a>
+    </li>
+  {% endfor %}
+</ul>
+<a href="{% url 'view_cart' %}">View Cart</a>

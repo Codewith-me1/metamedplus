@@ -35,16 +35,91 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
   
 <style> 
+  @media only screen and(max-width:768px) and (min-width:300px){
 
+ 
+
+  }
+
+  
+
+    .checkbox-wrapper-2 .ikxBAC {
+      appearance: none;
+      background-color: #dfe1e4;
+      border-radius: 72px;
+      border-style: none;
+      flex-shrink: 0;
+      height: 20px;
+      margin: 0;
+      position: relative;
+      width: 30px;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC::before {
+      bottom: -6px;
+      content: "";
+      left: -6px;
+      position: absolute;
+      right: -6px;
+      top: -6px;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC,
+    .checkbox-wrapper-2 .ikxBAC::after {
+      transition: all 100ms ease-out;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC::after {
+      background-color: #fff;
+      border-radius: 50%;
+      content: "";
+      height: 14px;
+      left: 3px;
+      position: absolute;
+      top: 3px;
+      width: 14px;
+    }
+  
+    .checkbox-wrapper-2 input[type=checkbox] {
+      cursor: default;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC:hover {
+      background-color: #c9cbcd;
+      transition-duration: 0s;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC:checked {
+      background-color: #5a81db;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC:checked::after {
+      background-color: #fff;
+      left: 13px;
+    }
+  
+    .checkbox-wrapper-2 :focus:not(.focus-visible) {
+      outline: 0;
+    }
+  
+    .checkbox-wrapper-2 .ikxBAC:checked:hover {
+      background-color: #5a81db;
+    }
+    .checkbox-wrapper-2{
+      margin-left:30px !important;
+    }
+.download{
+  border-radius:8px;
+}
+  
+</style>
 </style>
 
   {% comment %} {% block sidebar %} {% include 'layout/sidebar.html' %} {% endblock sidebar %} {% endcomment %}
 
 
 
-  <div class="container">
-    
-    
+  <div class="container"> 
     <div id="popupContainer" class="form-popup-back">
         <div class="form-Contain">
             <div class="POP">
@@ -53,9 +128,11 @@
                     <span id="closePopupBtn" class="close-button">Close</span>
                     <h1>Appointment Details</h1>
                   </div>
-                  
-                  <label for="new">New Patient</label>
-                  <input onClick="reload()" type="checkbox" id="new" name="new" >
+                  <div class='form-group checkbox-wrapper-2'>
+                  <label for="new">New Patient  </label>
+                  <input onClick="reload()" class="sc-gJwTLC ikxBAC" type="checkbox" id="new" name="new">
+               
+                  </div>
                     <form class="form_popup" method="post" action="{% url 'appointment_details_form' %}">
                         {% csrf_token %}
                         
@@ -77,18 +154,18 @@
                             <div class="patient_form">
                         <div class="form-group">
                           <label for="name">Name:</label>
-                          <input type="text" id=" patient_form name" name="name" required>
+                          <input type="text" id=" patient_form name" name="name" >
                       </div>
                   
                       
                       <div class="form-group">
                           <label for="phone">Phone:</label>
-                          <input type="text" id="patient_form phone" name="phone" required>
+                          <input type="text" id="patient_form phone" name="phone" >
                       </div>
                   
                       <div class="form-group">
                           <label for="gender">Gender:</label>
-                          <select id="patient_form gender" name="gender" required>
+                          <select id="patient_form gender" name="gender" >
                               <option value="M">Male</option>
                               <option value="F">Female</option>
                           </select>
@@ -96,11 +173,11 @@
                   
                       <div class="form-group">
                           <label for="address">Address:</label>
-                          <input type="text" id=" patient_form address" name="address" required>
+                          <input type="text" id=" patient_form address" name="address" >
                       </div>
                       <div class="form-group">
                         <label for="date_of_birth">Date of Birth:</label>
-                        <input type="date" id="patient_form date_of_birth" name="date_of_birth" required>
+                        <input type="date" id="patient_form date_of_birth" name="date_of_birth" >
                     </div>
                     </div>
                      
@@ -162,7 +239,7 @@
                         <!-- Your form fields go here -->
                         
                         <div style="text-align: center;">
-                            <input type="submit" value="Submit">
+                            <button type="submit" value="Submit">submit</button>
                         </div>
                     </form>
                 </div>
@@ -186,8 +263,9 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Patient Name</th>
           <th>Appointment No</th>
+          <th>Patient Name</th>
+
           <th>Appointment Date</th>
           <th>Phone</th>
           <th>Gender</th>
@@ -196,14 +274,16 @@
           <th>Priority</th>
           <th>Fees</th>
           <th>Status</th>
+          <th>Download</th>
+    
         </tr>
       </thead>
       <tbody>
         
         {% for appointments in appointments %}
           <tr>
-            <td>{{ appointments.patient_name }}</td>
             <td>{{ appointments.appointment_no }}</td>
+            <td>{{ appointments.patient_name }}</td>
             <td>{{ appointments.appointment_date }}</td>
             <td>{{ appointments.phone }}</td>
             <td>{{ appointments.gender }}</td>
@@ -212,21 +292,19 @@
             <td>{{ appointments.priority }}</td>
             <td>{{ appointments.fees }}</td>
             <td>{{ appointments.status }}</td>
+            <td><button value="{{appointments.id}}" class="appointment-button btn download"><i class="fa-solid fa-download"></i></button></td>
+
           </tr>
         {% endfor %}
       </tbody>
     </table>
 
   </div>
-
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static "/css/javscript/index.js" %}"></script>
 <script defer src="{% static "/css/javscript/app.js" %}"></script>
 <script>
 
-
-  const patientSearchInput = document.getElementById('patient_id_input');
-  const patientDropdown = document.getElementById('patient');
   
   patientSearchInput.addEventListener('input', () => {
       const enteredText = patientSearchInput.value.toLowerCase();
@@ -261,14 +339,46 @@
   });
 
 
-  $(document).ready(function(){
-    var url1 = "/patient/form/";
-    var url2 = "/appointment_details_form/";
-   $("#submit").click(function() {
-        $.post("url1", $("form#myform").serialize());
-    $.post("url2", $('formmy#myform').serialize());
-    })
-})
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("data-table");
+  const downloadButtons = document.getElementById("download-buttons");
+
+  // Function to generate a PDF for a specific column
+function generatePDF(columnIndex) {
+      const pdfOptions = {
+          margin: 10,
+          filename: `column_${columnIndex}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf()
+          .from(table)
+          .set(pdfOptions)
+          .outputPdf(pdf => {
+              const blob = new Blob([pdf], { type: 'application/pdf' });
+              const url = URL.createObjectURL(blob);
+
+              const downloadLink = document.createElement('a');
+              downloadLink.href = url;
+              downloadLink.download = `column_${columnIndex}.pdf`;
+              downloadLink.click();
+
+              URL.revokeObjectURL(url);
+          });
+  }
+
+  // Create download buttons for each column
+  for (let i = 0; i < table.rows[0].cells.length; i++) {
+      const button = document.createElement('button');
+      button.textContent = `Download Column ${i + 1}`;
+      button.addEventListener('click', () => generatePDF(i));
+      downloadButtons.appendChild(button);
+  }
+});
 
 
 

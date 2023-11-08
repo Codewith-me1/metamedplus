@@ -129,6 +129,7 @@ urlpatterns = [
     path('deposit/<int:id>',views.deposit,name="deposit"),
     path('payment_in/',views.payment_in,name="payment_in"),
     path('sales_estimate/',views.sales_estimate,name="sales_estimate"),
+    path('download/',views.download,name="download"),
     path('bank_accountlist/<int:id>', views.bank_account_list, name='bank_accountlist'),
     path('bank_account/',views.bank_account,name="bank_account"),
     path('delivery_challan/',views.delivery_challan,name="delivery_challan"),
@@ -176,6 +177,9 @@ urlpatterns = [
     #  path('balance/', views.wallet_balance, name='wallet_balance'),
     path('add-funds/', views.add_funds, name='add_funds'),
     path('make-payment/', views.make_payment, name='make_payment'),
+    path('items/', views.item_list, name='item_list'),
+    path('add_to_cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
+    path('view_cart/', views.view_cart, name='view_cart'),
       
 
 

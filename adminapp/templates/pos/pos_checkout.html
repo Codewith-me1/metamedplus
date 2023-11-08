@@ -1,0 +1,9 @@
+<!-- pos/templates/pos/view_cart.html -->
+<h1>Shopping Cart</h1>
+<ul>
+  {% for price in cart %}
+    <li>${{ price }}</li>
+  {% endfor %}
+</ul>
+<p>Total: ${{ total }}</p>
+<a href="{% url 'item_list' %}">Back to Items</a>

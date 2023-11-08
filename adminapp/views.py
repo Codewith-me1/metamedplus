@@ -169,7 +169,7 @@ def login(request):
             if user.role == 'doctor':
                 return render(request, 'doctor/dashboard.html',context)  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
-                return redirect('add_staff') 
+                return redirect('doctor') 
             elif user.role == 'New':
                 return redirect('doctor')
             elif user.role =='Manooj':
@@ -5660,7 +5660,13 @@ def render_cart_items(cart):
     return cart_html
 
 
+def receipt(request):
+    id = request.GET.get('id')
+    sales = AppointmentDetails.objects.filter(id = id).first()
+   
 
+    return render(request, 'posApp/receipt.html')
+    
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -5714,3 +5720,46 @@ def dashboard(request):
     wallet = Wallet.objects.get(user=request.user)
     context = {'wallet': wallet}
     return render(request, 'wallet/dashboard.html', context)
+
+def download(request):
+    if request.method == 'GET':
+        appointment_id = request.GET.get('id')
+        # Replace this with your logic to fetch data based on the appointment_id
+        # Example: Fetch data from your database
+
+        appointment_det = AppointmentDetails.objects.get(id=appointment_id)
+        hospital_name = header.objects.all()
+        appointment_data = {
+            
+            'name':appointment_det.appointment_date,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+            'phone':appointment_det.phone,
+            'doctor':appointment_det.doctor,
+            'patient':appointment_det.patient_name,
+            'gender':appointment_det.gender,
+            
+
+            'other_data': 'Your fetched data here',
+        }
+
+        return JsonResponse(appointment_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+
+
+def item_list(request):
+    items = Item_Acc.objects.all()
+    return render(request, 'pos/pos_home.html', {'items': items})
+
+def add_to_cart(request, item_id):
+    item = Item_Acc.objects.get(id=item_id)
+    cart = request.session.get('cart', [])
+    cart.append(item.sale_price)
+    request.session['cart'] = cart
+    return redirect('item_list')
+
+def view_cart(request):
+    cart = request.session.get('cart', [])
+    total = sum(cart)
+    return render(request, 'pos/pos_checkout.html', {'cart': cart, 'total': total})

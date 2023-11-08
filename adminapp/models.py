@@ -910,7 +910,7 @@ class Item_Acc(models.Model):
     category = models.CharField(max_length=255)
 
     item_image = models.ImageField(upload_to='item_images/', blank=True, null=True)
-    sale_price = models.DecimalField(max_digits=13, decimal_places=3)
+    sale_price = models.IntegerField(max_length=20)
     disc_on_sale_price = models.DecimalField(max_digits=13, decimal_places=3, default=0)
     unit = models.CharField(max_length=100,blank=True, null=True)
     purchase_price = models.DecimalField(max_digits=13, decimal_places=3)

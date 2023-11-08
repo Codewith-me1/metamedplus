@@ -5,13 +5,15 @@
 }
 
 
-
+.report_header{
+  margin-top:10rem;
+}
 /* button{
   background-color: #069c74   !important;
 } */
 .dropdown-btn{
   font-size: 15px;
-  color:rgb(151, 151, 151) ;
+  color:#6A727A ;
   margin-top: 10px;
 }
 .sidebar li:hover{
@@ -393,7 +395,7 @@ transition: .3s;
 }
 .headline{
 
-  font-size: 3rem !important;
+  font-size: 3rem ;
 }
 .main-header{
   
@@ -417,7 +419,7 @@ transition: .3s;
 
 }
 .container{
-  width: 70% !important ;
+  width: 85% !important ;
   background-color: white;
   padding-bottom: 30rem;
   margin-left: 25rem ;
@@ -541,9 +543,7 @@ body{
 }
 
 .table{
-  -webkit-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75);
-  box-shadow: 0px 36px 96px -31px rgba(0,0,0,0.75); 
+
 
 }
 
