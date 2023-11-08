@@ -20,7 +20,9 @@
   color: white !important ;
 }
 .sidebar{
-  background-color: white  !important;
+  background: rgb(254,247,240);
+background: linear-gradient(0deg, rgba(254,247,240,1) 0%, rgba(241,243,253,1) 52%);
+    
   color :#6A727A !important;
   
 }
@@ -420,11 +422,19 @@ transition: .3s;
 }
 .container{
   width: 85% !important ;
-  background-color: white;
+  background: rgb(254,247,240);
+  background: linear-gradient(0deg, rgba(254,247,240,1) 0%, rgba(241,243,253,1) 52%);
+  border:solid 1px rgb(237, 224, 224);
   padding-bottom: 30rem;
-  margin-left: 25rem ;
+  margin-left: 26rem ;
+  border-radius: 20px;
 }
-
+.table{
+  width:95% !important;
+}
+.main-header{
+  width: 95%;
+}
 .table th{
   background-color: #007bc3  !important;
   color: #ffffff;
@@ -439,7 +449,7 @@ transition: .3s;
 }
 
 .table tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
+  background-color: #d5d4d4f1;
 }
 
 .table tbody tr:last-of-type {

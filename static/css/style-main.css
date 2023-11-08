@@ -3474,7 +3474,7 @@ td.dt-body-right{white-space: nowrap;}
 /*data table*/
 /*data table header fixed*/
 .dataTables_scrollHeadInner, .table{
-   width:100%!important;
+   width:95%;
  }
 
 

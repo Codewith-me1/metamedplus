@@ -35,13 +35,22 @@
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
   
 <style> 
-  @media only screen and(max-width:768px) and (min-width:300px){
 
- 
+  @media only screen and (max-width:768px) and (min-width:300px) {
+    .form_popup{
+      margin-left:5px !important;
+    }
+    h1{
+      font-size:2rem;
+    }
+    form .btn{
+      margin-top:3rem !important;
+      margin-bottom:3rem !important;
+    }
+  
+
 
   }
-
-  
 
     .checkbox-wrapper-2 .ikxBAC {
       appearance: none;
@@ -239,7 +248,7 @@
                         <!-- Your form fields go here -->
                         
                         <div style="text-align: center;">
-                            <button type="submit" value="Submit">submit</button>
+                            <button class="btn" type="submit" value="Submit">submit</button>
                         </div>
                     </form>
                 </div>
@@ -263,18 +272,18 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Appointment No</th>
+          <th class="hide_download">Appointment No</th>
           <th>Patient Name</th>
 
           <th>Appointment Date</th>
           <th>Phone</th>
           <th>Gender</th>
           <th>Doctor</th>
-          <th>Source</th>
-          <th>Priority</th>
-          <th>Fees</th>
-          <th>Status</th>
-          <th>Download</th>
+          <th class="hide_download">Source</th>
+          <th class="hide_download">Priority</th>
+          <th class="hide_download">Fees</th>
+          <th class="hide_download">Status</th>
+          <th class="hide_download">Download</th>
     
         </tr>
       </thead>
@@ -282,17 +291,17 @@
         
         {% for appointments in appointments %}
           <tr>
-            <td>{{ appointments.appointment_no }}</td>
+            <td class="hide_download">{{ appointments.appointment_no }}</td>
             <td>{{ appointments.patient_name }}</td>
             <td>{{ appointments.appointment_date }}</td>
             <td>{{ appointments.phone }}</td>
             <td>{{ appointments.gender }}</td>
             <td>{{ appointments.doctor }}</td>
-            <td>{{ appointments.source }}</td>
-            <td>{{ appointments.priority }}</td>
-            <td>{{ appointments.fees }}</td>
-            <td>{{ appointments.status }}</td>
-            <td><button value="{{appointments.id}}" class="appointment-button btn download"><i class="fa-solid fa-download"></i></button></td>
+            <td class="hide_download">{{ appointments.source }}</td>
+            <td class="hide_download">{{ appointments.priority }}</td>
+            <td class="hide_download">{{ appointments.fees }}</td>
+            <td class="hide_download">{{ appointments.status }}</td>
+            <td><button value="{{appointments.id}}" class="appointment-button btn hide_download download"><i class="fa-solid fa-download"></i></button></td>
 
           </tr>
         {% endfor %}

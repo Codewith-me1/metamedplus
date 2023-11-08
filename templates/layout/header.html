@@ -39,14 +39,20 @@
     <style>
         /* Add CSS for the fixed navbar */
       
-
+body{
+  {% comment %} background-color:#f1f3fd !important; {% endcomment %}
+  background: rgb(254,247,240);
+  background: linear-gradient(0deg, rgba(254,247,240,1) 0%, rgba(241,243,253,1) 52%);
+  
+}
         .navbar {
             overflow: hidden;
-            background-color: #333; /* Set your preferred background color */
+            background-color:#f1f3fd !important;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
+
             z-index: 2000;
         }
         .POP_cal{
@@ -214,12 +220,9 @@
             padding-top:3rem;
           }
           .container{
-            margin-top:5rem;
+            margin-top:10rem;
           }
-          .navbar{
-            border:solid #d2d1d1;
-            border-width:0px 0px 1px 0px;
-          }
+    
           .ad{
             padding:5rem;
           }
