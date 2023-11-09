@@ -14,6 +14,9 @@
 
     <div class="container">
         <style>
+            .left-sidebar{
+                display:flex;
+            }
             /* Navbar Styles */
             .container{
                 background-color: #f6f4fb !important;
@@ -70,11 +73,12 @@
            
             .patient-overview table th{
                 padding:1.5rem;
-                
+                font-size: 14px;
+                color:#7f7d7d;
             }
             .patient-overview{
-                border:solid black;
-                border-width:1px 0px 1px 0px !important;
+                border:solid #dfdbdb;
+                border-width:1px !important;
             }
     
             .ipd-navbar-brand:hover {
@@ -125,6 +129,32 @@
             .clicked {
                 font-weight: bold;
             }
+            .patient_ipd h1{
+                margin:10px;
+                color: #383869 !important;
+                padding:3px;
+                text-align:left;
+            }
+            .patient_ipd p{
+                margin-left:11px !important;
+                padding:4px !important;
+                
+            }
+            .patient_ipd{
+                border: solid #dfdbdb;
+                border-width:0px 0px 1px 0px; 
+
+            }
+            td{
+                padding-left:20rem;
+                color:#857f7f;
+            }
+            .left_ipd{
+                width:50%;
+            }
+            .right_ipd{
+                width:40%;
+            }
         </style>
     </head>
     <body>
@@ -144,6 +174,120 @@
                 </ul>
             </div>
         </div>
+
+
+
+        <section id="overview"class="overview toggeable ">
+            {% for ipd in ipd %}
+            
+            
+            
+        <div class="left-sidebar">
+            <div class="left_ipd">
+            <div class="patient-overview ipd-left">
+                <div class="patient_ipd">
+                    <h1>{{ipd.patient}} </h1>
+
+                    <p> {{ipd.symptoms_title}} </p>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gender</th>
+                            <td>{{ipd.patient.gender}}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>    
+                            <td>{{ipd.age}}</td>
+                        </tr>
+                        <tr>
+                            <th>Guardian Name</th>
+                            <td>{{ipd.patient.guardian_name}} </td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{ipd.patient.phone}}</td>
+                        </tr>
+                        <tr>
+                            <th>Height </th>
+                            <td>{{ipd.height}}</td>
+                        </tr>
+                        <tr>
+                            <th>weight</th>
+                            <td>{{ipd.weight}}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{ipd.temperature}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Case ID </th>
+                            <td>{{ipd.id}}</td>
+                        </tr>
+                        <tr>
+                            <th>IPD No </th>    
+                            <td>{{ipd.id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Admission Date</th>
+                            <td>{{ipd.admission_date}}</td>
+                        </tr>
+                        <tr>
+                            <th>Bed</th>
+                            <td>{{ipd.bed_number}}</td>
+                        </tr>
+                    </thead>
+                    </table>
+                  
+            </div>
+            </div>
+            <div class="right_ipd">
+            <div class="fourth ipd-left">  
+                <canvas id="creditlimit" style="width:100%;max-width:600px"></canvas>
+            </div>
+            <div class="ipd-left">
+                <canvas id="radio_billing" style="width:100%;max-width:600px"></canvas>
+                <h2>Finding</h2>
+                <li> 
+                    <ul> {{ipd.findings}}</ul>
+                </li>
+            </div>
+
+            <div class="doctor ipd-left">
+                <h1>
+                    Consultant doctor
+                </h1>
+                <h3>
+                    {{ipd.consultant_doctor}}
+                </h3>
+        
+            </div>
+            {% endfor %}
+            <div class="nursenote ipd-left">
+                <h1>
+                    Nurse Note
+                </h1>
+                {% for nurse in nurse %}
+                <div class="note">
+                    <h1>{{nurse.nurse}}</h1>
+                    
+                
+                      
+                    
+                    
+                  
+                    <p>{{nurse.comment}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+        
+            
+        </div>
+        </section>
+
+
 
         <section id="nurse"class="nurse toggeable " >
             <div class="main-header">
@@ -166,6 +310,10 @@
                     <span id="closePopupBtn" class="close-button">Close</span>
                     <h1>Add Nurse Note</h1>
                   </div>
+                  
+               
+                   
+          
                   {% for ipd in ipd %}
                   
                   
@@ -364,118 +512,7 @@
               
 </section>
        
-<section id="overview"class="overview toggeable ">
-    {% for ipd in ipd %}
-    <h1> {{ipd.patient}}</h1>
-   
-    
-    
-<div class="left-sidebar">
-    <div class="patient-overview ipd-left">
-        <table>
-            <thead>
-                <tr>
-                    <th>Gender</th>
-                    <td>{{ipd.patient.gender}}</td>
-                </tr>
-                <tr>
-                    <th>Age</th>    
-                    <td>{{ipd.age}}</td>
-                </tr>
-                <tr>
-                    <th>Guardian Name</th>
-                    <td>{{ipd.patient.guardian_name}}</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>{{ipd.patient.phone}}</td>
-                </tr>
-                <tr>
-                    <th>Height </th>
-                    <td>{{ipd.height}}</td>
-                </tr>
-                <tr>
-                    <th>weight</th>
-                    <td>{{ipd.weight}}</td>
-                </tr>
-                <tr>
-                    <th>Phone</th>
-                    <td>{{ipd.temperature}}</td>
-                </tr>
-            </thead>
-            </table>
-            
-    </div>
 
-    <div class="ipd ipd-left">
-        <table>
-            <thead>
-                <tr>
-                    <th>Case ID </th>
-                    <td>{{ipd.id}}</td>
-                </tr>
-                <tr>
-                    <th>IPD No </th>    
-                    <td>{{ipd.id}}</td>
-                </tr>
-                <tr>
-                    <th>Admission Date</th>
-                    <td>{{ipd.admission_date}}</td>
-                </tr>
-                <tr>
-                    <th>Bed</th>
-                    <td>{{ipd.bed_number}}</td>
-                </tr>
-            </thead>
-            </table>
-
-            <canvas id="creditlimit" style="width:100%;max-width:600px"></canvas>
-    </div>
-    <div class="third ipd-left">
-        
-        <h2>Known Allergies</h2>
-        <li> 
-            <ul> {{ipd.patient.any_known}} </ul>
-        </li>
-    </div>
-    <div class="fourth ipd-left">
-        
-        <h2>Finding</h2>
-        <li> 
-            <ul> {{ipd.findings}}</ul>
-        </li>
-    </div>
-    <div class="doctor ipd-left">
-        <h1>
-            Consultant doctor
-        </h1>
-        <h3>
-            {{ipd.consultant_doctor}}
-        </h3>
-
-    </div>
-    {% endfor %}
-    <div class="nursenote ipd-left">
-        <h1>
-            Nurse Note
-        </h1>
-        {% for nurse in nurse %}
-        <div class="note">
-            <h1>{{nurse.nurse}}</h1>
-            
-        
-              
-            
-            
-          
-            <p>{{nurse.comment}}</p>
-        </div>
-        {% endfor %}
-    </div>
-
-    
-</div>
-</section>
 
 
 <section id="medicine"class="medicine toggeable " >
@@ -1023,10 +1060,10 @@ function toggle(){
     });
     var xValues = ['credit limit'];
     var yValues = [2000];
+    
     var barColors = [
-    'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
+    '#605bff',
+      
     ];
   
     new Chart("creditlimit", {
@@ -1047,6 +1084,26 @@ function toggle(){
     });
   
   
+    new Chart("radio_billing", {
+        type: "bar",
+        data: {
+          labels: "amount",
+          datasets: [{
+            backgroundColor: barColors,
+            data: 10,
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            indexAxis:'y',
+            text: "Credit Limit"
+          }
+        }
+
+      });
+    
+    
 
   
 

@@ -1,4 +1,7 @@
 
+
+
+
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 
@@ -8,11 +11,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tax Category</title>
-
-
-
-    <form method="post" action="{% url "tax_cat" %}">
-        <h1>Create Model Instance</h1>
+{% load static %}
+<div class="container">
+    
+    
+    
+  
+  <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                   
+                  </div>
+                    <form class="form_popup" method="post" action="{% url 'charge_type' %}">
+                        <h1>Tax Category & Percentage</h1>
         {% csrf_token %}
        
         <div class="form-group">
@@ -30,10 +44,54 @@
         <input type="text" id="unit" name="unit" maxlength="100" /><br>
         </div>  
 
-        <button type="submit">Create</button>
-    </form>
-    {% for tax in tax %}
-    <p> {{tax.tax_category}} </p>
-    {% endfor %}
-</body>
-</html>
+        <button class="btn" type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="main-header">
+  <h1 class="headline">Tax Category & Percentage</h1>
+  <div class="side-btns">
+
+ 
+  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Tax Category</a>
+
+</div>
+
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tax Category</th>
+          <th>Percentage</th>
+          <th>Unit</th>
+  
+        </tr>
+      </thead>
+      <tbody>
+ 
+        {% for tax in tax %}
+          <tr>
+            <td>{{ tax.tax_category }}</td>
+            <td>{{ tax.percentage }}</td>
+            <td>{{ tax.unit }}</td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+
+  <script src="{% static "/css/javscript/index.js" %}"></script>
+
+
+  </div>
+
+
+

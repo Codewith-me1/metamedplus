@@ -16,6 +16,9 @@
     select {
         display: block;
     }
+button a{
+    color:white !important;
+}
 
     
 @media only screen and (max-width:768px) and (min-width:300px) {
@@ -26,6 +29,7 @@
         width:100% !important;
         margin-top:50rem;
     }
+}
     
 </style>
 <div class="container"> 
@@ -210,6 +214,7 @@
         <th>Bed Group</th>
         <th>Systoms</th>
         <th>Bed Number</th>
+        <th class="hide_download">Download</th>
        
        
       </tr>
@@ -226,6 +231,7 @@
           <td>{{ ipd.bed_group }}</td>
           <td>{{ ipd.symptoms_type }}</td>  
           <td>{{ ipd.bed_number }}</td>  
+          <td><button value="{{ipd.id}}" class="appointment-button btn hide_download download"><a href="/download_ipd/{{ipd.id}}"><i class="fa-solid fa-download"></i></a></button></td>
           
         
         
@@ -241,15 +247,31 @@
 
 
 <script src="{% static "/css/javscript/index.js" %}"></script>
-<script>
-    {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
-const popupContainer = document.getElementById("popupContainer");
-const closePopupBtn = document.getElementById("closePopupBtn");
+{% comment %} <script>
+    $(document).ready(function () {
+        // Listen for changes in the vehicle_model select field
+        $('.download').click(function () {
+            var id = $(this).val();
+            // Make an AJAX request to fetch the driver name for the selected vehicle
+            $.ajax({
+                type: 'GET',
+                url: '/download_ipd', // Replace with your actual URL
+                data: { 'id': id },
+                success: function (json_response) {
+                    // Update the driver_name input field with the retrieved value
+                    var pdfUrl = json_response.pdf_url; 
 
-function change(){
-  popupContainer.style.display = "block";
-}
-closePopupBtn.addEventListener("click", function() {
-    popupContainer.style.display = "none";
-}); {% endcomment %}
-   </script> 
+                    // Trigger download
+                    var link = document.createElement('a');
+                    link.href = pdfUrl;
+                    link.download = 'invoice_'{json_response.context.id}'pdf';
+                    console.log(link.download)
+                    link.click();
+                },
+                error: function () {
+                    // Handle errors if any
+                }
+            });
+        });
+    });
+   </script>  {% endcomment %}

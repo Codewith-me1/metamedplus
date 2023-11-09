@@ -1209,7 +1209,7 @@ def add_charge(request):
         charge_type = request.POST.get('charge_type', '')
         charge_category = request.POST.get('charge_category', '')
         unit_type = request.POST.get('unit_type', '')
-        charge_name = request.POST.get('charge_name', '')
+        charge_name = request.POST.get('charge_name')
         tax_category = request.POST.get('tax_category', '')
         tax_percentage = request.POST.get('tax_percentage', 0)
         standard_charge = request.POST.get('standard_charge', 0)
@@ -2203,7 +2203,7 @@ def radiology(request):
         pathology_test.save()
         return redirect('radiology')
     radio = Radiology.objects.all()
-    doc =  AddStaff.objects.filter(designation='doctor')
+    doc =  AddStaff.objects.filter(role='Doctor')
     patient= Patient.objects.all()
     context = {
         'radio':radio,
@@ -2355,7 +2355,7 @@ def opd(request):
     type = Symtopms.objects.all()
     
     patient =  Patient.objects.all()
-    doctors = AddStaff.objects.filter(designation="doctor")
+    doctors = AddStaff.objects.filter(role="Doctor")
     opd = OpdPatient.objects.all()
     charge = Charge.objects.all()
     category = Path_Category.objects.all()
@@ -2540,6 +2540,13 @@ def ipd_dashboard(request,ipd_id):
     operation = Operation.objects.all()
     payment = Ipd_Payments.objects.all()
 
+    radiology_amount = Radiology.objects.get(patient=ipd_id)
+    if radiology_amount:
+        radio = radiology_amount
+    else:
+        radio = 0
+
+
     context ={
         'nurse':nurse,
         'staff':staff,
@@ -2548,7 +2555,8 @@ def ipd_dashboard(request,ipd_id):
         'medicine':medicine,
         'consultant':consultant,
         'operation':operation,
-        'payment':payment
+        'payment':payment,
+        'radio':radio,
     }
     return render(request,'ipd/pat_dash.html',context)
 
@@ -5835,6 +5843,34 @@ def download(request):
     
 
 
+
+def download_IPD(request):
+    if request.method == 'GET':
+        appointment_id = request.GET.get('id')
+        # Replace this with your logic to fetch data based on the appointment_id
+        # Example: Fetch data from your database
+
+        ipd_patient = IpdPatient.objects.get(id=appointment_id)
+        hospital_name = header.objects.all()
+        appointment_data = {
+            
+            'name':ipd_patient.patient.name,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+            'phone':ipd_patient.patient.phone,
+            'doctor':ipd_patient.consultant_doctor,
+            'bed':ipd_patient.bed_number,
+            'gender':ipd_patient.patient.gender,
+            
+
+            'other_data': 'Your fetched data here',
+        }
+
+        return JsonResponse(appointment_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+
+
 def item_list(request):
     items = Item_Acc.objects.all()
     return render(request, 'pos/pos_home.html', {'items': items})
@@ -5868,6 +5904,77 @@ def create_liablity(request):
     return render(request, "accounts/create_liablity.html",context)
 
 
+
+
+def IPD_pdf(request,id):
+
+    
+    
+    ipd_patient = IpdPatient.objects.get(id=id)
+    hospital_name = header.objects.all()
+   
+
+    context = {
+            'id':ipd_patient.id,
+            'name':ipd_patient.patient.name,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+            'phone':ipd_patient.patient.phone,
+            'doctor':ipd_patient.consultant_doctor,
+            'bed':ipd_patient.bed_number,
+            'gender':ipd_patient.patient.gender,
+        }
+    template = get_template('templat/opd_pdf.html')
+    html = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="opd.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    
+    return response
+
+
+
+
+
+def OPD_pdf(request,id):
+    ipd_patient = OpdPatient.objects.get(id=id)
+    hospital_name = header.objects.all()
+   
+
+    context = {
+            'id':ipd_patient.id,
+            'name':ipd_patient.patient.name,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+            'phone':ipd_patient.patient.phone,
+            'doctor':ipd_patient.consultant_doctor,
+            
+            'gender':ipd_patient.patient.gender,
+        }
+    template = get_template('templat/opd_pdf.html')
+    html = template.render(context)
+
+    # Create a response object with PDF content type
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="opd.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    
+    return response
+
+
+  
 
 def pos_pdf(request):
     if request.method == 'POST':
@@ -5934,3 +6041,4 @@ def pos_pdf(request):
     if pisa_status.err:
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
+

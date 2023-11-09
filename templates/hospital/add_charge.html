@@ -26,7 +26,7 @@
                     <span id="closePopupBtn" class="close-button">Close</span>
                     <h1>Add Charge Details</h1>
                   </div>
-                    <form class="form_popup" method="post" action="{% url 'charge_type' %}">
+                    <form class="form_popup" method="post" action="{% url 'add_charge' %}">
                         {% csrf_token %}
                         
                         <div class="form-group">
@@ -127,7 +127,7 @@
         {% for charge in charge %}
           <tr>
             <td>{{ charge.charge_type }}</td>
-            <td>{{ charge.name }}</td>
+            <td>{{ charge.charge_name }}</td>
             <td>{{ charge.description }}</td>
             
           </tr>

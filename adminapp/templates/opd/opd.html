@@ -30,6 +30,10 @@
     }
     
 }
+
+button a{
+    color:white !important;
+}
 </style>
 <div class="container"> 
 
@@ -253,6 +257,8 @@
         <th>Symptoms Title</th>
         <th>Systoms</th>
         <th>Charge Category</th>
+        <th class="hide_download">Download</th>
+
        
        
       </tr>
@@ -267,7 +273,9 @@
 
           <td>{{ opd.symptoms_title }}</td>
           <td>{{ opd.symptoms_type }}</td>  
-          <td>{{ opd.charge_category }}</td>  
+          <td>{{ opd.charge_category }}</td>
+          <td><button value="{{ipd.id}}" class="appointment-button btn hide_download download"><a href="/download_opd/{{opd.id}}"><i class="fa-solid fa-download"></i></a></button></td>
+
           
         
         
