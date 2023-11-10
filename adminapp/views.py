@@ -2540,12 +2540,13 @@ def ipd_dashboard(request,ipd_id):
     operation = Operation.objects.all()
     payment = Ipd_Payments.objects.all()
 
-    radiology_amount = Radiology.objects.get(patient=ipd_id)
-    if radiology_amount:
-        radio = radiology_amount
-    else:
-        radio = 0
-
+    
+    try:
+        radiology_amount = Radiology.objects.get(patient=ipd_id).amount
+        
+    except Radiology.DoesNotExist:
+        radiology_amount = 0
+     
 
     context ={
         'nurse':nurse,
@@ -2556,7 +2557,7 @@ def ipd_dashboard(request,ipd_id):
         'consultant':consultant,
         'operation':operation,
         'payment':payment,
-        'radio':radio,
+        'radio':radiology_amount,
     }
     return render(request,'ipd/pat_dash.html',context)
 
