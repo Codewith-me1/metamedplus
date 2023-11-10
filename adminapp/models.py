@@ -288,7 +288,7 @@ class Donor_det(models.Model):
         verbose_name_plural = 'Donors'
 
 
-
+    
 class BloodDonation_component(models.Model):
     patient =  models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     reference_name = models.CharField(max_length=255)

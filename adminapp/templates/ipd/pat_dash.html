@@ -110,7 +110,7 @@
             .ipd-nav-link:hover {
                 text-decoration: none;
                 color: #ff6600;
-                background:#1cb88e ;
+                background:#605BFF ;
                 border: #f39c12  solid;
                 border-width: 0px 0px 5px 0px;
                 border-radius:10px 10px 0px 0px;
@@ -153,7 +153,33 @@
                 width:50%;
             }
             .right_ipd{
-                width:40%;
+                width:45%;
+            }
+            table{
+                margin-top:1rem;
+            }
+            @media only screen and (max-width:768px) and (min-width:300px) {
+                .left-sidebar{
+                    display:block !important;
+                    width:90%;
+                }
+                .left_ipd{
+                    width:100%;
+                }
+                .ipd-left{
+                    width:100%;
+                    margin:10px !important;
+                    padding:1rem !important;
+                }
+                td{
+                    padding-left:10rem;
+                }
+                .right_ipd{
+                    width:100%;
+                }
+                #radio_billing{
+                    height:100%% !important;
+                }
             }
         </style>
     </head>
@@ -167,7 +193,7 @@
              
                     <li class="ipd-nav-item"><a href="#doctor" class="ipd-nav-link">Doctor Note</a></li>
                     <li class="ipd-nav-item"><a href="#medicine" class="ipd-nav-link">Medication</a></li>
-                    <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consul  tant</a></li>
+                    <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consultant</a></li>
                     <li class="ipd-nav-item"><a href="#operation" class="ipd-nav-link">Operation</a></li>
                     <li class="ipd-nav-item"><a href="#payment" class="ipd-nav-link">Payment</a></li>
                     <!-- Add more menu items as needed -->
@@ -237,9 +263,14 @@
                             <th>Bed</th>
                             <td>{{ipd.bed_number}}</td>
                         </tr>
+
+                        <tr>
+                            <th>Consultant Doctor</th>
+                            <td>{{ipd.consultant_doctor}}</td>
+                        </tr>
                     </thead>
                     </table>
-                  
+                    
             </div>
             </div>
             <div class="right_ipd">
@@ -248,19 +279,14 @@
             </div>
             <div class="ipd-left">
                 <canvas id="radio_billing" style="width:100%;max-width:600px"></canvas>
+                
+            </div>
+
+            <div class="doctor ipd-left">
                 <h2>Finding</h2>
                 <li> 
                     <ul> {{ipd.findings}}</ul>
                 </li>
-            </div>
-
-            <div class="doctor ipd-left">
-                <h1>
-                    Consultant doctor
-                </h1>
-                <h3>
-                    {{ipd.consultant_doctor}}
-                </h3>
         
             </div>
             {% endfor %}
@@ -1017,21 +1043,8 @@ function toggle(){
 
 }
 
-    {% comment %} function toggleSection(sectionId) {
-        // Hide all sections with class "toggleable"
-        var sections = document.querySelectorAll('.toggeable');
-        sections.forEach(function(section) {
-            section.classList.add('off');
-        });
-
-        // Show the selected section
-        var selectedSection = document.querySelector(sectionId);
-        if (selectedSection) {
-            selectedSection.classList.remove('off');
-        }
-    } {% endcomment %}
-
-    // Add an event listener to each navigation link
+    
+   
     function toggleSection(sectionId) {
         // Hide all sections with class "toggleable"
         var sections = document.querySelectorAll('.toggeable');
@@ -1084,28 +1097,40 @@ function toggle(){
     });
   
   
-    new Chart("radio_billing", {
-        type: "bar",
-        data: {
-          labels: "amount",
-          datasets: [{
-            backgroundColor: barColors,
-            data: 10,
-          }]
-        },
-        options: {
-          title: {
-            display: true,
-            indexAxis:'y',
-            text: "Credit Limit"
-          }
-        }
 
-      });
-    
+        const data = {
+            labels: ['Radiology', 'Pathology', 'Blood', 'Ambulance'],
+            datasets: [{
+              label: 'Billing',
+             
+              data: [10, 20, 15, 25],
+              backgroundColor: ['#dcdffe', '#ff55c4', '#7a5cff', '#5dd871', 'gold', '#ff7d5c'],
+              
+
+            }]
+          };
+      
+          // Chart configuration
+          const config = {
+            type: 'bar',
+            data: data,
+            options: {
+              indexAxis: 'y',
+              title: {
+                display: true,
+                text: "Billing"
+              }
+            }
+          };
+      
+          // Get the canvas element
+          const ctx = document.getElementById('radio_billing').getContext('2d');
+      
+          // Create the chart using Chart.js
+          const myChart = new Chart(ctx, config);
+
     
 
-  
 
 
 </script>
