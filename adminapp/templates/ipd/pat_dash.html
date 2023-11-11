@@ -188,9 +188,8 @@
             <div class="ipd-container">
                 
                 <ul class="ipd-navbar-nav">
-                    <li class="ipd-nav-item {% if request.resolver_match.url_name == '#nurse' %}clicked{% endif %}"><a href="#nurse" class="ipd-nav-link">Home</a></li>
-                    <li class="ipd-nav-item"><a href="#overview" class="ipd-nav-link">overview</a></li>
-             
+                    <li class="ipd-nav-item"><a href="#overview" class="ipd-nav-link">Profile</a></li>
+                    <li class="ipd-nav-item {% if request.resolver_match.url_name == '#nurse' %}clicked{% endif %}"><a href="#nurse" class="ipd-nav-link">Nurse Note</a></li>
                     <li class="ipd-nav-item"><a href="#doctor" class="ipd-nav-link">Doctor Note</a></li>
                     <li class="ipd-nav-item"><a href="#medicine" class="ipd-nav-link">Medication</a></li>
                     <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consultant</a></li>
@@ -279,6 +278,7 @@
             </div>
             <div class="ipd-left">
                 <canvas id="radio_billing" style="width:100%;max-width:600px"></canvas>
+                {% comment %} <div id="radio" style="width: 50%; height: 400px;"></div> {% endcomment %}
                 
             </div>
 
@@ -1095,6 +1095,38 @@ function toggle(){
         }
       }
     });
+    
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sample data for the chart
+        var data = {
+            categories:['Radiology', 'Pathology', 'Blood', 'Ambulance'],
+            series: [{
+                name: 'Series 1',
+                data: [5, 10, 15, 20, 25]
+            }]
+        };
+
+        // Create the chart
+        Highcharts.chart('radio', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Sample Chart'
+            },
+            xAxis: {
+                categories: data.categories
+            },
+            yAxis: {
+                title: {
+                    text: 'Values'
+                }
+            },
+            series: data.series
+        });
+    });
   
   
 
@@ -1131,7 +1163,7 @@ function toggle(){
 
     
 
-
+        
 
 </script>
 </div>

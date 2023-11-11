@@ -35,11 +35,38 @@
             font-weight: bold;
             margin-top: 20px;
         }
+
+
+        #table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          #table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          #table tr:nth-child(even){background-color: #f2f2f2;}
+          th{
+              border: 1px solid #ddd;
+              padding:0.7rem 0.7rem 0.7rem 0.7rem !important;
+          }
+          #table th {
+         
+            background-color: #605BFF;
+            color: white;
+          }
+          thead{
+              background-color: #605BFF;
+              
+          }
     </style>
 </head>
 <body>
     <h1>Invoice</h1>
-    <table>
+    <table id="table">
         <tr>
             <td><strong>Invoice Number:</strong></td>
             <td>{{ invoice_number }}</td>
@@ -63,7 +90,7 @@
     </table>
     
     <h2>Items</h2>
-    <table>
+    <table id="table">
         <thead>
             <tr>
                 <th>Item Name</th>
