@@ -42,6 +42,7 @@ class Patient(models.Model):
     id = models.AutoField(primary_key=True) 
     name = models.CharField(max_length=100)
     date_of_birth = models.DateField()
+    Age = models.IntegerField(max_length=10,default=0)
     phone = models.CharField(max_length=15)
     gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
     address = models.CharField(max_length=200)
@@ -231,7 +232,7 @@ class Med_Details(models.Model):
 
     
 class Purchase(models.Model):
-    category = models.CharField(max_length=255)
+    category = models.ForeignKey(Med_Category, on_delete=models.CASCADE,blank=True,null=True) 
     name = models.CharField(max_length=255)
     batch_no = models.CharField(max_length=50)
     expiry_date = models.DateField()

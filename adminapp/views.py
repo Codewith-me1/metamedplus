@@ -10,6 +10,9 @@ from asgiref.sync import async_to_sync
 from django.core.mail import EmailMessage, get_connection
 import stripe
 from django.conf import settings
+
+from django.forms.models import model_to_dict
+
 from .models import Liablity
 from .models import Wallet
 from .models import Wallet_Transactions
@@ -980,12 +983,19 @@ def submit_medicine(request):
         )
         medicine.save()
         med = Medicine.objects.all()
+        category = Med_Category.objects.all()
         context = {
             "med":med,
+            'category':category,
         }
         return render(request,'pharmacy/medicine/add_med.html',context)  # Redirect to a success page
-
-    return render(request, 'pharmacy/medicine/add_med.html')
+    med = Medicine.objects.all()
+    category = Med_Category.objects.all()
+    context = {
+            "med":med,
+            'category':category,
+        }
+    return render(request, 'pharmacy/medicine/add_med.html',context)
 
 
 def supplier_form(request):
@@ -2434,8 +2444,8 @@ def purchase_med(request):
         payment_amount = (request.POST.get('payment_amount',0))
         payment_mode = request.POST.get('payment_mode')
 
-        # Create a new Medicine object and save it to the database
-        medicine = purchase(
+        category = Med_Category.objects.get(id=category)
+        medicine = Purchase(
             category=category,
             name=name,
             payment_mode = payment_mode,
@@ -5874,7 +5884,15 @@ def download_IPD(request):
 
 def item_list(request):
     items = Item_Acc.objects.all()
-    return render(request, 'pos/pos_home.html', {'items': items})
+    medicine = Purchase.objects.all()
+    category = Med_Category.objects.all()
+
+    context={
+        'items':items,
+        'medicine':medicine,
+        'category':category,
+    }
+    return render(request, 'pos/pos_home.html',context)
 
 def add_to_cart(request, item_id):
     item = Item_Acc.objects.get(id=item_id)
@@ -6043,3 +6061,144 @@ def pos_pdf(request):
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
 
+
+
+
+
+def Medicine_Details(request):
+    selected_value = request.GET.get('id')
+    
+    
+    
+    try:
+        items = Purchase.objects.filter(category=selected_value)
+        
+        items_list = list(items.values())
+        # for item in items:
+        #     item_data = item['name']
+        #     item_list.append(item_data)
+
+
+        data = {
+            'success': True,
+            'med':items_list,
+       
+            
+        }
+    except Purchase.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+
+
+
+def Med_det(request):
+    selected_value = request.GET.get('id')
+    
+
+    
+    
+    try:
+        item = Purchase.objects.get(id=selected_value)
+        
+        data = {
+            'success': True,
+            'expiry':item.expiry_date,
+            'tax': item.tax_percentage,
+            'price':item.sale_price,
+            'batch_no':item.batch_no,
+            'quantity':item.quantity,
+
+
+
+       
+            
+        }
+    except Purchase.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+
+
+
+
+def search_OPDBala12nce(request):
+    if request.method == 'GET':
+        doctor = request.GET.get('name', '')
+        patient  = request.GET.get('patient', '')
+        systoms  = request.GET.get('systoms', '')
+        from_age = request.GET.get('from_age','')
+        to_age = request.GET.get('to_age','')
+        opd = OpdPatient.objects.all()
+        patient = Patient.objects.all()
+        
+
+        if doctor:
+            results = opd.filter(consultant_doctor=doctor)
+            print(results)
+            
+        # elif patient:
+        #     patients = get_object_or_404(Patient,name=patient)
+        #     results = opd.filter(patient=patients)
+        elif systoms:
+            results = opd.filter(symptoms_type=systoms)
+
+        elif from_age:
+           
+            results = opd.filter(patient__Age__lt=from_age)
+        else:
+            results = None
+
+        return render(request, 'reports/opd_balance.html', {'results': results, 'doctor':opd,'patient':patient })
+
+    return render(request, 'reports/opd_balance.html')
+
+
+
+def search_OPDBalance(request):
+    if request.method == 'GET':
+        
+        from_age = request.GET.get('from_age')
+        to_age = request.GET.get('to_age')
+        gender = request.GET.get('gender')
+        # discharged = request.GET.get('discharged')
+
+
+        if not from_age:
+            from_age = 1 
+
+        if not to_age:
+            to_age = 150  
+
+      
+     
+        opd_results = OpdPatient.objects.filter(
+            
+            patient__Age__gt=from_age,
+            
+            patient__Age__lt=to_age,
+            patient__gender=gender,
+            # discharged_field=discharged
+           
+        )
+
+        
+
+      
+        print(opd_results)
+        print(to_age)
+       
+        context = {
+            'results': opd_results,
+           
+            }
+
+        return render(request, 'reports/opd_balance.html', context )
+
+    # Handle other HTTP methods if needed
+    return render(request, 'reports/opd_balance.html')

@@ -77,9 +77,12 @@ form button{
         <table class="table">
             <thead>
               <tr>
-                <th>Item </th>
-                <th>Quantity</th>
+                <th>Medicine Category</th>
+                <th>Medicine Name</th>
                 
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Batch No</th>
                 <th>Price</th>
                 <th>Total</th>
            
@@ -108,6 +111,7 @@ form button{
 
           <div class="pos_text">
             <h1> Tax Exclusive(%)</h1>
+        
             <input type="text" name="tax" id="tax" >
        
         </div>
@@ -140,6 +144,7 @@ form button{
 
 
     
+
 </div>
 
 
@@ -161,13 +166,27 @@ form button{
                 <td>
                     <select class="form-control" id="item_${itemCounter}" name="item_${itemCounter}">
                         <option value="item">Select An Item</option>
-                        {% for item in items %}
-                            <option value="{{item.item_name}}_{{item.id}}" >{{item.item_name}}</option>
-                            <!-- Add more category options as needed -->
+                        {% for category in category %}
+                            <option value="{{category.medicine_category}}_{{category.id}}" >{{category.medicine_category}}</option>
+                            
                         {% endfor %}
                     </select>
                 </td>
+
+
+                <td>
+                  <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}">
+                      <option value="item">Select An Item</option>
+                     
+                  </select>
+              </td>
+
                 <td><input type="number" value="1" class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+
+                <td><input type="number" value="" class="form-control" id="batch_${itemCounter}" name="batch_${itemCounter}" required></td>
+                
+
+                <td><input type="text" readonly value="" class="form-control" id="expiry_${itemCounter}" name="expiry_${itemCounter}" required></td>
                
                 <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
              
@@ -195,37 +214,93 @@ form button{
         $('#addItemButton').on('click', function () {
             createNewItemRow();
         });
+        
+
+        $(document).on('change', '[id^="med_"]', function () {
+                
+          var id = $(this).val();                  
+          console.log(id)
+         
+  
+            $.ajax({
+                url: '/medicine-det',
+                method: 'GET',
+                data: { id: id },
+                success: function (data) {
+                 
+                  
+
+                  
+                    
+                  console.log(data)
+                    
+                  var expiry = document.querySelectorAll('select[id^="med_"]');
+                  console.log(expiry.length+1)
+                  for (let k = 0; k < expiry.length; k++) {
+                    console.log(k)
+                    
+                    
+                    var rowNumber =i 
+                    $('#expiry_'+i).val(data.expiry);
+                    $('#tax_' + rowNumber).val(data.tax);
+                    $('#unit_' + rowNumber).val(data.quantity);
+                    $('#price_' + rowNumber).val(data.price);
+                    $('#batch_' + rowNumber).val(data.batch_no);
+                      
+                   
+
+                  }     
+                  
+                 
+                  
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
 
         $(document).ready(function () {
-            // Event delegation for select elements with IDs starting with 'item_'
-            $(document).on('change', '[id^="item_"]', function () {
-                var selectedValue = $(this).val();
-                var parts = selectedValue.split('_');
-                var selectId = $(this).attr('id');
-                var id = parts[1];
-                
-                $.ajax({
-                    url: '/item_details',
-                    method: 'GET',
-                    data: { id: id },
-                    success: function (data) {
-                        console.log(data);
-                        console.log(selectId);
-                        
-                        var rowNumber = selectId.split('_')[1];
+          // Event delegation for select elements with IDs starting with 'item_'
+          $(document).on('change', '[id^="item_"]', function () {
+              var selectedValue = $(this).val();
+              var parts = selectedValue.split('_');
+              var id = parts[1];
+      
+              $.ajax({
+                  url: '/medicine_details',
+                  method: 'GET',
+                  data: { id: id },
+                  success: function (data) {
+                      console.log(data.med);
+      
+                      // Clear previous options from all select elements with IDs starting with 'med_'
+                      $('select[id^="med_"]').empty();
+      
+                      // Iterate over each select element and add options
+                      $('select[id^="med_"]').each(function () {
+                          for (let i = 0; i < data.med.length; i++) {
+                              var option = $('<option></option>');
+                              option.attr('id', `medopt_${i}`);
+                              option.val(data.med[i].id);
+                              option.text(data.med[i].name);
+                              $(this).append(option);
+                          }
+                      });
+                  },
+                  error: function (error) {
+                      console.error('Error:', error);
+                  }
+              });
+          });
+      });
 
-                        console.log(rowNumber)
-                        $('#tax_' + rowNumber).val(data.tax);
-                        $('#unit_' + rowNumber).val(data.unit);
-                        $('#price_' + rowNumber).val(data.sale_price);
-                      
-                    },
-                    error: function (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-            });
+
+
+
+       
+            
+          
         
 
     
