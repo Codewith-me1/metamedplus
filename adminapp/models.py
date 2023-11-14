@@ -195,6 +195,7 @@ class Medicine(models.Model):
     company = models.CharField(max_length=255)
     composition = models.CharField(max_length=255)
     group = models.CharField(max_length=255)
+    group = models.CharField(max_length=255)
     unit = models.CharField(max_length=255)
     min_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
     reorder_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
@@ -517,7 +518,7 @@ class ChildBirth(models.Model):
 
 class DeathRecord(models.Model):
     case_id = models.CharField(max_length=20)
-    patient_name = models.CharField(max_length=100)
+    patient_name = models.ForeignKey(Patient, on_delete=models.CASCADE,blank=True,null=True)
     death_date = models.DateField()
     guardian_name = models.CharField(max_length=100)
     attachment = models.FileField(upload_to='death_attachments/', blank=True, null=True)

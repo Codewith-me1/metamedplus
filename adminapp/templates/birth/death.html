@@ -28,8 +28,16 @@
                         <input type="text" class="form-control" id="id_case_id" name="case_id" required onblur="fetchCaseDetails()">
                     </div>
                     <div class="form-group">
-                        <label for="id_patient_name">Patient Name *</label>
-                        <input type="text" class="form-control" id="id_patient_name" name="patient_name" required>
+                        <label for="patient_name">Patient Name *</label>
+                        <select class="form-control" id="id_patient_name" name="patient_name" required>
+                            {% for patient in patinet %}
+                            <option value="{{patient.id}}">{{patient.name}}</option>
+                         
+                            {% endfor %}
+                        </select>
+                        
+                        
+                       
                     </div>
                     <div class="form-group">
                         <label for="id_death_date">Death Date *</label>
@@ -82,10 +90,10 @@
     <thead>
       <tr>
         <th>Case ID </th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Phone</th>
-        <th>Address</th>
+        <th>Patient Name</th>
+        <th>Death Date</th>
+        <th>Guardian Name</th>
+        <th>Report </th>
        
           
        
@@ -93,13 +101,13 @@
     </thead>
     <tbody>
       
-      {% for child in child %}
+      {% for death in death %}
         <tr>
-            <td>{{ child.case_id }}</td>
-           <td>{{ child.child_name }}</td>
-          <td>{{ child.gender }}</td>
-          <td>{{ child.phone }}</td>
-          <td>{{ child.address }}</td>
+            <td>{{ death.case_id }}</td>
+           <td>{{ death.patient_name.name }}</td>
+          <td>{{ death.death_date }}</td>
+          <td>{{ death.guardian_name }}</td>
+          <td>{{ death.report }}</td>
           
           
       

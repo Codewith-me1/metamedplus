@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointment</title>
+    <title>Death Report</title>
 
     
 <div class="container">
@@ -16,9 +16,9 @@
     
     
     
-    <form action='{% url "search_opdbalance" %}'  method="get">
+    <form action='{% url "search_ipdbalance" %}'  method="get">
 
-     
+        
         <div class="form-group">
             <label for="patient">Patient Name</label>
             <input type="text" id="patient" name="patient" placeholder="name">
@@ -49,7 +49,7 @@
     
     
     <div class="main-header">
-    <h1 class="headline">OPD Balance Report</h1>
+    <h1 class="headline">Death Report</h1>
     <div class="side-btns">
     
     
@@ -67,13 +67,14 @@
           <tr>
             
             
-            <th>OPDNO</th>
+            <th>Case ID</th>
             <th>Patient</th>
-            <th>Age</th>
+         
             <th>Gender</th>
-            <th>Amount</th>
-            <th>Paid Amount</th>
-            <th>Balance</th>
+            <th>Death Date</th>
+            <th>Guardian Name</th>
+            <th>Report</th>
+        
             
        
 
@@ -87,34 +88,24 @@
            
             
 
-        {% if results %}
-          {% for item in results %}
+        
+          {% for item in death %}
             <tr>
                 
                 <td>{{ item.id }}</td>
-                <td>{{ item.patient }}</td>
-                <td>{{ item.patient.Age }}</td>
-            
-               <td>{{ item.patient.gender }}</td>
-            
-              <td>{{ item.amount }}</td>
-              <td>{{ item.paid_amount }}</td>
-             
+                <td>{{ item.patient_name.name }}</td>
               
-              {% for balance in balances %}
-              <td>{{balance}}</td>
-              
-          
             
-    
-          {% endfor %}
+               <td>{{ item.patient_name.gender }}</td>
+               <td>{{ item.death_date }}</td>
+               <td>{{ item.guardian_name }}</td>
+               <td>{{ item.report }}</td>
+            
+     
           {% endfor %}
          
             </tr>
-          {% else %} 
-          <p>No results found.</p>
-       
-          {% endif %}
+      
         </tbody>
       </table>
     

@@ -1,0 +1,75 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Stock Report</title>
+
+    
+<div class="container">
+ 
+
+    <div class="main-header">
+    <h1 class="headline">Inventory Stock Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Name</th>
+            <th>Category</th>
+            <th>Company</th>
+            <th>Reorder Level</th>
+            <th>Available Quantity</th>
+        
+            
+       
+
+
+            
+         
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            
+
+          {% for item in medicine %}
+            <tr>
+                
+                <td>{{ item.name }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.company }}</td>
+            
+               <td>{{ item.reorder_level }}</td>
+               <td>{{ item.unit }}</td>
+            
+     
+          {% endfor %}
+         
+            </tr>
+        
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

@@ -10,7 +10,7 @@ from asgiref.sync import async_to_sync
 from django.core.mail import EmailMessage, get_connection
 import stripe
 from django.conf import settings
-
+from datetime import datetime, timedelta
 from django.forms.models import model_to_dict
 
 from .models import Liablity
@@ -1687,22 +1687,28 @@ def create_death_record(request):
         death_date = request.POST.get('death_date')
         guardian_name = request.POST.get('guardian_name')
         report = request.POST.get('report')
+
+        patient = Patient.objects.get(id=patient_name)
         
        
         attachment = request.FILES.get('attachment')
         
         death = DeathRecord(
             case_id=case_id,
-            patient_name=patient_name,
+            patient_name=patient,
             death_date=death_date,
             guardian_name=guardian_name,
             attachment=attachment,
             report=report
         )
         death.save()
+        return redirect('add_death')
     patient = Patient.objects.all()
+    death = DeathRecord.objects.all()
     context ={
         "patinet":patient,
+        'death':death,
+
     }
     return render(request, 'birth/death.html',context)
 
@@ -5887,6 +5893,7 @@ def item_list(request):
     medicine = Purchase.objects.all()
     category = Med_Category.objects.all()
 
+
     context={
         'items':items,
         'medicine':medicine,
@@ -6015,11 +6022,14 @@ def pos_pdf(request):
             
             
             print(item_counter)
-            item = request.POST.get(f'item_{i}')
+            item = request.POST.get(f'med_{i}')
             qty = request.POST.get(f'qty_{i}')
             items = re.sub(r'\d', '',item)
             item  = items.replace("_", "")
             price = request.POST.get(f'price_{i}')
+            expiry = request.POST.get(f'expiry_{i}')
+            batch = request.POST.get(f'batch_{i}')
+            tax_ = request.POST.get(f'tax_{i}')
             total = request.POST.get(f'total_{i}')
            
             
@@ -6027,6 +6037,10 @@ def pos_pdf(request):
                 'item': item,
                 'quantity': qty,
                 'price': price,
+                'tax_':tax_,
+                'expiry':expiry,
+                'batch':batch,
+
                 'total': total
                 }
     
@@ -6071,17 +6085,20 @@ def Medicine_Details(request):
     
     
     try:
-        items = Purchase.objects.filter(category=selected_value)
+        items = Purchase.objects.get(id=selected_value)
         
-        items_list = list(items.values())
-        # for item in items:
+      
+        # for item in items:    
         #     item_data = item['name']
         #     item_list.append(item_data)
 
 
         data = {
             'success': True,
-            'med':items_list,
+            'price':items.sale_price,
+            'tax':items.tax_percentage,
+            'batch':items.batch_no,
+            'expiry':items.expiry_date,
        
             
         }
@@ -6126,75 +6143,60 @@ def Med_det(request):
 
 
 
-
-def search_OPDBala12nce(request):
-    if request.method == 'GET':
-        doctor = request.GET.get('name', '')
-        patient  = request.GET.get('patient', '')
-        systoms  = request.GET.get('systoms', '')
-        from_age = request.GET.get('from_age','')
-        to_age = request.GET.get('to_age','')
-        opd = OpdPatient.objects.all()
-        patient = Patient.objects.all()
-        
-
-        if doctor:
-            results = opd.filter(consultant_doctor=doctor)
-            print(results)
-            
-        # elif patient:
-        #     patients = get_object_or_404(Patient,name=patient)
-        #     results = opd.filter(patient=patients)
-        elif systoms:
-            results = opd.filter(symptoms_type=systoms)
-
-        elif from_age:
-           
-            results = opd.filter(patient__Age__lt=from_age)
-        else:
-            results = None
-
-        return render(request, 'reports/opd_balance.html', {'results': results, 'doctor':opd,'patient':patient })
-
-    return render(request, 'reports/opd_balance.html')
-
-
-
 def search_OPDBalance(request):
     if request.method == 'GET':
         
         from_age = request.GET.get('from_age')
         to_age = request.GET.get('to_age')
         gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+        
         # discharged = request.GET.get('discharged')
 
 
+        if not time_duration:
+            time_duration = 7
+
         if not from_age:
-            from_age = 1 
+            from_age = 0
 
         if not to_age:
-            to_age = 150  
+            to_age =100
 
-      
-     
-        opd_results = OpdPatient.objects.filter(
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+        if not gender:
             
+            patient = OpdPatient.objects.filter(
             patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
             
+        )
+            
+        else:
+            patient = OpdPatient.objects.filter(
+            admission_date__gte=start_date,
+            patient__Age__gt=from_age,
             patient__Age__lt=to_age,
             patient__gender=gender,
-            # discharged_field=discharged
-           
         )
+            
 
         
+        
 
+        opd_results_list = list(patient.select_related('patient').values())
+
+        balances =[]
+        for opd in opd_results_list:
+            balance = opd['amount'] - opd['paid_amount']
+            balances.append(balance)
       
-        print(opd_results)
-        print(to_age)
+        
+        
        
         context = {
-            'results': opd_results,
+            'results': patient,
+            'balances':balances
            
             }
 
@@ -6202,3 +6204,85 @@ def search_OPDBalance(request):
 
     # Handle other HTTP methods if needed
     return render(request, 'reports/opd_balance.html')
+
+
+
+def search_IPDBalance(request):
+    if request.method == 'GET':
+        
+        from_age = request.GET.get('from_age')
+        to_age = request.GET.get('to_age')
+        gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+        
+        # discharged = request.GET.get('discharged')
+
+
+        if not time_duration:
+            time_duration = 7
+
+        if not from_age:
+            from_age = 0
+
+        if not to_age:
+            to_age =100
+
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+        if not gender:
+            
+            patient = IpdPatient.objects.filter(
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            
+        )
+            
+        else:
+            patient = IpdPatient.objects.filter(
+            admission_date__gte=start_date,
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            patient__gender=gender,
+        )
+            
+        
+
+        
+        
+        
+        
+        
+       
+        context = {
+            'results': patient,
+        
+            }
+
+        return render(request, 'reports/ipd_balance.html', context )
+
+    # Handle other HTTP methods if needed
+    return render(request, 'reports/ipd_balance.html')
+
+
+
+def stock_report(request):
+    medicine = Medicine.objects.all()
+    context ={
+        'medicine':medicine
+    }
+
+    return render(request,'reports/inventory_stock.html',context)
+
+
+def death_report(request):
+
+    if request.method == 'GET':
+        
+        from_age = request.GET.get('from_age')
+        to_age = request.GET.get('to_age')
+        gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+    death = DeathRecord.objects.all()
+    context = {
+        'death':death,
+    }
+    return render (request,'reports/death.html',context)

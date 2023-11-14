@@ -115,6 +115,7 @@ urlpatterns = [
     path('search_appointment/', views.search_appointments, name='search_appointments'),
     path('search_opd/', views.search_OPD, name='search_opd'),
     path('search_opdblance/', views.search_OPDBalance, name='search_opdbalance'),
+    path('search_ipdblance/', views.search_IPDBalance, name='search_ipdbalance'),
     path('search_ipd/', views.search_IPD, name='search_ipd'),
     path('search_tpa/', views.search_tpa, name='search_tpa'),
     path('search_medicine/', views.search_medicine, name='search_medicine'),
@@ -188,6 +189,9 @@ urlpatterns = [
     path('add_to_cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
     path('view_cart/', views.view_cart, name='view_cart'),
     path('pos_pdf/', views.pos_pdf, name='pos_pdf'),
+    path('stock_report/', views.stock_report, name='stock_report'),
+    path('death/', views.death_report, name='death_report'),
+
       
 
 

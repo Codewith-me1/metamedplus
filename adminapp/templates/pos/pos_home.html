@@ -77,13 +77,14 @@ form button{
         <table class="table">
             <thead>
               <tr>
-                <th>Medicine Category</th>
+                
                 <th>Medicine Name</th>
                 
                 <th>Quantity</th>
-                <th>Expiry Date</th>
                 <th>Batch No</th>
+                <th>Expiry Date</th>
                 <th>Price</th>
+                <th>Tax %</th>
                 <th>Total</th>
            
     
@@ -112,7 +113,7 @@ form button{
           <div class="pos_text">
             <h1> Tax Exclusive(%)</h1>
         
-            <input type="text" name="tax" id="tax" >
+            <input type="number" name="tax" id="tax" >
        
         </div>
 
@@ -144,7 +145,6 @@ form button{
 
 
     
-
 </div>
 
 
@@ -163,21 +163,15 @@ form button{
             
             const newRow = `
             <tr class="item-row" id="itemRow${itemCounter}">
-                <td>
-                    <select class="form-control" id="item_${itemCounter}" name="item_${itemCounter}">
-                        <option value="item">Select An Item</option>
-                        {% for category in category %}
-                            <option value="{{category.medicine_category}}_{{category.id}}" >{{category.medicine_category}}</option>
-                            
-                        {% endfor %}
-                    </select>
-                </td>
-
+            
 
                 <td>
-                  <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}">
-                      <option value="item">Select An Item</option>
-                     
+                  
+                  <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}"> 
+                    {% for med in medicine %}
+
+                      <option  value="{{med.name}}_{{med.id}}">{{med.name}}</option>
+                      {% endfor %}
                   </select>
               </td>
 
@@ -189,9 +183,12 @@ form button{
                 <td><input type="text" readonly value="" class="form-control" id="expiry_${itemCounter}" name="expiry_${itemCounter}" required></td>
                
                 <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
+
+                <td><input type="number" readonly step="0.01" class="form-control" id="tax_${itemCounter}" name="tax_${itemCounter}" required></td>
              
                 <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
-            </tr>
+               
+            </tr> 
         `;
     
         // Append the new row to the table body
@@ -216,187 +213,125 @@ form button{
         });
         
 
-        $(document).on('change', '[id^="med_"]', function () {
-                
-          var id = $(this).val();                  
-          console.log(id)
-         
-  
-            $.ajax({
-                url: '/medicine-det',
-                method: 'GET',
-                data: { id: id },
-                success: function (data) {
-                 
-                  
-
-                  
-                    
-                  console.log(data)
-                    
-                  var expiry = document.querySelectorAll('select[id^="med_"]');
-                  console.log(expiry.length+1)
-                  for (let k = 0; k < expiry.length; k++) {
-                    console.log(k)
-                    
-                    
-                    var rowNumber =i 
-                    $('#expiry_'+i).val(data.expiry);
-                    $('#tax_' + rowNumber).val(data.tax);
-                    $('#unit_' + rowNumber).val(data.quantity);
-                    $('#price_' + rowNumber).val(data.price);
-                    $('#batch_' + rowNumber).val(data.batch_no);
-                      
-                   
-
-                  }     
-                  
-                 
-                  
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
-
         $(document).ready(function () {
           // Event delegation for select elements with IDs starting with 'item_'
-          $(document).on('change', '[id^="item_"]', function () {
+          $(document).on('change', '[id^="med_"]', function () {
               var selectedValue = $(this).val();
               var parts = selectedValue.split('_');
+              var selectId = $(this).attr('id');
               var id = parts[1];
-      
+              console.log(id)
               $.ajax({
                   url: '/medicine_details',
                   method: 'GET',
                   data: { id: id },
                   success: function (data) {
-                      console.log(data.med);
-      
-                      // Clear previous options from all select elements with IDs starting with 'med_'
-                      $('select[id^="med_"]').empty();
-      
-                      // Iterate over each select element and add options
-                      $('select[id^="med_"]').each(function () {
-                          for (let i = 0; i < data.med.length; i++) {
-                              var option = $('<option></option>');
-                              option.attr('id', `medopt_${i}`);
-                              option.val(data.med[i].id);
-                              option.text(data.med[i].name);
-                              $(this).append(option);
-                          }
-                      });
+                    
+                      
+                      var rowNumber = selectId.split('_')[1];
+
+                      
+                  
+                      $('#price_' + rowNumber).val(data.price);
+                      $('#batch_' + rowNumber).val(data.batch);
+                      $('#expiry_' + rowNumber).val(data.expiry);
+                      $('#tax_' + rowNumber).val(data.tax);
+                      
+                    
                   },
                   error: function (error) {
                       console.error('Error:', error);
                   }
               });
           });
-      });
+          });
+     
 
 
-
-
-       
-            
-          
-        
-
-    
     $('tbody').on('input', 'input', function () {
-        calculateTotal($(this));
-    });
+      calculateTotal($(this));
+  });
 
-    // Trigger the initial calculation when the page loads
-    calculateTotal($('input'));
-
-    function calculateTotal(inputField) {
-        const row = inputField.closest('tr');
-        const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
-        const quantity = parseFloat(row.find('input[id^="qty_"]').val()) || 0;
-        
-        
-    
-        // Calculate the tax amount and discount amount
-     
-       
-        // Calculate the total amount
-        const total = (price * quantity) ;
-
-        // Update the tax amount and discount amount fields within the same row
+  // Trigger the initial calculation when the page loads
+  calculateTotal($('input'));
+  
+  function calculateTotal(inputField) {
+      const row = inputField.closest('tr');
+      const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
+      const quantity = parseFloat(row.find('input[id^="qty_"]').val()) || 0;
 
 
-        // Update the total field within the same row with the calculated value
-        row.find('input[id^="total_"]').val(total.toFixed(2));
 
-        const totals = document.querySelectorAll('input[id^="total_"]');
-
-        let grandTotal = 0;
-                totals.forEach(totalInput => {
-                    grandTotal += parseFloat(totalInput.value) || 0;
-                });
-            console.log(grandTotal)
-                // Update a grand total field with the calculated total
-                const grandTotalField = document.getElementById('sub_total'); // Assuming you have an input field with this ID
-                if (grandTotalField) {
-                    grandTotalField.value = grandTotal.toFixed(2);
-                }
-        
-    }
-
-
-    const taxInclusiveInput = document.getElementById('tax');
-    const subTotalInput = document.getElementById('sub_total');
-    const discInput = document.getElementById('disc');
-    
-    taxInclusiveInput.addEventListener('input', calculateTaxAndGrandTotal);
-    discInput.addEventListener('input', calculateTaxAndGrandTotal);
-    subTotalInput.addEventListener('input', calculateTaxAndGrandTotal);
-
-
-   
-    
-
-
-    function calculateTaxAndGrandTotal() {
-    const subTotalInput = document.getElementById('sub_total');
-    const taxInclusiveInput = document.getElementById('tax');
-    const taxAmountInput = document.getElementById('tax_amt');
-    const grandTotalInput = document.getElementById('total');
-
-    const subTotal = parseFloat(subTotalInput.value) || 0;
-    const taxInclusive = parseFloat(taxInclusiveInput.value) || 0;
-
-    // Calculate the tax amount as a percentage of the sub total
-    const taxAmount = (subTotal * taxInclusive) / 100;
-    taxAmountInput.value = taxAmount.toFixed(2);
-
-    // Calculate the grand total by subtracting the tax amount from the sub total
-    const grandTotal = subTotal + taxAmount;
-    grandTotalInput.value = grandTotal.toFixed(2);
       
+      const total = (price * quantity) ;
+
      
+      row.find('input[id^="total_"]').val(total.toFixed(2));
 
-  }
+      const totals = document.querySelectorAll('input[id^="total_"]');
+
+      let grandTotal = 0;
+              totals.forEach(totalInput => {
+                  grandTotal += parseFloat(totalInput.value) || 0;
+              });
+          
+              
+              
+              const grandTotalField = document.getElementById('sub_total'); 
+              if (grandTotalField) {
+                  grandTotalField.value = grandTotal.toFixed(2);
+                  console.log(grandTotalField.value)
 
 
-  {% comment %} function calculateDiscount(){
-    const grandTotalInput = document.getElementById('total');
-    const subTotalInput = document.getElementById('sub_total');
-    const discInput = document.getElementById('disc');
-    const subTotal = parseFloat(subTotalInput.value) || 0;
-    const dicAmt = parseFloat(discInput.value) || 0;
-
+              } 
     
 
-    const grandTotal = subTotal/discInput ;
-    grandTotalInput.value = grandTotal.toFixed(2);
+             
   }
-   {% endcomment %}
-  // Add event listeners to the "Tax Inclusive(%)" and "Sub Total" inputs
- 
+
+
+  const taxInclusiveInput = document.getElementById('tax');
+  const subTotalInput = document.getElementById('sub_total');
+  
+  const med = $('input[id^="total_"]')
+
+  taxInclusiveInput.addEventListener('input', calculateTaxAndGrandTotal);
+
+  subTotalInput.addEventListener('change', calculateTaxAndGrandTotal);
+
+
+
+
+
+  function calculateTaxAndGrandTotal() {
+  const subTotalInput = document.getElementById('sub_total');
+  const taxInclusiveInput = document.getElementById('tax');
+  const taxAmountInput = document.getElementById('tax_amt');
+  const grandTotalInput = document.getElementById('total');
+  
+  const subTotal = parseFloat(subTotalInput.value) || 0;
+
+  console.log(subTotalInput.value)
+  const taxInclusive = parseFloat(taxInclusiveInput.value) || 0;
+
+  
+  const taxAmount = (subTotal * taxInclusive) / 100;
+  taxAmountInput.value = taxAmount.toFixed(2);
+
+  const grandTotal = subTotal + taxAmount;
+  grandTotalInput.value = grandTotal.toFixed(2);
+
+
+
+}
+
+
+
+
+
 
 
 
 </script>
+
+
