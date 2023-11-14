@@ -193,6 +193,9 @@ urlpatterns = [
     path('death/', views.death_report, name='death_report'),
     path('birth/', views.birth_report, name='birth_report'),
     path('discharge/', views.discharge, name='discharged_patient'),
+    path('ipd_discharge/', views.ipd_discharge, name='ipd_discharge'),
+    path('opd_discharge/', views.opd_discharge, name='opd_discharge'),
+    path('refferal_report/', views.refferal_report, name='refferal_report'),
 
       
 

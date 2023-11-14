@@ -96,27 +96,40 @@
         <tr>
           <th>Patient ID</th>
           <th>Patient Name</th>
-          <th>Date of Birth</th>
-          <th>Phone</th>
-          <th>Gender</th>
+          <th>Systoms Type</th>
+          <th>Discharged Status</th>
+          <th>Discharge</th>
           
          
         </tr>
       </thead>
       <tbody>
         
-        {% for patients in patients %}
+      
           <tr>
-            <td>{{ patients.id }}</td>
+            {% for opd in opd %}
+            <td>{{ opd.id }}</td>
 
-            <td>{{ patients.name }}</td>
-            <td>{{ patients.date_of_birth}}</td>
-            <td>{{ patients.phone}}</td>
-            <td>{{ patients.gender}}</td>
+            <td>{{ opd.patient.name }}</td>
+            <td>{{ opd.symptoms_type}}</td>
+            <td>{{ opd.discharged_status}}</td>
+            <td>{{ opd.discharged}}</td>
             
-          
+            {% endfor %}
+
+            {% for ipd in ipd %}
+            <td>{{ ipd.id }}</td>
+
+            <td>{{ ipd.patient.name }}</td>
+            <td>{{ ipd.symptoms_type}}</td>
+            <td>{{ ipd.discharged_status}}</td>
+            <td>{{ ipd.discharged}}</td>
+            
+            {% endfor %}
+
+
           </tr>
-        {% endfor %}
+     
       </tbody>
     </table>
     

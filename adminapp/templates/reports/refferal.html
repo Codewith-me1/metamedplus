@@ -1,0 +1,122 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral</title>
+
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+        <select class="form-control" id="payee" name="payee">
+            <option value="payee">Select A Payee</option>
+
+            {% for payee in payee %}
+
+                <option value="{{payee.referrer_name}}" >{{payee.referrer_name}}</option>
+            {% endfor %}
+
+        </select>
+
+
+        
+        <label for="patient_type">Patient Type *</label>
+        <select name="patient_type" id="patient_type" class="form-control" required>
+            <option value="OPD">OPD</option>
+            <option value="IPD">IPD</option>
+            <option value="Pharmacy">Pharmacy</option>
+            <option value="Pathology">Pathology</option>
+            <option value="Radiology">Radiology</option>
+            <option value="Blood Bank">Blood Bank</option>
+            <option value="Amublance">Amublance</option>
+   
+        </select>
+
+    <select class="form-control" id="payee" name="payee">
+        <option value="payee">Select A Payee</option>
+
+        {% for patient in patient %}
+
+            <option value="{{patient.name}}" >{{patient.name}}</option>
+        {% endfor %}
+
+    </select>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Referral Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Patient</th>
+            <th>Doctor</th>
+            
+            <th>Admission Date</th>
+            <th>Systoms Description</th>
+            <th>Systoms Title </th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            <p>No results found.</p>
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.patient }}</td>
+                <td>{{ item.consultant_doctor }}</td>
+            
+               <td>{{ item.admission_date }}</td>
+             
+              <td>{{ item.symptoms_description }}</td>
+              <td>{{ item.symptoms_title }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

@@ -49,9 +49,7 @@
             <option value="Radiology">Radiology</option>
             <option value="Blood Bank">Blood Bank</option>
             <option value="Amublance">Amublance</option>
-            {% comment %} {% for choice in payment.PATIENT_TYPE_CHOICES %}
-                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-            {% endfor %} {% endcomment %}
+   
         </select>
     </div>
     
@@ -71,11 +69,9 @@
     <div class="form-group">
         <label for="payee">Payee *</label>
         <select name="payee" id="payee" class="form-control" required>
-
+            
             <option value="Main">Main</option>
-            {% comment %} {% for choice in payment.PAYEE_CHOICES %}
-                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-            {% endfor %} {% endcomment %}
+         
         </select>
     </div>
     

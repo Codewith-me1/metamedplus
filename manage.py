@@ -3,7 +3,7 @@
 import os
 import sys
 
-# sys.path.append('metamedplus')
+sys.path.append('metamedplus')
 
 def main():
     """Run administrative tasks."""

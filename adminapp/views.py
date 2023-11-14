@@ -895,21 +895,11 @@ def ipd_patient(request):
             bed_number=bed_number,
         )
         ipd.save()
-        doctors = AddStaff.objects.filter(role='Doctor')
-        type = IpdPatient.objects.all()
-        bedtype = Bedtype.objects.all()
-        bed = Bed.objects.all()
-        ipd = IpdPatient.objects.all()
-        patient =  Patient.objects.all()
-        context = {
-            "type":type,
-            "doctor":doctors,
-            'bedtype':bedtype,
-            'bed':bed,
-            'ipd':ipd,
-            "patient":patient
-        }
-        return render(request,'ipd/dashboard.html',context)  # Redirect to a success page
+      
+        url = reverse('ipd_dashboard', args=[ipd.id])
+        url+= "#overview"
+        return redirect(url)
+         # Redirect to a success page
     type = Symtopms.objects.all()
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
@@ -6349,3 +6339,202 @@ def discharge(request):
 
         if room == 'IPD':
             ipd = IpdPatient.objects.get(patient=patient)
+            if ipd:
+                ipd.discharged_status = True
+                ipd.discharged = status
+                ipd.save()
+        
+        elif room=='OPD':
+            opd = OpdPatient.objects.get(patient=patient)
+
+            if opd:
+                opd.discharged_status = True
+                opd.discharged = status
+                opd.save()
+        
+        return redirect('discharged_patient')
+    ipd_discharge = IpdPatient.objects.filter(discharged_status=True)
+    opd_discharge = OpdPatient.objects.filter(discharged_status=True)
+    patient = Patient.objects.all()
+    context ={
+        'ipd':ipd_discharge,
+        'opd':opd_discharge,
+        'patient':patient,
+    }
+    return render(request,'patient/discharged.html',context)
+
+
+def ipd_discharge(request):
+    if request.method == 'GET':
+        
+        from_age = request.GET.get('from_age')
+        to_age = request.GET.get('to_age')
+        gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+        status = request.GET.get('status')
+        # discharged = request.GET.get('discharged')
+
+
+        if not time_duration:
+            time_duration = 7
+
+        if not from_age:
+            from_age = 0
+
+        if not to_age:
+            to_age =100
+
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+        if not gender:
+            
+            patient = IpdPatient.objects.filter(
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            discharged = status,
+            
+        )
+            
+        else:
+            patient = IpdPatient.objects.filter(
+            admission_date__gte=start_date,
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            patient__gender=gender,
+            discharged = status,
+        )
+            
+        
+
+        
+        
+        
+        
+        
+       
+        context = {
+            'results': patient,
+        
+            }
+
+        return render(request, 'reports/ipddischarge_report.html', context )
+
+    # Handle other HTTP methods if needed
+    return render(request, 'reports/ipddischarge_report.html')
+
+
+
+def opd_discharge(request):
+    if request.method == 'GET':
+        
+        from_age = request.GET.get('from_age')
+        to_age = request.GET.get('to_age')
+        gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+        status = request.GET.get('status')
+        # discharged = request.GET.get('discharged')
+
+
+        if not time_duration:
+            time_duration = 7
+
+        if not from_age:
+            from_age = 0
+
+        if not to_age:
+            to_age =100
+
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+        if not gender:
+            
+            patient = OpdPatient.objects.filter(
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            discharged = status,
+            
+        )
+            
+        else:
+            patient = OpdPatient.objects.filter(
+            admission_date__gte=start_date,
+            patient__Age__gt=from_age,
+            patient__Age__lt=to_age,
+            patient__gender=gender,
+            discharged = status,
+        )
+            
+        
+
+        
+        
+        
+        
+        
+       
+        context = {
+            'results': patient,
+        
+            }
+
+        return render(request, 'reports/opddischarge.html', context )
+
+    # Handle other HTTP methods if needed
+    return render(request, 'reports/opddischarge.html')
+
+
+
+
+def refferal_report(request):
+    if request.method == 'GET':
+        
+        payee = request.GET.get('payee')
+        patient_type = request.GET.get('patient_type')
+        patient = request.GET.get('patient')
+        # discharged = request.GET.get('discharged')
+
+
+        if not patient_type:
+            refferal = Referral.objects.filter(
+            payee=payee,
+            patient = patient
+        )
+        elif not patient:
+            refferal = Referral.objects.filter(
+            payee=payee,
+            patient_type=patient_type,
+        )
+        else:
+            refferal = Referral.objects.filter(
+            payee=payee,
+            patient_type=patient_type,
+            patient=patient,
+        )
+        
+            
+        
+        
+
+        
+            
+        
+
+        
+        
+        
+        
+        
+        payee= ReferralPerson.objects.all()       
+        patient = Patient.objects.all()    
+        context = {
+            'results': refferal,
+            'payee':payee,
+            'patient':patient,
+        
+            }
+
+        return render(request, 'reports/refferal.html', context )
+
+    # Handle other HTTP methods if needed
+    return render(request, 'reports/refferal.html')
+
+
+

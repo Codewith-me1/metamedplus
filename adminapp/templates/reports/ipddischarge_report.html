@@ -1,0 +1,123 @@
+ 
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPD Discharge Report</title>
+
+    
+<div class="container">
+ 
+    
+    
+    
+    
+    <form action='{% url "ipd_discharge" %}'  method="get">
+
+
+
+
+        <div class="form-group">
+            <label for="status">Discharged Status</label>
+            <select id="status" name="status" required>
+                <option value="death">Death</option>
+                <option value="normal">Normal</option>
+                <option value="refferal">Refferal</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="time_duration">Time Duration</label>
+          <input type="number" id="time_duration" name="time_duration" placeholder="time_duration">
+      </div>
+
+        <div class="form-group">
+            <label for="from_age">From Age</label>
+            <input type="number" id="from_age" name="from_age" placeholder="0">
+        </div>
+
+        <div class="form-group">
+            <label for="to_age">To Age</label>
+            <input type="number" id="to_age" name="to_age" placeholder="0">
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <input type="text" id="gender" name="gender" placeholder="0">
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">IPD Discharge Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>IPDNO</th>
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Credit Limit</th>
+            <th>Discharged Status</th>
+        
+            
+       
+
+
+            
+         
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+                
+                <td>{{ item.id }}</td>
+                <td>{{ item.patient }}</td>
+                <td>{{ item.patient.Age }}</td>
+            
+               <td>{{ item.patient.gender }}</td>
+               <td>{{ item.credit_limit }}</td>
+               <td>{{ item.discharged }}</td>
+            
+     
+          {% endfor %}
+         
+            </tr>
+          {% else %} 
+          <p>No results found.</p>
+       
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>
