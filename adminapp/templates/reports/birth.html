@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Death Report</title>
+    <title>Birth Report</title>
 
     
 <div class="container">
@@ -16,7 +16,7 @@
     
     
     
-    <form action='{% url "death_report" %}'  method="get">
+    <form action='{% url "birth_report" %}'  method="get">
 
         
      
@@ -36,7 +36,7 @@
     
     
     <div class="main-header">
-    <h1 class="headline">Death Report</h1>
+    <h1 class="headline">Birth Report</h1>
     <div class="side-btns">
     
     
@@ -55,12 +55,14 @@
             
             
             <th>Case ID</th>
-            <th>Patient</th>
+            <th>Child Name</th>
          
             <th>Gender</th>
-            <th>Death Date</th>
-            <th>Guardian Name</th>
-            <th>Report</th>
+            <th>Birth Date</th>
+            
+            <th>Phone No</th>
+            <th>Mother Name</th>
+            
         
             
        
@@ -75,18 +77,18 @@
            
             
 
-        {% if death %}
-          {% for item in death %}
+        {% if birth %}
+          {% for item in birth %}
             <tr>
                 
                 <td>{{ item.id }}</td>
-                <td>{{ item.patient_name.name }}</td>
+                <td>{{ item.child_name }}</td>
               
             
-               <td>{{ item.patient_name.gender }}</td>
-               <td>{{ item.death_date }}</td>
-               <td>{{ item.guardian_name }}</td>
-               <td>{{ item.report }}</td>
+               <td>{{ item.gender }}</td>
+               <td>{{ item.birth_date }}</td>
+               <td>{{ item.phone }}</td>
+               <td>{{ item.mother_name }}</td>
             
               {% endfor %}
               </tr>

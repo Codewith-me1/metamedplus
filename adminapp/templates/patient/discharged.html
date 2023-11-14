@@ -1,0 +1,133 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discharged Patient</title>
+
+
+{% load static %}
+   
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Discharged patient</h1>
+                  </div>
+
+
+
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'discharged_patient' %}">
+                        {% csrf_token %}
+                        
+                        <select class="form-control" id="patient" name="patient">
+                            <option value="patient">Select A patient</option>
+        
+                            {% for patient in patient %}
+        
+                                <option value="{{patient.id}}" >{{patient.name}}</option>
+                            {% endfor %}
+        
+        
+        
+        
+                        </select>
+                    
+                  
+                      <div class="form-group">
+                          <label for="room">Discharged</label>
+                          <select id="room" name="room" required>
+                              <option value="OPD">OPD</option>
+                              <option value="IPD">IPD</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="status">Discharged Status</label>
+                        <select id="status" name="status" required>
+                            <option value="death">Death</option>
+                            <option value="normal">Normal</option>
+                            <option value="refferal">Refferal</option>
+                        </select>
+                    </div>
+    
+                       
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Patient</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Patient </a>
+
+    
+    </div>    
+    </div>   
+
+
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Patient ID</th>
+          <th>Patient Name</th>
+          <th>Date of Birth</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          
+         
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for patients in patients %}
+          <tr>
+            <td>{{ patients.id }}</td>
+
+            <td>{{ patients.name }}</td>
+            <td>{{ patients.date_of_birth}}</td>
+            <td>{{ patients.phone}}</td>
+            <td>{{ patients.gender}}</td>
+            
+          
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+
+    </div>
+
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+  
+       
+    </script>
+</body>
+</html>

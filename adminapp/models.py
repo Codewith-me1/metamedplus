@@ -177,6 +177,9 @@ class IpdPatient(models.Model):
     consultant_doctor = models.CharField(max_length=255)
     bed_group = models.CharField(max_length=255)
     bed_number = models.CharField(max_length=10)
+    discharged_status = models.BooleanField(default=False)
+    discharged = models.CharField(max_length=20,default='normal')
+
 
 
 
@@ -725,6 +728,8 @@ class OpdPatient(models.Model):
     credit_limit = models.DecimalField(max_digits=10, decimal_places=2)
     reference = models.CharField(max_length=255)
     consultant_doctor = models.CharField(max_length=255)
+    discharged_status = models.BooleanField(default=False)
+    discharged = models.CharField(max_length=20,default='normal')
 
     charge_category = models.CharField(max_length=100, blank=True, null=True)
     charge_name = models.CharField(max_length=100, blank=True, null=True)
@@ -1144,3 +1149,5 @@ def create_user_wallet(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_wallet(sender, instance, **kwargs):
     instance.wallet.save()
+
+

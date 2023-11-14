@@ -191,6 +191,8 @@ urlpatterns = [
     path('pos_pdf/', views.pos_pdf, name='pos_pdf'),
     path('stock_report/', views.stock_report, name='stock_report'),
     path('death/', views.death_report, name='death_report'),
+    path('birth/', views.birth_report, name='birth_report'),
+    path('discharge/', views.discharge, name='discharged_patient'),
 
       
 

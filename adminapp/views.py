@@ -6276,13 +6276,76 @@ def stock_report(request):
 def death_report(request):
 
     if request.method == 'GET':
-        
-        from_age = request.GET.get('from_age')
-        to_age = request.GET.get('to_age')
+
         gender = request.GET.get('gender')
         time_duration = request.GET.get('time_duration')
-    death = DeathRecord.objects.all()
-    context = {
-        'death':death,
-    }
+        
+        if not time_duration:
+            time_duration = 7
+
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+
+        if not gender:
+            
+            death  = DeathRecord.objects.filter(
+                death_date=start_date
+            
+        )
+            
+        else:
+            death = DeathRecord.objects.filter(
+            death_date__gte=start_date,
+            
+            patient_name__gender=gender,
+        )
+        
+        context = {
+          'death':death,
+        }
+        return render(request, 'reports/death.html',context)
     return render (request,'reports/death.html',context)
+
+
+
+
+def birth_report(request):
+
+    if request.method == 'GET':
+
+        gender = request.GET.get('gender')
+        time_duration = request.GET.get('time_duration')
+        
+        if not time_duration:
+            time_duration = 7
+
+        start_date = datetime.now() - timedelta(days=int(time_duration))
+
+        if not gender:
+            
+            birth  = ChildBirth.objects.filter(
+                birth_date=start_date
+            
+        )
+            
+        else:
+            birth = ChildBirth.objects.filter(
+            birth_date__gte=start_date,
+            
+            gender=gender,
+        )
+        
+        context = {
+          'birth':birth,
+        }
+        return render(request, 'reports/birth.html',context)
+    return render (request,'reports/birth.html',context)
+
+
+def discharge(request):
+    if request.method =='POST':
+        patient = request.POST.get('patient')
+        room = request.POST.get('room')
+        status = request.POST.get('status')
+
+        if room == 'IPD':
+            ipd = IpdPatient.objects.get(patient=patient)
