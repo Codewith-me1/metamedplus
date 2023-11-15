@@ -169,9 +169,7 @@ urlpatterns = [
     path('get_bed_data/', views.get_bed_data, name='get_bed_data'),
     path('admin_notice/', views.admin_notice_board, name='admin_notice'),
     path('public_notice/', views.public_notice_board, name='public_notice'),
-    
     path('send_message/<int:receiver_id>/', views.send_message, name='send_message'),
-    # path('message_list/', views.message_list, name='message_list'),
     path('calculator/', views.calculator_view, name='calculator'),
     path('chat_list/', views.chat_list, name='chat_list'),
     path('send_emails/', views.send_email, name='send_email'),
@@ -182,7 +180,6 @@ urlpatterns = [
     path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
     path('remove_from_cart/', views.remove_from_cart, name='remove_from_cart'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    #  path('balance/', views.wallet_balance, name='wallet_balance'),
     path('add-funds/', views.add_funds, name='add_funds'),
     path('make-payment/', views.make_payment, name='make_payment'),
     path('items/', views.item_list, name='item_list'),

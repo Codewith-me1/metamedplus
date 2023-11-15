@@ -6586,53 +6586,51 @@ def prescription(request):
         if item_counter.isdigit():
             item_counter = int(item_counter)
         else:
-            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+            item_counter = 0  
+
+
+        pres =Precreption (
+            finding_category=finding_category,
+            findings=findings,
+            finding_description=finding_description,
+            doctor=doctor
+           
+        )
         
 
-     
-        # Save the invoice object to the database
-        invoice.save()
-        id = Sales_Invoice.objects.get(id=invoice.id)
+        pres.save()
+        id = Precreption_Item.objects.get(id=pres.id)
         total_all_products =0
 
         for i in range(1, item_counter + 1):
             
             
-            item = request.POST.get(f'item_{i}')
-            qty = request.POST.get(f'qty_{i}')
-            items = re.sub(r'\d', '',item)
+            medicine_category = request.POST.get(f'medicine_category_{i}')
+            medicine = request.POST.get(f'medicine_{i}')
 
-            item  = items.replace("_", "")
-            unit = request.POST.get(f'unit_{i}')
-            price = request.POST.get(f'price_{i}')
-            discount_percentage = request.POST.get(f'discount_{i}')
-            discount_amount = request.POST.get(f'discount_amount_{i}')
-            tax_percentage = request.POST.get(f'tax_{i}')
-            tax_amount = request.POST.get(f'tax_amount_{i}')
-            total = request.POST.get(f'total_{i}')
+            dosage = request.POST.get(f'dosage_{i}')
+            dose_interval = request.POST.get(f'doseinterval_{i}')
+            dose_duration = request.POST.get(f'dose_duration_{i}')
+            instruction = request.POST.get(f'instruction_{i}')
+
+           
+            item = Precreption_Item(
             
-            print(item)
-            
-            print(qty)
-            
-            item = Item_Invoice(
-            
-                invoice=id,
-                item=item,
-                qty=qty,
-                unit=unit,
-                price=price,
-                discount=discount_percentage,
-                discount_amount=discount_amount,
-                tax=tax_percentage,
-                tax_amount=tax_amount,
-                total=total,
+                pres=id,
+                medicine_category=medicine_category,
+                medicine=medicine,
+                dosage=dosage,
+                dose_interval=dose_interval,
+                dose_duration=dose_duration,
+                instruction=instruction,
+
+                
 
 
             )
             
             item.save()
-            total_all_products += int(float(total))
+            
 
         ids = invoice.id
         invoice.total = total_all_products
