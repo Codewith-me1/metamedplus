@@ -9,6 +9,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.core.mail import EmailMessage, get_connection
 import stripe
+from .models import Precreption,Precreption_Item
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.forms.models import model_to_dict
@@ -1781,6 +1782,8 @@ def create_referre(request):
         commission_percentage = request.POST.get('commission_percentage')
         commission_amount = request.POST.get('commission_amount')
 
+
+        patient = Patient.objects.get(id=patient)
         # Calculate commission amount based on percentage
         try:
             commission_percentage = float(commission_percentage)
@@ -6538,3 +6541,115 @@ def refferal_report(request):
 
 
 
+
+
+def ambulance_report(request):
+    if request.method == 'GET':
+        vechile = request.GET.get('vechile')
+        print(vechile)
+        ambulance = Ambulance.objects.filter(
+            vehicle_model = vechile,
+
+        )
+
+        print(ambulance)
+        model = Ambulance.objects.all()
+
+        context = {
+            'ambulance':ambulance,
+            'model':model,
+        
+        }
+
+        return render(request,'reports/ambulance.html',context)
+
+        
+    model = Ambulance.objects.all()
+
+    context = {
+        'model':model,
+    }
+    return render(request,'reports/ambulance.html',context)
+
+
+def prescription(request):
+    if request.method == 'POST':
+        # Retrieve data from the form
+        finding_category = request.POST.get('finding_category')
+        findings = request.POST.get('phone_number')
+        finding_description = request.POST.get('invoice_number')
+        doctor = request.POST.get('invoice_date')
+  
+        item_counter = request.POST.get('item_counter', 0)
+        
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0  # Set a default value if 'item_counter' is not a valid integer
+        
+
+     
+        # Save the invoice object to the database
+        invoice.save()
+        id = Sales_Invoice.objects.get(id=invoice.id)
+        total_all_products =0
+
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'item_{i}')
+            qty = request.POST.get(f'qty_{i}')
+            items = re.sub(r'\d', '',item)
+
+            item  = items.replace("_", "")
+            unit = request.POST.get(f'unit_{i}')
+            price = request.POST.get(f'price_{i}')
+            discount_percentage = request.POST.get(f'discount_{i}')
+            discount_amount = request.POST.get(f'discount_amount_{i}')
+            tax_percentage = request.POST.get(f'tax_{i}')
+            tax_amount = request.POST.get(f'tax_amount_{i}')
+            total = request.POST.get(f'total_{i}')
+            
+            print(item)
+            
+            print(qty)
+            
+            item = Item_Invoice(
+            
+                invoice=id,
+                item=item,
+                qty=qty,
+                unit=unit,
+                price=price,
+                discount=discount_percentage,
+                discount_amount=discount_amount,
+                tax=tax_percentage,
+                tax_amount=tax_amount,
+                total=total,
+
+
+            )
+            
+            item.save()
+            total_all_products += int(float(total))
+
+        ids = invoice.id
+        invoice.total = total_all_products
+        invoice.save()
+        context = {
+            'id':ids
+        } 
+        url = reverse('edit_sales', args=[ids])
+        
+        return redirect(url)
+        
+    item = Item_Acc.objects.all()
+    party = Party.objects.all()
+    unit = Unit.objects.all()
+    context= {
+        'item':item,
+        'party':party,
+        'unit':unit
+    }
+    return render(request, 'accounts/sales_invoice.html',context)

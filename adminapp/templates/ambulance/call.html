@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>call</title>
 
-
+    {% load static %}
     <div class="container">
     
     <div id="popupContainer" class="form-popup-back">
@@ -94,10 +94,10 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-        </div>
-        
+                </div>
+                </div>
+                </div>
+            
     
     
     
@@ -110,7 +110,7 @@
     <div class="side-btns">
     
     
-    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Task List </a>
     
     </div>    
@@ -131,7 +131,7 @@
           </tr>
         </thead>
         <tbody>
-          
+            
           {% for call in call %}
             <tr>
                 <td>{{ call.patient }}</td>

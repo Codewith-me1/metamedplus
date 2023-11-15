@@ -1,0 +1,114 @@
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambulance Report</title>
+
+    
+<div class="container">
+ 
+    
+    
+    
+    
+    <form action='{% url "ambulance_report" %}'  method="get">
+
+        
+     
+        <div class="form-group">
+            <label for="model">Vehcile Model</label>
+            <select id="vehcile" name="vechile">
+                <option value="model">Select A Model</option>
+                
+                {% for model in model %}
+    
+                    <option name="vechile" value="{{model.vehicle_model}}" >{{model.vehicle_model}}</option>
+                {% endfor %}
+    
+            </select>
+          </div>
+
+     
+        
+
+        <button class="btn" type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Ambulance Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Case ID</th>
+            <th>Vehcile Model</th>
+         
+            <th>Ambulance Call No</th>
+            <th>Driver Name</th>
+            
+            <th>Driver License</th>
+            
+            
+        
+            
+       
+
+
+            
+         
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            
+
+        {% if ambulance %}
+          {% for item in ambulance %}
+            <tr>
+                
+                <td>{{ item.id }}</td>
+                <td>{{ item.child_name }}</td>
+              
+            
+               <td>{{ item.gender }}</td>
+               <td>{{ item.birth_date }}</td>
+               <td>{{ item.phone }}</td>
+               <td>{{ item.mother_name }}</td>
+            
+              {% endfor %}
+              </tr>
+      
+        {% else %} 
+        <p>No results found.</p>
+            
+        {% endif %} 
+              
+            
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

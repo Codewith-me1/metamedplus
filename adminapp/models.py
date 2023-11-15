@@ -557,7 +557,7 @@ class ReferralPerson(models.Model):
 
 class Referral(models.Model):
 
-    patient = models.CharField(max_length=20,default=None)
+    patient =  models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     patient_type = models.CharField(max_length=255)
     bill_no = models.CharField(max_length=255)
     bill_amount = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
@@ -1150,4 +1150,20 @@ def create_user_wallet(sender, instance, created, **kwargs):
 def save_user_wallet(sender, instance, **kwargs):
     instance.wallet.save()
 
+class Precreption(models.Model):
+    finding_category = models.CharField(max_length=255)
+    findings = models.CharField(max_length=15)
+    finding_description = models.TextField()
+    doctor = models.CharField(max_length=20)
+
+
+class Precreption_Item(models.Model):
+    pres = models.ForeignKey(Precreption, on_delete=models.CASCADE)
+    medicine_category = models.CharField(max_length=255) 
+    medicine = models.CharField(max_length=20)
+    dosage = models.CharField(max_length=13)
+    does_interval = models.CharField(max_length=15)
+    
+    dose_duration = models.CharField(max_length=15)
+    instruction = models.TextField(null=True)
 
