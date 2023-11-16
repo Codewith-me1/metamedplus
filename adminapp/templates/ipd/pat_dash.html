@@ -195,6 +195,7 @@
                     <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consultant</a></li>
                     <li class="ipd-nav-item"><a href="#operation" class="ipd-nav-link">Operation</a></li>
                     <li class="ipd-nav-item"><a href="#payment" class="ipd-nav-link">Payment</a></li>
+                    <li class="ipd-nav-item"><a href="#prescription" class="ipd-nav-link">Prescription</a></li>
                     <!-- Add more menu items as needed -->
                 </ul>
             </div>
@@ -942,6 +943,116 @@
                 <div class="form-group">
                     <label for="note">Note</label>
                     <textarea id="note" name="note" rows="4"></textarea>
+                </div>
+
+                   
+               
+                                
+                                            
+                                            <div style="text-align: center;">
+                                                <input type="submit" value="Submit">
+                                             </div>
+                                             
+             </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+        
+        <table class="table">
+            <thead>
+              <tr>
+                
+                
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Payment Mode </th>  
+                
+                
+               
+               
+              </tr> 
+            </thead>
+            <tbody>
+              
+              {% for payment  in payment %}
+                <tr>
+                    
+                  <td>{{ payment.date }}</td>
+                  <td>{{ payment.amount }}</td>
+                    
+                  <td>{{ payment.payment_mode}}</td>
+                  
+                  
+                  
+                
+                
+              {% endfor %}
+              
+            
+            </tbody>
+          </table>
+        
+          
+</section>
+
+
+
+
+
+<section id="prescription"class="prescription toggeable " >
+    <div class="main-header">
+        <h1 class="headline">Add Prescription</h1>
+        <div class="side-btns">
+        
+        
+        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+        <button  class="btn-primary btn openPopupBtn" data-popup="8" class="openPopupBtn" id="openPopupBtn">Add Prescription</button>
+        
+    </div>    
+        </div>
+
+        
+<div id="popupContainer8" class="form-popup-back">
+<div class="form-Contain">
+    <div class="POP">
+        <div class="cards">
+          <div class="popup-header">
+            <span id="closePopupBtn" class="close-button">Close</span>
+            <h1>Add Prescription </h1>
+          </div>
+          {% for ipd in ipd %}
+          
+          
+
+           
+            <form class="form_popup" method="post" action="{% url 'ipd_payment' ipd.id%}">
+                {% endfor %}
+                {% csrf_token %}
+                 <!-- Basic Information -->
+                 <div class="form-group">
+                    <label for="finding_category">Finding Category</label>
+                    <input type="text" id="finding_category" name="finding_category" required>
+                </div>
+                <div class="form-group">
+                    <label for="findings">Finding</label>
+                    <input type="text" step="0.01" id="findings" name="findings" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor">Prescribed By</label>
+                    <select id="doctor" name="doctor">
+                        <option value="">Select A Doctor </option>
+                        {% for doctor in doctor %}
+                            <option value="{{doctor.first_name}}">{{ doctor.first_name }}</option>
+            
+                        {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="finding_description">Finding Description</label>
+                    <textarea id="finding_description" name="finding_description" rows="4"></textarea>
                 </div>
 
                    

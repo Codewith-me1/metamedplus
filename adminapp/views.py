@@ -2542,11 +2542,18 @@ def add_doctor_record(request,id):
 def ipd_dashboard(request,ipd_id):
     ipd = IpdPatient.objects.filter(pk=ipd_id)
     nurse= NursingRecord.objects.all()
-    staff = AddStaff.objects.filter(designation="nurse")
-    doctor  = AddStaff.objects.filter(designation="doctor")
+    staff = AddStaff.objects.filter(role="Nurse")
+    doctor  = AddStaff.objects.filter(role="Doctor")
     medicine = MedicationDoseage.objects.all()
     consultant = Consultant_register.objects.all()
     operation = Operation.objects.all()
+
+    dosage = Med_Details.objects.all()
+    cat = Med_Category.objects.all()
+    medicine_name = Medicine.objects.all()
+    context= {
+        
+    }
     payment = Ipd_Payments.objects.all()
 
     
@@ -2563,6 +2570,9 @@ def ipd_dashboard(request,ipd_id):
         'ipd':ipd,
         'doctor':doctor,
         'medicine':medicine,
+        'dosage':dosage,
+        'cat':cat,
+        'medicine_name':medicine_name,
         'consultant':consultant,
         'operation':operation,
         'payment':payment,
@@ -6572,13 +6582,13 @@ def ambulance_report(request):
     return render(request,'reports/ambulance.html',context)
 
 
-def prescription(request):
+def prescription(request,id):
     if request.method == 'POST':
         # Retrieve data from the form
         finding_category = request.POST.get('finding_category')
-        findings = request.POST.get('phone_number')
-        finding_description = request.POST.get('invoice_number')
-        doctor = request.POST.get('invoice_date')
+        findings = request.POST.get('findings')
+        finding_description = request.POST.get('finding_description')
+        doctor = request.POST.get('doctor')
   
         item_counter = request.POST.get('item_counter', 0)
         
@@ -6588,8 +6598,9 @@ def prescription(request):
         else:
             item_counter = 0  
 
-
+        patient = Patient.objects.get(id=id)
         pres =Precreption (
+            patient=patient,
             finding_category=finding_category,
             findings=findings,
             finding_description=finding_description,
@@ -6604,14 +6615,34 @@ def prescription(request):
 
         for i in range(1, item_counter + 1):
             
-            
             medicine_category = request.POST.get(f'medicine_category_{i}')
+            
+            medicine_categorys = re.sub(r'\d', '',medicine_category)
+            medicine_category  = medicine_categorys.replace("_", "")
+
+
+
             medicine = request.POST.get(f'medicine_{i}')
+            medicines = re.sub(r'\d', '',medicine)
+            medicine  = medicines.replace("_", "")
 
             dosage = request.POST.get(f'dosage_{i}')
+
+            dosages = re.sub(r'\d', '',dosage)
+            dosage  = dosages.replace("_", "")
+
             dose_interval = request.POST.get(f'doseinterval_{i}')
+            dose_intervals = re.sub(r'\d', '',dose_interval)
+            dose_interval  = dose_intervals.replace("_", "")
+
             dose_duration = request.POST.get(f'dose_duration_{i}')
+            dose_durations = re.sub(r'\d', '',dose_durations)
+            dose_duration  = dose_durations.replace("_", "")
+
+
             instruction = request.POST.get(f'instruction_{i}')
+            instructions = re.sub(r'\d', '',instruction)
+            instruction  = instructions.replace("_", "")
 
            
             item = Precreption_Item(
@@ -6640,14 +6671,14 @@ def prescription(request):
         } 
         url = reverse('edit_sales', args=[ids])
         
-        return redirect(url)
+        return redirect('prescreption')
         
-    item = Item_Acc.objects.all()
-    party = Party.objects.all()
-    unit = Unit.objects.all()
+    dosage = Med_Details.objects.all()
+    cat = Med_Category.objects.filter(role="Doctor")
+    medicine = Medicine.objects.all()
     context= {
-        'item':item,
-        'party':party,
-        'unit':unit
+        'dosage':dosage,
+        'cat':cat,
+        'medicine':medicine,
     }
-    return render(request, 'accounts/sales_invoice.html',context)
+    return render(request, 'ipddashboard/nurse.html',context)

@@ -1151,6 +1151,7 @@ def save_user_wallet(sender, instance, **kwargs):
     instance.wallet.save()
 
 class Precreption(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     finding_category = models.CharField(max_length=255)
     findings = models.CharField(max_length=15)
     finding_description = models.TextField()
