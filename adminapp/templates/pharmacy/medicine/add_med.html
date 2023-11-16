@@ -141,11 +141,11 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Patient Name </th>
-        <th>consultant doctor</th>
-        <th>Symptoms Title</th>
-        <th>Systoms</th>
-        <th>Charge Category</th>
+        <th>Medicine Name</th>
+        <th>Medicine Category</th>
+        <th>Unit</th>
+        <th>Tax</th>
+        <th>Composition</th>
        
        
       </tr>
@@ -156,11 +156,11 @@
         <tr>
           
           <td>{{ med.name }}</td>
-          <td>{{ opd.consultant_doctor }}</td>
+          <td>{{ med.category }}</td>
 
-          <td>{{ opd.symptoms_title }}</td>
-          <td>{{ opd.symptoms_type }}</td>  
-          <td>{{ opd.charge_category }}</td>  
+          <td>{{ med.unit }}</td>
+          <td>{{ med.tax }}</td>  
+          <td>{{ med.composition }}</td>  
           
         
         

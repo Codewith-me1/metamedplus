@@ -124,6 +124,7 @@ urlpatterns = [
     path('consultant_register/<int:id>/', views.consultant_register, name='consultant_register'),
     path('ipd_operation/<int:id>/', views.operation_create, name='ipd_operation'),
     path('ipd_payment/<int:id>/', views.ipd_payment, name='ipd_payment'),
+    path('ipd_prep/<int:id>/', views.prescription, name='ipd_prep'),
     path('transcations/', views.all_transcation, name='transcation'),
     path('all_party/',views.all_party,name="all_party"),
     path('expense_category/',views.create_expense_category,name="expense_category"),

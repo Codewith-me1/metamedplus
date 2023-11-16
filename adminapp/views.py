@@ -2551,6 +2551,7 @@ def ipd_dashboard(request,ipd_id):
     dosage = Med_Details.objects.all()
     cat = Med_Category.objects.all()
     medicine_name = Medicine.objects.all()
+    prep = Precreption.objects.all()
     context= {
         
     }
@@ -2566,6 +2567,7 @@ def ipd_dashboard(request,ipd_id):
 
     context ={
         'nurse':nurse,
+        'prep':prep,
         'staff':staff,
         'ipd':ipd,
         'doctor':doctor,
@@ -6610,7 +6612,7 @@ def prescription(request,id):
         
 
         pres.save()
-        id = Precreption_Item.objects.get(id=pres.id)
+        id_item = Precreption.objects.get(id=pres.id)
         total_all_products =0
 
         for i in range(1, item_counter + 1):
@@ -6631,29 +6633,29 @@ def prescription(request,id):
             dosages = re.sub(r'\d', '',dosage)
             dosage  = dosages.replace("_", "")
 
-            dose_interval = request.POST.get(f'doseinterval_{i}')
+            dose_interval = request.POST.get(f'dose_interval_{i}')
             dose_intervals = re.sub(r'\d', '',dose_interval)
             dose_interval  = dose_intervals.replace("_", "")
 
-            dose_duration = request.POST.get(f'dose_duration_{i}')
-            dose_durations = re.sub(r'\d', '',dose_durations)
+            dose_duration = request.POST.get(f'duration_{i}')
+            dose_durations = re.sub(r'\d', '',dose_duration)
             dose_duration  = dose_durations.replace("_", "")
 
 
-            instruction = request.POST.get(f'instruction_{i}')
-            instructions = re.sub(r'\d', '',instruction)
-            instruction  = instructions.replace("_", "")
+            # instruction = request.POST.get(f'instruction_{i}')
+            # instructions = re.sub(r'\d', '',instruction)
+            # instruction  = instructions.replace("_", "")
 
            
             item = Precreption_Item(
             
-                pres=id,
+                pres=id_item,
                 medicine_category=medicine_category,
                 medicine=medicine,
                 dosage=dosage,
-                dose_interval=dose_interval,
+                does_interval =dose_interval,
                 dose_duration=dose_duration,
-                instruction=instruction,
+                # instruction=instruction,
 
                 
 
@@ -6663,15 +6665,14 @@ def prescription(request,id):
             item.save()
             
 
-        ids = invoice.id
-        invoice.total = total_all_products
-        invoice.save()
+        ids = id
+        
         context = {
             'id':ids
         } 
-        url = reverse('edit_sales', args=[ids])
-        
-        return redirect('prescreption')
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
         
     dosage = Med_Details.objects.all()
     cat = Med_Category.objects.filter(role="Doctor")
