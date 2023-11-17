@@ -82,7 +82,7 @@
                         <select name="bag" class="form-control">
                             <option value="" selected>Select</option>
                             {% for bag in bag %}
-                            <option value="{{bag.bag}}">{{ bag.first_name }}</option>
+                            <option value="{{bag.bag}}">{{ bag.bag }}</option>
                         {% endfor %}
                         </select>
                     </div>
@@ -91,9 +91,9 @@
                         <label for="charge_category">Charge Category</label>
                         <select name="charge_category" class="form-control">
                             <option value="" selected>Select</option>
-                            <option value="Category 1">Category 1</option>
-                            <option value="Category 2">Category 2</option>
-                            <option value="Category 3">Category 3</option>
+                            {% for charge in charge %}
+                            <option value="{{charge.charge_category}}" selected>{{charge.charge_category}}</option>
+                            {% endfor %}
                         </select>
                     </div>
             
@@ -148,12 +148,13 @@
 
 
 <div class="main-header">
-<h1 class="headline">Issue Component</h1>
+<h1 class="headline">Issue Blood</h1>
 <div class="side-btns">
 
 
 {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Issue Component</a>
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Issue Blood</a>
+
 
 </div>    
 </div>   

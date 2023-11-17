@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Donor Report</title>
+    <title>Blood Issue Report</title>
 
     
 <div class="container">
@@ -16,7 +16,7 @@
     
     
     
-    <form action='{% url "blood_donor_report" %}'  method="get">
+    <form action='{% url "blood_issue_report" %}'  method="get">
 
         
      
@@ -33,12 +33,12 @@
         </div>
 
         <div class="form-group">
-            <label for="blood_donor">Blood Donor</label>
-            <select id="blood_donor" name="blood_donor">
+            <label for="patient">Patient</label>
+            <select id="patient" name="patient">
                
                 {% for model in model %}
     
-                    <option name="blood_donor" value="{{model.id}}" >{{model.name}}</option>
+                    <option name="patient" value="{{model.id}}" >{{model.name}}</option>
                 {% endfor %}
     
             </select>
@@ -78,7 +78,7 @@
         
             
        
-
+            
 
             
          
@@ -94,11 +94,11 @@
             <tr>
                 
                 <td>{{ item.id }}</td>
-                <td>{{ item.donor_name.name }}</td>
+                <td>{{ item.patient.name }}</td>
               
             
-               <td>{{ item.donor_name.gender }}</td>
-               <td>{{ item.donate_date }}</td>
+               <td>{{ item.patient.gender }}</td>
+               <td>{{ item.issue_date }}</td>
                <td>{{ item.bag }}</td>
                <td>{{ item.standard_charge }}</td>
             

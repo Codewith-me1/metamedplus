@@ -196,4 +196,5 @@ urlpatterns = [
     path('refferal_report/', views.refferal_report, name='refferal_report'),
     path('ambulance_report/', views.ambulance_report, name='ambulance_report'),    
     path('blood_donor_report/', views.blood_donor_report, name='blood_donor_report'),    
+    path('blood_issue_report/', views.blood_issue_report, name='blood_issue_report'),    
 ]   

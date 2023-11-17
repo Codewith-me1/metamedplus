@@ -1173,11 +1173,13 @@ def add_blood_donation(request):
         return redirect('issue_blood')
     blood = BloodDonation_component.objects.all()
     patient = Patient.objects.all()
-    doctor = AddStaff.objects.filter(designation="doctor")
+    doctor = AddStaff.objects.filter(role="Doctor")
+    charge = Charge.objects.all()
     bag = BloodDonation.objects.all()
     context = { 
         'blood' : blood,
         'patient':patient,
+        'charge':charge,
         'doc':doctor,
         'bag':bag,  
     }
@@ -6712,7 +6714,15 @@ def blood_donor_report(request):
                 donor_name__gender=gender
 
             )
+
+        elif not blood_group and not blood_donor:
+             blood_donation = BloodDonation.objects.filter(
+                
+                donor_name__gender=gender
+
+            )
         else:
+
             blood_donation = BloodDonation.objects.filter(
                 donor_name = blood_donor,
                 donor_name__gender=gender,
@@ -6738,3 +6748,64 @@ def blood_donor_report(request):
         'model':donor,
     }
     return render(request,'reports/blood_donor.html',context)
+
+
+
+def blood_issue_report(request):
+    if request.method == 'GET':
+        gender = request.GET.get('gender')
+        patient = request.GET.get('patient')
+        blood_group = request.GET.get('blood_group')
+        
+        if not patient:
+            patient = 1
+        if not gender:
+            patient = Patient.objects.get(id=patient)
+            blood_donation = BloodDonation_component.objects.filter(
+                patient = patient,
+                blood_group=blood_group,
+
+            )
+
+        elif not blood_group:
+            patient = Patient.objects.get(id=patient)
+            blood_donation = BloodDonation_component.objects.filter(
+                patient__gender=gender,
+
+
+            )
+
+        elif not blood_group and not patient:
+             blood_donation = BloodDonation_component.objects.filter(
+                
+                patient__gender=gender
+
+            )
+        else:
+            patient = Patient.objects.get(id=patient)
+
+            blood_donation = BloodDonation_component.objects.filter(
+                patient = patient,
+                patient__gender=gender,
+                blood_group = blood_group,
+
+            )
+
+      
+        donor = Patient.objects.all()
+
+        context = {
+            'result':blood_donation,
+            'model':donor,
+        
+        }
+
+        return render(request,'reports/blood_issue.html',context)
+
+        
+    donor = Patient.objects.all()
+
+    context = {
+        'model':donor,
+    }
+    return render(request,'reports/blood_issue.html',context)

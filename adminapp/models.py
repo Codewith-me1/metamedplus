@@ -285,7 +285,7 @@ class Donor_det(models.Model):
 class BloodDonation_component(models.Model):
     patient =  models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
     reference_name = models.CharField(max_length=255)
-    issue_date = models.CharField(max_length=20,  )
+    issue_date = models.CharField(max_length=20)
     hospital_doctor = models.CharField(max_length=255,  blank=True, null=True)
     technician = models.CharField(max_length=255, blank=True, null=True)
     blood_group = models.CharField(max_length=3,  blank=True, null=True)
