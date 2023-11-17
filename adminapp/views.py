@@ -2630,8 +2630,10 @@ def blood_donation_form(request):
         net_amount = (request.POST.get('net_amount',0))
         payment_amount = (request.POST.get('payment_amount',0))
 
+
+        donor = Donor_det.objects.get(id =donor_name)
         blood_donation = BloodDonation(
-            donor_name=donor_name,
+            donor_name=donor,
             donate_date=donate_date,
             bag=bag,
             volume=volume,
@@ -6683,3 +6685,56 @@ def prescription(request,id):
         'medicine':medicine,
     }
     return render(request, 'ipddashboard/nurse.html',context)
+
+
+
+
+
+
+
+def blood_donor_report(request):
+    if request.method == 'GET':
+        gender = request.GET.get('gender')
+        blood_donor = request.GET.get('blood_donor')
+        blood_group = request.GET.get('blood_group')
+        
+        if not gender:
+
+            blood_donation = BloodDonation.objects.filter(
+                donor_name = blood_donor,
+                donor_name__blood_group = blood_group,
+
+            )
+
+        elif not blood_group:
+            blood_donation = BloodDonation.objects.filter(
+                donor_name = blood_donor,
+                donor_name__gender=gender
+
+            )
+        else:
+            blood_donation = BloodDonation.objects.filter(
+                donor_name = blood_donor,
+                donor_name__gender=gender,
+                donor_name__blood_group = blood_group,
+
+            )
+
+      
+        donor = Donor_det.objects.all()
+
+        context = {
+            'result':blood_donation,
+            'model':donor,
+        
+        }
+
+        return render(request,'reports/blood_donor.html',context)
+
+        
+    donor = Donor_det.objects.all()
+
+    context = {
+        'model':donor,
+    }
+    return render(request,'reports/blood_donor.html',context)

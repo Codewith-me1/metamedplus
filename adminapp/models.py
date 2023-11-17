@@ -270,28 +270,16 @@ class Purchase(models.Model):
 class Donor_det(models.Model):
     id = models.AutoField(primary_key=True) 
     
-    name = models.CharField(max_length=255, verbose_name='Donor Name')
-    date_of_birth = models.DateField(verbose_name='Date of Birth')
+    name = models.CharField(max_length=255)
+    date_of_birth = models.DateField()
     blood_group = models.CharField(max_length=3)
     gender = models.CharField(max_length=10)
-    father_name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Father Name')
-    contact_no = models.CharField(max_length=15, blank=True, null=True, verbose_name='Contact No')
-    address = models.TextField(blank=True, null=True, verbose_name='Address')
+    father_name = models.CharField(max_length=255, blank=True, null=True)
+    contact_no = models.CharField(max_length=15, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
     
-    # total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    # discount_percentage = models.DecimalField(max_digits=5, decimal_places=2 ,default=0,)
-    # discount = models.DecimalField(max_digits=10,  default=0, decimal_places=2 )
-    # tax = models.DecimalField(max_digits=10,  default=0,  decimal_places=2)
-    # net_amount = models.DecimalField(max_digits=10,  default=0, decimal_places=2)
-    # payment_mode = models.CharField(max_length=255)
-    # payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural = 'Donors'
-
+   
 
     
 class BloodDonation_component(models.Model):
@@ -770,7 +758,7 @@ class MedicationDose(models.Model):
 
 
 class BloodDonation(models.Model):
-    donor_name = models.CharField(max_length=100)
+    donor_name = models.ForeignKey(Donor_det, on_delete=models.CASCADE,null=True)
     donate_date = models.DateField()
     bag = models.CharField(max_length=50)
     volume = models.DecimalField(max_digits=5, decimal_places=2)
@@ -791,8 +779,6 @@ class BloodDonation(models.Model):
     payment_mode = models.CharField(max_length=255)
     payment_amount = models.IntegerField(max_length=10)
 
-    def __str__(self):  
-        return self.donor_name
     
 
 class CustomUser(AbstractUser):

@@ -1,0 +1,122 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor Report</title>
+
+    
+<div class="container">
+ 
+    
+    
+    
+    
+    <form action='{% url "blood_donor_report" %}'  method="get">
+
+        
+     
+
+     
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <input type="text" id="gender" name="gender" placeholder="Male">
+        </div>
+
+        <div class="form-group">
+            <label for="blood_group">Blood Group</label>
+            <input type="text" id="blood_group" name="blood_group" placeholder="A+">
+        </div>
+
+        <div class="form-group">
+            <label for="blood_donor">Blood Donor</label>
+            <select id="blood_donor" name="blood_donor">
+                <option value="model">Select A Model</option>
+                
+                {% for model in model %}
+    
+                    <option name="blood_donor" value="{{model.name}}" >{{model.name}}</option>
+                {% endfor %}
+    
+            </select>
+           
+        </div>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Blood Donor Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>Case ID</th>
+            <th>Patient</th>
+         
+            <th>Gender</th>
+            <th>Death Date</th>
+            <th>Guardian Name</th>
+            <th>Report</th>
+        
+            
+       
+
+
+            
+         
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+            
+
+        {% if result %}
+          {% for item in result %}
+            <tr>
+                
+                <td>{{ item.id }}</td>
+                <td>{{ item.patient_name.name }}</td>
+              
+            
+               <td>{{ item.patient_name.gender }}</td>
+               <td>{{ item.death_date }}</td>
+               <td>{{ item.guardian_name }}</td>
+               <td>{{ item.report }}</td>
+            
+              {% endfor %}
+              </tr>
+      
+        {% else %} 
+        <p>No results found.</p>
+            
+        {% endif %}
+              
+              
+            
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>

@@ -195,4 +195,5 @@ urlpatterns = [
     path('opd_discharge/', views.opd_discharge, name='opd_discharge'),
     path('refferal_report/', views.refferal_report, name='refferal_report'),
     path('ambulance_report/', views.ambulance_report, name='ambulance_report'),    
+    path('blood_donor_report/', views.blood_donor_report, name='blood_donor_report'),    
 ]   
