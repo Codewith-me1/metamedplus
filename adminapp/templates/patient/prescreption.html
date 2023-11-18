@@ -1,0 +1,214 @@
+
+{% include "layout/header.html" %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+<style>
+.prescription{
+    width:100% !important;
+}
+</style>
+
+
+
+<section id="prescription"class="prescription toggeable " >
+  
+    </div>    
+        </div>
+
+        
+
+            <span id="closePopupBtn" class="close-button">Close</span>
+            <h1>Add Prescription </h1>
+          </div>
+          {% for ipd in ipd %}
+          
+          
+
+           
+            <form class="form_popup" method="post" action="{% url 'ipd_prep' ipd.id%}">
+                {% endfor %}
+                {% csrf_token %}
+                 <!-- Basic Information -->
+                 <input type="hidden" name="item_counter" id="item_counter" value="0">
+                 <div class="form-group">
+                    <label for="finding_category">Finding Category</label>
+                    <input type="text" id="finding_category" name="finding_category" required>
+                </div>
+                <div class="form-group">
+                    <label for="findings">Finding</label>
+                    <input type="text" step="0.01" id="findings" name="findings" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor">Prescribed By</label>
+                    <select id="doctor" name="doctor">
+                        <option value="">Select A Doctor </option>
+                        {% for doctor in doctor %}
+                            <option value="{{doctor.first_name}}">{{ doctor.first_name }}</option>
+            
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="pathology">Pathology Test</label>
+                    <select id="pathology" name="pathology">
+                        {% for path in path %}
+                            <option value="{{path.test_name}}">{{ path.test_name }}</option>
+            
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="radiology">Radiology Test</label>
+                    <select id="radiology" name="radiology">
+                        {% for radio in radio %}
+                            <option value="{{radio.test_name}}">{{ radio.test_name }}</option>
+            
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+
+
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Medicine Category </th>
+                        <th>Medicine</th>
+                        <th>Dosage</th>
+                        <th>Interval</th>
+                        <th>Duration</th>
+                        
+            
+                          
+                       
+                      </tr>
+                    </thead>
+                    <tbody class="prep">
+                      
+                       
+        
+                        
+                    </tbody>
+                  </table>
+        
+
+                   
+               
+                                
+                                            
+                                            <div style="text-align: center;">
+                                                <input type="submit" value="Submit">
+                                             </div>
+                                             
+                                          
+                                    
+                                    
+                                            
+                                        </form>
+                                    
+                                        <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
+
+                                        
+                                    
+
+
+
+
+<script>
+    
+ 
+    itemCounter = 0;
+    function createNewItemRow() {
+           
+        itemCounter++;
+        $('#item_counter').val(itemCounter);
+
+        const newRow = `
+        <tr class="item-row" id="itemRow${itemCounter}">
+            <td>
+                <select class="form-control" id="medicine_category_${itemCounter}" name="medicine_category_${itemCounter}">
+                    <option value="medicine_category">Select An Item</option>
+                    {% for cat in cat %}
+                        <option value="{{cat.medicine_category}}" >{{cat.medicine_category}}</option>
+                        <!-- Add more category options as needed -->
+                    {% endfor %}
+                </select>
+            </td>
+            
+            <td>
+                <select class="form-control" id="medicine_${itemCounter}" name="medicine_${itemCounter}">
+                    <option value="medicine">Select A medicine</option>
+                    {% for name in medicine %}
+                        <option value="{{name.name}}" >{{name.name}}</option>
+                        <!-- Add more category options as needed -->
+                    {% endfor %}
+                </select>
+            </td>
+
+          
+
+            <td>
+                <select class="form-control" id="dosage_${itemCounter}" name="dosage_${itemCounter}">
+                    <option value="medicine">Select A dosage</option>
+                    {% for dosage in dosage %}
+                        <option value="{{dosage.dose}}" >{{dosage.dose}}</option>
+                        <!-- Add more category options as needed -->
+                    {% endfor %}
+                </select>
+            </td>
+
+            <td>
+                <select class="form-control" id="dose_interval_${itemCounter}" name="dose_interval_${itemCounter}">
+                    <option value="dose_interval">Select A Interval</option>
+                    {% for dosage in dosage %}
+                        <option value="{{dosage.interval}}" >{{dosage.interval}}</option>
+                       
+                    {% endfor %}
+                </select>
+            </td>
+
+
+            <td>
+                <select class="form-control" id="duration_${itemCounter}" name="duration_${itemCounter}">
+                    <option value="duration">Select A duration</option>
+                    {% for dosage in dosage %}
+                        <option value="{{dosage.duration}}" >{{dosage.duration}}</option>
+                        <!-- Add more category options as needed -->
+                    {% endfor %}
+                </select>
+            </td>
+
+        </tr>
+    `;
+
+    // Append the new row to the table body
+    $('.prep').append(newRow);
+        
+    }
+    createNewItemRow();
+    
+
+    // Function to remove an item row
+    function removeItemRow(rowNumber) {
+        // Remove the specified item row
+        $(`#itemRow${rowNumber}`).remove();
+    }
+
+    // Add an event listener to the "Add Item" button
+    $('#addItemButton').on('click', function () {
+        createNewItemRow();
+    });
+</script>

@@ -30,9 +30,15 @@
                         <select class="form-control" id="patient" name="patient">
                             <option value="patient">Select A patient</option>
         
-                            {% for patient in patient %}
+                            {% for patient in patient_opd %}
         
-                                <option value="{{patient.id}}" >{{patient.name}}</option>
+                                <option value="{{patient.patient.id}}" >{{patient.patient.name}} OPD </option>
+                            {% endfor %}
+
+
+                            {% for patient_ipd in patient_ipd %}
+        
+                                <option value="{{patient_ipd.patient.id}}" >{{patient_ipd.patient.name}} IPD </option>
                             {% endfor %}
         
         
@@ -116,7 +122,9 @@
             <td>{{ opd.discharged}}</td>
             
             {% endfor %}
+        </tr>
 
+        <tr>
             {% for ipd in ipd %}
             <td>{{ ipd.id }}</td>
 
@@ -128,7 +136,7 @@
             {% endfor %}
 
 
-          </tr>
+        </tr>
      
       </tbody>
     </table>

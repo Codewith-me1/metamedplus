@@ -1014,12 +1014,14 @@
         <div class="side-btns">
         
         
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <button  class="btn-primary btn openPopupBtn" data-popup="8" class="openPopupBtn" id="openPopupBtn">Add Prescription</button>
+            {% for ipd in ipd %}
+        
+             <a href="/prescreption/{{ipd.id}}">Add Prescription</a>
+            {% endfor %}
         
     </div>    
         </div>
-
+{% comment %} 
         
 <div id="popupContainer8" class="form-popup-back">
 <div class="form-Contain">
@@ -1111,7 +1113,7 @@
     </div>
 </div>
 </div>
-
+ {% endcomment %}
 
         
         <table class="table">

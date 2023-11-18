@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # Create your models here.
+import datetime
 from datetime import timezone
 class User(models.Model):
   firstname = models.CharField(max_length=255)
@@ -826,6 +827,7 @@ class Payroll(models.Model):
     tax_percentage = models.FloatField( default=0.00)
     tax = models.IntegerField(default=0)
     net_salary = models.IntegerField(default=0)
+    date = models.DateField(default=datetime.date.today())
 
 
 class Zoom(models.Model):
@@ -1141,6 +1143,8 @@ class Precreption(models.Model):
     finding_category = models.CharField(max_length=255)
     findings = models.CharField(max_length=15)
     finding_description = models.TextField()
+    pathology = models.ForeignKey(Pathology, on_delete=models.CASCADE,null=True)
+    radiology = models.ForeignKey(Radiology, on_delete=models.CASCADE,null=True)
     doctor = models.CharField(max_length=20)
 
 
@@ -1149,6 +1153,7 @@ class Precreption_Item(models.Model):
     medicine_category = models.CharField(max_length=255) 
     medicine = models.CharField(max_length=20)
     dosage = models.CharField(max_length=13)
+    
     does_interval = models.CharField(max_length=15)
     
     dose_duration = models.CharField(max_length=15)

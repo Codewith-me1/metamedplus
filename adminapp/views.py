@@ -6374,11 +6374,13 @@ def discharge(request):
         return redirect('discharged_patient')
     ipd_discharge = IpdPatient.objects.filter(discharged_status=True)
     opd_discharge = OpdPatient.objects.filter(discharged_status=True)
-    patient = Patient.objects.all()
+    patient_ipd = IpdPatient.objects.all()
+    patient_opd = OpdPatient.objects.all()
     context ={
         'ipd':ipd_discharge,
         'opd':opd_discharge,
-        'patient':patient,
+        'patient_ipd':patient_ipd,
+        'patient_opd':patient_opd,
     }
     return render(request,'patient/discharged.html',context)
 
@@ -6595,10 +6597,15 @@ def prescription(request,id):
         findings = request.POST.get('findings')
         finding_description = request.POST.get('finding_description')
         doctor = request.POST.get('doctor')
-  
+        path = request.POST.get('path')
+        radio = request.POST.get('radio')
+        
         item_counter = request.POST.get('item_counter', 0)
         
-        print(item_counter)
+        
+
+        
+        
         if item_counter.isdigit():
             item_counter = int(item_counter)
         else:
@@ -6610,7 +6617,9 @@ def prescription(request,id):
             finding_category=finding_category,
             findings=findings,
             finding_description=finding_description,
-            doctor=doctor
+            doctor=doctor,
+            pathology = path,
+            radiology=radio,
            
         )
         
@@ -6646,11 +6655,7 @@ def prescription(request,id):
             dose_duration  = dose_durations.replace("_", "")
 
 
-            # instruction = request.POST.get(f'instruction_{i}')
-            # instructions = re.sub(r'\d', '',instruction)
-            # instruction  = instructions.replace("_", "")
-
-           
+  
             item = Precreption_Item(
             
                 pres=id_item,
@@ -6659,7 +6664,7 @@ def prescription(request,id):
                 dosage=dosage,
                 does_interval =dose_interval,
                 dose_duration=dose_duration,
-                # instruction=instruction,
+               
 
                 
 
@@ -6671,27 +6676,74 @@ def prescription(request,id):
 
         ids = id
         
+
         context = {
             'id':ids
         } 
         url = reverse('ipd_dashboard', args=[id])
         url+= "#nurse"
         return redirect(url)
-        
+
     dosage = Med_Details.objects.all()
-    cat = Med_Category.objects.filter(role="Doctor")
+    cat = Med_Category.objects.all()
+    doctor = AddStaff.objects.filter(role="Doctor")
     medicine = Medicine.objects.all()
-    context= {
+  
+
+
+    try:
+        radio = Radiology.objects.get(patient=id)
+    except ObjectDoesNotExist:
+        radio = None
+
+    try:
+        path = Pathology.objects.get(patient=id)
+    except ObjectDoesNotExist:
+        path = None
+
+    if not radio and not path:
+        context = {
+        
         'dosage':dosage,
         'cat':cat,
         'medicine':medicine,
-    }
-    return render(request, 'ipddashboard/nurse.html',context)
+        'doctor':doctor,
+        }
+    elif not path:
+        context = {
+        'radio':radio,
+        'dosage':dosage,
+        'cat':cat,
+        'medicine':medicine,
+        'doctor':doctor,
+        } 
+
+    elif not radio:
+        context = {
+        'path':path,
+        'dosage':dosage,
+        'cat':cat,
+        'medicine':medicine,
+        'doctor':doctor,
+        } 
+
+    else:
+        context = {
+        'path':path,
+        'radio':radio,
+        'dosage':dosage,
+        'cat':cat,
+        'medicine':medicine,
+        'doctor':doctor,
+        } 
+
+    
+    
+
+    return render(request, 'patient/prescreption.html',context)
 
 
-
-
-
+    
 
 
 def blood_donor_report(request):
