@@ -198,5 +198,6 @@ urlpatterns = [
     path('blood_donor_report/', views.blood_donor_report, name='blood_donor_report'),    
     path('blood_issue_report/', views.blood_issue_report, name='blood_issue_report'),    
     path('prescreption/<int:id>', views.prescription, name='prescription'),    
+    path('payroll_report', views.payroll_report, name='payroll_report'),    
 
 ]   

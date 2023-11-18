@@ -869,7 +869,6 @@ def ipd_patient(request):
             patient = Patient.objects.get(id=patient_name)
             pat = Patient.name
         except Patient.DoesNotExist:
-            # Handle the case where the patient does not exist
             return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
         
 
@@ -900,7 +899,7 @@ def ipd_patient(request):
         url = reverse('ipd_dashboard', args=[ipd.id])
         url+= "#overview"
         return redirect(url)
-         # Redirect to a success page
+
     type = Symtopms.objects.all()
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
@@ -6374,8 +6373,8 @@ def discharge(request):
         return redirect('discharged_patient')
     ipd_discharge = IpdPatient.objects.filter(discharged_status=True)
     opd_discharge = OpdPatient.objects.filter(discharged_status=True)
-    patient_ipd = IpdPatient.objects.all()
-    patient_opd = OpdPatient.objects.all()
+    patient_ipd = IpdPatient.objects.filter(discharged_status=False)
+    patient_opd = OpdPatient.objects.filter(discharged_status=False)
     context ={
         'ipd':ipd_discharge,
         'opd':opd_discharge,
@@ -6861,3 +6860,81 @@ def blood_issue_report(request):
         'model':donor,
     }
     return render(request,'reports/blood_issue.html',context)
+
+
+def payroll_report(request):
+
+    if request.method == 'GET':
+        role = request.GET.get('role')
+        month = request.GET.get('month')
+        year = request.GET.get('year')
+        
+        if  month == "all":
+            payroll = Payroll.objects.filter(
+                staff__role= role,
+                date__year=year,
+
+            )
+            
+
+
+        else:
+            payroll = Payroll.objects.filter(   
+                staff__role= role,
+                date__month=month,
+                date__year=year,
+
+            )
+
+        print(payroll)
+        role = Role.objects.all()
+        context = {
+            'result':payroll,
+            'role':role,
+        
+        }
+
+        return render(request,'reports/payroll.html',context)
+
+        
+    
+    role = Role.objects.all()
+    context={
+        'role':role,
+    }
+    return render(request,'reports/payroll.html',context)
+
+
+
+
+# def certicate_death(request,id):
+#     ipd_patient = IpdPatient.objects.get(id=id)
+#     hospital_name = header.objects.all()
+   
+
+#     context = {
+#             'id':ipd_patient.id,
+#             'name':ipd_patient.patient.name,
+#             'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+#             'phone':ipd_patient.patient.phone,
+#             'doctor':ipd_patient.consultant_doctor,
+#             'bed':ipd_patient.bed_number,
+#             'gender':ipd_patient.patient.gender,
+#         }
+#     template = get_template('templat/opd_pdf.html')
+#     html = template.render(context)
+
+#     # Create a response object with PDF content type
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="opd.pdf"'
+
+#     # Generate PDF from HTML using ReportLab and pisa
+#     pisa_status = pisa.CreatePDF(html, dest=response)
+
+#     # Return the response
+#     if pisa_status.err:
+#         return HttpResponse('PDF generation failed', content_type='text/plain')
+    
+#     return response
+
+
