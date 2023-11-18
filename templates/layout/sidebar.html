@@ -438,6 +438,9 @@ body{
             <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
             <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
             <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
+            <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
+            <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
+            <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
             <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
             <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
 
@@ -584,6 +587,7 @@ body{
                 <a class="dropdown-a" href="{% url "add_charge" %}">Charges</a>
                 <a class="dropdown-a" href="{% url "tax_cat" %}">Tax Unit & Category</a>
                 <a class="dropdown-a" href="{% url "charge_name" %}">Charge Type </a>
+                <a  class="dropdown-a"href="{% url 'discharged_patient' %}">Discharged Patient</a>
 
 
 
@@ -1015,6 +1019,7 @@ body{
              
              
              <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
+             
 
 
 
