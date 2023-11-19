@@ -629,12 +629,17 @@ def doctor(request):
     total_med = Purchase.objects.all().aggregate(
         total_balance=Sum(F('amount'))
         )['total_balance'] or 0
+    
+    total_radio= Radiology.objects.all().aggregate(
+        total_radio=Sum(F('total'))
+        )['total_radio'] or 0
 
     context ={
             'opd':total_opd,
             'ipd':total_ipd,
             'path':total_path,
             'blood':total_blood,
+            'radio':total_radio,
             'ambulance':total_ambu,
             'med':total_med,
 
@@ -870,6 +875,8 @@ def ipd_patient(request):
             pat = Patient.name
         except Patient.DoesNotExist:
             return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
+        
+        
         
 
 

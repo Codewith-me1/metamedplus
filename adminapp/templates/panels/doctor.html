@@ -277,7 +277,7 @@
 .main-cards{
    display: grid;
    gap: 10px;
-   grid-template-columns: auto auto auto auto auto auto auto ;
+   grid-template-columns: auto auto auto auto auto auto auto auto ;
    align-items: start;
    justify-content: start;
    margin: 1rem;
@@ -386,12 +386,29 @@ color:#6A727A !important;
             <img class="img_icon img-3" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADOUlEQVR4nOVZS2sUQRBuJT4QH4maTNXmsYKC4MGTBiGICh4FEf+AKAoeBPHmwbN6UHxhEEREf4AHVw8qTLJVeaCLD+JBCQZEkfi4KIJmqpOWXpLNAzazPenZ3eAHBcPC9nxfd9U33dVKpYSxfOt2YXgvBO/ss1pMMNy8WRi/aEZjQwi/Gs5sVYsBhtszwjgyRb4kguGj6c20q3qGoY4mTTg0l3wpCIdMmG1U9QhTUMs0w9Oy5Kejx7zdtlzVG4TwZgXkp9LptqonaIYzlZKfkU6nVT1AKNgrjNpVgP2PUGZ/TcmbgZZgpl06iyActa5VG/KhatCEvUnJzyrqUDVUXYAwXPBA3kwW9fmqko/y2CWE494EEI5HedhTFfKmgKuEYNgXeT1d1CMmbF6dugBhvOGbvC6tBFxNmXywTwgn0hOA6aWSCbMrhfFDWuT19CoMm8dbVngXoAnOpU1eTwXhWa/kTX9bqzD+rpYAIfxlejeiNwFC2F212edSKl3zQt4QdgjD3xoIGDMDwaaFzz7D9QQEHkZ9sNPu+23YZ02Yq7qtGt6wRgh/upIvN55meOBcC4Pr1yYWoBlPuc5axLCj3HhRf9DpvppwMrkAgj7XF853XLT+7iyAIJ/cOhN8dWMnxbkOcDzRmUFT5miC4vUuQBcjOOIsQBhvubiN6/gu7iSE3c4CNGMhjrzzoOXeRTEiCJ87DyoEn5O6jSuiGHcSgk/uAhj+JHUbV5gYd7Jc/kcB+K1+UghHnQe1hRNTWDlfAjThoxjDGHAeVBjvxtooYc7OXmIb7Q86KyBvi/iOswBNeGxRf8jMYGtbkt6PbwHCqBO3HzXBs5pv5hieqKQQxoO13k5LPjiQWIAxaokmeOntQFNBwerZJvHCclAe+qBu2+oZ7uTiNnpuk4tadikfEMLL7rm7sBCCi8oX7Czak1EVBYT20tCbgKKIMNuoGV6nTp7glSk0rfNKftY9MAOlKKAn9Xtkm07CcMVnl1oIJ4Twkve0mQ8R427N8MZHykR57FK1gDFqqTActkvvsiKTW5RQCA8t2Od9wfRBVhOeEML79jwtBD9sf7MYDN+LvzHe04zHbb/V14v/AZEZgMoACIMGAAAAAElFTkSuQmCC">
             <div class="box-content">
             <h3>
-                Phathalogy Income
+                Pathology Income
             </h3>
             <h1>₹<span class="amount">{{path}}</span></h1>
             </div>
             </div>
         </div>
+
+
+        <div class="card">
+          <div class="content_card">
+            {% comment %} <img src="{% static "/css/images/icons8-doctor-64.png" %}" alt=""> {% endcomment %}
+            <img class="img_icon img-3" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADOUlEQVR4nOVZS2sUQRBuJT4QH4maTNXmsYKC4MGTBiGICh4FEf+AKAoeBPHmwbN6UHxhEEREf4AHVw8qTLJVeaCLD+JBCQZEkfi4KIJmqpOWXpLNAzazPenZ3eAHBcPC9nxfd9U33dVKpYSxfOt2YXgvBO/ss1pMMNy8WRi/aEZjQwi/Gs5sVYsBhtszwjgyRb4kguGj6c20q3qGoY4mTTg0l3wpCIdMmG1U9QhTUMs0w9Oy5Kejx7zdtlzVG4TwZgXkp9LptqonaIYzlZKfkU6nVT1AKNgrjNpVgP2PUGZ/TcmbgZZgpl06iyActa5VG/KhatCEvUnJzyrqUDVUXYAwXPBA3kwW9fmqko/y2CWE494EEI5HedhTFfKmgKuEYNgXeT1d1CMmbF6dugBhvOGbvC6tBFxNmXywTwgn0hOA6aWSCbMrhfFDWuT19CoMm8dbVngXoAnOpU1eTwXhWa/kTX9bqzD+rpYAIfxlejeiNwFC2F212edSKl3zQt4QdgjD3xoIGDMDwaaFzz7D9QQEHkZ9sNPu+23YZ02Yq7qtGt6wRgh/upIvN55meOBcC4Pr1yYWoBlPuc5axLCj3HhRf9DpvppwMrkAgj7XF853XLT+7iyAIJ/cOhN8dWMnxbkOcDzRmUFT5miC4vUuQBcjOOIsQBhvubiN6/gu7iSE3c4CNGMhjrzzoOXeRTEiCJ87DyoEn5O6jSuiGHcSgk/uAhj+JHUbV5gYd7Jc/kcB+K1+UghHnQe1hRNTWDlfAjThoxjDGHAeVBjvxtooYc7OXmIb7Q86KyBvi/iOswBNeGxRf8jMYGtbkt6PbwHCqBO3HzXBs5pv5hieqKQQxoO13k5LPjiQWIAxaokmeOntQFNBwerZJvHCclAe+qBu2+oZ7uTiNnpuk4tadikfEMLL7rm7sBCCi8oX7Czak1EVBYT20tCbgKKIMNuoGV6nTp7glSk0rfNKftY9MAOlKKAn9Xtkm07CcMVnl1oIJ4Twkve0mQ8R427N8MZHykR57FK1gDFqqTActkvvsiKTW5RQCA8t2Od9wfRBVhOeEML79jwtBD9sf7MYDN+LvzHe04zHbb/V14v/AZEZgMoACIMGAAAAAElFTkSuQmCC">
+            <div class="box-content">
+            <h3>
+                Radiology Income
+            </h3>
+            <h1>₹<span class="amount">{{radio}}</span></h1>
+            </div>
+            </div>
+        </div>
+
+
+
         <div class="card">
           <div class="content_card">
             {% comment %} <img src="{% static "css/images/icons8-microscope-50.png" %}" alt=""> {% endcomment %}
