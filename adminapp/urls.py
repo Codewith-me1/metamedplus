@@ -202,6 +202,9 @@ urlpatterns = [
     path('prescreption/<int:id>', views.prescription, name='prescription'),    
     path('payroll_report', views.payroll_report, name='payroll_report'),    
     path('pos_path', views.pos_path, name='pos_path'),    
+    path('pos_pathalogy', views.pos_pathalogy, name='pos_pathalogy'),    
+    path('pos_radiology', views.pos_radiology, name='pos_radiology'),    
     path('pos_radio', views.pos_radio, name='pos_radio'),    
+    path('pos_pharma', views.pos_pharma, name='pos_pharma'),    
 
 ]   

@@ -629,7 +629,16 @@ def doctor(request):
     total_med = Purchase.objects.all().aggregate(
         total_balance=Sum(F('amount'))
         )['total_balance'] or 0
+    
+    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
+        total_indirect=Sum(F('expense_invoice'))
+    )['total_indirect'] or 0
 
+    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
+        total_direct=Sum(F('expense_invoice'))
+    )['total_direct'] or 0
+
+    expense = indirect_expense+direct_expense
     context ={
             'opd':total_opd,
             'ipd':total_ipd,
@@ -637,6 +646,7 @@ def doctor(request):
             'blood':total_blood,
             'ambulance':total_ambu,
             'med':total_med,
+            'expense':expense,
 
         }
      
@@ -5915,6 +5925,24 @@ def item_list(request):
     }
     return render(request, 'pos/pos_home.html',context)
 
+
+
+def pos_pharma(request):
+    items = Item_Acc.objects.all()
+    medicine = Purchase.objects.all()
+    category = Med_Category.objects.all()
+    doctor = AddStaff.objects.filter(role="Doctor")
+
+
+    context={
+        'items':items,
+        'medicine':medicine,
+        'category':category,
+        'doctor':doctor,
+    }
+    return render(request, 'pos/pos_pharma.html',context)
+
+
 def add_to_cart(request, item_id):
     item = Item_Acc.objects.get(id=item_id)
     cart = request.session.get('cart', [])
@@ -7036,6 +7064,20 @@ def pos_path(request):
     return render(request, 'pathalogy/pos_path.html',context)
 
 
+def pos_pathalogy(request):
+    test = Pathology.objects.all()
+
+    doctor = AddStaff.objects.filter(role="Doctor")
+
+
+    context={
+        'test':test,
+  
+        'doctor':doctor,
+    }
+    return render(request, 'pathalogy/pos.html',context)
+
+
 
 
 
@@ -7054,6 +7096,16 @@ def pos_radio(request):
     return render(request, 'radiology/pos_radio.html',context)
 
 
+def pos_radiology(request):
+    test = Radiology.objects.all()
+    doctor = AddStaff.objects.filter(role="Doctor")
+
+
+    context={
+        'test':test,
+        'doctor':doctor,
+    }
+    return render(request, 'radiology/pos.html',context)
 
   
 
@@ -7144,6 +7196,8 @@ def pos_pathpdf(request):
     if pisa_status.err:
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
+
+
 
 
 

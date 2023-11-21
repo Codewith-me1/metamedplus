@@ -95,7 +95,7 @@ form button{
 </style>
 
 <div class='container'>
-    <h2>In House Billing</h2>
+    <h2>Point Of Sale</h2>
 
     <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
         {% csrf_token %}
@@ -108,13 +108,9 @@ form button{
         <div class="pos_composition">
           <div class="form-group">
                          <label for="doctor">Doctor</label>
-                      <select class="form-control doctor" id="doctor" name="doctor"> 
-                        <option  value="">Select A Doctor</option>
-                        {% for doc in doctor %}
+                         <input type="text" name="doctor" id="doctor" >
           
-                          <option  value="{{doc.first_name}}">{{doc.first_name}}</option>
-                          {% endfor %}
-                      </select>
+                     
           
                     </div>
           
