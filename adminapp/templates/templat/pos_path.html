@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <style>
+        #table {
+           font-family: Arial, Helvetica, sans-serif;
+           border-collapse: collapse;
+           width: 100%;
+         }
+         
+         #table td {
+           border: 1px solid #ddd;
+           padding: 8px;
+         }
+         
+         #table tr:nth-child(even){background-color: #f2f2f2;}
+         th{
+             border: 1px solid #ddd;
+             padding:0.7rem 0.7rem 0.7rem 0.7rem !important;
+         }
+         #table th {
+        
+           background-color: #605BFF;
+           color: white;
+         }
+         thead{
+             background-color: #605BFF;
+             
+         }
+ </style>
+</head>
+<body>
+    <h1>Bill</h1>
+    <table id="table">
+
+        <tr>
+            <td><strong>Prescribed By</strong></td>
+            <td>{{ doctor }}</td>
+            
+        </tr>
+     
+
+        <tr>
+            <td><strong>Sub Total</strong></td>
+            <td>{{ sub_total }}</td>
+        </tr>
+        <tr>
+            <td><strong>Tax Percentage</strong></td>
+            <td>{{ tax }}</td>
+        </tr>
+        <tr>
+            <td><strong>Date/Time</strong></td>
+            <td>{{ date_time }}</td>
+            
+        </tr>
+
+        <tr>
+            <td><strong>Patient Name</strong></td>
+            <td>{{ patient }}</td>
+            
+        </tr>
+       
+       
+
+        {% if small_note %}
+        <tr>
+            <td><strong>Small Note</strong></td>
+            <td>{{ small_note }}</td>
+            
+        </tr>
+        
+        {% endif %}
+   
+    </table>
+    
+    <h2>Items</h2>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Test Category</th>
+                <th>Test Name</th>
+
+                <th>Price</th>
+                <th>Payment Mode</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for item  in products %}
+                <tr>
+                    <td>{{ item.cat }}</td>
+                    <td>{{ item.test }}</td>
+                    
+    
+                    <td>{{ item.price }}</td>
+                         
+                   
+
+               
+                 
+                
+            {% endfor %}
+            <td> {{payment}} </td>
+        </tr>
+        </tbody>
+    </table>
+    
+    <h3>Discount {{ discount }}</h3>
+    <h3>Total Amount: {{ grand_total }}</h3>
+</body>
+</html>

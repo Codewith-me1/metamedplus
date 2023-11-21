@@ -232,7 +232,7 @@ def appointment(request):
 
 def appointmentForm(request):
   patients = Patient.objects.all()
-  doctors = AddStaff.objects.filter(designation='doctor')
+  doctors = AddStaff.objects.filter(role='Doctor')
   context={
      'patients':patients,
      "doctor":doctors,
@@ -629,17 +629,12 @@ def doctor(request):
     total_med = Purchase.objects.all().aggregate(
         total_balance=Sum(F('amount'))
         )['total_balance'] or 0
-    
-    total_radio= Radiology.objects.all().aggregate(
-        total_radio=Sum(F('total'))
-        )['total_radio'] or 0
 
     context ={
             'opd':total_opd,
             'ipd':total_ipd,
             'path':total_path,
             'blood':total_blood,
-            'radio':total_radio,
             'ambulance':total_ambu,
             'med':total_med,
 
@@ -874,9 +869,8 @@ def ipd_patient(request):
             patient = Patient.objects.get(id=patient_name)
             pat = Patient.name
         except Patient.DoesNotExist:
+            # Handle the case where the patient does not exist
             return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
-        
-        
         
 
 
@@ -906,7 +900,7 @@ def ipd_patient(request):
         url = reverse('ipd_dashboard', args=[ipd.id])
         url+= "#overview"
         return redirect(url)
-
+         # Redirect to a success page
     type = Symtopms.objects.all()
     bedtype = BedGroup.objects.all()
     bed = Bed.objects.all()
@@ -1372,7 +1366,7 @@ def path_test(request):
         test.save()
         return redirect('path_test')    
     test = Pathology_test.objects.all()
-    doc =  AddStaff.objects.filter(designation='doctor')
+    doc =  AddStaff.objects.filter(role='Doctor')
     charge = Charge.objects.all()
     category = Path_Category.objects.all()
     parameter = Path_Parameter.objects.all()
@@ -1396,8 +1390,8 @@ def Pathology_Index(request):
         referral_doctor = request.POST['referral_doctor']
 
         total = (request.POST.get('total',0))
-        discount_percentage = (request.POST.get('discount_percentage',0))
-        discount = (request.POST.get('discount',0))
+        discount_percentage = (request.POST.get('discount_percentage'))
+        discount = (request.POST.get('discount'))
         tax = (request.POST.get('tax',0))
         net_amount = (request.POST.get('net_amount',0))
         payment_amount = (request.POST.get('payment_amount',0))
@@ -1407,8 +1401,11 @@ def Pathology_Index(request):
         except Patient.DoesNotExist:
             # Handle the case where the patient does not exist
             return render(request, 'myapp/radiology_form.html', {'error_message': 'Patient not found'})
+        
+        test = Pathology_test.objects.get(id=test_name)
         pathology_test = Pathology(
-            test_name=test_name,
+            patient=patient,
+            test_name=test,
             report_days=report_days,
             report_date=report_date,
             tax_percentage=tax_percentage,
@@ -1425,7 +1422,7 @@ def Pathology_Index(request):
         pathology_test.save()
         return redirect('path')
     path = Pathology.objects.all()
-    doc =  AddStaff.objects.filter(designation='doctor')
+    doc = AddStaff.objects.filter(role='Doctor')
     patient = Patient.objects.all()
     test = Pathology_test.objects.all()
     context = {
@@ -2269,7 +2266,7 @@ def radio_test(request):
         test.save()
         return redirect('radio_test')    
     test = Radiology.objects.all()
-    doc =  AddStaff.objects.filter(designation='doctor')
+    doc =  AddStaff.objects.filter(role='Doctor')
     charge = Charge.objects.all()
     category = Radio_Category.objects.all()
     parameter = Radio_Parameter.objects.all()
@@ -5907,12 +5904,14 @@ def item_list(request):
     items = Item_Acc.objects.all()
     medicine = Purchase.objects.all()
     category = Med_Category.objects.all()
+    doctor = AddStaff.objects.filter(role="Doctor")
 
 
     context={
         'items':items,
         'medicine':medicine,
         'category':category,
+        'doctor':doctor,
     }
     return render(request, 'pos/pos_home.html',context)
 
@@ -6019,11 +6018,16 @@ def OPD_pdf(request,id):
 
 def pos_pdf(request):
     if request.method == 'POST':
-        # Retrieve data from the form
+        
         sub_total = request.POST.get('sub_total')
         tax = request.POST.get('tax')
         grand_total = request.POST.get('grand_total')
-       
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        medicine_composition = request.POST.get('medicine_composition')
+        payment = request.POST.get('payment')
+        doctor = request.POST.get('doctor')
         item_counter = request.POST.get('item_counter')
         print(item_counter)
         if item_counter.isdigit():
@@ -6039,12 +6043,14 @@ def pos_pdf(request):
             print(item_counter)
             item = request.POST.get(f'med_{i}')
             qty = request.POST.get(f'qty_{i}')
+            cat = request.POST.get(f'cat_{i}')
             items = re.sub(r'\d', '',item)
             item  = items.replace("_", "")
             price = request.POST.get(f'price_{i}')
             expiry = request.POST.get(f'expiry_{i}')
             batch = request.POST.get(f'batch_{i}')
             tax_ = request.POST.get(f'tax_{i}')
+
             total = request.POST.get(f'total_{i}')
            
             
@@ -6055,15 +6061,16 @@ def pos_pdf(request):
                 'tax_':tax_,
                 'expiry':expiry,
                 'batch':batch,
-
+                'cat':cat,
+                
                 'total': total
                 }
     
-   
+            print(product)
             product_list.append(product)
         print(product_list)
 
-        # Redirect to a success page or display a success message
+        
       
         
     
@@ -6071,14 +6078,18 @@ def pos_pdf(request):
         'products':product_list,
         'sub_total':sub_total,
         'tax':tax,
+        'discount':discount,
+        'small_note':small_note,
+                'date_time':date_time,
+                'composition':medicine_composition,
+                'doctor':doctor,
+                'payment':payment,
         'grand_total':grand_total,
     }
 
-    # Render the template
     template = get_template('templat/pos_pdf.html')
     html = template.render(context)
 
-    # Create a response object with PDF content type
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
 
@@ -6093,6 +6104,56 @@ def pos_pdf(request):
 
 
 
+
+
+def path_details(request):
+    selected_value = request.GET.get('id')
+    
+    
+    
+    try:
+        test = Pathology_test.objects.get(id=selected_value)
+        
+      
+
+
+        data = {
+            'success': True,
+            'price':test.amount,
+            'tax':test.tax_percentage,
+   
+            
+        }
+    except Pathology_test.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
+def radio_details(request):
+    selected_value = request.GET.get('id')
+    
+    
+    
+    try:
+        test = Radiology.objects.get(id=selected_value)
+        
+      
+
+
+        data = {
+            'success': True,
+            'price':test.test_name.amount,
+            'tax':test.test_name.tax_percentage,
+   
+            
+        }
+    except Radiology.DoesNotExist:
+        data = {
+            'success': False,
+            'message': 'Details not found for the given Case ID.',
+        }
+    return JsonResponse(data)
 
 def Medicine_Details(request):
     selected_value = request.GET.get('id')
@@ -6380,8 +6441,8 @@ def discharge(request):
         return redirect('discharged_patient')
     ipd_discharge = IpdPatient.objects.filter(discharged_status=True)
     opd_discharge = OpdPatient.objects.filter(discharged_status=True)
-    patient_ipd = IpdPatient.objects.filter(discharged_status=False)
-    patient_opd = OpdPatient.objects.filter(discharged_status=False)
+    patient_ipd = IpdPatient.objects.all()
+    patient_opd = OpdPatient.objects.all()
     context ={
         'ipd':ipd_discharge,
         'opd':opd_discharge,
@@ -6603,8 +6664,9 @@ def prescription(request,id):
         findings = request.POST.get('findings')
         finding_description = request.POST.get('finding_description')
         doctor = request.POST.get('doctor')
-        path = request.POST.get('path')
-        radio = request.POST.get('radio')
+        
+        
+        
         
         item_counter = request.POST.get('item_counter', 0)
         
@@ -6869,6 +6931,7 @@ def blood_issue_report(request):
     return render(request,'reports/blood_issue.html',context)
 
 
+
 def payroll_report(request):
 
     if request.method == 'GET':
@@ -6914,19 +6977,28 @@ def payroll_report(request):
 
 
 
-# def certicate_death(request,id):
-#     ipd_patient = IpdPatient.objects.get(id=id)
-#     hospital_name = header.objects.all()
-   
+
+
+# def certificate(request,id):
+
+    
+    
+#     try:
+#         ipd = IpdPatient.objects.get(patient=id)
+#     except ObjectDoesNotExist:
+#         ipd = None
+
+#     try:
+#         opd = OpdPatient.objects.get(patient=id)
+#     except ObjectDoesNotExist:
+#         opd = None
+
+#    if not ipd:
+
 
 #     context = {
-#             'id':ipd_patient.id,
-#             'name':ipd_patient.patient.name,
-#             'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
-#             'phone':ipd_patient.patient.phone,
-#             'doctor':ipd_patient.consultant_doctor,
-#             'bed':ipd_patient.bed_number,
-#             'gender':ipd_patient.patient.gender,
+#             'id':opd.id,
+            
 #         }
 #     template = get_template('templat/opd_pdf.html')
 #     html = template.render(context)
@@ -6945,3 +7017,135 @@ def payroll_report(request):
 #     return response
 
 
+
+
+
+
+
+def pos_path(request):
+    test = Pathology.objects.all()
+
+    doctor = AddStaff.objects.filter(role="Doctor")
+
+
+    context={
+        'test':test,
+  
+        'doctor':doctor,
+    }
+    return render(request, 'pathalogy/pos_path.html',context)
+
+
+
+
+
+
+def pos_radio(request):
+    test = Radiology.objects.all()
+
+    doctor = AddStaff.objects.filter(role="Doctor")
+
+
+    context={
+        'test':test,
+  
+        'doctor':doctor,
+    }
+    return render(request, 'radiology/pos_radio.html',context)
+
+
+
+  
+
+def pos_pathpdf(request):
+    if request.method == 'POST':
+        
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        
+        payment = request.POST.get('payment')
+        patient = request.POST.get('patient')
+        doctor = request.POST.get('doctor')
+        item_counter = request.POST.get('item_counter')
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+
+            test = request.POST.get(f'test_{i}')
+            
+            tests =  re.sub(r'_.*', '', test)
+
+          
+            test  = tests.replace("_", "")
+           
+            cat = request.POST.get(f'cat_{i}')
+            cate = re.sub(r'\d', '',cat)
+
+            cat  = cate.replace("_", "")
+            price = request.POST.get(f'price_{i}')
+           
+
+            total = request.POST.get(f'total_{i}')
+           
+            
+            product = {
+                'test': test,
+                'cat': cat,
+                'price': price,
+                
+                
+                'total': total
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+        
+    
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'discount':discount,
+        'small_note':small_note,
+                'date_time':date_time,
+                'patient':patient,
+                'doctor':doctor,
+                'payment':payment,
+        'grand_total':grand_total,
+    }
+
+    template = get_template('templat/pos_path.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+
+  

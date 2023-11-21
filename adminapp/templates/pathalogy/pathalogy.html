@@ -41,7 +41,7 @@
                             <select id="test_name" name="test_name">
                                 <option value="">Select a Test Name</option>
                                 {% for test in test %}
-                                    <option value="{{test.test_name}}">{{ test.test_name}}</option>
+                                    <option value="{{test.id}}">{{ test.test_name}}</option>
                                 {% endfor %}
                             </select>
                             
@@ -147,6 +147,7 @@
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Pathalogy </a>
     <a  href="{% url "path_test" %}"class="btn-primary btn" >Add Test</a>
+    <a  href="{% url "pos_path" %}"class="btn-primary btn" >Billing</a>
     
     </div>    
     </div>   

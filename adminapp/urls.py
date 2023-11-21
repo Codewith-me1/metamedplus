@@ -98,6 +98,7 @@ urlpatterns = [
     path('Sales_Party', views.Party_User, name='Sales_Party'),
     path('item_details', views.Item_Details, name='item_details'),
     path('medicine_details', views.Medicine_Details, name='medicine_details'),
+    path('path_details', views.path_details, name='path_details'),
     path('medicine-det', views.Med_det, name='medicine_det'),
     path('pos_details', views.POS_Details, name='pos_details'),
     path('generate_invoice_pdf/<int:id>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
@@ -187,6 +188,7 @@ urlpatterns = [
     path('add_to_cart/<int:item_id>/', views.add_to_cart, name='add_to_cart'),
     path('view_cart/', views.view_cart, name='view_cart'),
     path('pos_pdf/', views.pos_pdf, name='pos_pdf'),
+    path('pos_pathpdf/', views.pos_pathpdf, name='pos_pathpdf'),
     path('stock_report/', views.stock_report, name='stock_report'),
     path('death/', views.death_report, name='death_report'),
     path('birth/', views.birth_report, name='birth_report'),
@@ -199,5 +201,7 @@ urlpatterns = [
     path('blood_issue_report/', views.blood_issue_report, name='blood_issue_report'),    
     path('prescreption/<int:id>', views.prescription, name='prescription'),    
     path('payroll_report', views.payroll_report, name='payroll_report'),    
+    path('pos_path', views.pos_path, name='pos_path'),    
+    path('pos_radio', views.pos_radio, name='pos_radio'),    
 
 ]   

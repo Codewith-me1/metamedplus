@@ -60,6 +60,9 @@ form{
 form button{
   margin-left:15rem;
 }
+.pos_composition{
+  display:flex;
+}
 </style>
 
 <div class='container'>
@@ -77,9 +80,10 @@ form button{
         <table class="table">
             <thead>
               <tr>
+                     <th>Medicine Category</th>
                 
-                <th>Medicine Name</th>
-                
+                     <th>Medicine Name</th>
+           
                 <th>Quantity</th>
                 <th>Batch No</th>
                 <th>Expiry Date</th>
@@ -104,6 +108,58 @@ form button{
         </div>
         <div class="pos_right">
           
+          <div class="pos_composition">
+<div class="form-group">
+               <label for="doctor">Doctor</label>
+            <select class="form-control doctor" id="doctor" name="doctor"> 
+              <option  value="">Select A Doctor</option>
+              {% for doc in doctor %}
+
+                <option  value="{{doc.first_name}}">{{doc.first_name}}</option>
+                {% endfor %}
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label for="payment">Payment Mode</label>
+         <select class="form-control payment" id="payment" name="payment"> 
+           
+
+             <option  value="cash">Cash</option>
+             <option  value="card">Debit/Credit Card</option>
+             <option  value="cheque">cheque</option>
+             <option  value="online">Online/Net Banking</option>
+             <option  value="other">other</option>
+           </select>
+
+       </div>
+
+       <div class="form-group">
+        <label for="date_time">Date/Time</label>
+        <input type="date" name="date_time" id="date_time" >
+
+
+   </div>
+
+       <div class="form-group">
+
+        <label for="small_note">Small Note</label>
+
+        <textarea id="small_note" name="small_note" rows="4" cols="10">
+       
+        </textarea>
+       </div>
+
+       <div class="form-group">
+
+        <label for="medicine_composition">Medicine Composition</label>
+
+        <textarea id="medicine_composition" name="medicine_composition" rows="4" cols="10">
+       
+        </textarea>
+       </div>
+          </div>
             <div class="pos_text">
               <h1> Sub Total</h1>
               <input type="text" name="sub_total" id="sub_total" >
@@ -123,15 +179,15 @@ form button{
      
       </div>
 
-      {% comment %} <div class="pos_text">
+     <div class="pos_text">
         <h1>Discount Amount</h1>
-        <input type="text" name="disc" id="disc" >
+        <input type="text" class="disc" name="disc" id="disc" >
    
-    </div> {% endcomment %}
+    </div>
 
       <div class="pos_text">
-        <h1> Grand Total</h1>
-        <input type="text" name="grand_total" id="total" >
+        <h1> Total</h1>
+        <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
     <button type="submit" class="btn btn-primary">Save Invoice</button>
@@ -139,7 +195,7 @@ form button{
         
         
     </form>
-
+    <button type="none" id="calculate" class="calculate btn btn-primary">Calculate</button>
     <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
 
 
@@ -164,16 +220,29 @@ form button{
             const newRow = `
             <tr class="item-row" id="itemRow${itemCounter}">
             
-
-                <td>
+              <td>
                   
-                  <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}"> 
-                    {% for med in medicine %}
+                <select class="form-control medicine_category" id="cat_${itemCounter}" name="cat_${itemCounter}"> 
+                  {% for med in medicine %}
 
-                      <option  value="{{med.name}}_{{med.id}}">{{med.name}}</option>
-                      {% endfor %}
-                  </select>
-              </td>
+                    <option  value="{{med.category.medicine_category}}">{{med.category.medicine_category}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+
+ 
+              <td>
+                  
+                <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}"> 
+                  {% for med in medicine %}
+
+                    <option  value="{{med.name}}_{{med.id}}">{{med.name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+
 
                 <td><input type="number" value="1" class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
 
@@ -318,14 +387,34 @@ form button{
   const taxAmount = (subTotal * taxInclusive) / 100;
   taxAmountInput.value = taxAmount.toFixed(2);
 
-  const grandTotal = subTotal + taxAmount;
-  grandTotalInput.value = grandTotal.toFixed(2);
+  
 
 
 
 }
 
 
+
+const calculateBtn = document.querySelector('.calculate')
+console.log(calculateBtn)
+calculateBtn.addEventListener('click',calculateDis)
+function calculateDis() {
+  const discountInput = document.querySelector('.disc');
+  const subTotalInput = document.getElementById('sub_total');
+  const totalInput = document.querySelector('.total');  // Updated this line
+  const taxAmountInput = document.getElementById('tax_amt');
+
+  const subTotal = parseFloat(subTotalInput.value) || 0;
+  const discount = parseFloat(discountInput.value) || 0;
+  const tax = parseFloat(taxAmountInput.value) || 0;
+
+  const discountType = (discount / 100) * subTotal;
+  const totalAmount = subTotal + tax - discountType;
+
+  totalInput.value = totalAmount.toFixed(2);  // Updated this line
+  console.log(discountType);
+  console.log(totalAmount);
+}
 
 
 

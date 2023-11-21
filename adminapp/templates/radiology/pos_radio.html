@@ -1,0 +1,420 @@
+<!-- pos/templates/pos/item_list.html -->
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+
+<style>
+
+@media only screen and (max-width:768px) and (min-width:300px) {
+  form{
+    display:block !important;
+  }
+  .pos_right{
+    width:100% !important;
+  }
+  .pos_left{
+    width:90% !important;
+  }
+
+
+}
+form{
+  display:flex;
+}
+.pos_left{
+  width:60%;
+  margin:2rem;
+  background-color:white;
+  border-radius:20px;
+}
+.table{
+  margin-top:3rem;
+}
+.pos_right{
+  width:30%;
+  background-color:white;  
+  border-radius:20px;
+  padding:2rem;
+}
+.pos_right h1{
+  margin:2px !important;
+  
+}
+.pos_text{
+  margin:3rem;
+}
+.pos_text input{
+  color:black !important;
+}
+.pos_text h1{
+ padding:1rem;
+}
+form button{
+  margin-left:15rem;
+}
+.pos_composition{
+  display:flex;
+}
+</style>
+
+<div class='container'>
+    <h2>Point Of Sale</h2>
+
+    <form method="POST" action="{% url "pos_pathpdf" %}" id="invoiceForm">
+        {% csrf_token %}
+        <input type="hidden" name="item_counter" id="item_counter" value="0">
+            <div class="first-container">
+
+            
+        </div>
+       <div class="pos_left">
+
+        <table class="table">
+            <thead>
+              <tr>
+                     <th>Radiology Category</th>
+                     <th>Radiology Test</th>
+           
+           
+                <th>Amount</th>
+      
+                <th>Total</th>
+           
+    
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+               
+
+                
+            </tbody>
+          </table>
+
+
+        </div>
+        <div class="pos_right">
+          
+          <div class="pos_composition">
+<div class="form-group">
+               <label for="doctor">Doctor</label>
+            <select class="form-control doctor" id="doctor" name="doctor"> 
+              <option  value="">Select A Doctor</option>
+              {% for doc in doctor %}
+
+                <option  value="{{doc.first_name}}">{{doc.first_name}}</option>
+                {% endfor %}
+            </select>
+
+          </div>
+
+          <div class="form-group">
+            <label for="payment">Payment Mode</label>
+         <select class="form-control payment" id="payment" name="payment"> 
+           
+
+             <option  value="cash">Cash</option>
+             <option  value="card">Debit/Credit Card</option>
+             <option  value="cheque">cheque</option>
+             <option  value="online">Online/Net Banking</option>
+             <option  value="other">other</option>
+           </select>
+
+       </div>
+
+       <div class="form-group">
+        <label for="date_time">Date/Time</label>
+        <input type="date" name="date_time" id="date_time" >
+
+
+   </div>
+
+       <div class="form-group">
+
+        <label for="small_note">Small Note</label>
+
+        <textarea id="small_note" name="small_note" rows="4" cols="10">
+       
+        </textarea>
+       </div>
+
+       <div class="form-group">
+
+        <label for="path_test">Patient Name</label>
+        <select class="form-control path_test" id="patient" name="patient"> 
+          <option  value="">Select A value</option>
+        {% for test in test %}
+
+          <option  value="{{test.patient.name}}_{{test.id}}">{{test.patient.name}}</option>
+          {% endfor %}
+      </select>
+
+       </div>
+          </div>
+            <div class="pos_text">
+              <h1> Sub Total</h1>
+              <input type="text" name="sub_total" id="sub_total" >
+         
+          </div>
+
+          <div class="pos_text">
+            <h1> Tax Exclusive(%)</h1>
+        
+            <input type="number" name="tax" id="tax" >
+       
+        </div>
+
+        <div class="pos_text">
+          <h1> Tax Amount</h1>
+          <input type="text" name="tax_amt" id="tax_amt" >
+     
+      </div>
+
+     <div class="pos_text">
+        <h1>Discount Amount</h1>
+        <input type="text" class="disc" name="disc" id="disc" >
+   
+    </div>
+
+      <div class="pos_text">
+        <h1> Total</h1>
+        <input type="text" class="total" name="grand_total" id="total" >
+   
+    </div>
+    <button type="submit" class="btn btn-primary">Save Invoice</button>
+        </div>
+        
+        
+    </form>
+    <button type="none" id="calculate" class="calculate btn btn-primary">Calculate</button>
+    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
+
+
+    
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    
+    itemCounter = 0;
+        // Function to create a new row with item fields
+        function createNewItemRow() {
+           
+            itemCounter++;
+            $('#item_counter').val(itemCounter);
+            
+            const newRow = `
+            <tr class="item-row" id="itemRow${itemCounter}">
+            
+
+
+                <td>
+                  
+                    <select class="form-control cate" id="cat_${itemCounter}" name="cat_${itemCounter}"> 
+                        <option  value="">Select A value</option>
+                      {% for test in test %}
+    
+                        <option  value="{{test.test_name.category_name}}">{{test.test_name.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+
+                
+              <td>
+                  
+                <select class="form-control path_test" id="test_${itemCounter}" name="test_${itemCounter}"> 
+                    
+                  {% for test in test %}
+
+                    <option  value="{{test.test_name.test_name}}_{{test.id}}">{{test.test_name.test_name}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+
+
+ 
+
+                <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
+
+   
+                <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
+               
+            </tr> 
+        `;
+    
+        // Append the new row to the table body
+        $('tbody').append(newRow);
+            
+        }
+        
+       
+
+        createNewItemRow();
+        
+    
+        // Function to remove an item row
+        function removeItemRow(rowNumber) {
+            // Remove the specified item row
+            $(`#itemRow${rowNumber}`).remove();
+        }
+    
+        // Add an event listener to the "Add Item" button
+        $('#addItemButton').on('click', function () {
+            createNewItemRow();
+        });
+        
+
+        $(document).ready(function () {
+          // Event delegation for select elements with IDs starting with 'item_'
+          $(document).on('change', '[id^="test_"]', function () {
+              var selectedValue = $(this).val();
+              var parts = selectedValue.split('_');
+              var selectId = $(this).attr('id');
+              var id = parts[1];
+              console.log(id)
+              $.ajax({
+                  url: '/radio_details',
+                  method: 'GET',
+                  data: { id: id },
+                  success: function (data) {
+                    
+                      
+                      var rowNumber = selectId.split('_')[1];
+
+                      
+                  
+                      $('#price_' + rowNumber).val(data.price);
+                  
+                     
+                    
+                  },
+                  error: function (error) {
+                      console.error('Error:', error);
+                  }
+              });
+          });
+          });
+     
+
+
+    $('tbody').on('input', 'input', function () {
+      calculateTotal($(this));
+  });
+
+  // Trigger the initial calculation when the page loads
+  calculateTotal($('input'));
+  
+  function calculateTotal(inputField) {
+      const row = inputField.closest('tr');
+      const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
+     
+     
+
+
+      const total = price 
+
+     
+      row.find('input[id^="total_"]').val(total.toFixed(2));
+
+      const totals = document.querySelectorAll('input[id^="total_"]');
+
+      let grandTotal = 0;
+              totals.forEach(totalInput => {
+                  grandTotal += parseFloat(totalInput.value) || 0;
+              });
+          
+              
+              
+              const grandTotalField = document.getElementById('sub_total'); 
+              if (grandTotalField) {
+                  grandTotalField.value = grandTotal.toFixed(2);
+                  console.log(grandTotalField.value)
+
+
+              } 
+    
+
+             
+  }
+
+
+  const taxInclusiveInput = document.getElementById('tax');
+  const subTotalInput = document.getElementById('sub_total');
+  
+  const med = $('input[id^="total_"]')
+
+  taxInclusiveInput.addEventListener('input', calculateTaxAndGrandTotal);
+
+  subTotalInput.addEventListener('change', calculateTaxAndGrandTotal);
+
+
+
+
+
+  function calculateTaxAndGrandTotal() {
+  const subTotalInput = document.getElementById('sub_total');
+  const taxInclusiveInput = document.getElementById('tax');
+  const taxAmountInput = document.getElementById('tax_amt');
+  const grandTotalInput = document.getElementById('total');
+  
+  const subTotal = parseFloat(subTotalInput.value) || 0;
+
+  console.log(subTotalInput.value)
+  const taxInclusive = parseFloat(taxInclusiveInput.value) || 0;
+
+  
+  const taxAmount = (subTotal * taxInclusive) / 100;
+  taxAmountInput.value = taxAmount.toFixed(2);
+
+  
+
+
+
+}
+
+
+
+const calculateBtn = document.querySelector('.calculate')
+console.log(calculateBtn)
+calculateBtn.addEventListener('click',calculateDis)
+function calculateDis() {
+  const discountInput = document.querySelector('.disc');
+  const subTotalInput = document.getElementById('sub_total');
+  const totalInput = document.querySelector('.total');  // Updated this line
+  const taxAmountInput = document.getElementById('tax_amt');
+
+  const subTotal = parseFloat(subTotalInput.value) || 0;
+  const discount = parseFloat(discountInput.value) || 0;
+  const tax = parseFloat(taxAmountInput.value) || 0;
+
+  const discountType = (discount / 100) * subTotal;
+  const totalAmount = subTotal + tax - discountType;
+
+  totalInput.value = totalAmount.toFixed(2);  // Updated this line
+  console.log(discountType);
+  console.log(totalAmount);
+}
+
+
+
+
+
+
+</script>
+
+

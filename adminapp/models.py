@@ -393,7 +393,7 @@ class Pathology_test(models.Model):
 
 class Pathology(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
-    test_name = models.CharField(max_length=255)
+    test_name =  models.ForeignKey(Pathology_test,on_delete=models.CASCADE)
     report_days = models.PositiveIntegerField()
     report_date = models.DateField()
     tax_percentage = models.IntegerField(max_length=10)
@@ -412,10 +412,33 @@ class Pathology(models.Model):
     def __str__(self):
         return self.test_name
 
+class Radiology_test(models.Model):
+    test_name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=50)
+    test_type = models.CharField(max_length=100, blank=True, null=True)
+    category_name = models.CharField(max_length=100, blank=True, null=True)
+    
+    sub_category = models.CharField(max_length=100, blank=True, null=True)
+    method = models.CharField(max_length=100, blank=True, null=True)
+    report_days = models.PositiveIntegerField(default=0)
+    
+    charge_category = models.CharField(max_length=100, blank=True, null=True)
+    charge_name = models.CharField(max_length=100, blank=True, null=True)
+    tax_percentage = models.IntegerField(max_length=5, blank=True, null=True)
+    standard_charge = models.IntegerField(max_length=10)
+    amount = models.IntegerField(max_length=10)
+    
+    test_parameter_name = models.CharField(max_length=100)
+    reference_range = models.CharField(max_length=100)
+    unit = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.test_name
+    
 
 class Radiology(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=True)
-    test_name = models.CharField(max_length=255)
+    test_name = models.ForeignKey(Radiology_test,on_delete=models.CASCADE, default=True)
     report_days = models.PositiveIntegerField()
     report_date = models.DateField()
     tax_percentage = models.IntegerField(max_length=10)
@@ -673,29 +696,6 @@ class Radio_Parameter(models.Model):
     
 
 
-class Radiology_test(models.Model):
-    test_name = models.CharField(max_length=100)
-    short_name = models.CharField(max_length=50)
-    test_type = models.CharField(max_length=100, blank=True, null=True)
-    category_name = models.CharField(max_length=100, blank=True, null=True)
-    
-    sub_category = models.CharField(max_length=100, blank=True, null=True)
-    method = models.CharField(max_length=100, blank=True, null=True)
-    report_days = models.PositiveIntegerField(default=0)
-    
-    charge_category = models.CharField(max_length=100, blank=True, null=True)
-    charge_name = models.CharField(max_length=100, blank=True, null=True)
-    tax_percentage = models.IntegerField(max_length=5, blank=True, null=True)
-    standard_charge = models.IntegerField(max_length=10)
-    amount = models.IntegerField(max_length=10)
-    
-    test_parameter_name = models.CharField(max_length=100)
-    reference_range = models.CharField(max_length=100)
-    unit = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.test_name
-    
 
 
 class OpdPatient(models.Model):
