@@ -22,3 +22,7 @@
 
     console.log('sfdsjfn')
     
+    function downloadPDF() {
+      var element = document.querySelector('table');
+      html2pdf(element);
+    }

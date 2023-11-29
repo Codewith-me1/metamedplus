@@ -1,0 +1,162 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postal Dispatch</title>
+
+
+{% load static %}
+<!DOCTYPE html>
+
+<style>
+
+    .popup_btns{
+        display:flex;
+        justify-content:center;
+    }
+</style>
+<html>
+<head>
+    <title>Postal Dispatch</title>
+</head>
+<body>
+   
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Postal Dispatch </h1>
+                  </div>
+                  <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                    <div class="form-group">
+                        <label for="title">To Title *</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="reference_no">Reference No</label>
+                        <input type="text" class="form-control" id="reference_no" name="reference_no">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" id="address" name="address"></textarea>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <textarea class="form-control" id="note" name="note"></textarea>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="from_title">From Title</label>
+                        <input type="text" class="form-control" id="from_title" name="from_title">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="">Attach Document</label>
+                        <label class="file_type" for="attach_document">Drop A file</label>
+                                     <input type="file" class="form-control-file" id="attach_document" name="attach_document">
+                    </div>
+                    <div class="popup_btns">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Postal Dispatch</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Dispatch</a>
+   
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>From Title</th>
+            <th>Refrence No</th>
+            <th>To Title</th>
+            <th>Address</th>
+            <th>Note</th>
+            <th>Date</th>
+            
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for postal in postal %}
+            <tr>
+
+                <td>{{ postal.title }}</td>
+                <td>{{ postal.reference_no }}</td>
+               <td>{{ postal.title }}</td>
+              <td>{{ postal.address }}</td>
+              <td>{{ postal.note }}</td>
+              <td>{{ postal.date }}</td>
+              
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </div>
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+        {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
+        const popupContainer = document.getElementById("popupContainer");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    
+    function change(){
+      popupContainer.style.display = "block";
+    }
+    closePopupBtn.addEventListener("click", function() {
+        popupContainer.style.display = "none";
+    }); {% endcomment %}
+       
+    </script>
+</body>
+</html>

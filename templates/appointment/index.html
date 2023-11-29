@@ -33,7 +33,7 @@
   <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}">  {% endcomment %}
   {% comment %} <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}">  {% endcomment %}
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
-  
+  <script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 <style> 
 
   @media only screen and (max-width:768px) and (min-width:300px) {
@@ -249,6 +249,8 @@
                         
                         <div style="text-align: center;">
                             <button class="btn" type="submit" value="Submit">submit</button>
+
+
                         </div>
                     </form>
                 </div>
@@ -265,6 +267,8 @@
   {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
   <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Appointment Form</a>
   <a  class="btn-primary btn" href="/patient/list/">Add Patient</a>
+                              
+
 
 </div>
 
@@ -307,11 +311,29 @@
         {% endfor %}
       </tbody>
     </table>
-
+    <button type="button" class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static "/css/javscript/index.js" %}"></script>
 <script defer src="{% static "/css/javscript/app.js" %}"></script>
+
+<script>
+
+  async function downloadPDF() {
+    // Fetch the HTML content of the table
+    const tableHtml = document.querySelector('.table').outerHTML;
+
+    // Create a new HTML2PDF instance
+    const pdf = await html2pdf();
+
+    // Generate PDF from the HTML content
+    pdf.from({ html: tableHtml }).outputPdf();
+
+    
+    pdf.save('appointments.pdf');
+  }
+</script>
+
 <script>
 
   

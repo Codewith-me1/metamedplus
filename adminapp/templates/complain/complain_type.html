@@ -1,0 +1,108 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complain Type</title>
+
+  {% load static %}
+  <style>
+input{
+    height:38px;
+}
+  </style>
+  <div class='container'>
+      <div id="popupContainer" class="form-popup-back">
+          <div class="form-Contain">
+              <div class="POP">
+                  <div class="cards">
+                    <div class="popup-header">
+                      <span id="closePopupBtn" class="close-button">Close</span>
+                      <h1>Complain Type</h1>
+                    </div>
+                     
+                      <!-- visitor_form.html -->
+<form method="post" >
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" name="name" required>
+    </div>
+
+   
+<div class="visit_button">
+    <button class="btn btn-primary" type="submit">Submit</button>
+</div>
+</form>
+
+                  </div>
+              </div>
+          </div>
+          </div>
+          
+      
+      
+      
+      
+      
+      
+      
+      <div class="main-header">
+      <h1 class="headline">Add Complain Type</h1>
+      <div class="side-btns">
+      
+      
+      {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+      <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Complain Type</a>
+    
+      
+      </div>    
+      </div>   
+  
+  
+  
+  
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+
+          
+           
+            
+            
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for type in type %}
+            <tr>
+                <td>{{ type.name }}</td>
+
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+  
+      </div>
+      
+<script src="{% static "/css/javscript/index.js" %}"></script>
+  <script>
+
+
+      </script>
+  
+  </div>
+  </body>
+  </html> 

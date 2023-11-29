@@ -199,7 +199,7 @@ class Medicine(models.Model):
     company = models.CharField(max_length=255)
     composition = models.CharField(max_length=255)
     group = models.CharField(max_length=255)
-    group = models.CharField(max_length=255)
+    
     unit = models.CharField(max_length=255)
     min_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
     reorder_level = models.DecimalField(max_digits=13, decimal_places=3,blank=True,null=True)
@@ -967,26 +967,12 @@ class Consultant_register(models.Model):
     instruction = models.TextField()
 
 
-class Operation(models.Model):
-   
-    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
-    operation_category = models.CharField(max_length=50)
-    operation_name = models.CharField(max_length=100)
-    operation_date = models.DateField()
-    consultant_doctor = models.CharField(max_length=100)
-    assistant = models.CharField(max_length=50,null=True)
-    assistant2 = models.CharField(max_length=50,null=True)
-
-    anesthesia_type = models.CharField(max_length=100, blank=True)
-    ot_technician = models.CharField(max_length=100, blank=True)
-    ot_assistant = models.CharField(max_length=100, blank=True)
-    remark = models.TextField(blank=True)
-    result = models.TextField(blank=True)
-
-    def __str__(self):
-        return f"{self.operation_name} - {self.operation_date}"
+class Operation_category(models.Model):
+    name = models.CharField(max_length=20)
     
 
+class Operation_name(models.Model):
+    name = models.CharField(max_length=20)
 
 
     
@@ -1159,3 +1145,115 @@ class Precreption_Item(models.Model):
     dose_duration = models.CharField(max_length=15)
     instruction = models.TextField(null=True)
 
+
+class Visitors(models.Model):
+    purpose = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    id_card = models.CharField(max_length=20)
+    visit_to = models.CharField(max_length=10)
+    patient = models.CharField(max_length=10)
+    num_of_person = models.IntegerField()
+    date = models.DateField()
+    in_time = models.TimeField()
+    out_time = models.TimeField()
+    note = models.TextField()
+    document = models.FileField(upload_to='static/visitors', null=True, blank=True)
+
+class Postal_receive(models.Model):
+    title = models.CharField(max_length=100)
+    reference_no = models.CharField(max_length=20)
+    address = models.TextField()
+    note = models.TextField()
+    to_title = models.CharField(max_length=100)
+    date = models.DateField()
+    attach_document = models.FileField(upload_to='static/postal/receive', null=True, blank=True)
+
+
+class Postal_dispatch(models.Model):
+    title = models.CharField(max_length=100)
+    reference_no = models.CharField(max_length=20)
+    address = models.TextField()
+    note = models.TextField()
+    from_title = models.CharField(max_length=100)
+    date = models.DateField()
+    attach_document = models.FileField(upload_to='static', null=True, blank=True)
+
+
+class ComplainType(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class Complain_source(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class Complain(models.Model):
+    complain_type = models.CharField(max_length=20)
+    source = models.CharField(max_length=20)
+    complain_by = models.CharField(max_length=100)
+    phone = models.CharField(max_length=15)
+    date = models.DateField()
+    description = models.TextField()
+    action_taken = models.TextField()
+    assigned = models.CharField(max_length=100)
+    note = models.TextField()
+    attach_document = models.FileField(upload_to='static/complain', null=True, blank=True)
+
+
+class Stock(models.Model):
+    medicine =  models.ForeignKey(Purchase, on_delete=models.CASCADE)
+    stock = models.CharField(max_length=20)
+
+
+
+
+class POS(models.Model):
+    doctor = models.CharField(max_length=20)
+    payment_mode = models.CharField(max_length=20)
+    date = models.DateTimeField()
+    composition = models.CharField(max_length=20)
+    small_note = models.CharField(max_length=20)
+    tax_percent = models.DecimalField(max_digits=13,decimal_places=3)
+    discount_percent = models.DecimalField(max_digits=13,decimal_places=3)
+    net_amount = models.DecimalField(max_digits=13,decimal_places=3)
+    
+# class Pos_item(models.Model):
+#     pos = models.ForeignKey(POS, on_delete=models.CASCADE)
+#     category = models.CharField(max_length=255) 
+#     name = models.CharField(max_length=255) 
+#     qty = models.DecimalField(max_digits=13, decimal_places=3)
+#     batch_no = models.CharField(max_length=13)
+#     expiry_date = models.DecimalField(max_digits=13, decimal_places=3)
+    
+#     price = models.DecimalField(max_digits=13, decimal_places=3)
+#     tax= models.DecimalField(max_digits=13, decimal_places=3)
+   
+   
+#     total = models.DecimalField(max_digits=13, decimal_places=3)
+
+
+
+
+class Operation(models.Model):
+   
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    operation_category = models.CharField(max_length=50)
+    operation_name = models.CharField(max_length=100)
+    operation_date = models.DateField()
+    consultant_doctor = models.ForeignKey(AddStaff,on_delete=models.CASCADE)
+   
+    anesthesia_type = models.CharField(max_length=100, blank=True)
+    ot_technician = models.CharField(max_length=100, blank=True)
+    ot_assistant = models.CharField(max_length=100, blank=True)
+    remark = models.TextField(blank=True)
+    result = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.operation_name} - {self.operation_date}"
+    
+
+
+class Operation_Assistants(models.Model):
+    operation = models.ForeignKey(Operation,on_delete=models.CASCADE)
+    assistant = models.CharField(max_length=20)

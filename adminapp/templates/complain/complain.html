@@ -1,0 +1,171 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complain</title>
+
+  {% load static %}
+  <style>
+input{
+    height:38px;
+}
+  </style>
+  <div class='container'>
+      <div id="popupContainer" class="form-popup-back">
+          <div class="form-Contain">
+              <div class="POP">
+                  <div class="cards">
+                    <div class="popup-header">
+                      <span id="closePopupBtn" class="close-button">Close</span>
+                      <h1>Complain</h1>
+
+                    </div>
+                     
+                      <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                
+                        <div class="form-group">
+                            <label for="complain_type">Complain Type</label>
+                            <select class="form-control" id="complain_type" name="complain_type">
+                                {% for type in type %}
+                                <option value="{{ type.name }}">{{ type.name }}</option>
+                            {% endfor %}
+                               
+                            </select>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="source">Source</label>
+                            <select class="form-control" id="source" name="source">
+                                {% for source in source %}
+                                <option value="{{ source.name }}">{{ source.name }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="complain_by">Complain By *</label>
+                            <input type="text" class="form-control" id="complain_by" name="complain_by" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="action_taken">Action Taken</label>
+                            <textarea class="form-control" id="action_taken" name="action_taken"></textarea>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="assigned">Assigned</label>
+                            <input type="text" class="form-control" id="assigned" name="assigned">
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="note">Note</label>
+                            <textarea class="form-control" id="note" name="note"></textarea>
+                        </div>
+                
+                        <div class="form-group">
+                            <label for="attach_document">Attach Document</label>
+                            <input type="file" class="form-control-file" id="attach_document" name="attach_document">
+                        </div>
+                
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                  </div>
+              </div>
+          </div>
+          </div>
+          
+      
+      
+      
+      
+      
+      
+      
+      <div class="main-header">
+      <h1 class="headline">Add Complain</h1>
+      <div class="side-btns">
+      
+      
+      {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+      <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Complain</a>
+    
+      
+      </div>    
+      </div>   
+  
+  
+  
+  
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Complain Type</th>
+            <th>Complain Source</th>
+            <th>Complain By</th>
+            
+            <th>Date</th>
+            
+            <th>Phone</th>
+            <th>Note</th>
+           
+            
+            
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for complain in complain %}
+            <tr>
+                <td>{{ complain.complain_type }}</td>
+              <td>{{ complain.source }}</td>
+              <td>{{ complain.complain_by }}</td>
+              <td>{{ complain.date }}</td>
+              <td>{{ complain.phone }}</td>
+              <td>{{ complain.note }}</td>
+              
+
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+  
+      </div>
+      
+<script src="{% static "/css/javscript/index.js" %}"></script>
+  <script>
+
+
+    
+      </script>
+  
+  </div>
+  </body>
+  </html> 

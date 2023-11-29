@@ -1,0 +1,30 @@
+<!-- search_results.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+
+    <form  method="get">
+
+        <div class="form-group">
+            <label for="case_id">Case Id </label>
+            <input type="text" name="case_id" placeholder="enter a case id">
+        </div>
+    </form>
+    {% if ipd_result %}
+        <h2>IPD Patient Result:</h2>
+        <!-- Display IPD result details here -->
+        {{ ipd_result }}
+    {% endif %}
+
+    {% if opd_result %}
+        <h2>OPD Patient Result:</h2>
+        <!-- Display OPD result details here -->
+        {{ opd_result }}
+    {% endif %}
+
+  
+</body>
+</html>

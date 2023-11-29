@@ -208,7 +208,8 @@ button a{
 <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
+        
+        <th>ID </th>
         <th>Patient Name </th>
         <th>consultant doctor</th>
         <th>Bed Group</th>
@@ -223,10 +224,12 @@ button a{
       
       {% for ipd in ipd %}
         <tr>
-          <td><a href=" /ipd/{{ipd.id}}/#overview">{{ ipd.id }}</a></td>  
+            <td>{{ ipd.id }}</td>
+          <td><a href=" /ipd/{{ipd.patient.id}}/#overview">{{ ipd.patient }}</a></td>  
        
-          <td>{{ ipd.patient }}</td>
+          
           <td>{{ ipd.consultant_doctor }}</td>
+          
 
           <td>{{ ipd.bed_group }}</td>
           <td>{{ ipd.symptoms_type }}</td>  

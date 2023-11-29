@@ -1,0 +1,125 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medicine Stock</title>
+
+
+    <style>
+        @media only screen and (max-width: 768px) and (min-width: 300px){ 
+        .POP {
+            
+            margin-top: 40rem !important;
+        }
+
+    }
+    </style>
+
+{% load static %}
+<div class="container">
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Add Medicine Stock </h1>
+              </div>
+                <form class="form_popup" enctype="multipart/form-data" method="post" action="{% url 'stock' %}">
+                    {% csrf_token %}
+                    
+                    
+            
+                    <div class="form-group">
+                        <label for="name">Medicine Name</label>
+                        <select id="name" name="name">
+                            <option value="">Select a Medicine Name</option>
+                            {% for medicine in medicine %}
+                                <option value="{{medicine.id}}">{{ medicine.name }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        
+                    </div>
+            
+
+                   
+                
+                    <div class="form-group">
+                        <label for="stock">Add Stock</label>
+                        <input type="text" id="stock" name="stock" required>
+                    </div>
+                    
+        
+                    
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Medicine Stock</h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Stock</a>
+
+</div>    
+</div>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Medicine Name</th>
+        <th>Medicine Category </th>
+        
+        <th>Available Quantity</th>
+       
+       
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for stock in stock %}
+        <tr>
+          
+          <td>{{ stock.id }}</td>
+          <td>{{ stock.medicine.name }}</td>
+          <td>{{ stock.medicine.category }}</td>
+          <td>{{ stock.stock }}</td>
+         
+          
+        
+        
+      {% endfor %}
+      
+    
+    </tbody>
+  </table>
+
+
+
+</div>
+
+
+
+
+<script src="{% static "/css/javscript/index.js" %}"></script>

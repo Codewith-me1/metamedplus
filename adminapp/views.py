@@ -6,20 +6,30 @@ import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
+from .models import Operation_category,Operation_name
 from asgiref.sync import async_to_sync
+from .models import Operation_Assistants
 from django.core.mail import EmailMessage, get_connection
 import stripe
+from .models import Stock
+from .models import Postal_dispatch
+from .models import Postal_receive
 from .models import Precreption,Precreption_Item
 from django.conf import settings
 from datetime import datetime, timedelta
+# from .models import Pos_item,POS
 from django.forms.models import model_to_dict
-
+from .models import ComplainType
 from .models import Liablity
 from .models import Wallet
+from django.core.serializers import serialize
 from .models import Wallet_Transactions
 from django.shortcuts import get_object_or_404
 
+from .models import Visitors
+from .models import Complain
 from .models import SMTPServer
+from .models import Complain_source
 from django.urls import reverse
 from .models import ChatMessages
 from .models import DeathRecord
@@ -2508,8 +2518,9 @@ def add_nursing_record(request,id):
         nurse = request.POST.get('nurse')
         note = request.POST.get('note')
         comment = request.POST.get('comment')
-        patient = get_object_or_404(Patient, id=patient)
-        # Create a new NursingRecord object and save it to the database
+        ipd_details = get_object_or_404(IpdPatient,id=patient)
+        patient = get_object_or_404(Patient, id=ipd_details.patient.id)
+       
         nursing_record = NursingRecord(
             date=date,
             patient = patient,
@@ -2534,12 +2545,13 @@ def add_doctor_record(request,id):
         # Retrieve form data from POST request
         patient = id
         date = request.POST.get('date')
-        doctor = request.POST.get('nurse')
+        doctor = request.POST.get('doctor')
         note = request.POST.get('note')
-        comment = request.POST.get('comment')
-        patient = get_object_or_404(Patient, id=patient)
-        # Create a new NursingRecord object and save it to the database
-        nursing_record = NursingRecord(
+        comment = request.POST.get('comment') 
+        
+        ipd_details = get_object_or_404(IpdPatient,id=patient)
+        patient = get_object_or_404(Patient, id=ipd_details.patient.id)
+        nursing_record = DoctorNote(
             date=date,
             patient = patient,
             doctor=doctor,
@@ -2555,7 +2567,7 @@ def add_doctor_record(request,id):
 
 
 def ipd_dashboard(request,ipd_id):
-    ipd = IpdPatient.objects.filter(pk=ipd_id)
+    ipd = IpdPatient.objects.filter(patient=ipd_id)
     nurse= NursingRecord.objects.all()
     staff = AddStaff.objects.filter(role="Nurse")
     doctor  = AddStaff.objects.filter(role="Doctor")
@@ -2566,7 +2578,11 @@ def ipd_dashboard(request,ipd_id):
     dosage = Med_Details.objects.all()
     cat = Med_Category.objects.all()
     medicine_name = Medicine.objects.all()
+    operation_cate = Operation_category.objects.all()
+    operation_name = Operation_name.objects.all()
     prep = Precreption.objects.all()
+    doc_note = DoctorNote.objects.all()
+
     context= {
         
     }
@@ -2583,15 +2599,19 @@ def ipd_dashboard(request,ipd_id):
     context ={
         'nurse':nurse,
         'prep':prep,
+        'doc_note':doc_note,
         'staff':staff,
         'ipd':ipd,
         'doctor':doctor,
         'medicine':medicine,
+        'operation_category':operation_cate,
+        'operation_name':operation_name,
         'dosage':dosage,
         'cat':cat,
+        'operation':operation,
         'medicine_name':medicine_name,
         'consultant':consultant,
-        'operation':operation,
+        
         'payment':payment,
         'radio':radiology_amount,
     }
@@ -2599,7 +2619,7 @@ def ipd_dashboard(request,ipd_id):
 
 
 
-def add_medication_record(request):
+def add_medication_record(request,id):
     if request.method == 'POST':
         # Retrieve form data from POST request
         date = request.POST.get('date')
@@ -2609,8 +2629,10 @@ def add_medication_record(request):
         dosage = request.POST.get('dosage')
         remarks = request.POST.get('remarks')
 
-        # Create a new MedicationRecord object and save it to the database
+        ipd_details = get_object_or_404(IpdPatient,id=id)
+        patient = get_object_or_404(Patient,id=ipd_details.patient.id)
         medication_record = MedicationDose(
+            patient=patient,
             date=date,
             time=time,
             category=category,
@@ -2620,7 +2642,17 @@ def add_medication_record(request):
         )
         medication_record.save()
 
-    return render(request, 'your_app/medication_record_form.html')
+        url = reverse('ipd_dashboard', args=[id])
+        url+= "#nurse"
+        return redirect(url)
+    
+    context ={
+        
+        'staff':staff
+    }
+    return render(request, 'ipddashboard/nurse.html',context)
+
+    
 
 
 
@@ -3596,9 +3628,9 @@ def add_medication_dose(request,id):
         medicine_name = request.POST['medicine_name']
         dosage = request.POST['dosage']
         remarks = request.POST['remarks']
-        patient = get_object_or_404(Patient, id=id)
-        # Create a new NursingRecord object and save it to the database
-       
+        ipd_details = get_object_or_404(IpdPatient,id=id)
+        patient = get_object_or_404(Patient,id=ipd_details.patient.id)
+
         medication_dose = MedicationDoseage(
             date=date,
             time=time,
@@ -3631,7 +3663,8 @@ def consultant_register(request,id):
         instruction_date = request.POST['instruction_date']
         consultant_doctor = request.POST['consultant_doctor']
         instruction = request.POST['instruction']
-        patient = get_object_or_404(Patient, id=id)
+        ipd_details = get_object_or_404(IpdPatient,id=id)
+        patient = get_object_or_404(Patient, id=ipd_details.patient.id)
 
         consultant  = Consultant_register(
             applied_date=applied_date,
@@ -3658,15 +3691,16 @@ def operation_create(request,id):
         operation_name = request.POST['operation_name']
         operation_date = request.POST['operation_date']
         consultant_doctor = request.POST['consultant_doctor']
-        operation_assistant = request.POST['operation_assistant']
         anesthesia_type = request.POST.get('anesthesia_type', '')
         ot_technician = request.POST.get('ot_technician', '')
-        ot_assistant = request.POST.get('ot_assistant', '')
+        assitant = request.POST.get('assistant', '')
         assistant2 = request.POST.get('assistant2', '')
         remark = request.POST.get('remark', '')
         result = request.POST.get('result', '')
-        patient = get_object_or_404(Patient, id=id)
 
+        ipd_details = get_object_or_404(IpdPatient,id=id)
+        patient = get_object_or_404(Patient, id=ipd_details.patient.id)
+        doctor = get_object_or_404(AddStaff,id=consultant_doctor)
 
 
         operation = Operation(
@@ -3675,7 +3709,7 @@ def operation_create(request,id):
             operation_name=operation_name,
             operation_date=operation_date,
             ot_assistant=ot_assistant,
-            consultant_doctor=consultant_doctor,
+            consultant_doctor=doctor,
             anesthesia_type=anesthesia_type,
             ot_technician=ot_technician,
             assistant=ot_assistant,
@@ -3689,7 +3723,7 @@ def operation_create(request,id):
         return redirect(url)
         
 
-    return HttpResponse('Not Done ')
+    return render(request,'ipd/pat_dash.html')
 
 
 
@@ -6056,7 +6090,27 @@ def pos_pdf(request):
         medicine_composition = request.POST.get('medicine_composition')
         payment = request.POST.get('payment')
         doctor = request.POST.get('doctor')
+        
         item_counter = request.POST.get('item_counter')
+
+        pos = POS(
+            doctor = doctor,
+            payment_mode=payment,
+            date=date_time,
+            composition=medicine_composition,
+            small_note=small_note,
+            tax_percent=tax,
+            discount_percent=discount,
+            
+
+
+
+
+
+
+
+        )
+
         print(item_counter)
         if item_counter.isdigit():
             item_counter = int(item_counter)
@@ -6070,7 +6124,29 @@ def pos_pdf(request):
             
             print(item_counter)
             item = request.POST.get(f'med_{i}')
-            qty = request.POST.get(f'qty_{i}')
+            qty = int(request.POST.get(f'qty_{i}'))
+            available = int(request.POST.get(f'available_{i}'))
+
+
+            
+            if available < qty:
+                return HttpResponse('Error: Insufficient available quantity.')
+
+            
+            
+            
+            medicines_ids = [int(id) for id in re.findall(r'\d+', item)]
+
+            print(medicines_ids)
+            for medicines_id in medicines_ids:
+        
+                stock = get_object_or_404(Stock, medicine=medicines_id)
+                updated_available_quantity = available - qty
+                print(updated_available_quantity)
+                stock.stock = updated_available_quantity
+                stock.save()
+                print(stock.stock)
+
             cat = request.POST.get(f'cat_{i}')
             items = re.sub(r'\d', '',item)
             item  = items.replace("_", "")
@@ -6190,6 +6266,7 @@ def Medicine_Details(request):
     
     try:
         items = Purchase.objects.get(id=selected_value)
+        quantity = Stock.objects.get(medicine=selected_value)
         
       
         # for item in items:    
@@ -6202,10 +6279,14 @@ def Medicine_Details(request):
             'price':items.sale_price,
             'tax':items.tax_percentage,
             'batch':items.batch_no,
+            'quantity':quantity.stock,
             'expiry':items.expiry_date,
        
             
         }
+
+
+    
     except Purchase.DoesNotExist:
         data = {
             'success': False,
@@ -6369,7 +6450,8 @@ def search_IPDBalance(request):
 
 
 def stock_report(request):
-    medicine = Medicine.objects.all()
+    medicine = Purchase.objects.all()
+
     context ={
         'medicine':medicine
     }
@@ -7107,6 +7189,30 @@ def pos_radiology(request):
     }
     return render(request, 'radiology/pos.html',context)
 
+
+
+
+def visitors_details(request):
+    id = request.GET.get('id')
+    if id =='IPD':
+        result = IpdPatient.objects.all()
+        
+    elif id=='OPD':
+        result = OpdPatient.objects.all()
+    
+        
+
+    else:
+        result = OpdPatient.objects.all()
+
+    patient_list = [{'id': patient.id, 'name': patient.patient.name, 'other_field': patient.height} for patient in result]
+    data = {
+        'patient':patient_list,
+    }
+    return JsonResponse(data)
+    
+
+  
   
 
 def pos_pathpdf(request):
@@ -7199,7 +7305,380 @@ def pos_pathpdf(request):
 
 
 
+def opd_dashboard(request,ipd_id):
+    ipd = OpdPatient.objects.filter(pk=ipd_id)
+    nurse= NursingRecord.objects.all()
+    staff = AddStaff.objects.filter(role="Nurse")
+    doctor  = AddStaff.objects.filter(role="Doctor")
+    medicine = MedicationDoseage.objects.all()
+    consultant = Consultant_register.objects.all()
+    operation = Operation.objects.all()
+
+    dosage = Med_Details.objects.all()
+    cat = Med_Category.objects.all()
+    medicine_name = Medicine.objects.all()
+    prep = Precreption.objects.all()
+    context= {
+        
+    }
+    payment = Ipd_Payments.objects.all()
+
+    
+    try:
+        radiology_amount = Radiology.objects.get(patient=ipd_id).amount
+        
+    except Radiology.DoesNotExist:
+        radiology_amount = 0
+     
+
+    context ={
+        'nurse':nurse,
+        'prep':prep,
+        'staff':staff,
+        'ipd':ipd,
+        'doctor':doctor,
+        'medicine':medicine,
+        'dosage':dosage,
+        'cat':cat,
+        'medicine_name':medicine_name,
+        'consultant':consultant,
+        'operation':operation,
+        'payment':payment,
+        'radio':radiology_amount,
+    }
+    return render(request,'opd/dashboard.html',context)
 
 
 
+def visitors(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        id_card = request.POST.get('id_card')
+        purpose = request.POST.get('purpose')
+        visit_to = request.POST.get('visit_to')
+        patient = request.POST.get('patient')
+    
+        num_of_person = request.POST.get('num_of_person')
+        date = request.POST.get('date')
+        in_time = request.POST.get('in_time')
+        out_time = request.POST.get('out_time')
+        note = request.POST.get('note')
+        document = request.FILES.get('document')
+
+        
+        record = Visitors(
+            purpose=purpose,
+            name=name,
+            phone=phone,
+            id_card=id_card,
+            visit_to=visit_to,
+            patient=patient,
+            num_of_person=num_of_person,
+            date=date,
+            in_time=in_time,
+            out_time=out_time,
+            note=note,
+            document=document,
+        )
+
+        record.save()
+        visitor = Visitors.objects.all()
+        context = {
+            'visitors':visitor,
+        }
+        return render(request,'visitors/visit.html',context)
+    visitor = Visitors.objects.all()
+    context = {
+        'visitors':record,
+    }
+    return render(request,'visitors/visit.html',context)
   
+
+
+def postal_receive(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        reference_no = request.POST.get('reference_no', '')
+        address = request.POST.get('address', '')
+        note = request.POST.get('note', '')
+        to_title = request.POST.get('to_title', '')
+        date = request.POST.get('date', '')
+        attach_document = request.FILES.get('attach_document')
+
+        # Validate and save data
+        
+        receive = Postal_receive(
+                title=title,
+                reference_no=reference_no,
+                address=address,
+                note=note,
+                to_title=to_title,
+                date=date,
+                attach_document=attach_document
+            )
+        receive.save()
+        return redirect('postal_receive')
+    postal = Postal_receive.objects.all()
+    context = {
+        'postal':postal,
+    }
+    return render(request,'postal/receive.html',context)
+
+
+
+def postal_dispatch(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        reference_no = request.POST.get('reference_no', '')
+        address = request.POST.get('address', '')
+        note = request.POST.get('note', '')
+        from_title = request.POST.get('to_title', '')
+        date = request.POST.get('date', '')
+        attach_document = request.FILES.get('attach_document')
+
+      
+        receive = Postal_dispatch(
+                title=title,
+                reference_no=reference_no,
+                address=address,
+                note=note,
+                from_title=from_title,
+                date=date,
+                attach_document=attach_document
+            )
+        receive.save()
+        return redirect('postal_dispatch')
+    postal = Postal_dispatch.objects.all()
+    context = {
+        'postal':postal,
+    }
+    return render(request,'postal/dispatch.html',context)
+
+
+def complain_type(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+    
+        type = ComplainType(
+            name=name,
+        )
+        type.save()
+        return redirect('complain_type')
+    type = ComplainType.objects.all()
+    context = {
+        'type':type,
+    }
+    return render(request,'complain/complain_type.html',context)
+
+
+
+def complain_source(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+    
+        source = Complain_source(
+            name=name,
+        )
+        source.save()
+        return redirect('complain_source')
+    type = Complain_source.objects.all()
+    context = {
+        'type':type,
+    }
+    return render(request,'complain/complain_source.html',context)
+
+
+def complain(request):
+    if request.method == 'POST':
+        complain_type = request.POST.get('complain_type', '')
+        source = request.POST.get('source', '')
+        complain_by = request.POST.get('complain_by', '')
+        phone = request.POST.get('phone', '')
+        date = request.POST.get('date', '')
+        description = request.POST.get('description', '')
+        action_taken = request.POST.get('action_taken', '')
+        assigned = request.POST.get('assigned', '')
+        note = request.POST.get('note', '')
+        attach_document = request.FILES.get('attach_document')
+
+        
+        
+        complain =Complain(
+                complain_type=complain_type,
+                source=source,
+                complain_by=complain_by,
+                phone=phone,
+                date=date,
+                description=description,
+                action_taken=action_taken,
+                assigned=assigned,
+                note=note,
+                attach_document=attach_document
+            )
+        complain.save()    
+        return redirect('complain')
+    complain_type = ComplainType.objects.all()
+    complain_source = Complain_source.objects.all()
+    complain = Complain.objects.all()
+    context = {
+        'complain':complain,
+        'type':complain_type,
+        "source":complain_source,
+    }
+    return render(request, 'complain/complain.html',context)
+
+
+# def OT_Report(request):
+
+
+#     return render(request,'')
+
+def operation_name(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+
+        operation = Operation_name(
+            name=name
+        )
+        operation.save()
+
+        return redirect('operation_name')
+    operation = Operation_name.objects.all()
+    context = {
+        'operation':operation,
+    }
+    return render(request,'operation/operation_name.html',context)
+
+def operation_cate(request):
+    if request.method=="POST":
+        name = request.POST.get('name')
+        
+        operation = Operation_category(
+            name=name,
+        )
+        operation.save()
+        return redirect('operation_cate')
+    operation = Operation_category.objects.all()
+    context ={
+        'operation':operation,
+    }    
+    return render(request,'operation/operation_category.html',context)
+
+
+def ot_report(request):
+
+    if request.method == 'GET':
+        doctor_name = request.GET.get('doctor')
+        category = request.GET.get('category')
+        operation = request.GET.get('operation_name')
+        year = request.GET.get('year')
+        
+        if  doctor_name == "doctor":
+            result = Operation.objects.filter(
+                operation_category= category,
+                operation_name=operation,
+                operation_date__year=int(year)
+
+            )
+            
+
+
+        else:
+            result = Operation.objects.filter(   
+                operation_name=operation,
+                operation_category=category,
+                operation_date__year=year,
+                consultant_doctor=doctor_name,
+
+            )
+
+        operation_category = Operation_category.objects.all()
+        operation_name = Operation_name.objects.all()
+        doctor = Operation.objects.all()
+        context ={
+            'operation_category':operation_category,
+            'doctor':doctor,
+            'operation_name':operation_name,
+            'results':result,
+        }
+        print(result)
+        return render(request,'reports/ot_report.html',context)
+    operation_category = Operation_category.objects.all()
+    operation_name = Operation_name.objects.all()
+    doctor = AddStaff.objects.filter(role='Doctor')
+    context ={
+        'operation_category':operation_category,
+        'doctor':doctor,
+        'operation_name':operation_name,
+    }
+    return render(request,'reports/ot_report.html',context)
+
+
+
+
+def search_case_id(request):
+    if request.method == 'GET':
+
+        search_id = request.GET.get('case_id', None)
+
+        if search_id is not None:
+            
+            ipd_result = IpdPatient.objects.filter(id=search_id).first()
+            opd_result = OpdPatient.objects.filter(id=search_id).first()
+
+            context = {
+                'ipd_result': ipd_result,
+                'opd_result': opd_result,
+            }
+
+            return render(request, 'reports/case.html', context)
+
+    return render(request, 'reports/case.html', {})
+
+
+def stock(request):
+    if request.method=="POST":
+        name = request.POST.get('name')
+        stock = request.POST.get('stock')
+        medicine = Purchase.objects.get(id=name)
+        
+        stock = Stock(
+            medicine=medicine,
+            stock=stock,
+        )
+        stock.save()
+        return redirect('stock')
+    
+    medicine = Purchase.objects.all()
+    stock = Stock.objects.all()
+    context ={
+        'medicine':medicine,
+        'stock':stock,
+    }
+
+    return render(request,'pharmacy/medicine/stock.html',context)
+
+
+
+
+def cash_book(request):
+    total_sales = Sales_Invoice.objects.filter(type='sales',payment_type='cash')
+    path = Pathology.objects.filter(payment_mode='cash')
+    payment_in = Payment_In.objects.all()
+    expense = Expense_Invoice.objects.all()
+
+    context ={
+        'sales':total_sales,
+        'payment_in':payment_in,
+        'expense':expense
+    }
+
+    return render(request,'accounts/report/cash_flow.html',context)
+
+
+def party_report(request,id):
+    party = Party.objects.get(id=id)
+    sales = Sales_Invoice.objects.get(name=party.part_name)
+
+    return render(request,'')

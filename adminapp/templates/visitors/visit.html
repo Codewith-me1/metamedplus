@@ -1,0 +1,237 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPA</title>
+
+  {% load static %}
+  <style>
+input{
+    height:38px;
+}
+  </style>
+  <div class='container'>
+      <div id="popupContainer" class="form-popup-back">
+          <div class="form-Contain">
+              <div class="POP">
+                  <div class="cards">
+                    <div class="popup-header">
+                      <span id="closePopupBtn" class="close-button">Close</span>
+                      <h1>Visitors</h1>
+                    </div>
+                     
+                      <!-- visitor_form.html -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+
+    <div class="form-group">
+        <label for="purpose">Purpose</label>
+        <input type="text" name="purpose" required>
+    </div>
+    <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Phone *</label>
+        <input type="text" name="phone" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_card">ID Card *</label>
+        <input type="text" name="id_card" required>
+    </div>
+
+    <div class="form-group">
+        <label for="visit_to">Visit To *</label>
+        <select id="visit" name="visit_to" onchange="updateDateOptions()"  required>
+            <option value="IPD">IPD</option>
+            <option value="OPD">OPD</option>
+            <option value="Staff">Staff</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label  for="patient">IPD/OPD/Staff *</label>
+        <select id="patient" name="patient" required>
+
+         </select>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="num_of_person">Number Of Person *</label>
+        <input type="number" name="num_of_person" required>
+    </div>
+
+    <div class="form-group">
+        <label for="date">Date *</label>
+        <input type="date" name="date" required>
+    </div>
+
+    <div class="form-group">
+        <label for="in_time">In Time *</label>
+        <input type="time" name="in_time" required>
+    </div>
+
+    <div class="form-group">
+        <label for="out_time">Out Time *</label>
+        <input type="time" name="out_time" required>
+    </div>
+
+    <div class="form-group">
+        <label for="note">Note</label>
+        <textarea name="note"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="">Attach Document</label>
+        <label class="file_type" for="document">Drop a File</label>
+        <input type="file" name="document">
+    </div>
+<div class="visit_button">
+    <button class="btn btn-primary" type="submit">Submit</button>
+</div>
+</form>
+
+                  </div>
+              </div>
+          </div>
+          </div>
+          
+      
+      
+      
+      
+      
+      
+      
+      <div class="main-header">
+      <h1 class="headline">Add Visitors</h1>
+      <div class="side-btns">
+      
+      
+      {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+      <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Visitors</a>
+    
+      
+      </div>    
+      </div>   
+  
+  
+  
+  
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id Card</th>
+            <th>Purpose</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Related to</th>
+            <th>Phone</th>
+           
+            
+            
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for visitors in visitors %}
+            <tr>
+                <td>{{ visitors.id_card }}</td>
+              <td>{{ visitors.purpose }}</td>
+              <td>{{ visitors.name }}</td>
+              <td>{{ visitors.date }}</td>
+              <td>{{ visitors.phone }}</td>
+              <td>{{ visitors.patient }}</td>
+              
+
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+  
+      </div>
+      
+<script src="{% static "/css/javscript/index.js" %}"></script>
+  <script>
+
+
+    
+            $(document).ready(function () {
+                // Event delegation for select elements with IDs starting with 'item_'
+                $(document).on('change', '#visit', function () {
+                    var selectedValue = $(this).val();
+                    var id = selectedValue
+                    $.ajax({
+                        url: '/visitors_details',
+                        method: 'GET',
+                        data: { id: id },
+                        success: function (data) {
+                            var optionsHtml = '';
+                            data.patient.forEach(function (patient) {
+                               
+                                optionsHtml += '<option value="' + patient.name + '">' + patient.name + '</option>';
+                            });
+            
+                            $('#patient').html(optionsHtml);
+                            
+                        
+                            
+             
+                            
+                          
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                });
+                });
+{% comment %} 
+           function updateDateOptions() {
+        var visitToSelect = document.getElementById("visit");
+        var dateSelect = document.getElementById("patient");
+        console.log(visitToSelect)
+
+
+        dateSelect.innerHTML = "";
+
+        if (visitToSelect.value === "IPD") {
+      
+            dateSelect.innerHTML += '<option value="IPDOption1">IPD Option 1</option>';
+            dateSelect.innerHTML += '<option value="IPDOption2">IPD Option 2</option>';
+
+        } else if (visitToSelect.value === "OPD") {
+      
+            dateSelect.innerHTML += '<option value="OPDOption1">OPD Option 1</option>';
+            dateSelect.innerHTML += '<option value="OPDOption2">OPD Option 2</option>';
+        } else if (visitToSelect.value === "Staff") {
+
+            dateSelect.innerHTML += '<option value="StaffOption1">Staff Option 1</option>';
+            dateSelect.innerHTML += '<option value="StaffOption2">Staff Option 2</option>';
+        }
+    }
+
+
+    window.onload = updateDateOptions; {% endcomment %}
+      </script>
+  
+  </div>
+  </body>
+  </html> 

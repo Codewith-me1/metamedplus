@@ -262,7 +262,8 @@ form button{
             
               <td>
                   
-                <select class="form-control medicine_category" id="cat_${itemCounter}" name="cat_${itemCounter}"> 
+                <select class="form-control medicine_category" id="cat_${itemCounter}" required name="cat_${itemCounter}" required> 
+                  <option  value="">Select a Value</option>
                   {% for med in medicine %}
 
                     <option  value="{{med.category.medicine_category}}">{{med.category.medicine_category}}</option>
@@ -274,18 +275,20 @@ form button{
  
               <td>
                   
-                <select class="form-control medicine_name" id="med_${itemCounter}" name="med_${itemCounter}"> 
+                <select class="form-control medicine_name" required id="med_${itemCounter}" name="med_${itemCounter}" required> 
+
+                  <option  value="">Select a Value</option>
                   {% for med in medicine %}
 
                     <option  value="{{med.name}}_{{med.id}}">{{med.name}}</option>
                     {% endfor %}
-                </select>
             </td>
 
 
 
-                <td><input type="number" value="1" class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
-
+                <td><input type="number"  class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+                
+              
                 <td><input type="number" value="" class="form-control" id="batch_${itemCounter}" name="batch_${itemCounter}" required></td>
                 
 

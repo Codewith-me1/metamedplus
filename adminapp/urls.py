@@ -38,6 +38,7 @@ urlpatterns = [
     path('pathology/', views.Pathology_Index, name='path'),
     path('ipd_dash',views.ipd_dash,name="ipd_dashboard"),
     path('ipd/<int:ipd_id>/', views.ipd_dashboard, name='ipd_dashboard'),
+    path('opd/<int:ipd_id>/', views.opd_dashboard, name='opd_dashboard'),
     path('ipd_pat',views.ipd_pat,name="ipd_pat"),
 
     path('medicine-categories/', views.process_medicine_category, name='medicine_category_list'),
@@ -206,5 +207,20 @@ urlpatterns = [
     path('pos_radiology', views.pos_radiology, name='pos_radiology'),    
     path('pos_radio', views.pos_radio, name='pos_radio'),    
     path('pos_pharma', views.pos_pharma, name='pos_pharma'),    
+    path('visitors', views.visitors, name='visitors'),    
+    path('visitors_details', views.visitors_details, name='visitors_details'),    
+    path('postal_receive', views.postal_receive, name='postal_receive'),    
+    path('postal_dispatch', views.postal_dispatch, name='postal_dispatch'),    
+    path('complain_type', views.complain_type, name='complain_type'),    
+    path('complain_source', views.complain_source, name='complain_source'),    
+    path('complain', views.complain, name='complain'),    
+    path('operation_name', views.operation_name, name='operation_name'),    
+    path('operation_cate', views.operation_cate, name='operation_cate'),    
+    path('ot_report', views.ot_report, name='ot_report'),    
+    path('search_case', views.search_case_id, name='search_case'),
+    path('stock', views.stock, name='stock'),
+    path('party/<int:id>', views.stock, name='stock'),
+
+
 
 ]   

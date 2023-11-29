@@ -1,0 +1,114 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postal Receive</title>
+
+
+{% load static %}
+<!DOCTYPE html>
+
+<style>
+
+    .popup_btns{
+        display:flex;
+        justify-content:center;
+    }
+</style>
+<html>
+<head>
+    <title>Operation Name</title>
+</head>
+<body>
+   
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Operation Name </h1>
+                  </div>
+                  <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+            
+                    <div class="form-group">
+                        <label for="name">Operation Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+            
+                   
+                    <div class="popup_btns">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Operation Name</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Operation Name</a>
+   
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Operation Name</th>
+           
+            
+            
+           
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for operation in operation %}
+            <tr>
+
+                <td>{{ operation.name }}</td>
+     
+              
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </div>
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT Report</title>
+
+
+<div class="container">
+ 
+    
+    
+    
+    
+    <form  method="get">
+
+        <div class="form-group">
+            <label for="year">Year</label>
+            <select id="year" name="year" required>
+                <option value="2023">2023</option>
+                
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="doctor"> Doctor Name</label>
+            <select id="doctor" name="doctor" >
+                <option value="doctor">Select A Value</option>
+                {% for doctor in doctor %}
+                <option value="{{doctor.id}}">{{doctor.consultant_doctor.first_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="category">Operation Category</label>
+            <select id="category" name="category" required>
+                <option value="category">Select A Value</option>
+                {% for operation in operation_category %}
+                <option value="{{operation.name}}">{{operation.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="operation_name">Operation Name</label>
+            <select id="operation_name" name="operation_name" required>
+                <option value="operation_name">Select A Value</option>
+                {% for operation in operation_name %}
+                <option value="{{operation.name}}">{{operation.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <button type="submit">Search</button>
+    </form>
+    
+    
+    <div class="main-header">
+    <h1 class="headline">OT Report</h1>
+    <div class="side-btns">
+    
+    
+
+    
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            
+            <th>Operation Category</th>
+            <th>Operation Name</th>
+            <th>Operation Date </th>
+            <th>Assistant 1  </th>
+            <th>Assistant 2  </th>
+            <th>Anesthesia Type  </th>
+            <th>OT Assisatant  </th>
+            <th>OT Technician  </th>
+            <th>Result  </th>
+            
+       
+
+
+            
+    
+           
+          </tr>
+        </thead>
+        <tbody>
+           
+           
+       
+
+        {% if results %}
+          {% for item in results %}
+            <tr>
+
+                <td>{{ item.id }}</td>
+                <td><a href=" /ipd/{{item.patient.id}}/#overview">{{ item.patient }}</a></td>  </td>
+                <td>{{ item.consultant_doctor.first_name }}</td>
+            
+               <td>{{ item.operation_category }}</td>
+             
+              <td>{{ item.operation_name }}</td>
+              <td>{{ item.operation_date }}</td>
+              <td>{{ item.assistant }}</td>
+              <td>{{ item.assistant2 }}</td>
+              <td>{{ item.anesthesia_type }}</td>
+              <td>{{ item.ot_assistant }}</td>
+              <td>{{ item.ot_technician }}</td>
+              <td>{{ item.result }}</td>
+              
+              
+          
+            
+            </tr>
+
+          {% endfor %}
+
+          {% else %}
+          <p>No results found.</p>
+          {% endif %}
+        </tbody>
+      </table>
+    
+
+    </div>
+</body>
+</html>
