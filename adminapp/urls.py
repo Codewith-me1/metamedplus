@@ -219,7 +219,7 @@ urlpatterns = [
     path('ot_report', views.ot_report, name='ot_report'),    
     path('search_case', views.search_case_id, name='search_case'),
     path('stock', views.stock, name='stock'),
-    path('party/<int:id>', views.stock, name='stock'),
+    path('party/<int:id>', views.party_report, name='party_report'),
 
 
 

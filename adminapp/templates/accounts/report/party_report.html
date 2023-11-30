@@ -18,7 +18,7 @@
     
     
     <div class="main-header">
-    <h1 class="headline">{{}} </h1>
+    <h1 class="headline">{{party.part_name}} Ledger</h1>
     <div class="side-btns">
     
     
@@ -30,11 +30,11 @@
     <table class="table">
         <thead>
           <tr>
-            <th># </th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Amount</th>
+            <th>Type </th>
+            <th>Number</th>
+            <th>Date</th>
+            <th>Total</th>
+        
 
               
            
@@ -44,53 +44,26 @@
             
             {% for sales in sales %}
             <tr>
+                <td>{{ sales.type }}</td>
                 <td>{{ sales.id }}</td>
-                <td>{{ sales.name }}</td>
                
-               <td>{{ sales.type }}</td>
-               <td></td>
+               <td>{{ sales.invoice_date }}</td>
+         
                <td>{{ sales.total }}</td>
          
               
               
           
             
-            
-          {% endfor %}
-
-          {% for payment in payment %}
-          
-              <td>{{ payment.id }}</td>
-              <td>{{ payment.name }}</td>
-             
-             <td>{{ payment.type }}</td>
-             <td></td>
-             <td>{{ payment.received }}</td>
-       
-            
+  
             
         
             </tr>
 
           
         {% endfor %}
-        {% for expense in expense %}
-          <tr>
-              <td>{{ expense.id }}</td>
-              
-             
-             
-             <td>{{ expense.name }}</td>
-             <td>Expense</td>
-             <td>{{ expense.expense_category.expense_category }}</td>
-             <td>{{ expense.total }}</td>
-       
-            
-            
         
-          
-            </tr>
-        {% endfor %}
+    
    
         </tbody>
       </table>

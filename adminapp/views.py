@@ -7679,6 +7679,13 @@ def cash_book(request):
 
 def party_report(request,id):
     party = Party.objects.get(id=id)
-    sales = Sales_Invoice.objects.get(name=party.part_name)
+    sales = Sales_Invoice.objects.filter(name=party.part_name)
+    
+    context = {
+        'sales':sales,
+        "party":party,
+        
+    }
+    return render(request,'accounts/report/party_report.html',context)
 
-    return render(request,'')
+
