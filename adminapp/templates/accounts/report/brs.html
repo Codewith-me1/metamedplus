@@ -1,0 +1,205 @@
+
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Reconciliation Statement</title>
+
+{% load static %}
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Cash Book Field</h1>
+                  </div>
+                  <h2>Dynamic Bank Reconciliation Statement Form</h2>
+
+                  <form id="brsForm" method="post">
+                    {% csrf_token %}
+                      <div class="form-group">
+                          <label for="openingBalance">Balance as per Cash Book</label>
+                          <input type="number" name="openingBalance" required>
+                      </div>
+                      <input type="number" class="itemCounter" value="0" hidden name="itemCounter" >
+                      <div id="dynamicFields">
+                          <!-- Dynamic fields will be added here -->
+                      </div>
+              
+                      <button type="button" class="btn btn-primary" onclick="addDynamicField()">Add Field</button>
+              
+                      <button type="button" class="btn btn-primary" onclick="calculateAdjustedBalance()">Calculate Adjusted Bank Balance</button>
+                      <button type="submit" class="btn btn-primary" >Save</button>
+                  </form>
+              
+                  
+              
+                
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Bank Reconciliation Statement </h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    <a  class="btn-primary btn" href="javascript:history.back()">Back</a>
+    </div>    
+    </div>   
+
+
+
+    
+    
+
+    <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Particulars</th>
+            <th>Operation</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            
+        
+            
+        
+
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+            
+            {% for cash in brs %}
+            <tr>
+                
+                <td>{{ cash.particulars }}</td>
+               
+               
+                <td>{{ cash.operation }}</td>
+               <td>{{ cash.amount }}</td>
+               
+               <td>{{ cash.balance }}</td>
+         
+              
+              
+          
+            
+  
+            
+        
+            </tr>
+
+          
+        {% endfor %}
+        
+    
+   
+        </tbody>
+      </table>
+
+    </div>
+
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
+
+    
+<script>
+    var dynamicRowCount = 0;
+
+        function addDynamicField() {
+            dynamicRowCount++;
+            $('.itemCounter').val(dynamicRowCount);
+            
+            var dynamicFields = document.getElementById('dynamicFields');
+
+            var fieldContainer = document.createElement('div');
+            fieldContainer.className = 'form-group';
+
+            var labelParticulars = document.createElement('label');
+            labelParticulars.textContent = 'Particulars';
+            fieldContainer.appendChild(labelParticulars);
+
+            var inputParticulars = document.createElement('input');
+            inputParticulars.type = 'text';
+            inputParticulars.name = 'particulars_' + dynamicRowCount;
+            fieldContainer.appendChild(inputParticulars);
+
+            var labelOperation = document.createElement('label');
+            labelOperation.textContent = 'Operation';
+            fieldContainer.appendChild(labelOperation);
+
+            var selectOperation = document.createElement('select');
+            selectOperation.name = 'operation_' + dynamicRowCount;
+
+            var addOption = document.createElement('option');
+            addOption.value = 'add';
+            addOption.textContent = 'Addition';
+            selectOperation.appendChild(addOption);
+
+            var subtractOption = document.createElement('option');
+            subtractOption.value = 'subtract';
+            subtractOption.textContent = 'Subtraction';
+            selectOperation.appendChild(subtractOption);
+
+            fieldContainer.appendChild(selectOperation);
+
+            var labelValue = document.createElement('label');
+            labelValue.textContent = 'Value';
+            fieldContainer.appendChild(labelValue);
+
+            var inputValue = document.createElement('input');
+            inputValue.type = 'number';
+            inputValue.name = 'value_' + dynamicRowCount;
+            fieldContainer.appendChild(inputValue);
+
+            dynamicFields.appendChild(fieldContainer);
+        }
+
+        function calculateAdjustedBalance() {
+            var openingBalance = parseFloat(document.querySelector('input[name="openingBalance"]').value) || 0;
+            var dynamicRows = document.querySelectorAll('div.form-group');
+
+            var adjustedBalance = openingBalance;
+
+            dynamicRows.forEach(function(row) {
+                var particulars = row.querySelector('input[name^="particulars"]').value || '';
+                var operation = row.querySelector('select[name^="operation"]').value;
+                var value = parseFloat(row.querySelector('input[name^="value"]').value) || 0;
+
+                if (operation === 'add') {
+                    adjustedBalance += value;
+                } else if (operation === 'subtract') {
+                    adjustedBalance -= value;
+                }
+            });
+
+            document.getElementById('openingBalanceDisplay').textContent = openingBalance.toFixed(2);
+            document.getElementById('adjustedBalance').textContent = adjustedBalance.toFixed(2);
+        }
+</script>
+</body>
+</html>
+
+   

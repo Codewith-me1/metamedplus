@@ -182,7 +182,10 @@
                 <th>Report Days</th>
                 <th>Tax (%)</th>
                 <th>Charge(Rs)</th>
+
+                
                 <th>Amount</th>
+                <th>Download</th>
                
                   
                
@@ -202,7 +205,12 @@
                   <td>{{ test.tax_percentage }}</td>
                   <td>{{ test.charge_name }}</td>
                   <td>{{ test.amount }}</td>
-                 
+                  
+                  {% if test.approved %}
+                  <td>{{ test.amount }}</td>
+              {% else %}
+                  <td>Not Approved</td>
+              {% endif %}
                   
                   
               

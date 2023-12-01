@@ -112,7 +112,7 @@ form button{
 
 
 <div class='container'>
-    <h2>Point Of Sale</h2>
+    <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a></h2>
 
     <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
         {% csrf_token %}

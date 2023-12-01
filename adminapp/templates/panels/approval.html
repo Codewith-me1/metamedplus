@@ -1,0 +1,238 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Test</title>
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Test</title>
+</head>
+<body>
+    
+    
+
+
+    <div class="container">
+        <div id="popupContainer" class="form-popup-back">
+            <div class="form-Contain">
+                <div class="POP">
+                    <div class="cards">
+                      <div class="popup-header">
+                        <span id="closePopupBtn" class="close-button">Close</span>
+                        {% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+<p>{{messages}}<p>
+                        <h1>Add Pathalogy Record</h1>
+                      </div>
+                        <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'path_test' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="test_name">Test Name *</label>
+                                <input type="text" id="test_name" name="test_name" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="short_name">Short Name *</label>
+                                <input type="text" id="short_name" name="short_name" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="test_type">Test Type</label>
+                                <input type="text" id="test_type" name="test_type" />
+                            </div>
+                            <div class="form-group">
+                                <label for="category_name">Category Name*</label>
+                               <select id= "category_name" name="category_name">
+                                <option value="">Select A Category</option>
+                                {% for category in category %}
+                                <option value="{{category.name}}">{{ category.name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+                          
+                            <div class="form-group">
+                                <label for="sub_category">Sub Category</label>
+                                <input type="text" id="sub_category" name="sub_category" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="method">Method</label>
+                                <input type="text" id="method" name="method" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="report_days">Report Days</label>
+                                <input type="number" id="report_days" name="report_days" />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="charge_category">Charge Category</label>
+                               <select id= "charge_category" name="charge_category">
+                                <option value="">Select A Category</option>
+                                {% for charge in charge %}
+                                <option value="{{charge.charge_category}}">{{ charge.charge_category }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+
+                            
+                            
+                            <div class="form-group">
+                                <label for="charge_name">Charge Name</label>
+                               <select id= "charge_name" name="charge_name">
+                                <option value="">Select A Charge</option>
+                                {% for charge in charge %}
+                                <option value="{{charge.charge_name}}">{{ charge.charge_name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+                            
+                            <div class="form-group">
+                                 
+                                <label for="tax_percentage">Tax (%)</label>
+                                <input type="number" id="tax_percentage" name="tax_percentage" />
+                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="standard_charge">Standard Charge (Rs.) *</label>
+                                <input type="number" id="standard_charge" name="standard_charge" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="amount">Amount (Rs.) *</label>
+                                <input type="number" id="amount" name="amount" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="test_parameter_name">Test Parameter Name *</label>
+                               <select id= "test_parameter_name" name="test_parameter_name">
+                                <option value="">Select A Category</option>
+                                {% for para in parameter %}
+                                <option value="{{para.parameter_name}}">{{ para.parameter_name }}</option>
+                                {% endfor %}
+                                </select>
+                            
+                             </div>
+
+                           
+                            
+                            <div class="form-group">
+                                <label for="reference_range">Reference Range *</label>
+                                <input type="text" id="reference_range" name="reference_range" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="unit">Unit *</label>
+                                <input type="text" id="unit" name="unit" required />
+                            </div>
+                           
+                
+                            
+                            <div style="text-align: center;">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+        
+        
+        
+        
+        
+        
+        
+        <div class="main-header">
+        <h1 class="headline">Pathology Test </h1>
+        <div class="side-btns">
+        
+        
+        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    
+            
+        
+        </div>    
+        </div>   
+    
+    
+    
+    
+    
+        <table class="table">
+            <thead>
+              <tr>
+                
+                <th>Test Name</th>
+                <th>Short Name</th>
+                <th>Test Type</th>
+                <th>Category Name</th>
+                <th>Sub Category</th>
+                <th> Method</th>
+                <th>Report Days</th>
+                <th>Tax (%)</th>
+                <th>Charge(Rs)</th>
+
+                
+                <th>Amount</th>
+                <th>Action</th>
+               
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for test in test %}
+              {% if test.approved == False %}
+                <tr>
+                    <td>{{ test.test_name }}</td>
+                    <td>{{ test.short_name }}</td>
+                   <td>{{ test.test_type }}</td>
+                  <td>{{ test.category_name }}</td>
+                  <td>{{ test.sub_category }}</td>
+                  <td>{{ test.method }}</td>
+                  <td>{{ test.report_days }}</td>
+                  <td>{{ test.tax_percentage }}</td>
+                  <td>{{ test.charge_name }}</td>
+                  <td>{{ test.amount }}</td>
+                  <td><a class="btn btn-primary" href="/approval/{{test.id}}">Approve</td>
+                  
+                  
+                  
+                  
+              
+                
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        
+    
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        
+<script src="{% static "/css/javscript/index.js" %}"></script>
+    <script>
+         
+        </script>
+</body>
+</html>

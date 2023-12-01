@@ -353,12 +353,14 @@ body{
              
               <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
              
-            <li><a href="{% url 'opd' %}">OPD</a></li>
-            <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
-            <li><a href="{% url 'path' %}">Pathology</a></li>
+            
+            
           
-            <li><a href="{% url 'radiology' %}">Radiology</a></li>
-            <li><a href="{% url 'blood_donation' %}">Blood Bank</a></li>
+            <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
+            <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
+            <li><a href="{% url 'approval' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
+            <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
+            <li><a href="{% url 'blood_donation' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
 
             <button class="dropdown-btn">Setup 
               <i class="fa fa-caret-down"></i>
@@ -556,6 +558,9 @@ body{
                  <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
                  <a class="dropdown-a" href="{% url 'transcation' %}">Trading </a>
                  <a class="dropdown-a" href="{% url 'gst' %}">GST Report  </a>
+                 <a class="dropdown-a" href="{% url 'cashbook' %}">Cash Book  </a>
+                 <a class="dropdown-a" href="{% url 'bankbook' %}">Bank Book  </a>
+                 <a class="dropdown-a" href="{% url 'brs' %}">BRS</a>
                  <a class="dropdown-a" href="{% url 'profit' %}">Profit And Loss </a>
                  
 
@@ -946,9 +951,9 @@ body{
               {% endif %}
 
 
-             {% if user.role == "pathologist" %}
+             {% if user.role == "Pathologist" %}
            
-             <li><a href="{% url 'path' %}">Pathology</a></li>
+             <<li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
             
            </div>
            <button class="dropdown-btn">Setup 
@@ -956,21 +961,19 @@ body{
            </button>
           
 
-            
-
 
              </div>
              <button class="dropdown-btn dropdown-nested"> Pathology
-               <i class="fa fa-caret-down"></i>
-             </button>
-             <div class="dropdown-container">
-             
-               <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
-                <a class="dropdown-a" href="{% url 'path_category' %}">Add Categor</a>
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+            
+              <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
+               <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
 
 
 
-             </div>
+            </div>
 
              
              

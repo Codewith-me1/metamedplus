@@ -6,17 +6,22 @@ import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
+from django.contrib import messages
+from .models import BRS
 from .models import Operation_category,Operation_name
+from .models import BankBook
 from asgiref.sync import async_to_sync
 from .models import Operation_Assistants
 from django.core.mail import EmailMessage, get_connection
 import stripe
 from .models import Stock
 from .models import Postal_dispatch
+from .models import Medicine_Composition
 from .models import Postal_receive
 from .models import Precreption,Precreption_Item
 from django.conf import settings
 from datetime import datetime, timedelta
+from .models import CashBook
 # from .models import Pos_item,POS
 from django.forms.models import model_to_dict
 from .models import ComplainType
@@ -1002,9 +1007,11 @@ def submit_medicine(request):
         return render(request,'pharmacy/medicine/add_med.html',context)  # Redirect to a success page
     med = Medicine.objects.all()
     category = Med_Category.objects.all()
+    composition = Medicine_Composition.objects.all()
     context = {
             "med":med,
             'category':category,
+            'composition':composition,
         }
     return render(request, 'pharmacy/medicine/add_med.html',context)
 
@@ -2453,6 +2460,7 @@ def purchase_med(request):
         sale_price = request.POST.get('sale_price')
         tax_percentage = request.POST.get('tax_percentage')
         packing_qty = request.POST.get('packing_qty')
+        composition = request.POST.get('composition')
         quantity = request.POST.get('quantity')
         purchase_price = request.POST.get('purchase_price')
         tax = request.POST.get('tax')
@@ -2468,6 +2476,8 @@ def purchase_med(request):
         payment_amount = (request.POST.get('payment_amount',0))
         payment_mode = request.POST.get('payment_mode')
 
+
+        composition = Medicine_Composition.objects.get(id=composition)
         category = Med_Category.objects.get(id=category)
         medicine = Purchase(
             category=category,
@@ -2480,6 +2490,7 @@ def purchase_med(request):
             mrp=mrp,
             batch_amount=batch_amount,
             sale_price=sale_price,
+            composition = composition,
             packing_qty=packing_qty,
             quantity=quantity,
             purchase_price=purchase_price,
@@ -2501,10 +2512,12 @@ def purchase_med(request):
     medicine  =  Medicine.objects.all()
     medicineCat = Med_Category.objects.all()
     med = Purchase.objects.all()
+    composition = Medicine_Composition.objects.all()
     context ={
         'medicine':medicine,
         "cat":medicineCat,
-        'med':med
+        'med':med,
+        'composition':composition,
     }
     return render(request, 'pharmacy/medicine/purchase.html',context)
 
@@ -7689,3 +7702,157 @@ def party_report(request,id):
     return render(request,'accounts/report/party_report.html',context)
 
 
+
+
+def approval(request):
+    test = Pathology_test.objects.all()
+    context ={
+        'test':test,
+    }
+    return render(request,'panels/approval.html',context)
+
+
+def approval_path(request,id):
+    test = Pathology_test.objects.get(id=id)
+    test.approved = True
+    test.save()
+    
+    messages.success(request,("Application Has Been Approved"))
+    
+    
+    return redirect('/approval')
+
+def cashbook(request):
+    if request.method=="POST":
+        date = request.POST.get('date')
+        
+        particulars = request.POST.get('particulars')
+        type = request.POST.get('type')
+        lf = request.POST.get('lf')
+        debit = request.POST.get('debit')
+        credit = request.POST.get('credit')
+        balance = request.POST.get('balance')
+
+        
+        cashbook = CashBook(
+            date =date,
+            particulars=particulars,
+            lf=lf,
+            debit=debit,
+            credit=credit,
+            balance=balance,
+            
+            
+            
+        )
+        cashbook.save()
+        return redirect('cashbook')
+    
+    cash = CashBook.objects.all()
+    context = {
+        'cash':cash
+    }
+    return render(request,'accounts/report/cashbook.html',context)
+
+
+def medicine_composition(request):
+    if request.method=="POST":
+        composition = request.POST.get('composition')
+        med = Medicine_Composition(
+            name=composition,
+        )
+        med.save()
+
+        return redirect('medicine_composition')
+    
+    composition = Medicine_Composition.objects.all()
+    context = {
+        'composition':composition,
+    }
+
+    return render(request,'pharmacy/medicine/composition.html',context)
+
+
+def bankbook(request):
+    if request.method=="POST":
+        date = request.POST.get('date')
+        
+        particulars = request.POST.get('particulars')
+        type = request.POST.get('type')
+        lf = request.POST.get('lf')
+        debit = request.POST.get('debit')
+        credit = request.POST.get('credit')
+        balance = request.POST.get('balance')
+
+        
+        cashbook = BankBook(
+            date =date,
+            particulars=particulars,
+            lf=lf,
+            debit=debit,
+            credit=credit,
+            balance=balance,
+            
+            
+            
+        )
+        cashbook.save()
+        return redirect('bankbook')
+    
+    cash = BankBook.objects.all()
+    context = {
+        'cash':cash
+    }
+    return render(request,'accounts/report/bankbook.html',context)
+
+
+
+
+def brs(request):
+    if request.method == 'POST':
+        balance = request.POST.get('openingBalance')
+        item_counter = request.POST.get('itemCounter')
+      
+        
+
+        print(balance)
+        print(item_counter)
+    
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0 
+        for i in range(1, item_counter + 1):
+            
+            
+            item = request.POST.get(f'particulars_{i}')
+           
+
+            value = request.POST.get(f'value_{i}')
+            operation = request.POST.get(f'operation_{i}')
+          
+        
+            item = BRS(
+                particulars =item,
+                amount=value,
+                balance=balance,
+                operation=operation,
+
+
+
+
+            )
+            
+            item.save()
+            
+    
+        
+        
+        return redirect('brs')
+        
+    brs = BRS.objects.all()
+    context= {
+        'brs':brs,
+     
+    }
+    return render(request, 'accounts/report/brs.html',context)

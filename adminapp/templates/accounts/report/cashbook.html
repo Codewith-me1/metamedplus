@@ -1,0 +1,177 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Book</title>
+
+{% load static %}
+    
+<div class="container">
+    <div id="popupContainer" class="form-popup-back">
+        <div class="form-Contain">
+            <div class="POP">
+                <div class="cards">
+                  <div class="popup-header">
+                    <span id="closePopupBtn" class="close-button">Close</span>
+                    <h1>Add Cash Book Field</h1>
+                  </div>
+
+
+
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'cashbook' %}">
+                        {% csrf_token %}
+                        
+                        
+                     
+                
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" name="date">
+                        </div>
+                        
+                
+                        <div class="form-group">
+                            <label for="text">Particulars</label>
+                            <input type="text" name="text">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lf">L.F (optional)</label>
+                            <input type="number" name="lf">
+                        </div>
+
+                
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select name="type" required onchange="toggleFields()">
+                                <option value="debit">Debit</option>
+                                <option value="credit">Credit</option>
+                            </select>
+                        </div>
+                        
+                        <div id="debit-group" class="form-group">
+                            <label for="debit">Debit</label>
+                            <input type="number" name="debit">
+                        </div>
+                        
+                        <div id="credit-group" class="form-group">
+                            <label for="credit">Credit</label>
+                            <input type="number" name="credit">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="balance">Balance</label>
+                            <input type="number" name="balance">
+                        </div>
+                
+                
+                
+                       
+            
+                        
+                        <div style="text-align: center;">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+    
+    
+    
+    
+    
+    
+    
+    <div class="main-header">
+    <h1 class="headline">Cash Book</h1>
+    <div class="side-btns">
+    
+    
+    {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+
+    </div>    
+    </div>   
+
+
+
+
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Date </th>
+            <th>Particulars</th>
+            <th>L.F</th>
+            <th>Debit (₹)</th>
+            <th>Credit (₹)</th>
+            <th>Balance (₹)</th>
+        
+
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+            
+            {% for cash in cash %}
+            <tr>
+                <td>{{ cash.date }}</td>
+                <td>{{ cash.particulars }}</td>
+               
+               <td>{{ cash.lf }}</td>
+         
+               <td>{{ cash.debit }}</td>
+               <td>{{ cash.credit }}</td>
+               <td>{{ cash.balance }}</td>
+         
+              
+              
+          
+            
+  
+            
+        
+            </tr>
+
+          
+        {% endfor %}
+        
+    
+   
+        </tbody>
+      </table>
+
+    </div>
+
+    
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+
+    function toggleFields() {
+        const type = document.querySelector('select[name="type"]').value;
+        const debitGroup = document.getElementById('debit-group');
+        const creditGroup = document.getElementById('credit-group');
+
+        if (type === 'debit') {
+            creditGroup.style.display = 'none !important';
+            debitGroup.style.display = 'block';
+        } else {
+            creditGroup.style.display = 'block';
+            debitGroup.style.display = 'none !important';
+        }
+    }
+
+    toggleFields(); 
+    </script>
+</body>
+</html>
+
+   

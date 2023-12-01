@@ -13,8 +13,48 @@ class User(models.Model):
   firstname = models.CharField(max_length=255)
   lastname = models.CharField(max_length=255)
 
+class Medicine_Composition(models.Model):
+    name = models.CharField(max_length=20)
+
+    
+
+class Med_Category(models.Model):
+   medicine_category = models.CharField(max_length=100)
 
 
+    
+
+
+
+class Purchase(models.Model):
+    composition = models.ForeignKey(Medicine_Composition, on_delete=models.CASCADE,blank=True,null=True) 
+    category = models.ForeignKey(Med_Category, on_delete=models.CASCADE,blank=True,null=True) 
+    name = models.CharField(max_length=255)
+    batch_no = models.CharField(max_length=50)
+    expiry_date = models.DateField()
+    mrp = models.IntegerField(max_length=20)
+    batch_amount = models.IntegerField(max_length=20,blank=True,null=True)
+    sale_price = models.IntegerField(max_length=10)
+    packing_qty = models.IntegerField(blank=True,null=True)
+    quantity = models.IntegerField()
+    purchase_price = models.IntegerField(max_length=20 )
+    tax_percentage = models.IntegerField(max_length=20)
+    amount = models.IntegerField(max_length=10)
+    documents = models.ImageField(upload_to='medicine/', blank=True, null=True)
+    note = models.TextField()
+
+
+    total = models.IntegerField(max_length=10)
+    discount_percentage = models.IntegerField(max_length=10 )
+    discount = models.IntegerField(max_length=10 )
+    tax = models.IntegerField(max_length=10)
+    net_amount = models.IntegerField(max_length=10)
+    payment_mode = models.CharField(max_length=255)
+    payment_amount = models.IntegerField(max_length=10)
+
+
+    def __str__(self):
+        return self.name
 
 class AppointmentDetails(models.Model):
   patient_name = models.CharField(max_length=255)
@@ -210,11 +250,6 @@ class Medicine(models.Model):
     medicine_photo = models.ImageField(upload_to='medicine_photos/', blank=True, null=True)
 
 
-
-class Med_Category(models.Model):
-   medicine_category = models.CharField(max_length=100)
-
-
 class Supplier(models.Model):
     supplier_name = models.CharField(max_length=255)
     supplier_contact = models.CharField(max_length=255,blank=True,null=True)
@@ -235,35 +270,6 @@ class Med_Details(models.Model):
         return f"{self.category} - {self.dose}"
 
 
-    
-class Purchase(models.Model):
-    category = models.ForeignKey(Med_Category, on_delete=models.CASCADE,blank=True,null=True) 
-    name = models.CharField(max_length=255)
-    batch_no = models.CharField(max_length=50)
-    expiry_date = models.DateField()
-    mrp = models.IntegerField(max_length=20)
-    batch_amount = models.IntegerField(max_length=20,blank=True,null=True)
-    sale_price = models.IntegerField(max_length=10)
-    packing_qty = models.IntegerField(blank=True,null=True)
-    quantity = models.IntegerField()
-    purchase_price = models.IntegerField(max_length=20 )
-    tax_percentage = models.IntegerField(max_length=20)
-    amount = models.IntegerField(max_length=10)
-    documents = models.ImageField(upload_to='medicine/', blank=True, null=True)
-    note = models.TextField()
-
-
-    total = models.IntegerField(max_length=10)
-    discount_percentage = models.IntegerField(max_length=10 )
-    discount = models.IntegerField(max_length=10 )
-    tax = models.IntegerField(max_length=10)
-    net_amount = models.IntegerField(max_length=10)
-    payment_mode = models.CharField(max_length=255)
-    payment_amount = models.IntegerField(max_length=10)
-
-
-    def __str__(self):
-        return self.name
     
 
 
@@ -1217,20 +1223,22 @@ class POS(models.Model):
     tax_percent = models.DecimalField(max_digits=13,decimal_places=3)
     discount_percent = models.DecimalField(max_digits=13,decimal_places=3)
     net_amount = models.DecimalField(max_digits=13,decimal_places=3)
+    category = models.CharField(max_length=255,null=True) 
+    name = models.CharField(max_length=255,null=True) 
+    qty = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    batch_no = models.CharField(max_length=13 ,null=True)
+    expiry_date = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+    
+    price = models.DecimalField(max_digits=13, decimal_places=3,null=True)
+
+    tax= models.DecimalField(max_digits=13, decimal_places=3, null=True)
+   
+   
+    total = models.DecimalField(max_digits=13, decimal_places=3,null=True)
     
 # class Pos_item(models.Model):
 #     pos = models.ForeignKey(POS, on_delete=models.CASCADE)
-#     category = models.CharField(max_length=255) 
-#     name = models.CharField(max_length=255) 
-#     qty = models.DecimalField(max_digits=13, decimal_places=3)
-#     batch_no = models.CharField(max_length=13)
-#     expiry_date = models.DecimalField(max_digits=13, decimal_places=3)
-    
-#     price = models.DecimalField(max_digits=13, decimal_places=3)
-#     tax= models.DecimalField(max_digits=13, decimal_places=3)
-   
-   
-#     total = models.DecimalField(max_digits=13, decimal_places=3)
+#     
 
 
 
@@ -1257,3 +1265,26 @@ class Operation(models.Model):
 class Operation_Assistants(models.Model):
     operation = models.ForeignKey(Operation,on_delete=models.CASCADE)
     assistant = models.CharField(max_length=20)
+
+
+class CashBook(models.Model):
+    date = models.DateField(auto_now=True)
+    particulars = models.CharField(max_length=30,null=True)
+    lf = models.IntegerField(max_length=10,null=True)
+    debit = models.IntegerField(max_length=20,null=True)
+    credit = models.IntegerField(max_length=20,null=True)
+    balance = models.IntegerField(max_length=30,null=True)
+
+class BankBook(models.Model):
+    date = models.DateField(auto_now=True)
+    particulars = models.CharField(max_length=30,null=True)
+    lf = models.IntegerField(max_length=10,null=True)
+    debit = models.IntegerField(max_length=20,null=True)
+    credit = models.IntegerField(max_length=20,null=True)
+    balance = models.IntegerField(max_length=30,null=True)
+
+class BRS(models.Model):
+    particulars = models.CharField(max_length=20)
+    balance = models.IntegerField(max_length=20)
+    operation = models.CharField(max_length=20,null=True)
+    amount = models.IntegerField(max_length=20)
