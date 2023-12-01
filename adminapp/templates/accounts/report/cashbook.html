@@ -9,7 +9,17 @@
     <title>Cash Book</title>
 
 {% load static %}
-    
+    <style>
+
+.show-credit {
+    display: none !important;
+}
+
+.show-debit {
+    display: block !important;
+}
+    </style>
+
 <div class="container">
     <div id="popupContainer" class="form-popup-back">
         <div class="form-Contain">
@@ -36,12 +46,12 @@
                 
                         <div class="form-group">
                             <label for="text">Particulars</label>
-                            <input type="text" name="text">
+                            <input type="text" name="particulars">
                         </div>
 
-                        <div class="form-group">
+                        <div onclick="main" class="form-group">
                             <label for="lf">L.F (optional)</label>
-                            <input type="number" name="lf">
+                            <input type="number" value="0" name="lf">
                         </div>
 
                 
@@ -55,15 +65,15 @@
                         
                         <div id="debit-group" class="form-group">
                             <label for="debit">Debit</label>
-                            <input type="number" name="debit">
+                            <input type="number" value="0" name="debit">
                         </div>
                         
                         <div id="credit-group" class="form-group">
                             <label for="credit">Credit</label>
-                            <input type="number" name="credit">
+                            <input type="number" value="0" name="credit">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group"> 
                             <label for="balance">Balance</label>
                             <input type="number" name="balance">
                         </div>
@@ -71,7 +81,7 @@
                 
                 
                        
-            
+                        <button class="btn btn-primary" onclick="man()" > Click </button> 
                         
                         <div style="text-align: center;">
                             <input type="submit" value="Submit">
@@ -95,7 +105,10 @@
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+    <h1 style="display:inline; text-align:center; margin-right:3rem;"> Total Balance: {{balance}} </h1>
+
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    
 
     </div>    
     </div>   
@@ -153,23 +166,38 @@
 
     
 <script src="{% static "/css/javscript/index.js" %}"></script>
+<script src="{% static "/css/javscript/books.js" %}"></script>
 <script>
+console.log('nwe')
 
-    function toggleFields() {
-        const type = document.querySelector('select[name="type"]').value;
-        const debitGroup = document.getElementById('debit-group');
-        const creditGroup = document.getElementById('credit-group');
 
-        if (type === 'debit') {
-            creditGroup.style.display = 'none !important';
-            debitGroup.style.display = 'block';
-        } else {
-            creditGroup.style.display = 'block';
-            debitGroup.style.display = 'none !important';
-        }
+function main(){
+    console.log('ma')
+}
+function toggleFields() {
+    const type = document.querySelector('select[name="type"]').value;
+    const debitGroup = document.getElementById('debit-group');
+    console.log(type)
+    console.log(debitGroup)
+
+    const creditGroup = document.getElementById('credit-group');
+
+    if (type === 'debit') {
+        creditGroup.classList.add('show-credit');
+        creditGroup.classList.remove('show-debit');
+        debitGroup.classList.add('show-debit');
+    } else {
+        creditGroup.classList.add('show-debit');
+        debitGroup.classList.remove('show-debit');
+        debitGroup.classList.add('show-credit');
     }
+}
 
-    toggleFields(); 
+toggleFields(); 
+
+function man(){
+    console.log('hello') 
+}
     </script>
 </body>
 </html>

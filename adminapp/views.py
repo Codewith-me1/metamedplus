@@ -7,9 +7,11 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
 from django.contrib import messages
+from .models import POS
 from .models import BRS
 from .models import Operation_category,Operation_name
 from .models import BankBook
+from .models import Bank
 from asgiref.sync import async_to_sync
 from .models import Operation_Assistants
 from django.core.mail import EmailMessage, get_connection
@@ -5978,6 +5980,7 @@ def pos_pharma(request):
     items = Item_Acc.objects.all()
     medicine = Purchase.objects.all()
     category = Med_Category.objects.all()
+    composition = Medicine_Composition.objects.all()
     doctor = AddStaff.objects.filter(role="Doctor")
 
 
@@ -5986,6 +5989,7 @@ def pos_pharma(request):
         'medicine':medicine,
         'category':category,
         'doctor':doctor,
+        'composition':composition,
     }
     return render(request, 'pos/pos_pharma.html',context)
 
@@ -7693,10 +7697,13 @@ def cash_book(request):
 def party_report(request,id):
     party = Party.objects.get(id=id)
     sales = Sales_Invoice.objects.filter(name=party.part_name)
+    total = sum(transaction.total or 0 for transaction in sales)
+    
     
     context = {
         'sales':sales,
         "party":party,
+        'balance':total,
         
     }
     return render(request,'accounts/report/party_report.html',context)
@@ -7731,17 +7738,18 @@ def cashbook(request):
         lf = request.POST.get('lf')
         debit = request.POST.get('debit')
         credit = request.POST.get('credit')
-        balance = request.POST.get('balance')
-
+        
+        
+       
         
         cashbook = CashBook(
             date =date,
             particulars=particulars,
             lf=lf,
             debit=debit,
+
             credit=credit,
-            balance=balance,
-            
+         
             
             
         )
@@ -7749,8 +7757,12 @@ def cashbook(request):
         return redirect('cashbook')
     
     cash = CashBook.objects.all()
+    total_debit = sum(transaction.debit or 0 for transaction in cash)
+    total_credit = sum(transaction.credit or 0 for transaction in cash)
+    balance = total_debit -total_credit
     context = {
-        'cash':cash
+        'cash':cash,
+        'balance':balance,
     }
     return render(request,'accounts/report/cashbook.html',context)
 
@@ -7800,8 +7812,12 @@ def bankbook(request):
         return redirect('bankbook')
     
     cash = BankBook.objects.all()
+    total_debit = sum(transaction.debit or 0 for transaction in cash)
+    total_credit = sum(transaction.credit or 0 for transaction in cash)
+    balance = total_debit - total_credit
     context = {
-        'cash':cash
+        'cash':cash,
+        'balance':balance,
     }
     return render(request,'accounts/report/bankbook.html',context)
 
@@ -7856,3 +7872,28 @@ def brs(request):
      
     }
     return render(request, 'accounts/report/brs.html',context)
+
+
+def bank(request):
+    if request.method =="POST":
+        bank_name = request.POST.get('bank_name')
+        branch = request.POST.get('branch')
+        type = request.POST.get('type')
+        ac = request.POST.get('bank_no')
+        bank = request
+        bank = Bank(
+            bank_name=bank_name,
+            branch=branch,
+            type=type,
+            ac=ac,
+        )
+        bank.save()
+        return redirect('bank') 
+    
+    bank = Bank.objects.all()
+    context ={
+        'bank':bank
+    }
+
+    return render(request,'accounts/bank.html',context)
+

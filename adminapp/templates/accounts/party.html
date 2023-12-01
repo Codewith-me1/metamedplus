@@ -179,7 +179,7 @@
           
           {% for party in party %}
             <tr>
-                <td>{{ party.part_name }}</td>
+                <td><a href="/party/{{party.id}}">{{ party.part_name }}</a></td>
                <td>{{ party.phone_number }}</td>
                <td>{{ party.email_id }}</td>
                <td>{{ party.opening_balance }}</td>

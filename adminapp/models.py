@@ -1275,6 +1275,21 @@ class CashBook(models.Model):
     credit = models.IntegerField(max_length=20,null=True)
     balance = models.IntegerField(max_length=30,null=True)
 
+
+class BRS(models.Model):
+    particulars = models.CharField(max_length=20)
+    balance = models.IntegerField(max_length=20)
+    operation = models.CharField(max_length=20,null=True)
+    amount = models.IntegerField(max_length=20)
+
+
+class Bank(models.Model):
+    bank_name = models.CharField(max_length=20)
+    branch = models.CharField(max_length=20)
+    type = models.CharField(max_length=20)
+    ac = models.IntegerField(max_length=20)
+
+    
 class BankBook(models.Model):
     date = models.DateField(auto_now=True)
     particulars = models.CharField(max_length=30,null=True)
@@ -1282,9 +1297,5 @@ class BankBook(models.Model):
     debit = models.IntegerField(max_length=20,null=True)
     credit = models.IntegerField(max_length=20,null=True)
     balance = models.IntegerField(max_length=30,null=True)
+    bank = models.ForeignKey(Bank,on_delete=models.CASCADE,null=True)
 
-class BRS(models.Model):
-    particulars = models.CharField(max_length=20)
-    balance = models.IntegerField(max_length=20)
-    operation = models.CharField(max_length=20,null=True)
-    amount = models.IntegerField(max_length=20)

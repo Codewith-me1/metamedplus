@@ -9,7 +9,20 @@
     <title>Bank Book</title>
 
 {% load static %}
-    
+    <style>
+
+        .show-credit {
+            display: none !important;
+        }
+        
+        .show-debit {
+            display: block !important;
+        }
+
+        .side-btns{
+            text-align:center;
+        }
+    </style>
 <div class="container">
     <div id="popupContainer" class="form-popup-back">
         <div class="form-Contain">
@@ -63,11 +76,7 @@
                             <input type="number" name="credit">
                         </div>
 
-                        <div class="form-group">
-                            <label for="balance">Balance</label>
-                            <input type="number" name="balance">
-                        </div>
-                
+                     
                 
                 
                        
@@ -95,8 +104,10 @@
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    <h1 style="display:inline; text-align:center; margin-right:3rem;"> Total Balance: {{balance}} </h1>
 
+    <a style="display:inline;" class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    
     </div>    
     </div>   
 
@@ -112,8 +123,7 @@
             <th>L.F</th>
             <th>Debit (₹)</th>
             <th>Credit (₹)</th>
-            <th>Balance (₹)</th>
-        
+    
 
               
            
@@ -130,8 +140,7 @@
          
                <td>{{ cash.debit }}</td>
                <td>{{ cash.credit }}</td>
-               <td>{{ cash.balance }}</td>
-         
+   
               
               
           
@@ -149,6 +158,10 @@
         </tbody>
       </table>
 
+      
+      
+     
+
     </div>
 
     
@@ -158,17 +171,22 @@
     function toggleFields() {
         const type = document.querySelector('select[name="type"]').value;
         const debitGroup = document.getElementById('debit-group');
+        console.log(type)
+        console.log(debitGroup)
+    
         const creditGroup = document.getElementById('credit-group');
-
+    
         if (type === 'debit') {
-            creditGroup.style.display = 'none !important';
-            debitGroup.style.display = 'block';
+            creditGroup.classList.add('show-credit');
+            creditGroup.classList.remove('show-debit');
+            debitGroup.classList.add('show-debit');
         } else {
-            creditGroup.style.display = 'block';
-            debitGroup.style.display = 'none !important';
+            creditGroup.classList.add('show-debit');
+            debitGroup.classList.remove('show-debit');
+            debitGroup.classList.add('show-credit');
         }
     }
-
+    
     toggleFields(); 
     </script>
 </body>

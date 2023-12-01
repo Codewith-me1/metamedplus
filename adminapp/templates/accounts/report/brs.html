@@ -27,7 +27,7 @@
                   <form id="brsForm" method="post">
                     {% csrf_token %}
                       <div class="form-group">
-                          <label for="openingBalance">Balance as per Cash Book</label>
+                          <label for="openingBalance">Balance as per Bank Book</label>
                           <input type="number" name="openingBalance" required>
                       </div>
                       <input type="number" class="itemCounter" value="0" hidden name="itemCounter" >
@@ -63,7 +63,7 @@
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
-    <a  class="btn-primary btn" href="javascript:history.back()">Back</a>
+ 
     </div>    
     </div>   
 

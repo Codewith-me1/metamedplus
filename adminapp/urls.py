@@ -223,6 +223,7 @@ urlpatterns = [
     path('approval', views.approval, name='approval'),
     path('cashbook', views.cashbook, name='cashbook'),
     path('bankbook', views.bankbook, name='bankbook'),
+    path('bank', views.bank, name='bank'),
     path('brs', views.brs, name='brs'),
     path('medicine_composition', views.medicine_composition, name='medicine_composition'),
     path('approval/<int:id>', views.approval_path, name='approval_path'),

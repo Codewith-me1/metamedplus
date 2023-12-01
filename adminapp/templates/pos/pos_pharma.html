@@ -158,10 +158,19 @@ form button{
           
                   <label for="medicine_composition">Medicine Composition</label>
           
-                  <textarea id="medicine_composition" name="medicine_composition" rows="4" cols="20">
+                  <select class="form-control medicine_composition" id="medicine_composition" name="medicine_composition"> 
+                     
+          
+                    {% for compo in composition %}
+                    <option  value="{{compo.name}}">{{compo.name}}</option>
+                    {% endfor %}
+                  </select>
+       
+              </div>
+                
                  
-                  </textarea>
-                 </div>
+                 
+                
 
                  <div class="form-group">
           
