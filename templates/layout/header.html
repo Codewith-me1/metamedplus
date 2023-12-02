@@ -599,6 +599,17 @@ form input.operator{
               bedDet.append(bedDescription);
               bedDetailsContainer.append(bedDet);
           });
+
+          data.ipd.forEach(function (bed) {
+            var bedDet = $('<div class="bed_det">');
+            var bedImage = $('<img src="{% static "css/images/icons8-occupied-bed-100.png" %}">');
+            var bedDescription = $('<a href="/ipd ${ipd}" class="bed_des">' + ipd + '</p>');
+
+            bedDet.append(bedImage);
+            bedDet.append(bedDescription);
+            bedDetailsContainer.append(bedDet);
+        });
+
       } else {
           // Display a default message if no data is found
           bedDetailsContainer.html('<p class="bed_des">Empty</p>');

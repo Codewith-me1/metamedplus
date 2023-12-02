@@ -5550,10 +5550,13 @@ def get_header_data(request):
 def get_bed_data(request):
     bed_data = Bed.objects.all()  # Fetch all records from the Bed model
     data_list = []
-
+    ipd = IpdPatient.objects.all()
     for bed in bed_data:
         data_list.append({
             'name': bed.name,
+            'ipd':ipd.bed_number,
+            'id':ipd.id,
+
             # Add more fields here if needed
         })
 
