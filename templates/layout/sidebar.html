@@ -560,8 +560,18 @@ body{
                  <a class="dropdown-a" href="{% url 'gst' %}">GST Report  </a>
                  <a class="dropdown-a" href="{% url 'cashbook' %}">Cash Book  </a>
                  
-                 <a class="dropdown-a" href="{% url 'bank' %}">Bank   </a>
-                 <a class="dropdown-a" href="{% url 'bankbook' %}">Bank Book  </a>
+                 
+
+                 <button class="dropdown-btn dropdown-nested "> Bank Book
+                <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  <a class="dropdown-a" href="{% url 'bank' %}"> Accounts </a>
+            
+  
+                </div>
+
+
                  <a class="dropdown-a" href="{% url 'brs' %}">BRS</a>
                  <a class="dropdown-a" href="{% url 'profit' %}">Profit And Loss </a>
                  

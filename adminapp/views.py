@@ -5038,12 +5038,22 @@ def bank_account_list(request,id):
 def deposit(request, id):
     if request.method == 'POST':
         amount = Decimal(request.POST['amount'])
-        account = BankAccount.objects.get(id=id)
-        account.balance += amount
-        account.save()
-        Transaction.objects.create(account=account, transaction_type='Deposit', amount=amount)
+        type = request.POST.get('type')
+        if type == 'deposit':
+            account = BankAccount.objects.get(id=id)
+        
+            account.balance += amount
+            account.save()
+            Transaction.objects.create(account=account, transaction_type='Deposit', amount=amount)
 
-        return redirect('bank_accountlist', id=id)
+            return redirect('bank_accountlist', id=id)
+        elif type == 'withdrawl':
+            account = BankAccount.objects.get(id=id)
+            account.balance -= amount
+            account.save()
+            Transaction.objects.create(account=account, transaction_type='Withdrawal', amount=amount)
+            return redirect('bank_accountlist', id=id)
+       
     return render(request, 'account/bank_account.html')
 
 def withdrawal(request, id):
@@ -5057,7 +5067,7 @@ def withdrawal(request, id):
             return redirect('bank_accountlist', id=id)
         else:
             return render(request, 'insufficient_funds.html')
-    return render(request, 'withdrawal.html')
+    return render(request, 'account/bank_account.html')
 
 
 
@@ -7803,7 +7813,7 @@ def bankbook(request):
             lf=lf,
             debit=debit,
             credit=credit,
-            balance=balance,
+          
             
             
             

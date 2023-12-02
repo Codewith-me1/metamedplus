@@ -27,6 +27,14 @@
                         <input type="number" id="amount" name="amount" class="form-control" required>
                     </div>
 
+                    <div class="form-group">
+                      <label for="amount">Transcation Type</label>
+                      <select name="type" required >
+                        <option value="withdrawl">Withdrawl</option>
+                        <option value="deposit">deposit</option>
+                    </select>
+                  </div>
+
                     <div style="text-align: center;">
                         <input type="submit" value="Submit">
                     </div>
@@ -50,7 +58,7 @@
 
 
 
-<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Deposit</a>
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">add transaction</a>
 
 </div>    
 </div>   

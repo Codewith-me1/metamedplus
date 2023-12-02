@@ -35,7 +35,7 @@
 
 
 
-                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'cashbook' %}">
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'bankbook' %}">
                         {% csrf_token %}
                         
                         
@@ -54,7 +54,7 @@
 
                         <div class="form-group">
                             <label for="lf">L.F (optional)</label>
-                            <input type="number" name="lf">
+                            <input type="number" value='0' name="lf">
                         </div>
 
                 
@@ -68,12 +68,12 @@
                         
                         <div id="debit-group" class="form-group">
                             <label for="debit">Debit</label>
-                            <input type="number" name="debit">
+                            <input value="0" type="number" name="debit">
                         </div>
                         
                         <div id="credit-group" class="form-group">
                             <label for="credit">Credit</label>
-                            <input type="number" name="credit">
+                            <input value="0" type="number" name="credit">
                         </div>
 
                      
