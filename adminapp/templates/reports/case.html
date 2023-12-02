@@ -10,6 +10,24 @@
     <title>Search Results</title>
 </head>
 <body>  
+    <style>
+
+        .module{
+            padding:5rem;
+            background-color:white;
+            margin:1rem;
+            border-radius:20px;
+
+        }
+        .module a{
+            color:black;
+
+        }
+        .mod{
+            display:flex;
+        }
+    </style>
+
 
         
 <div class="container">
@@ -19,11 +37,12 @@
         <div class="form-group">
             <label for="case_id">Case Id </label>
             <input type="text" name="case_id" placeholder="enter a case id">
+            <button class="btn-primary btn" >Search</button>
         </div>
     </form>
    
     <div class="main-header">
-        <h1 class="headline">Single Module Desk</h1>
+        <h1 class="headline">Single Window  Module Desk</h1>
         <div class="side-btns">
         
         
@@ -34,6 +53,20 @@
     
     
     
+    <div class="mod">
+        <div class="module">
+            <a href="/items/" >In House Billing Pharmacy </a>
+           </div>
+           <div class="module">
+            <a href="/pos_radio" >In House Billing Radiology </a>
+           </div>
+           <div class="module">
+            <a href="/pos_path" >In House Billing Pathology </a>
+           </div>
+           <div class="module">
+            <a href="/issue_blood" >Blood Issue Component  </a>
+           </div>
+           </div>
     
     
       
