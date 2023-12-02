@@ -45,10 +45,7 @@ form{
   padding:2rem;
 }
 
-#addItemButton{
-  padding:10px !important;
-  margin:20px !important;
-}
+
 input{
   height:35px;
 }
@@ -90,15 +87,43 @@ form button{
   background-color:white;
   border-radius:15px;
 }
+.con{
+  display:flex;
+  
+}
+.con a{
+  margin-left:5rem;
+  
+
+}
+.con button{
+  margin:1rem;
+}
 
 
 </style>
+<script>
+  function checkQuantity(itemCounter) {
+      // Get the quantity and available quantity values
+      var quantity = document.getElementById('qty_' + itemCounter).value;
+      var availableQuantity = document.getElementById('available_' + itemCounter).value;
 
+      // Check if quantity exceeds available quantity
+      if (parseInt(quantity) > parseInt(availableQuantity)) {
+          alert('Quantity cannot be greater than available quantity.');
+          // Reset the quantity to the available quantity
+          document.getElementById('qty_' + itemCounter).value = availableQuantity;
+      }
+  }
+
+  console.log('New Asa')
+</script>
 <div class='container'>
   <div class="con">
     <h2>In House Billing </h2>
     
     <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+    <button type="button" id="addItemButton" class="btn btn-primary">Add Item</button>
   </div>
     <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
         {% csrf_token %}
@@ -165,6 +190,7 @@ form button{
                      <th>Medicine Name</th>
            
                 <th>Quantity</th>
+                <th>Available Quantity</th>
                 <th>Batch No</th>
                 <th>Expiry Date</th>
                 <th>Price</th>
@@ -184,7 +210,7 @@ form button{
             </tbody>
           </table>
 
-          <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+         
         </div>
         </div>
         <div class="pos_right">
@@ -295,10 +321,9 @@ form button{
             
 
 
+            <td><input type="number" value="1" class="form-control" onblur="checkQuantity(${itemCounter})" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+            <td><input type="number" value="1" readonly class="form-control" id="available_${itemCounter}" name="available_${itemCounter}" required></td>
 
-                <td><input type="number"  class="form-control" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
-                
-              
                 <td><input type="number" value="" class="form-control" id="batch_${itemCounter}" name="batch_${itemCounter}" required></td>
                 
 
@@ -358,6 +383,7 @@ form button{
                       $('#batch_' + rowNumber).val(data.batch);
                       $('#expiry_' + rowNumber).val(data.expiry);
                       $('#tax_' + rowNumber).val(data.tax);
+                      $('#available_' + rowNumber).val(data.quantity);
                       
                     
                   },

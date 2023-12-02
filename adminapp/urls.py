@@ -222,9 +222,12 @@ urlpatterns = [
     path('party/<int:id>', views.party_report, name='party_report'),
     path('approval', views.approval, name='approval'),
     path('cashbook', views.cashbook, name='cashbook'),
-    path('bankbook', views.bankbook, name='bankbook'),
+    path('bankbook/<int:id>', views.bankbook, name='bankbook'),
+    path('pos_bank', views.pos_bank, name='pos_bank'),
     path('bank', views.bank, name='bank'),
+    path('bankpdf', views.pos_bankpdf, name='bankpdf'),
     path('brs', views.brs, name='brs'),
+    path('depreciation', views.depreciation, name='depreciation'),
     path('medicine_composition', views.medicine_composition, name='medicine_composition'),
     path('approval/<int:id>', views.approval_path, name='approval_path'),
 

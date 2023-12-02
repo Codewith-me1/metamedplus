@@ -115,7 +115,8 @@ form button{
 <div class='container'>
   <div class="pos_header">
     <h2>In House Billing</h2>
-    
+    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
   </div>
     <form method="POST" action="{% url "pos_pathpdf" %}" id="invoiceForm">
         {% csrf_token %}
@@ -209,8 +210,7 @@ form button{
                 
             </tbody>
           </table>
-          <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
-
+         
         </div>
         </div>
         <div class="pos_right">

@@ -28,14 +28,19 @@
                     {% csrf_token %}
                       <div class="form-group">
                           <label for="openingBalance">Balance as per Bank Book</label>
-                          <input type="number" name="openingBalance" required>
+                          <input  type="number" id="openingBalance" name="openingBalance" required>
                       </div>
+                      <div class="form-group">
+                        <label for="adjustedAmount">Adjusted Amount</label>
+                        <input type="number" id="adjustedAmount"   name="adjustedAmount" required>
+                    </div>
                       <input type="number" class="itemCounter" value="0" hidden name="itemCounter" >
                       <div id="dynamicFields">
                           <!-- Dynamic fields will be added here -->
                       </div>
               
                       <button type="button" class="btn btn-primary" onclick="addDynamicField()">Add Field</button>
+                      <button type="button" class="btn btn-primary" onclick="calculateAdjustedBalance()">CalculateAdjustedBalance</button>
               
                       {% comment %} <button type="button" class="btn btn-primary" onclick="calculateAdjustedBalance()">Calculate Adjusted Bank Balance</button> {% endcomment %}
                       <button type="submit" class="btn btn-primary" >Save</button>
@@ -62,7 +67,7 @@
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Record </a>
  
     </div>    
     </div>   
@@ -80,6 +85,7 @@
             <th>Operation</th>
             <th>Amount</th>
             <th>Balance</th>
+            <th>Adjusted Amount</th>
             
         
             
@@ -101,6 +107,7 @@
                <td>{{ cash.amount }}</td>
                
                <td>{{ cash.balance }}</td>
+               <td>{{ cash.adjusted }}</td>
          
               
               
@@ -178,25 +185,28 @@
         }
 
         function calculateAdjustedBalance() {
-            var openingBalance = parseFloat(document.querySelector('input[name="openingBalance"]').value) || 0;
-            var dynamicRows = document.querySelectorAll('div.form-group');
+            var openingBalance = parseFloat(document.getElementById('openingBalance').value);
+        var itemCounter = parseInt(document.getElementsByName('itemCounter')[0].value);
 
-            var adjustedBalance = openingBalance;
+        var adjustedAmount = openingBalance;
 
-            dynamicRows.forEach(function(row) {
-                var particulars = row.querySelector('input[name^="particulars"]').value || '';
-                var operation = row.querySelector('select[name^="operation"]').value;
-                var value = parseFloat(row.querySelector('input[name^="value"]').value) || 0;
+        for (var i = 1; i <= itemCounter; i++) {
+            var operation = document.getElementsByName('operation_' + i)[0].value;
+            var value = parseFloat(document.getElementsByName('value_' + i)[0].value);
 
-                if (operation === 'add') {
-                    adjustedBalance += value;
-                } else if (operation === 'subtract') {
-                    adjustedBalance -= value;
-                }
-            });
-
-            document.getElementById('openingBalanceDisplay').textContent = openingBalance.toFixed(2);
-            document.getElementById('adjustedBalance').textContent = adjustedBalance.toFixed(2);
+            if (operation === 'add') {
+                adjustedAmount += value;
+            } else if (operation === 'subtract') {
+                adjustedAmount -= value;
+            }
+        }
+            var adjusted = document.getElementById('adjustedAmount');
+            var balance= document.getElementById('openingBalance');
+            console.log(adjusted)
+            console.log(balance)
+            adjusted.value =adjustedAmount.toFixed(2)
+            
+            alert('Adjusted Amount: ' + adjustedAmount);
         }
 </script>
 </body>

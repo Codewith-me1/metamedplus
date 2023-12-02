@@ -405,7 +405,7 @@ body{
             {% if user.role == 'Admin' %}
             <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
             <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Appointment</span></a></li>
-            <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'search_case' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Single Module Desk</span></a></li>
+            <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'search_case' %}"><i class="fa-solid fa-money-bill"></i><span class="side_text">Single Module Billing</span></a></li>
 
             <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
@@ -436,6 +436,7 @@ body{
             <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
             <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
             <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
+            <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
             <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
             <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
             <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>

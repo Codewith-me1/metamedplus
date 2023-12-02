@@ -29,6 +29,9 @@
 form{
   display:flex;
 }
+#addItemButton{
+  margin-top:2.7rem !important;
+}
 .pos_left{
   width:60%;
   margin:2rem;
@@ -94,10 +97,6 @@ form button{
   margin:20px;
   border-radius:20px;
 }
-#addItemButton{
-  padding:10px !important;
-  margin:20px !important;
-}
 
 
 .pos_middle{
@@ -115,7 +114,8 @@ input{
 
 <div class='container'>
   <div class="pos_header">
-    <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a></h2>
+    <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a>    <button type="button" id="addItemButton" class="btn btn-primary">Add Item</button>
+    </h2>
  
   </div>
     <form method="POST" action="{% url "pos_pathpdf" %}" id="invoiceForm">
@@ -198,7 +198,7 @@ input{
             </tbody>
             
           </table>
-          <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
 
         </div>
         </div>

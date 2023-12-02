@@ -29,6 +29,7 @@ from django.forms.models import model_to_dict
 from .models import ComplainType
 from .models import Liablity
 from .models import Wallet
+from .models import Depreciation
 from django.core.serializers import serialize
 from .models import Wallet_Transactions
 from django.shortcuts import get_object_or_404
@@ -2938,6 +2939,7 @@ def party_create(request):
         part_name = request.POST['part_name']
         gstin = request.POST['gstin']
         phone_number = request.POST['phone_number']
+        account = request.POST['account']
         gst_type = request.POST['gst_type']
         state = request.POST['state']
         email_id = request.POST['email_id']
@@ -2953,6 +2955,7 @@ def party_create(request):
             phone_number=phone_number,
             gst_type=gst_type,
             state=state,
+            account_no=int(account),
             email_id=email_id,
             billing_address=billing_address,
             opening_balance=opening_balance,
@@ -3932,10 +3935,14 @@ def all_transcation(request):
     transcation = Sales_Invoice.objects.all()
     payment_in = Payment_In.objects.all()
     expense = Expense_Invoice.objects.all()
+    cash = CashBook.objects.all()
+    bank = Transaction.objects.all()
 
     context = {
         "transcation":transcation,
         'payment':payment_in,
+        'bank':bank,
+        'cash':cash,
         'expense':expense
     }
 
@@ -4574,9 +4581,11 @@ def balance_sheet(request):
     )['total_long_term_assets'] or 0
 
 
-    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
-        total_indirect=Sum(F('expense_invoice'))
+    indirect_expens = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
+        total_indirect=Sum('expense_invoice')
     )['total_indirect'] or 0
+
+    depreciation = Depreciation.objects.all().aggregate(amount=Sum('amount'))['amount'] or 0
 
     direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
         total_direct=Sum(F('expense_invoice'))
@@ -4589,6 +4598,7 @@ def balance_sheet(request):
         total_withdrawl= Sum(F('amount'))
     )['total_withdrawl']or 0
 
+    indirect_expense = indirect_expens+depreciation
     closing_stock = opening_stock + total_purchases - total_sales
     equity =   opening_stock + total_receivable  + total_back_account -withdraw
 
@@ -5107,9 +5117,11 @@ def profit_and_loss_statement(request):
     )['total_purchase_tax'] or 0
 
     
-    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
-        total_indirect=Sum(F('expense_invoice'))
+    indirect_expens = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
+        total_indirect=Sum('expense_invoice')
     )['total_indirect'] or 0
+
+    depreciation = Depreciation.objects.all().aggregate(amount=Sum('amount'))['amount'] or 0
 
     direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
         total_direct=Sum(F('expense_invoice'))
@@ -5125,7 +5137,7 @@ def profit_and_loss_statement(request):
     )['total_short_term_liablity'] or 0
     
 
-
+    indirect_expense = indirect_expens+depreciation
 
     closing_stock = Sales_Invoice.objects.filter(type='sales').aggregate(
         total_short_term_assets=Sum('item_invoice')
@@ -7795,10 +7807,11 @@ def medicine_composition(request):
     return render(request,'pharmacy/medicine/composition.html',context)
 
 
-def bankbook(request):
+def bankbook(request,id):
     if request.method=="POST":
         date = request.POST.get('date')
-        
+        id = Bank.objects.get(id=id)
+
         particulars = request.POST.get('particulars')
         type = request.POST.get('type')
         lf = request.POST.get('lf')
@@ -7812,6 +7825,7 @@ def bankbook(request):
             particulars=particulars,
             lf=lf,
             debit=debit,
+            bank=id,
             credit=credit,
           
             
@@ -7819,13 +7833,15 @@ def bankbook(request):
             
         )
         cashbook.save()
-        return redirect('bankbook')
-    
-    cash = BankBook.objects.all()
+        
+        return redirect('bank')
+    bank = Bank.objects.get(id=id)
+    cash = BankBook.objects.filter(bank=id)
     total_debit = sum(transaction.debit or 0 for transaction in cash)
     total_credit = sum(transaction.credit or 0 for transaction in cash)
-    balance = total_debit - total_credit
+    balance = total_credit - total_debit
     context = {
+        'bank':bank,
         'cash':cash,
         'balance':balance,
     }
@@ -7837,6 +7853,7 @@ def bankbook(request):
 def brs(request):
     if request.method == 'POST':
         balance = request.POST.get('openingBalance')
+        adjusted = request.POST.get('adjustedAmount')
         item_counter = request.POST.get('itemCounter')
       
         
@@ -7862,6 +7879,7 @@ def brs(request):
                 particulars =item,
                 amount=value,
                 balance=balance,
+                adjusted=adjusted,
                 operation=operation,
 
 
@@ -7907,3 +7925,111 @@ def bank(request):
 
     return render(request,'accounts/bank.html',context)
 
+
+def depreciation(request):
+    if request.method =='POST':
+        asset = request.POST.get('asset')
+        dep = int(request.POST.get('dep'))
+        assets = Asset.objects.get(id=asset)
+        depreciation_amount = int(assets.price) * (dep / 100)
+
+        net_value = int(assets.price) - int(depreciation_amount)
+        assets.price = net_value
+        assets.save() 
+        depreciation = Depreciation(
+            asset=assets,
+            percentage=dep,
+            amount=depreciation_amount,
+
+        )
+        depreciation.save()
+
+        return redirect('depreciation')
+    assets = Asset.objects.all()
+    dep = Depreciation.objects.all()
+    context ={
+        'assets':assets,
+        'depreciaton':dep,
+
+    }
+
+    return render(request,'accounts/assets/depreciation.html',context)
+
+
+def pos_bankpdf(request):
+
+
+    if request.method == 'POST':
+        
+        from_date = request.POST.get('date_time')
+        to_date = request.POST.get('to_date')
+        item_counter = request.POST.get('item_counter')
+
+      
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+            transfer = request.POST.get(f'tranfer_{i}')
+
+
+            value = request.POST.get(f'value_{i}')
+            
+            description = request.POST.get(f'des_{i}')
+            cheque = request.POST.get(f'cheque_{i}')
+            debit = request.POST.get(f'debit_{i}')
+            credit = request.POST.get(f'credit_{i}')
+
+            balance = request.POST.get(f'balance_{i}')
+           
+            
+            product = {
+                'transfer': transfer,
+                'value': value,
+                'description': description,
+                'cheque':cheque,
+                'debit':debit,
+                'credit':credit,
+                'balance':balance,
+                
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+        
+    
+    context= {
+        'products':product_list,
+        'from_date':from_date,
+        "to_date":to_date,
+    }
+
+    template = get_template('templat/pos_bank.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="statement.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def pos_bank(request):
+    return render(request,'accounts/report/pos_bank.html')

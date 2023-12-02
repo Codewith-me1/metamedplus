@@ -14,9 +14,23 @@
 .show-credit {
     display: none !important;
 }
+.side-btns{
+    text-align:center !important;
+}
 
 .show-debit {
     display: block !important;
+}
+
+
+.as_on{
+    text-align:center;
+    
+}
+#date{
+    font-weight:bold;
+    font-size:1.8rem;
+    margin-right:8rem;
 }
     </style>
 
@@ -98,13 +112,16 @@
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    <h1 style="display:inline; text-align:center; margin-right:3rem;"> Total Balance: {{balance}} </h1>
+    <h1 style="display:inline; text-align:center; margin-right:10rem;"> Total Balance: {{balance}} </h1>
 
-    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add fields </a>
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Record </a>
     
 
     </div>    
     </div>   
+    <div class="as_on">
+        <p id="date"> As on <span id="currentDate"></span></p>
+    </div>  
 
 
 
@@ -190,6 +207,25 @@ toggleFields();
 function man(){
     console.log('hello') 
 }
+
+
+function updateDate() {
+    var currentDateElement = document.getElementById('currentDate');
+    var currentDate = new Date();
+
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    var formattedDate = currentDate.toLocaleDateString('en-IN', options);
+
+
+    currentDateElement.textContent = formattedDate;
+}
+
+updateDate();
+
+
+setInterval(updateDate, 1000);
+
+
     </script>
 </body>
 </html>

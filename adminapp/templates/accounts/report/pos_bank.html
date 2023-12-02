@@ -1,0 +1,213 @@
+<!-- pos/templates/pos/item_list.html -->
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+
+<style>
+
+@media only screen and (max-width:768px) and (min-width:300px) {
+  form{
+    display:block !important;
+  }
+  .pos_right{
+    width:100% !important;
+  }
+  .pos_left{
+    width:90% !important;
+  }
+
+
+}
+
+.pos_left{
+  width:60%;
+  margin:2rem;
+
+  border-radius:20px;
+}
+.table{
+  margin-top:3rem;
+}
+.pos_right{
+  width:30%;
+  background-color:white;  
+  border-radius:20px;
+  padding:2rem;
+}
+
+
+input{
+  height:35px;
+}
+
+
+.con{
+    display:flex;
+    
+}
+.con a{
+    margin-left:5rem;
+    
+
+}
+.con button{
+    margin:1rem;
+}
+
+
+</style>
+
+<div class='container'>
+    <div class="con">
+        <h2>Statement </h2>
+        
+        <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+        <button type="button" id="addItemButton" class="btn btn-primary">Add Item</button>
+      </div>
+    <form method="POST" action="{% url "bankpdf" %}" id="invoiceForm">
+        {% csrf_token %}
+        <input type="hidden" name="item_counter" id="item_counter" value="0">
+            <div class="first-container">
+
+            
+        </div>
+        <div class="pos_left">
+            <div class="pos_composition">
+                 <div class="form-group">
+                  <label for="date_time">From Date</label>
+                  <input type="date" name="date_time" id="date_time" >
+          
+          
+             </div>
+
+             
+             <div class="form-group">
+                <label for="to_date">To Date</label>
+                <input type="date" name="to_date" id="to_date" >
+        
+        
+           </div>
+        
+        </div>
+    </div>
+               
+          
+
+                    <div class="medicine_details">
+        <table class="table">
+            <thead>
+              <tr>
+                     <th>Tranfer Date</th>
+                     <th>Value Date</th>
+                
+                     <th>Description</th>
+           
+                <th>Ref.No/ Cheque</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Balance</th>
+                
+                  
+               
+              </tr>
+            </thead>
+            <tbody>
+              
+               
+
+                
+            </tbody>
+          </table>
+
+          
+          <button type="submit" class="btn btn-primary">Save Invoice</button>
+        </div>
+        </div>
+
+        
+        
+        
+    </form>
+    
+   
+
+
+
+    
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    
+    itemCounter = 0;
+        // Function to create a new row with item fields
+        function createNewItemRow() {
+           
+            itemCounter++;
+            $('#item_counter').val(itemCounter);
+            
+            const newRow = `
+            <tr class="item-row" id="itemRow${itemCounter}">
+
+
+
+            
+
+
+
+                <td><input type="date"  class="form-control" id="tranfer_${itemCounter}" name="transfer_${itemCounter}" required></td>
+                <td><input type="date"  class="form-control" id="value_${itemCounter}" name="value_${itemCounter}" required></td>
+                <td><textarea   class="form-control" id="des_${itemCounter}" name="des_${itemCounter}" required></textarea></td>
+                
+              
+                <td><input type="number" value="" class="form-control" id="cheque_${itemCounter}" name="cheque_${itemCounter}" required></td>
+                <td><input type="number" value="" class="form-control" id="debit_${itemCounter}" name="debit_${itemCounter}" required></td>
+                <td><input type="number" value="" class="form-control" id="credit_${itemCounter}" name="credit_${itemCounter}" required></td>
+                <td><input type="number" value="" class="form-control" id="balance_${itemCounter}" name="balance_${itemCounter}" required></td>
+            
+               
+            </tr> 
+        `;
+    
+        // Append the new row to the table body
+        $('tbody').append(newRow);
+            
+        }
+        
+       
+
+        createNewItemRow();
+        
+    
+        // Function to remove an item row
+        function removeItemRow(rowNumber) {
+            // Remove the specified item row
+            $(`#itemRow${rowNumber}`).remove();
+        }
+    
+        // Add an event listener to the "Add Item" button
+        $('#addItemButton').on('click', function () {
+            createNewItemRow();
+        });
+        
+
+        
+
+
+</script>
+
+
+
+

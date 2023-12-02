@@ -94,10 +94,6 @@ form button{
   margin:20px;
   border-radius:20px;
 }
-#addItemButton{
-  padding:10px !important;
-  margin:20px !important;
-}
 
 
 .pos_middle{
@@ -110,7 +106,8 @@ form button{
 
 <div class='container'>
   <div class="pos_header">
-    <h2>In House Billing</h2> <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+    <h2>In House Billing</h2> <a class="btn btn-primary"  href="javascript:history.back()">Back</a>     <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+
  
   </div>
     <form method="POST" action="{% url "pos_pathpdf" %}" id="invoiceForm">

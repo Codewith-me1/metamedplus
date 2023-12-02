@@ -129,6 +129,47 @@
           
           </tr>
         {% endfor %}
+
+        {% for cash in cash %}
+          <tr>
+              <td>{{ cash.id }}</td>
+              <td>{{ cash.date }}</td>
+              <td>{{ cash.particulars }}</td>
+              <td> Cash</td>
+              <td></td>
+              <td></td>
+           
+             
+             
+             <td>{{ cash.balance }}</td> 
+       
+            
+            
+        
+          
+          </tr>
+        {% endfor %}
+
+
+        {% for bank in bank %}
+        <tr>
+            <td>{{ bank.id }}</td>
+            <td>{{ bank.date }}</td>
+            <td>{{ bank.account}}</td>
+            <td> {{bank.transaction_type}}</td>
+            
+            <td></td>
+            <td></td>
+           
+           
+           <td>{{ bank.amount }}</td> 
+     
+          
+          
+      
+        
+        </tr>
+      {% endfor %}
         </tbody>
       </table>
     </div>

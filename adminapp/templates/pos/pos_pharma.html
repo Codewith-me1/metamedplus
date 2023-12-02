@@ -45,10 +45,7 @@ form{
   padding:2rem;
 }
 
-#addItemButton{
-  padding:10px !important;
-  margin:20px !important;
-}
+
 input{
   height:35px;
 }
@@ -90,6 +87,18 @@ form button{
   background-color:white;
   border-radius:15px;
 }
+.con{
+  display:flex;
+  
+}
+.con a{
+  margin-left:5rem;
+  
+
+}
+.con button{
+  margin:1rem;
+}
 
 
 </style>
@@ -112,7 +121,8 @@ form button{
 
 
 <div class='container'>
-    <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a></h2>
+    <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a>  <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button></h2>
+   
 
     <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
         {% csrf_token %}
@@ -211,7 +221,7 @@ form button{
             </tbody>
           </table>
 
-          <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
+          
         </div>
         </div>
         <div class="pos_right">

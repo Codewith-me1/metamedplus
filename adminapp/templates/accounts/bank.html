@@ -46,7 +46,7 @@
                         <input type="text" id="type" name="type" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="bank_no">Bank No</label>
+                        <label for="bank_no">Account Number</label>
                         <input type="number" id="bank_no" name="bank_no" class="form-control" required>
                     </div>
         
@@ -79,7 +79,8 @@
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Bank  </a>
+    <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Bank Account</a>
+  
     
     </div>    
     </div>   
@@ -102,7 +103,7 @@
           
           {% for bank in bank %}
             <tr>
-                <td><a href="/bankbook" >{{ bank.bank_name }}</a></td>
+                <td><a href="/bankbook/{{bank.id}}" >{{ bank.bank_name }}</a></td>
                 <td>{{ bank.branch }}</td>
                 <td>{{ bank.type }}</td>
                 <td>{{ bank.ac }}</td>

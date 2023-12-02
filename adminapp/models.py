@@ -856,6 +856,7 @@ class Party(models.Model):
     gstin = models.CharField(max_length=15,null=True,blank=True)
     phone_number = models.CharField(max_length=15,null=True,blank=True)
     gst_type = models.CharField(max_length=10)
+    account_no = models.IntegerField(max_length=30,null=True)
     state = models.CharField(max_length=255)
     email_id = models.EmailField()
     billing_address = models.TextField()
@@ -1281,6 +1282,7 @@ class BRS(models.Model):
     balance = models.IntegerField(max_length=20)
     operation = models.CharField(max_length=20,null=True)
     amount = models.IntegerField(max_length=20)
+    adjusted = models.DecimalField(max_digits=13,decimal_places=3,null=True)
 
 
 class Bank(models.Model):
@@ -1299,3 +1301,7 @@ class BankBook(models.Model):
     balance = models.IntegerField(max_length=30,null=True)
     bank = models.ForeignKey(Bank,on_delete=models.CASCADE,null=True)
 
+class Depreciation(models.Model):
+    asset = models.ForeignKey(Asset,on_delete=models.CASCADE)
+    percentage = models.IntegerField(max_length=20)
+    amount = models.DecimalField(max_digits=13,decimal_places=3)
