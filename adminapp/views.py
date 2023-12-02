@@ -7644,15 +7644,15 @@ def ot_report(request):
 
 
 
-def search_case_id(request):
+def     search_case_id(request):
     if request.method == 'GET':
 
         search_id = request.GET.get('case_id', None)
 
         if search_id is not None:
             
-            ipd_result = IpdPatient.objects.filter(id=search_id).first()
-            opd_result = OpdPatient.objects.filter(id=search_id).first()
+            ipd_result = IpdPatient.objects.filter(id=search_id)
+            opd_result = OpdPatient.objects.filter(id=search_id)
 
             context = {
                 'ipd_result': ipd_result,

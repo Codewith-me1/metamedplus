@@ -1,10 +1,18 @@
 <!-- search_results.html -->
+
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Search Results</title>
 </head>
-<body>
+<body>  
+
+        
+<div class="container">
 
     <form  method="get">
 
@@ -13,18 +21,132 @@
             <input type="text" name="case_id" placeholder="enter a case id">
         </div>
     </form>
-    {% if ipd_result %}
-        <h2>IPD Patient Result:</h2>
-        <!-- Display IPD result details here -->
-        {{ ipd_result }}
-    {% endif %}
+   
+    <div class="main-header">
+        <h1 class="headline">Single Module Desk</h1>
+        <div class="side-btns">
+        
+        
+    
+        
+        </div>    
+        </div>   
+    
+    
+    
+    
+    
+      
+                
+    
+            {% if ipd_result %}
 
-    {% if opd_result %}
-        <h2>OPD Patient Result:</h2>
-        <!-- Display OPD result details here -->
-        {{ opd_result }}
-    {% endif %}
+            <table class="table">
+                <thead>
+                  <tr>
+                    
+                    
+                    <th>Case ID</th>
+                    <th>Patient</th>
+                 
+                    <th>Gender</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Temperature</th>
+                    <th>Admission Date</th>
+                    <th>Type</th>
+                
+                    
+               
+                    
+        
+                    
+                 
+                   
+                  </tr>
+                </thead>
+                <tbody>
+               
+                    
 
+              {% for item in ipd_result %}
+                <tr>
+                    
+                    <td>{{ item.id }}</td>
+                    <td><a href="/ipd{{ipd.id}}"> {{ item.patient.name }}</a></td>
+                  
+                
+                   <td>{{ item.patient.gender }}</td>
+                   <td>{{ item.height }}</td>
+                   <td>{{ item.weight }}</td>
+                   <td>{{ item.temperature }}</td>
+                   <td>{{ item.admission_date }}</td>
+                   <td>IPD Patient</td>
+                
+                  {% endfor %}
+                  </tr>
+               
+                  
+                
+            </tbody>
+          </table>
+
+
+            {% elif opd_result %}
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    
+                    
+                    <th>Case ID</th>
+                    <th>Patient</th>
+                 
+                    <th>Gender</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Temperature</th>
+                    <th>Admission Date</th>
+                    <th>Type</th>
+                
+                
+                    
+               
+                    
+        
+                    
+                 
+                   
+                  </tr>
+                </thead>
+                <tbody>
+            {% for item in opd_result %}
+            <tr>
+                
+                <td>{{ item.id }}</td>
+                <td>{{ item.patient.name }}</td>
+              
+            
+                <td>{{ item.patient.gender }}</td>
+                <td>{{ item.height }}</td>
+                <td>{{ item.weight }}</td>
+                <td>{{ item.temperature }}</td>
+                <td>{{ item.admission_date }}</td>
+                <td>OPD Patient</td>
+            
+              {% endfor %}
+              </tr>
+
+                
+            {% endif %}
+
+
+                  
+                  
+                
+            </tbody>
+          </table>
+        </div>
   
 </body>
 </html>
