@@ -2181,7 +2181,7 @@ def radio_parameter(request):
         para.save()
         return redirect('radio_parameter')
     
-    parameter = Path_Parameter.objects.all()
+    parameter = Radio_Parameter.objects.all()
     context = {
         'parameter':parameter,
     }
@@ -2219,7 +2219,7 @@ def radiology(request):
         payment_amount = (request.POST.get('payment_amount',0))
 
         note =request.POST['note']
-
+        test_name = Radiology_test.objects.get(id=test_name)
         try:
             patient = Patient.objects.get(id=patient)
         except Patient.DoesNotExist:
@@ -2248,9 +2248,11 @@ def radiology(request):
         return redirect('radiology')
     radio = Radiology.objects.all()
     doc =  AddStaff.objects.filter(role='Doctor')
+    test = Radiology_test.objects.all()
     patient= Patient.objects.all()
     context = {
         'radio':radio,
+        'test':test,
         "doc":doc,
         'patient':patient,
     }
@@ -2297,8 +2299,11 @@ def radio_test(request):
         return redirect('radio_test')    
     test = Radiology.objects.all()
     doc =  AddStaff.objects.filter(role='Doctor')
+    parameter = Radio_Parameter.objects.all()
+ 
     charge = Charge.objects.all()
     category = Radio_Category.objects.all()
+    radio_test = Radiology_test.objects.all()
     parameter = Radio_Parameter.objects.all()
     context = {
         'test':test,
@@ -2306,6 +2311,7 @@ def radio_test(request):
         'charge':charge,
         'category':category,    
         'parameter':parameter,
+        'radio':radio_test,
     }
     return render(request, 'radiology/radio_test.html',context)
 

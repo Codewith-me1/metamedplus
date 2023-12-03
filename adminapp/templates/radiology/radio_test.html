@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="category_name">Category Name*</label>
-                               <select id= "category_name" name="category_name">
+                               <select id= "category_name" required name="category_name">
                                 <option value="">Select A Category</option>
                                 {% for category in category %}
                                 <option value="{{category.name}}">{{ category.name }}</option>
@@ -73,8 +73,8 @@
                             </div>
                             
                             <div class="form-group">
-                                <label for="charge_category">Charge Category</label>
-                               <select id= "charge_category" name="charge_category">
+                                <label  for="charge_category">Charge Category</label>
+                               <select required id= "charge_category" name="charge_category">
                                 <option value="">Select A Category</option>
                                 {% for charge in charge %}
                                 <option value="{{charge.charge_category}}">{{ charge.charge_category }}</option>
@@ -87,7 +87,7 @@
                             
                             <div class="form-group">
                                 <label for="charge_name">Charge Name</label>
-                               <select id= "charge_name" name="charge_name">
+                               <select required id= "charge_name" name="charge_name">
                                 <option value="">Select A Charge</option>
                                 {% for charge in charge %}
                                 <option value="{{charge.charge_type}}">{{ charge.charge_type }}</option>
@@ -115,7 +115,7 @@
                             
                             <div class="form-group">
                                 <label for="test_parameter_name">Test Parameter Name *</label>
-                               <select id= "test_parameter_name" name="test_parameter_name">
+                               <select required id= "test_parameter_name" name="test_parameter_name">
                                 <option value="">Select A Category</option>
                                 {% for para in parameter %}
                                 <option value="{{para.parameter_name}}">{{ para.parameter_name }}</option>
@@ -192,7 +192,7 @@
             </thead>
             <tbody>
               
-              {% for test in test %}
+              {% for test in radio %}
                 <tr>
                     <td>{{ test.test_name }}</td>
                     <td>{{ test.short_name }}</td>

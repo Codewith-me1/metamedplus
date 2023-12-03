@@ -27,7 +27,7 @@
                         <span id="closePopupBtn" class="close-button">Close</span>
                         <h1>Radiology Category</h1>
                       </div>
-                        <form class="form_popup" method="post" action="{% url 'radio_category' %}">
+                        <form class="form_popup" method="post" action="{% url 'radio_parameter' %}">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="parameter_name">Parameter Name *</label>

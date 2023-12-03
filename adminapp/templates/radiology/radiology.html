@@ -43,12 +43,19 @@
                         </div>
                         <div class="form-group">
                             <label for="test_name">Test Name *</label>
-                            <input type="text" name="test_name" required>
+                          
+                            <select id="test_name" name="test_name">
+                                <option value="">Select a Test</option>
+                                {% for test in test %}
+                                    <option value="{{test.id}}">{{ test.test_name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                 
                         <div class="form-group">
                             <label for="report_days">Report Days *</label>
-                            <input type="number" name="report_days" required>
+                            <input type="text" name="report_days" required>
+                            
                         </div>
                 
                         <div class="form-group">
