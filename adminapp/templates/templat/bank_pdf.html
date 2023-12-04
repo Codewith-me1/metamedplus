@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <style>
+        #table {
+          font-family: Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        #table td, {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #table tr:nth-child(even){background-color: #f2f2f2;}
+        th{
+            border: 1px solid #ddd;
+            padding:1rem 1rem 1rem 1rem !important;
+        }
+        #table th {
+       
+          background-color: #605BFF;
+          color: white;
+        }
+        </style>
+</head>
+<body>
+    <div class="center">
+        
+        <h1> {{bank_name}} </h1>
+    </div>
+    <h1>Bank Book </h1>
+    <h1>As on {{date}} </h1>
+    
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Particulars</th>
+                <th>LF</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for bank in bank %}
+            <tr>
+
+         
+          <td>{{bank.date}} </td>
+          <td>{{bank.particulars}} </td>
+          <td>{{bank.lf}} </td>
+          <td>{{bank.debit}} </td>
+          <td>{{bank.credit}} </td>
+        
+            </tr>
+            {% endfor %}
+          
+        </tbody>
+
+    </table>
+
+    <h1> Balance: {{balance}}</h1>
+    
+
+</body>
+</html>

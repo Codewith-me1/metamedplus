@@ -933,6 +933,7 @@ class Unit(models.Model):
 class Asset(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True,blank=True)    
+    date = models.DateField(null=True)
     price = models.DecimalField(max_digits=13, decimal_places=3)  # Add a price field
     asset_type = models.CharField(max_length=20)
     
@@ -1299,9 +1300,11 @@ class BankBook(models.Model):
     debit = models.IntegerField(max_length=20,null=True)
     credit = models.IntegerField(max_length=20,null=True)
     balance = models.IntegerField(max_length=30,null=True)
+    type =models.CharField(max_length=20,default='individual',null=True)
     bank = models.ForeignKey(Bank,on_delete=models.CASCADE,null=True)
 
 class Depreciation(models.Model):
     asset = models.ForeignKey(Asset,on_delete=models.CASCADE)
     percentage = models.IntegerField(max_length=20)
-    amount = models.DecimalField(max_digits=13,decimal_places=3)
+    date = models.DateField(null=True)
+    amount = models.DecimalField(max_digits=13,decimal_places=3)     

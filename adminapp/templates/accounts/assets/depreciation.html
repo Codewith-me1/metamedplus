@@ -45,6 +45,12 @@
                             </select>
                     </div>
 
+                    
+                    <div class="form-group">
+                      <label for="date">As Per Date</label>
+                      <input type="date" id="date" name="date" class="form-control" required>
+                    </div>
+
                     <div class="form-group">
                         <label for="dep">Depreciation (%)</label>
                         <input type="number" id="dep" name="dep" class="form-control" required>
@@ -91,8 +97,9 @@
         <thead>
           <tr>
             <th>Asset </th>
+            <th> As Per Date  </th>
             <th> Depreciation  </th>
-            <th> Price </th>
+            <th> Amount </th>
             
  
 
@@ -106,6 +113,7 @@
             <tr>
             
                 <td>{{ dep.asset.name }}</td>
+                <td>{{ dep.date }}</td>
                 <td>{{ dep.percentage }}</td>
                 <td>{{ dep.amount }}</td>
      

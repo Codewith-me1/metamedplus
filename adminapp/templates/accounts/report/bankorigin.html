@@ -6,34 +6,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cash Book</title>
+    <title>Bank Book</title>
 
 {% load static %}
     <style>
 
-.show-credit {
-    display: none !important;
-}
-.side-btns{
-    text-align:center !important;
-}
+        .show-credit {
+            display: none !important;
+        }
+        
+        .show-debit {
+            display: block !important;
+        }
 
-.show-debit {
-    display: block !important;
-}
-
-
-.as_on{
-    text-align:center;
-    
-}
-#date{
-    font-weight:bold;
-    font-size:1.8rem;
-    margin-right:8rem;
-}
+        
+        .as_on{
+            text-align:center;
+            
+        }
+        #date{
+            font-weight:bold;
+            font-size:1.8rem;
+            margin-right:8rem;
+        }
     </style>
-
 <div class="container">
     <div id="popupContainer" class="form-popup-back">
         <div class="form-Contain">
@@ -41,12 +37,12 @@
                 <div class="cards">
                   <div class="popup-header">
                     <span id="closePopupBtn" class="close-button">Close</span>
-                    <h1>Add Cash Book Field</h1>
+                    <h1>Add Bank Book Field</h1>
                   </div>
 
 
 
-                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'cashbook' %}">
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="/bankbook">
                         {% csrf_token %}
                         
                         
@@ -63,9 +59,9 @@
                             <input type="text" name="particulars">
                         </div>
 
-                        <div onclick="main" class="form-group">
+                        <div class="form-group">
                             <label for="lf">L.F (optional)</label>
-                            <input type="number" value="0" name="lf">
+                            <input type="number" value='0' name="lf">
                         </div>
 
                 
@@ -79,16 +75,19 @@
                         
                         <div id="debit-group" class="form-group">
                             <label for="debit">Debit</label>
-                            <input type="number" value="0" name="debit">
+                            <input value="0" type="number" name="debit">
                         </div>
                         
                         <div id="credit-group" class="form-group">
                             <label for="credit">Credit</label>
-                            <input type="number" value="0" name="credit">
+                            <input value="0" type="number" name="credit">
                         </div>
 
+                     
+                
+                
                        
-                       
+            
                         
                         <div style="text-align: center;">
                             <input type="submit" value="Submit">
@@ -107,19 +106,21 @@
     
     
     <div class="main-header">
-    <h1 class="headline">Cash Book</h1>
+    <h1 class="headline">Bank Book  </h1>
+    <h1 class="headline" style="display:inline; text-align:center; margin-right:3rem;"> Balance in Bank: {{balance}} </h1>
+
     <div class="side-btns">
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-    <h1 style="display:inline; text-align:center; margin-right:10rem;"> Total Balance: {{balance}} </h1>
-
+ 
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Record </a>
-    <a  class="btn-primary btn" href="/cash_pdf">CashBook Download</a>
+    <a  class="btn-primary btn" href="/pos_bank" >Upload Manual bank Statement </a>
+    <a  class="btn-primary btn" href="/bankorigin" >Download table </a>
+    <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
     
-
     </div>    
-    </div>   
+    </div>
     <div class="as_on">
         <p id="date"> As on <span id="currentDate"></span></p>
     </div>  
@@ -136,7 +137,7 @@
             <th>L.F</th>
             <th>Debit (₹)</th>
             <th>Credit (₹)</th>
-          
+    
 
               
            
@@ -153,8 +154,7 @@
          
                <td>{{ cash.debit }}</td>
                <td>{{ cash.credit }}</td>
-             
-         
+   
               
               
           
@@ -172,61 +172,52 @@
         </tbody>
       </table>
 
+      
+      
+     
+
     </div>
 
     
 <script src="{% static "/css/javscript/index.js" %}"></script>
-<script src="{% static "/css/javscript/books.js" %}"></script>
 <script>
-console.log('nwe')
 
-
-function main(){
-    console.log('ma')
-}
-function toggleFields() {
-    const type = document.querySelector('select[name="type"]').value;
-    const debitGroup = document.getElementById('debit-group');
-    console.log(type)
-    console.log(debitGroup)
-
-    const creditGroup = document.getElementById('credit-group');
-
-    if (type === 'debit') {
-        creditGroup.classList.add('show-credit');
-        creditGroup.classList.remove('show-debit');
-        debitGroup.classList.add('show-debit');
-    } else {
-        creditGroup.classList.add('show-debit');
-        debitGroup.classList.remove('show-debit');
-        debitGroup.classList.add('show-credit');
+    function toggleFields() {
+        const type = document.querySelector('select[name="type"]').value;
+        const debitGroup = document.getElementById('debit-group');
+        console.log(type)
+        console.log(debitGroup)
+    
+        const creditGroup = document.getElementById('credit-group');
+    
+        if (type === 'debit') {
+            creditGroup.classList.add('show-credit');
+            creditGroup.classList.remove('show-debit');
+            debitGroup.classList.add('show-debit');
+        } else {
+            creditGroup.classList.add('show-debit');
+            debitGroup.classList.remove('show-debit');
+            debitGroup.classList.add('show-credit');
+        }
     }
-}
+    
+    toggleFields(); 
 
-toggleFields(); 
+    function updateDate() {
+        var currentDateElement = document.getElementById('currentDate');
+        var currentDate = new Date();
 
-function man(){
-    console.log('hello') 
-}
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        var formattedDate = currentDate.toLocaleDateString('en-IN', options);
+    
 
-
-function updateDate() {
-    var currentDateElement = document.getElementById('currentDate');
-    var currentDate = new Date();
-
-    var options = { year: 'numeric', month: 'long', day: 'numeric' };
-    var formattedDate = currentDate.toLocaleDateString('en-IN', options);
-
-
-    currentDateElement.textContent = formattedDate;
-}
+        currentDateElement.textContent = formattedDate;
+    }
 
 updateDate();
 
 
-setInterval(updateDate, 1000);
-
-
+    setInterval(updateDate, 1000);
     </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ from channels.layers import get_channel_layer
 from django.contrib import messages
 from .models import POS
 from .models import BRS
+import datetime
 from .models import Operation_category,Operation_name
 from .models import BankBook
 from .models import Bank
@@ -3608,12 +3609,20 @@ def create_asset(request):
         description = request.POST.get("description")
         price = request.POST.get("price")
         asset_type = request.POST.get("asset_type")
-        asset = Asset(name=name, description=description,asset_type=asset_type, price=price,)
+        date = request.POST.get('date')
+        print(date)
+        asset = Asset(
+            name=name, 
+            description=description,
+            asset_type=asset_type, 
+            price=price,
+            date=date)
         asset.save()
-        return redirect("create_asset")  # Redirect to a list view of assets
+        return redirect("create_asset") 
     asset = Asset.objects.all()
     context={
         'asset':asset,
+        
     }
     return render(request, "accounts/create_asset.html",context)
 
@@ -7816,6 +7825,57 @@ def medicine_composition(request):
     return render(request,'pharmacy/medicine/composition.html',context)
 
 
+def bankbooks(request):
+    if request.method=="POST":
+        date = request.POST.get('date')
+   
+        particulars = request.POST.get('particulars')
+     
+        lf = request.POST.get('lf')
+        debit = request.POST.get('debit')
+        credit = request.POST.get('credit')
+       
+
+        
+        cashbook = BankBook(
+            date =date,
+            particulars=particulars,
+            lf=lf,
+            debit=debit,
+            type="orgination",
+            credit=credit,
+          
+            
+            
+            
+        )
+        cashbook.save()
+        cash = BankBook.objects.filter(type="orgination")
+        total_debit = sum(transaction.debit or 0 for transaction in cash)
+        total_credit = sum(transaction.credit or 0 for transaction in cash)
+        balance = total_credit - total_debit
+        context = {
+      
+            'cash':cash,
+            'balance':balance,
+        }
+        return render(request,'accounts/report/bankorigin.html',context)
+    
+    cash = BankBook.objects.filter(type="orgination")
+    total_debit = sum(transaction.debit or 0 for transaction in cash)
+    total_credit = sum(transaction.credit or 0 for transaction in cash)
+    balance = total_credit - total_debit
+    context = {
+      
+        'cash':cash,
+        'balance':balance,
+    }
+    return render(request,'accounts/report/bankorigin.html',context)
+
+
+
+
+
 def bankbook(request,id):
     if request.method=="POST":
         date = request.POST.get('date')
@@ -7855,7 +7915,6 @@ def bankbook(request,id):
         'balance':balance,
     }
     return render(request,'accounts/report/bankbook.html',context)
-
 
 
 
@@ -7941,12 +8000,13 @@ def depreciation(request):
         dep = int(request.POST.get('dep'))
         assets = Asset.objects.get(id=asset)
         depreciation_amount = int(assets.price) * (dep / 100)
-
+        date = request.POST.get('date')
         net_value = int(assets.price) - int(depreciation_amount)
         assets.price = net_value
         assets.save() 
         depreciation = Depreciation(
             asset=assets,
+            date=date,
             percentage=dep,
             amount=depreciation_amount,
 
@@ -8042,3 +8102,250 @@ def pos_bankpdf(request):
 
 def pos_bank(request):
     return render(request,'accounts/report/pos_bank.html')
+
+
+
+
+
+
+
+def bank_pdf(request,id):
+
+        
+    bank=BankBook.objects.filter(bank=id)
+ 
+
+    total_debit = sum(transaction.debit or 0 for transaction in bank)
+    total_credit = sum(transaction.credit or 0 for transaction in bank)
+    dt = datetime.now()
+    date = dt.strftime("%A, %d %B %Y")
+    balance = total_credit-total_debit
+    context= {
+        'balance':balance,
+        'date':date,    
+        'bank':bank,
+    }
+    template = get_template('templat/bank_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="bankbook.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+
+def cash_pdf(request):
+
+        
+    cash=CashBook.objects.all()
+
+
+    total_debit = sum(transaction.debit or 0 for transaction in cash)
+    total_credit = sum(transaction.credit or 0 for transaction in cash)
+    dt = datetime.now()
+    date = dt.strftime("%A, %d %B %Y")
+    balance = total_credit-total_debit
+    context= {
+        'balance':balance,
+        'date':date,    
+        'cash':cash,
+    }
+    template = get_template('templat/cash_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="cashbook.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err: 
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+def bankorigin(request):
+
+        
+    bank=BankBook.objects.filter(type='orgination')
+ 
+
+    total_debit = sum(transaction.debit or 0 for transaction in bank)
+    total_credit = sum(transaction.credit or 0 for transaction in bank)
+    balance = total_credit-total_debit
+    dt = datetime.now()
+    date =  dt.strftime("%A, %d %B %Y")
+    context= {
+        'balance':balance,
+        'date':date,
+        'bank':bank,
+    }
+    template = get_template('templat/bank_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="bankbook.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+
+def pos_blood(request):
+    return render(request,'blood/pos_blood.html')
+
+def pdf_blood(request):
+    if request.method == 'POST':
+        
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        medicine_composition = request.POST.get('medicine_composition')
+        payment = request.POST.get('payment')
+        doctor = request.POST.get('doctor')
+        
+        item_counter = request.POST.get('item_counter')
+
+        pos = POS(
+            doctor=doctor,
+            payment_mode=payment,
+            date=date_time,
+            composition=medicine_composition,
+            small_note=small_note,
+            tax_percent=tax,
+            discount_percent=discount,
+            
+
+
+
+
+
+
+
+        )
+
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+            item = request.POST.get(f'med_{i}')
+            qty = int(request.POST.get(f'qty_{i}'))
+            available = int(request.POST.get(f'available_{i}'))
+
+
+            
+            if available < qty:
+                return HttpResponse('Error: Insufficient available quantity.')
+
+            
+            
+            
+            medicines_ids = [int(id) for id in re.findall(r'\d+', item)]
+
+            print(medicines_ids)
+            for medicines_id in medicines_ids:
+        
+                stock = get_object_or_404(Stock, medicine=medicines_id)
+                updated_available_quantity = available - qty
+                print(updated_available_quantity)
+                stock.stock = updated_available_quantity
+                stock.save()
+                print(stock.stock)
+
+            cat = request.POST.get(f'cat_{i}')
+            items = re.sub(r'\d', '',item)
+            item  = items.replace("_", "")
+            price = request.POST.get(f'price_{i}')
+            expiry = request.POST.get(f'expiry_{i}')
+            batch = request.POST.get(f'batch_{i}')
+            tax_ = request.POST.get(f'tax_{i}')
+
+            total = request.POST.get(f'total_{i}')
+           
+            
+            product = {
+                'item': item,
+                'quantity': qty,
+                'price': price,
+                'tax_':tax_,
+                'expiry':expiry,
+                'batch':batch,
+                'cat':cat,
+                
+                'total': total
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+        
+    
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'discount':discount,
+        'small_note':small_note,
+        'date_time':date_time,
+        'composition':medicine_composition,
+        'doctor':doctor,
+        'payment':payment,
+        'grand_total':grand_total,
+    }
+
+    template = get_template('templat/pos_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def certificate(request):
+    
+
+    ipd = IpdPatient.objects.filter(discharged_status=True)
+    opd = OpdPatient.objects.filter(discharged_status=True)
+    context ={
+        'ipd':ipd,
+        'opd':opd,
+    }
+    return render(request,'certificate/certificate.html',context)
+
+def hr_certificate(request):
+    return render(request,'hr/certificate.html')
