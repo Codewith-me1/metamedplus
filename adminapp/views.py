@@ -8,7 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
 from django.contrib import messages
 from .models import POS
+from.models import Blood_Component
+from .models import Blood_Setup
 from .models import BRS
+from .models import Leaves
 import datetime
 from .models import Operation_category,Operation_name
 from .models import BankBook
@@ -145,14 +148,26 @@ def profile(request,id):
     try:
         payroll = Payroll.objects.get(staff=id)
         context = {
-            'payroll':payroll
+            'payroll':payroll,
+            
         }
     except Payroll.DoesNotExist:
             # Handle the case where the patient does not exist
             print('none found')
-    
+
+    try:
+        leave = Leaves.objects.get(staff=id)
+        context = {
+            'leave':leave,
+            
+        }
+    except Leaves.DoesNotExist:
+        context={
+            'staff':staff,
+        }
     context ={
         'staff':staff,
+        
         
     }
     return render(request,'admin/admin_profile.html',context)
@@ -7797,6 +7812,7 @@ def cashbook(request):
         return redirect('cashbook')
     
     cash = CashBook.objects.all()
+    
     total_debit = sum(transaction.debit or 0 for transaction in cash)
     total_credit = sum(transaction.credit or 0 for transaction in cash)
     balance = total_debit -total_credit
@@ -8349,3 +8365,80 @@ def certificate(request):
 
 def hr_certificate(request):
     return render(request,'hr/certificate.html')
+
+
+def blood_setup(request):
+    if request.method =="POST":
+        name = request.POST.get('name')
+        type = request.POST.get('component')
+        blood = Blood_Setup(
+            name=name,
+            type=type,
+        )
+        blood.save()
+        return redirect('blood_setup')
+    type = Blood_Setup.objects.all()
+
+    
+    context ={
+        'type':type
+    }
+
+    return render(request,'setup/blood/component.html',context)
+
+def blood_component(request):
+    if request.method =="POST":
+        blood_group = request.POST.get('blood_group')
+        bag = request.POST.get('bag')
+        volume = request.POST.get('volume')
+        unit = request.POST.get('unit')
+        lot = request.POST.get('lot')
+        institution = request.POST.get('institution')
+        component_name = request.POST.get('component_name')
+        component = Blood_Setup.objects.get(id=component_name)
+        blood = Blood_Component(
+            blood_group=blood_group,
+            bag=bag,
+            volume=volume,
+            unit=unit,
+            lot=lot,
+            institution=institution,
+            component_name=component,
+            
+        )
+
+        blood.save()
+        return redirect('blood_component')
+    blood = Blood_Component.objects.all()
+    donor = BloodDonation.objects.all()
+    component = Blood_Setup.objects.all()
+    context ={
+        'blood':blood,
+        'donor':donor,
+        'component':component
+    }
+
+    return render(request,'blood/blood_component.html',context)
+
+
+
+def leaves(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        type = request.POST.get('type')
+        date = request.POST.get('date')
+        staff = AddStaff.objects.get(id=name)
+        leav = Leaves(
+            staff=staff,
+            type=type,
+            date=date,
+        )
+        leav.save()
+        return redirect('leaves')
+    leave = Leaves.objects.all()
+    staff = AddStaff.objects.all()
+    context = {
+        'leave':leave,
+        'staff':staff,
+    }
+    return render(request,'hr/leaves.html',context)

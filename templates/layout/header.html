@@ -152,7 +152,7 @@ body{
             float: right;
             border:none;
             color:black !important;
-            margin:0.1rem 0.5rem 0.5rem 0.5rem;
+            margin:0.5rem 1rem 1rem 0.5rem;
             transition: transform .7s ease-in-out;
 
             
@@ -162,12 +162,12 @@ body{
             border:none;
             border-radius:5px;
             color:black !important;
-            margin:0.5rem;
+            margin:0.5rem 1rem 1rem 0.5rem;
 
             
           }
           .search input {
-                margin-top:10px;
+                margin-top:0.5rem;
                 border-radius:20px;
                 border:solid 1px #e9e9e9;
             
@@ -317,8 +317,8 @@ form input.operator{
 #search-button{
 
   border:none !important;
-  background-color:white !important;
- 
+  margin:0.5rem 2rem 1rem 0.5rem;
+
 }
 #search-button i{
   width
@@ -326,6 +326,7 @@ form input.operator{
 .search i{
   padding-top:20px !important;
 }
+
           
     </style>
 
@@ -355,7 +356,7 @@ form input.operator{
    
 
     <div class="header-btn">
-        <a href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
+        <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
         <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>
         <a href="/chat/1/1" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></a>
         

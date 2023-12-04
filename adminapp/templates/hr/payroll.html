@@ -8,9 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payroll</title>
 
+    <style>
+.search_payroll{
+    margin-top:5rem;
+}
+    </style>
 
 <div class="container">
-<form method="GET" action="{% url 'search-staff' %}">
+<form class="search_payroll" method="GET" action="{% url 'search-staff' %}">
     <select id="role" name="q">
         <option value="">Select A Role</option>
         {% for role in role %}

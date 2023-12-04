@@ -1,0 +1,247 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation</title>
+<style>
+
+    .table_coloumn{
+        display:flex;
+    }
+    .table_1{
+        width:50%;
+    }
+
+    .table_2{
+        width:50%;
+    }
+    .table_top{
+        margin:2rem;
+        display:flex;
+        justify-content: space-between;
+
+    }
+    .table_top a{
+        margin-top:2rem !important;
+    }
+</style>
+
+
+    
+{% load static %}
+<div class="container"> 
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Blood Donor Details</h1>
+              </div>
+                <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'blood_component' %}">
+                    {% csrf_token %}
+
+                 
+                    
+        
+                    <div class="form-group">
+                        <label for="blood_group">Blood Group *</label>
+                        <input type="text" name="blood_group" class="form-control" required>
+                        
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="bag">Bag *</label>
+                        <input type="text" name="bag" class="form-control" required>
+                       
+                    </div>
+
+                    <div class="form-group">
+                        <label for="component_name">Component *</label>
+                        <select name="component_name" class="form-control" required>
+                            <option value="">Select</option>
+                        {% for component in component  %}
+                       
+                            <option value="{{component.id}}">{{component.name}}</option>
+                           
+                        
+                        {% endfor %}
+                    </select>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="volume">Volume</label>
+                        <input type="text" name="volume" class="form-control" required>
+                    </div>
+                    
+                  
+                    
+                    <div class="form-group">
+                        <label for="unit">Unit</label>
+                        <input type="text" name="unit" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lot">LOT</label>
+                        <input type="text" name="lot" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="institution">Institution *</label>
+                        <input type="text" name="institution" class="form-control" required>
+                    </div>
+                    
+            
+                 
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Blood Bank Status</h1>
+<div class="side-btns">
+
+
+<a class="btn-primary btn" href="{% url "issue_blood" %}">Issue Component</a>
+<a class="btn-primary btn" href="{% url "add_donor" %}">Add Donor</a>
+<a class="btn-primary btn" href="{% url "blood_donation" %}">Blood Donor</a>
+
+</div>    
+</div>
+<div class="table_coloumn">   
+
+    <div class="table_1">
+        <div class="table_top">
+            <h3>Blood Donor</h3>
+            <a  class="btn-primary btn" href="/blood_donation">Add Blood</a>
+        </div>
+<table class="table">
+    <thead>
+      <tr>
+        
+        
+        <th>Blood Group </th>
+       
+        <th>Bag</th>
+        
+       
+        <th>LOT </th>
+        <th>Institution </th>
+       
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for donor in donor %}
+        <tr>
+            <td>{{  donor.donor_name.name}}</td>
+         
+            <td>{{  donor.bag}}</td>
+            
+            <td>{{  donor.lot}}</td>
+            <td>{{  donor.institution}}</td>
+           
+
+          
+      
+        
+        </tr>
+      {% endfor %}  
+      
+      
+
+  
+     
+    </tbody>
+  </table>
+</div>
+<div class="table_2">
+    <div class="table_top">
+        <h3>Component</h3>
+        <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Component</a>
+    </div>
+  <table class="table">
+    <thead>
+      <tr>
+        
+        
+        <th>Name </th>
+        
+        <th>Bag</th>
+        <th>LOT</th>
+        <th>Volume </th>
+        
+        <th>Institution </th>
+       
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for blood in blood %}
+        <tr>
+            <td>{{  blood.component_name.name}}</td>
+            <td>{{  blood.bag}}</td>
+            <td>{{  blood.lot}}</td>
+            <td>{{  blood.volume}}</td>
+            <td>{{  blood.institution}}</td>
+       
+           
+
+          
+      
+        
+        </tr>
+      {% endfor %}  
+      
+      
+
+  
+     
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+{% comment %} 
+    const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+});
+    {% endcomment %}
+</script>
+</body>
+</html>

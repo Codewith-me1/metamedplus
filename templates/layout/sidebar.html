@@ -360,7 +360,7 @@ body{
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
             <li><a href="{% url 'approval' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
             <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
-            <li><a href="{% url 'blood_donation' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+            <li><a href="{% url 'blood_component' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
 
             <button class="dropdown-btn">Setup 
               <i class="fa fa-caret-down"></i>
@@ -411,7 +411,7 @@ body{
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
             <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
             <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
-            <li><a href="{% url 'blood_donation' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+            <li><a href="{% url 'blood_component' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
             <li  class="{% if request.resolver_match.url_name == 'add_med' %}active{% endif %}" ><a href="{% url 'add_med' %}"><i class="fa-solid fa-mortar-pestle"></i><span class="side_text">Pharmacy</span></a></li>  
           <li><a href="{% url 'add_ambulance' %}"><i class="fa-solid fa-truck-medical"></i>   <span class="side_text">Ambulance</span></a></li>
           <li  class="{% if request.resolver_match.url_name == 'meeting' %}active{% endif %}" ><a href="{% url 'meeting' %}"><i class="fa-solid fa-globe"></i>   <span class="side_text">Meeting</span></a></li>
@@ -877,7 +877,7 @@ body{
 
               </div>
 
-            <li><a href="{% url 'blood_donation' %}">Blood Billing</a></li>
+            <li><a href="{% url 'blood_component' %}">Blood Billing</a></li>
               
               {% endif %}
 
@@ -887,7 +887,7 @@ body{
               <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
               <li><a href="{% url 'path' %}">Pathology</a></li>
               <li><a href="{% url 'radiology' %}">Radiology</a></li>
-              <li><a href="{% url 'blood_donation' %}">Blood Bank</a></li>
+              <li><a href="{% url 'blood_component' %}">Blood Bank</a></li>
 
             
             

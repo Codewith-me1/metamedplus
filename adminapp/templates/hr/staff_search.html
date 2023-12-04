@@ -2,6 +2,12 @@
 {% include "layout/sidebar.html" %}
 
 <!DOCTYPE html>
+
+<style>
+.search_payroll{
+  margin-top:2rem;
+}
+</style>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +16,7 @@
 
 
 <div class="container">
-<form method="GET" action="{% url 'search-staff' %}">
-    <input type="text" name="q" placeholder="Search by Role">
-    <button type="submit">Search</button>
-</form>
+
 <style>
 .container form{
     display:flex; 

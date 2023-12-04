@@ -514,7 +514,7 @@
         <thead>
           <tr>
             <th>Leave  Day  </th>
-            <th>Paid Leave</th>
+            <th>Leave Type</th>
             <th>Staff Name</th>
   
            
@@ -522,13 +522,13 @@
         </thead>
         <tbody>
           
-          {% for nurse in nurse %}
+          {% for leave in leave %}
             <tr>
                 
-              <td>{{ nurse.patient }}</td>
-              <td>{{ nurse.date }}</td>
+                <td>{{ leave.date }}</td>        
+                <td>{{ leave.type }}</td>     
+                <td>{{ leave.staff.first_name }}</td>   
                 
-              <td>{{ nurse.nurse }}</td>
               
               
             
