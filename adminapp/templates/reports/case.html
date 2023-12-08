@@ -63,6 +63,15 @@
           font-weight:bold;
           
         }
+      
+        .app_btn{
+          display:flex !important;
+        }
+        .search_app{
+          padding:1rem !important;
+          margin-right:1rem !important;
+          text-align:center;
+        }
         
     </style>
 
@@ -70,19 +79,19 @@
         
 <div class="container">
 
-    <form  method="get">
-
-        <div class="form-group">
-            <label for="case_id">Case Id </label>
-            <input type="text" name="case_id" placeholder="enter a case id">
-            <button class="btn-primary btn" >Search</button>
-        </div>
-    </form>
+ 
    
     <div class="main-header">
         <h1 class="headline">Single Module Billing Desk</h1>
         <div class="side-btns">
+          <form class="app_btn" method="get">
+
         
+            
+                <input type="text" name="case_id" placeholder="enter a case id">
+                <button  class="btn-primary btn search_app" >Search</button>
+
+        </form>
         
     
         

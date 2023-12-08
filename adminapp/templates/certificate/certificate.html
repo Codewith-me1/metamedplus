@@ -7,45 +7,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate</title>
+    <title>OPd</title>
 
-    
+    <style>
+
+      .btn{
+        margin-top:6rem !important;
+     
+
+      }
+    </style>
+
 <div class="container">
  
     
     
     
     
-    <form action='/certificate/'  method="get">
-
-        
-     
-
-     
-
+    <form  method="POST">
         <div class="form-group">
-            <label for="discharged_patient">Patient</label>
-            <select id="discharged_patient" name="discharged_patient">
-               
-                {% for ipd in ipd %}
-    
-                    <option  value="{{ipd.id}}" >{{ipd.patient.name}} IPD</option>
-                {% endfor %}
-                {% for opd in opd %}
-                <option  value="{{opd.id}}" >{{opd.patient.name}} OPD</option>
-                {% endfor %}
-    
-            </select>
-           
+            <label for="name">Record</label>
+            <input type="text" id="name" name="name" placeholder="Name">
         </div>
+     
 
-        
+
+    
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
     
     
     <div class="main-header">
-    <h1 class="headline">Certificate</h1>
+    <h1 class="headline">OPD</h1>
     <div class="side-btns">
     
     
@@ -63,50 +56,45 @@
           <tr>
             
             
-            <th>Case ID</th>
             <th>Patient</th>
-         
-            <th>Gender</th>
-            <th>Due Date</th>
-            <th>Guardian Name</th>
-            <th>Charge</th>
-        
+            <th>Doctor</th>
+            
+            <th>Admission Date</th>
+            <th>Systoms Description</th>
+            <th>Systoms Title </th>
             
        
-            
+
 
             
-         
+    
            
           </tr>
         </thead>
         <tbody>
            
-            
+            <p>No results found.</p>
+       
 
-        {% if result %}
-          {% for item in result %}
+        {% if results %}
+          {% for item in results %}
             <tr>
-                
-                <td>{{ item.id }}</td>
-                <td>{{ item.patient.name }}</td>
-              
+
+                <td>{{ item.patient }}</td>
+                <td>{{ item.consultant_doctor }}</td>
             
-               <td>{{ item.patient.gender }}</td>
-               <td>{{ item.issue_date }}</td>
-               <td>{{ item.bag }}</td>
-               <td>{{ item.standard_charge }}</td>
-            
-              {% endfor %}
-              </tr>
-      
-        {% else %} 
-        <p>No results found.</p>
-            
-        {% endif %}
+               <td>{{ item.admission_date }}</td>
+             
+              <td>{{ item.symptoms_description }}</td>
+              <td>{{ item.symptoms_title }}</td>
               
               
+          
             
+            </tr>
+
+          {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     

@@ -423,6 +423,20 @@ body{
             <a class="dropdown-a" href="{% url "add_child" %}">Birth Record</a>
             <a class="dropdown-a" href="{% url "add_death" %}">Death Record</a>
             
+          
+
+
+            <button class="dropdown-btn dropdown-nested"> Certifcate
+              <i class="fa fa-caret-down"></i>
+            </button> 
+            <div class="dropdown-container">
+              
+              <a class="dropdown-a" href="{% url 'birth_certificate' %}">Birth Certifcate </a>
+               
+
+            </div>
+            
+            
           </div>    
           <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
             <i class="fa fa-caret-down"></i>

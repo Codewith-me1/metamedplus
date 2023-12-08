@@ -275,8 +275,14 @@ form button{
 
                 <td>
                   
-                    
-                    <input type="number" step="0.01" class="form-control" id="group_${itemCounter}" name="group_${itemCounter}" required>
+                    <select class="form-control cate" id="cat_${itemCounter}" name="cat_${itemCounter}"> 
+                        <option  value="">Select A value</option>
+                        {% for test in test %}
+
+                        <option  value="{{test.test_name.test_name}}_{{test.id}}">{{test.test_name.test_name}}</option>
+                        {% endfor %}
+                     
+                    </select>
                 </td>
 
                 
@@ -296,12 +302,9 @@ form button{
 
  
 
-                
+                <td><input type="number" step="0.01" class="form-control" id="price_${itemCounter}" name="price_${itemCounter}" required></td>
 
    
-                <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
-                
-
                 <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
                
             </tr> 

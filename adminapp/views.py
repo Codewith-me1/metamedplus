@@ -6,6 +6,7 @@ import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from channels.layers import get_channel_layer
+from .models import Bag_available
 from django.contrib import messages
 from .models import POS
 from.models import Blood_Component
@@ -2737,6 +2738,9 @@ def blood_donation_form(request):
             payment_amount = payment_amount,
         )
         blood_donation.save()
+        bag_available_instance = Bag_available.objects.first()  # Assuming there is only one instance
+        bag_available_instance.qty += 1
+        bag_available_instance.save()
         return redirect('blood_donation')
     donor = Donor_det.objects.all()
     unit = Tax_cat.objects.all()
@@ -8222,7 +8226,11 @@ def bankorigin(request):
 
 
 def pos_blood(request):
-    return render(request,'blood/pos_blood.html')
+    blood_component = Blood_Component.objects.all()
+    context = {
+        'component':blood_component,
+    }
+    return render(request,'blood/pos_blood.html',context)
 
 def pdf_blood(request):
     if request.method == 'POST':
@@ -8442,3 +8450,36 @@ def leaves(request):
         'staff':staff,
     }
     return render(request,'hr/leaves.html',context)
+
+
+def birth_certificate(request):
+    child = ChildBirth.objects.all()
+    context ={
+        'child':child
+    }
+    return render(request,'birth/birth_certifcate.html',context)
+
+def birth_pdf(request,id):
+       
+    child=ChildBirth.objects.get(id=id)
+ 
+
+
+
+    context= {
+        'child':child,
+
+    }
+    template = get_template('templat/birth_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response

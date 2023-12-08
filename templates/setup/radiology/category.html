@@ -6,25 +6,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category</title>
+    <title>Parameter</title>
 
 
 
    
     <div class="container">
         <div class="main-header">
-          <h1 class="headline">Add Radiology Category </h1>
+          <h1 class="headline">Add Radiology Parameter </h1>
           <div class="side-btns">
       
          
-            <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Radiology Category  </a>
+            <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Radiology Parameter  </a>
           <div id="popupContainer" class="form-popup-back"  >
             <div class="form-Contain">
                 <div class="POP">
                     <div class="cards">
                       <div class="popup-header">
                         <span id="closePopupBtn" class="close-button">Close</span>
-                        <h1>Radiology Category</h1>
+                        <h1>Radiology Parameter</h1>
                       </div>
                         <form class="form_popup" method="post" action="{% url 'radio_category' %}">
                             {% csrf_token %}
@@ -53,7 +53,7 @@
         <thead>
           <tr>
             
-            <th> Category Name</th>
+            <th> Parameter Name</th>
      
               
            
