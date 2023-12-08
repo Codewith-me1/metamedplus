@@ -465,8 +465,11 @@ body{
             
           </div>   
 
+          
+
 
           <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i>   <span class="side_text">Refferal</span>  </a></li>
+          <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i>   <span class="side_text">Messaging </span>  </a></li>
           <li><a href="{% url 'add_tpa' %}"><i class="fa-solid fa-person"></i>   <span class="side_text">TPA </span> </a></li>
           <li><a href="{% url 'add_itemstock' %}"><i class="fa-solid fa-boxes-stacked"></i>   <span class="side_text">Inventory</span> </a></li>
 
@@ -544,14 +547,14 @@ body{
                  
 
               </div>
-              <button class="dropdown-btn dropdown-nested "> Asset
-                <i class="fa fa-caret-down"></i>
-              </button> 
-              <div class="dropdown-container">
-                <a class="dropdown-a" href="{% url 'create_asset' %}">Asset </a>
-          
+                <button class="dropdown-btn dropdown-nested "> Asset
+                  <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  <a class="dropdown-a" href="{% url 'create_asset' %}">Asset </a>
+            
 
-              </div>
+                </div>
               <button class="dropdown-btn dropdown-nested "> Liablity
                 <i class="fa fa-caret-down"></i>
               </button> 

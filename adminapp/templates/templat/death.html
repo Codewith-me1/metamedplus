@@ -1,0 +1,36 @@
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+    *{
+        font-family: 'Hedvig Letters Serif', serif;
+    }
+    .sign{
+        margin-top:3rem !important;
+    }
+    .heading{
+        font-family: 'PT Serif', serif !important; 
+    }
+</style>
+
+<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
+    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
+           <span class="heading" style="font-size:50px; font-weight:bold">Death Certifcate</span>
+           <br><br>
+           <span style="font-size:25px"><i>This is to certify that</i></span>
+           <br><br>
+        
+           <span style="font-size:30px"><b>{{death.patient_name.name}}</b></span><br/><br/>
+           <span style="font-size:25px"><i>On the day of </i></span> <br/><br/>
+           <span style="font-size:30px">{{death.death_date}}</span> <br/><br/>
+           <span style="font-size:25px"><i>At __________ </i></span> <br/><br/>
+        
+      
+          <span class="sign" style="font-size:25px; margin-top:3rem !important;">Doctor Signature</span>
+        
+    </div>
+    </div>

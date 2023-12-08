@@ -98,10 +98,7 @@ form button{
   margin:20px;
   border-radius:20px;
 }
-#addItemButton{
-  padding:10px !important;
-  margin:20px !important;
-}
+
 
 
 .pos_middle{
@@ -119,7 +116,7 @@ form button{
 
  
   </div>
-    <form method="POST" action="{% url "pos_blood" %}" id="invoiceForm">
+    <form method="POST" action="{% url "pdf_blood" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
             <div class="first-container">
@@ -178,11 +175,12 @@ form button{
         <table class="table">
             <thead>
               <tr>
-                     <th>Blood Category </th>
+                     <th>Blood Group </th>
                      <th>Component</th>
            
            
                 <th>Bag Quantity</th>
+                <th>Available Quantity</th>
       
                 <th>Volume</th>
                 <th>Total</th>
@@ -276,7 +274,7 @@ form button{
                 <td>
                   
                     
-                    <input type="number" step="0.01" class="form-control" id="group_${itemCounter}" name="group_${itemCounter}" required>
+                    <input type="text"  class="form-control" id="group_${itemCounter}" name="group_${itemCounter}" required>
                 </td>
 
                 
@@ -292,6 +290,11 @@ form button{
                     {% endfor %}
                 </select>
             </td>
+            
+            <td><input type="number" value="1" class="form-control" onblur="checkQuantity(${itemCounter})" id="qty_${itemCounter}" name="qty_${itemCounter}" required></td>
+            <td><input type="number" value="1" readonly class="form-control" id="available_${itemCounter}" name="available_${itemCounter}" required></td>
+
+             
 
 
  
@@ -299,7 +302,7 @@ form button{
                 
 
    
-                <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
+                <td><input type="text"  class="form-control totals" id="volume_${itemCounter}" name="volume_${itemCounter}" required></td>
                 
 
                 <td><input type="number" step="0.01" class="form-control totals" id="total_${itemCounter}" name="total_${itemCounter}" required></td>
@@ -371,15 +374,9 @@ form button{
   
   function calculateTotal(inputField) {
       const row = inputField.closest('tr');
-      const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
-     
+   
      
 
-
-      const total = price 
-
-     
-      row.find('input[id^="total_"]').val(total.toFixed(2));
 
       const totals = document.querySelectorAll('input[id^="total_"]');
 

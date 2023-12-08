@@ -8227,10 +8227,27 @@ def bankorigin(request):
 
 def pos_blood(request):
     blood_component = Blood_Component.objects.all()
+    qty = Bag_available.objects.all()
     context = {
         'component':blood_component,
+        'qty':qty,  
     }
     return render(request,'blood/pos_blood.html',context)
+
+def house_blood(request):
+    blood_component = Blood_Component.objects.all()
+    qty = Bag_available.objects.all()
+    doctor = AddStaff.objects.filter(role="Doctor")
+    patient = Patient.objects.all()
+    context = {
+        'component':blood_component,
+        'qty':qty,  
+        'doctor':doctor,
+        'patient':patient
+    }
+    return render(request,'blood/house_blood.html',context)
+
+
 
 def pdf_blood(request):
     if request.method == 'POST':
@@ -8241,8 +8258,9 @@ def pdf_blood(request):
         discount = request.POST.get('disc')
         small_note = request.POST.get('small_note')
         date_time = request.POST.get('date_time')
-        medicine_composition = request.POST.get('medicine_composition')
+        
         payment = request.POST.get('payment')
+        patient = request.POST.get('path_test')
         doctor = request.POST.get('doctor')
         
         item_counter = request.POST.get('item_counter')
@@ -8251,7 +8269,7 @@ def pdf_blood(request):
             doctor=doctor,
             payment_mode=payment,
             date=date_time,
-            composition=medicine_composition,
+
             small_note=small_note,
             tax_percent=tax,
             discount_percent=discount,
@@ -8277,7 +8295,7 @@ def pdf_blood(request):
             
             
             print(item_counter)
-            item = request.POST.get(f'med_{i}')
+            
             qty = int(request.POST.get(f'qty_{i}'))
             available = int(request.POST.get(f'available_{i}'))
 
@@ -8289,37 +8307,32 @@ def pdf_blood(request):
             
             
             
-            medicines_ids = [int(id) for id in re.findall(r'\d+', item)]
-
-            print(medicines_ids)
-            for medicines_id in medicines_ids:
+           
+            
         
-                stock = get_object_or_404(Stock, medicine=medicines_id)
-                updated_available_quantity = available - qty
-                print(updated_available_quantity)
-                stock.stock = updated_available_quantity
-                stock.save()
-                print(stock.stock)
+            stock = Bag_available.objects.get(id=1)
+            updated_available_quantity = available - qty
+            print(updated_available_quantity)
+            stock.qty = updated_available_quantity
+            stock.save()
+            
 
-            cat = request.POST.get(f'cat_{i}')
-            items = re.sub(r'\d', '',item)
-            item  = items.replace("_", "")
-            price = request.POST.get(f'price_{i}')
-            expiry = request.POST.get(f'expiry_{i}')
-            batch = request.POST.get(f'batch_{i}')
-            tax_ = request.POST.get(f'tax_{i}')
+            group = request.POST.get(f'group_{i}')
+            
+            component = request.POST.get(f'test_{i}')
+            volume = request.POST.get(f'volume_{i}')
+            
 
             total = request.POST.get(f'total_{i}')
            
             
             product = {
-                'item': item,
+                
                 'quantity': qty,
-                'price': price,
-                'tax_':tax_,
-                'expiry':expiry,
-                'batch':batch,
-                'cat':cat,
+                'component': component,
+                
+                'volume':volume,
+                'group':group,
                 
                 'total': total
                 }
@@ -8337,15 +8350,16 @@ def pdf_blood(request):
         'sub_total':sub_total,
         'tax':tax,
         'discount':discount,
+        'patient':patient,
         'small_note':small_note,
         'date_time':date_time,
-        'composition':medicine_composition,
+        
         'doctor':doctor,
         'payment':payment,
         'grand_total':grand_total,
     }
 
-    template = get_template('templat/pos_pdf.html')
+    template = get_template('templat/pos_blood.html')
     html = template.render(context)
 
     response = HttpResponse(content_type='application/pdf')
@@ -8483,3 +8497,59 @@ def birth_pdf(request,id):
     if pisa_status.err:
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
+
+
+
+def death_pdf(request,id):
+       
+    death=DeathRecord.objects.get(id=id)
+ 
+
+
+
+    context= {
+        'death':death,
+
+    }
+    template = get_template('templat/death.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="death  .pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+def send(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        attachment = request.FILES['attach']  # Assuming 'attachment' is a file field in your form
+        message = request.POST.get('message')
+
+        mails = AddStaff.objects.all()
+    
+        with get_connection(  
+           host=settings.EMAIL_HOST, 
+           port=settings.EMAIL_PORT,  
+           username=settings.EMAIL_HOST_USER, 
+           password=settings.EMAIL_HOST_PASSWORD, 
+           use_tls=settings.EMAIL_USE_TLS  
+        ) as connection:  
+            subject = title
+            from_email = "info@phoneixhms.com"
+            
+            for staff_member in mails:
+                recipient_email = staff_member.email
+                email = EmailMessage(subject, message, from_email, [recipient_email], connection=connection)
+
+                # Attach the file
+                email.attach(attachment.name, attachment.read(), attachment.content_type)
+
+                email.send()
+
+    return render(request, 'messaging/mail.html')

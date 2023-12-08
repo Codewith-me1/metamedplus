@@ -685,7 +685,20 @@ function showSlides() {
 
 console.log('hello')
 
+function checkQuantity(itemCounter) {
+  // Get the quantity and available quantity values
+  var quantity = document.getElementById('qty_' + itemCounter).value;
+  var availableQuantity = document.getElementById('available_' + itemCounter).value;
 
+  // Check if quantity exceeds available quantity
+  if (parseInt(quantity) > parseInt(availableQuantity)) {
+      alert('Quantity cannot be greater than available quantity.');
+      // Reset the quantity to the available quantity
+      document.getElementById('qty_' + itemCounter).value = availableQuantity;
+  }
+}
+
+console.log('New Asa')  
 
 
 </script> 
