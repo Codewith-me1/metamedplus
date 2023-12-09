@@ -72,8 +72,8 @@ EMAIL_HOST = 'smtp-relay.brevo.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'devshandilaya1@gmail.com'
-EMAIL_HOST_PASSWORD = 'WrNwXC8M9kA1BFUs'
+EMAIL_HOST_USER = 'programmer62563@gmail.com'
+EMAIL_HOST_PASSWORD = 'CtYc9QV0yGR3fn7x'
 
 TEMPLATES = [
     {

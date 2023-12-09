@@ -13,7 +13,7 @@
     <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
     <script>
       tinymce.init({
-        selector: 'textarea',
+        selector: '.message',
         plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
@@ -43,6 +43,9 @@ border-radius:20px;
 }
 .file_type{
     text-align:center;
+}
+.comm{
+  color:#bbbbbb;
 }
 </style>
 <div class="container"> 
@@ -93,6 +96,17 @@ border-radius:20px;
     </div>
 
     <div class="form-group">
+      <label for="cc">CC</label>
+      <textarea  placeholder="Comma Seprated" name="cc" id="cc" class="comm" >Comma Seprated </textarea>
+  </div>
+  <div class="form-group">
+    <label for="bcc">BCC</label>
+    <textarea  name="bcc" id="bcc" class="comm" > Comma Seprated  </textarea>
+</div>
+
+
+
+    <div class="form-group">
         <label for="">Attachment*</label>
         <label for="attach" class="file_type">Drop a File</label>
         <input type="file" name="attach" id="attach" required>
@@ -100,7 +114,7 @@ border-radius:20px;
     <div class="form-group">
         <label for="message">Message</label>
         
-        <textarea name="message">
+        <textarea class="message" name="message">
             
           </textarea>
 

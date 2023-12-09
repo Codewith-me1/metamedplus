@@ -107,6 +107,104 @@ form button{
 .pos_text h1{
   font-size:3rem;
 }
+
+
+
+@media only screen and (max-width:768px) and (min-width:300px) {
+  form{
+    display:block !important;
+  }
+  .pos_right{
+    width:100% !important;
+  }
+  .pos_left{
+    width:90% !important;
+  }
+
+
+}
+
+input{
+    height:35px;
+}
+form{
+  display:flex;
+}
+.pos_left{
+  width:70%;
+  margin:2rem;
+  
+  border-radius:20px;
+}
+.table{
+  margin-top:3rem;
+}
+.pos_right{
+  width:25%;
+  height:90%;
+  background-color:white;  
+  border-radius:20px;
+  margin-top:3.2rem !important;
+  padding:2rem;
+}
+
+.pos_text{
+  margin:3rem;
+}
+.pos_text input{
+  color:black !important;
+}
+
+form button{
+  margin-left:15rem;
+}
+.pos_composition{
+  display:flex;
+}
+.pos_right h1{
+  font-size:25px !important;
+}
+
+.pos_header{
+  padding:20px;
+  display:flex;
+}
+.pos_header h2{
+  margin-left:10px;
+  margin-top:10px !important;
+}
+.
+.pos_header button{
+  margin:40px 20px 20px 20px;
+
+}
+#date_time{
+  height:35px !important;
+
+}
+.pos_btns{
+  display:flex;
+  justify-content:center;
+}
+.pos_btns button{
+  padding:10px !important;
+  margin:10px !important;
+}
+.pos_top{
+  background-color:white;
+  padding:20px;
+  margin:20px;
+  border-radius:20px;
+}
+
+
+
+.pos_middle{
+  background-color:white;
+  padding:20px;
+  margin:20px;
+  border-radius:20px;
+}
 </style>
 
 <div class='container'>
@@ -461,7 +559,7 @@ function calculateDis() {
   const tax = parseFloat(taxAmountInput.value) || 0;
 
   const discountType = (discount / 100) * subTotal;
-  const totalAmount = subTotal + tax - discountType;
+  const totalAmount = subTotal  - discountType;
 
   totalInput.value = totalAmount.toFixed(2);  // Updated this line
   console.log(discountType);

@@ -152,6 +152,7 @@ urlpatterns = [
     path('edit_salesestimate/<int:id>',views.edit_sales_estimate,name="edit_sales_estimate"),
     path('get_bed_details/', views.get_bed_details, name='get_bed_details'),
     path('expense_list/', views.expense_list, name='expense_list'),
+    path('send_test', views.send_test, name='send_test'),
     path('saleorder_list/', views.sales_orderlist, name='sale_order_list'),
     path('sales_invoicelist/', views.sales_invoice_list, name='sale_invoice_list'),
     path('estimate_list/', views.estimate_list, name='estimate_list'),

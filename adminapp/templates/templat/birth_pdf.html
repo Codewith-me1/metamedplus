@@ -1,34 +1,109 @@
 
+
+
+    <!DOCTYPE html>
+<html>
+     
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Open+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Tajawal:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet"> 
 
-<style>
-    *{
-        font-family: 'Hedvig Letters Serif', serif;
-    }
-    .sign{
-        margin-top:3rem !important;
-    }
-</style>
+<head>
+   
+    
+    <meta charset="utf-8">
+    <title>CashBook</title>
+    <style>
+       .certificate{
+  border: 3px solid #787878;
+  border-radius: 70px;
+}
+.heading{
+  font-family: 'Great Vibes', cursive;
+  font-size: 70px;
+}
+.name{
+  display: flex;
+  border-style: solid;
+  border-width: 0px 0px 3px 0px ;
+  
 
-<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
-    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
-           <span style="font-size:50px; font-weight:bold">Birth Certifcate</span>
-           <br><br>
-           <span style="font-size:25px"><i>This is to certify that</i></span>
-           <br><br>
-        
-           <span style="font-size:30px"><b>{{child.child_name}}</b></span><br/><br/>
-           <span style="font-size:25px"><i>Weighing</i></span> <br/><br/>
-           <span style="font-size:30px">{{child.weight}} Kgs</span> <br/><br/>
-           <span style="font-size:25px"><i>Was Born on</i></span> <br/><br/>
-           <span style="font-size:30px">{{child.birth_date}} </span> <br/><br/>
-           <span style="font-size:25px"><i>to {{child.father_name}}</i></span><br>
-           <span style="font-size:25px"><i>and {{child.mother_name}}</i></span><br>
-        
-      
-          <span class="sign" style="font-size:25px; margin-top:3rem !important;">Doctor Signature</span>
-        
-    </div>
-    </div>
+
+
+
+justify-content: center
+
+
+
+}
+.certificate{
+  position: relative;
+}
+.name img{
+  position: absolute;
+  right: 80px;
+  top: 90px;
+}
+.weight{
+  border-style: solid;
+  border-width: 0px 0px 3px 0px ;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.birth{
+  border-style: solid;
+  border-width: 0px 0px 3px 0px ;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.born{
+  margin-top: 20px;
+}
+        </style>
+</head>
+<body>
+    
+    <div class="certificate" style="width:800px; height:600px; padding:20px; text-align:center;" >
+        <div style="width:750px; height:550px; padding:20px; text-align:center;">
+               <span class="heading" style="font-size:50px; font-weight:bold">Birth Certifcate</span>
+               <br><br>
+              
+               <span class="parag" style="font-size:25px">This is to certify that</span>
+    
+               <br><br>
+               <div class="name">
+               <span style="font-size:30px"><b>{{child.child_name}}</b></span><br/><br/>
+               <img src="footsteps.png" width="110px" alt="">
+    
+               </div>
+               <div class="born">
+               <span  style="font-size:25px"><i>Weighing</i></span> <br/><br/>
+              </div>
+               <div class="weight">
+               <span style="font-size:30px">{{child.weight}} Kgs</span> <br/><br/>
+               </div>
+               <div class="born">
+               <span  style="font-size:25px"><i>Was Born on</i></span> <br/><br/>
+              </div>
+               <div class="birth">
+               <span style="font-size:30px">{{child.birth_date}} </span> <br/><br/>
+              </div>
+              <div class="born">
+               <span style="font-size:25px"><i>to {{child.father_name}}</i></span><br>
+               <span style="font-size:25px"><i>and {{child.mother_name}}</i></span><br>
+              </div>
+            <div class="sign" style="margin-top:3rem;">
+              <span style="font-size:25px; margin-top:3rem !important;">Doctor Signature</span>
+            </div>
+        </div>
+        </div>
+
+</body>
+</html>

@@ -104,6 +104,9 @@ form button{
   margin:20px;
   border-radius:20px;
 }
+
+
+
 </style>
 
 <div class='container'>
@@ -459,7 +462,7 @@ function calculateDis() {
   const tax = parseFloat(taxAmountInput.value) || 0;
 
   const discountType = (discount / 100) * subTotal;
-  const totalAmount = subTotal + tax - discountType;
+  const totalAmount = subTotal  - discountType;
 
   totalInput.value = totalAmount.toFixed(2);  // Updated this line
   console.log(discountType);

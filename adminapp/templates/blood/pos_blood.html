@@ -44,28 +44,28 @@ form{
 }
 .pos_right{
   width:25%;
+  height:90%;
   background-color:white;  
   border-radius:20px;
+  margin-top:3.2rem !important;
   padding:2rem;
 }
-.pos_right h1{
-  margin:2px !important;
-  
-}
+
 .pos_text{
   margin:3rem;
 }
 .pos_text input{
   color:black !important;
 }
-.pos_text h1{
- padding:1rem;
-}
+
 form button{
   margin-left:15rem;
 }
 .pos_composition{
   display:flex;
+}
+.pos_right h1{
+  font-size:25px !important;
 }
 
 .pos_header{
@@ -76,6 +76,7 @@ form button{
   margin-left:10px;
   margin-top:10px !important;
 }
+.
 .pos_header button{
   margin:40px 20px 20px 20px;
 
@@ -225,13 +226,13 @@ form button{
       </div>
 
      <div class="pos_text">
-        <h1>Discount Amount</h1>
+        <h1>Discount (%)</h1>
         <input type="text" class="disc" name="disc" id="disc" >
    
     </div>
 
       <div class="pos_text">
-        <h1> Total</h1>
+        <h1>Total</h1>
         <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
@@ -450,7 +451,7 @@ function calculateDis() {
   const tax = parseFloat(taxAmountInput.value) || 0;
 
   const discountType = (discount / 100) * subTotal;
-  const totalAmount = subTotal + tax - discountType;
+  const totalAmount = subTotal - discountType;
 
   totalInput.value = totalAmount.toFixed(2);  // Updated this line
   console.log(discountType);

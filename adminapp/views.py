@@ -9,7 +9,13 @@ from channels.layers import get_channel_layer
 from .models import Bag_available
 from django.contrib import messages
 from .models import POS
+import pdfkit
+from io import BytesIO
+
 from.models import Blood_Component
+from django.template.loader import get_template
+from reportlab.pdfgen import canvas
+
 from .models import Blood_Setup
 from .models import BRS
 from .models import Leaves
@@ -8474,8 +8480,9 @@ def birth_certificate(request):
     return render(request,'birth/birth_certifcate.html',context)
 
 def birth_pdf(request,id):
-       
-    child=ChildBirth.objects.get(id=id)
+    child = ChildBirth.objects.get(id=id)
+
+   
  
 
 
@@ -8484,11 +8491,13 @@ def birth_pdf(request,id):
         'child':child,
 
     }
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
+
     template = get_template('templat/birth_pdf.html')
     html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
+    
 
     # Generate PDF from HTML using ReportLab and pisa
     pisa_status = pisa.CreatePDF(html, dest=response)
@@ -8497,6 +8506,7 @@ def birth_pdf(request,id):
     if pisa_status.err:
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
+
 
 
 
@@ -8530,26 +8540,50 @@ def send(request):
         title = request.POST.get('title')
         attachment = request.FILES['attach']  # Assuming 'attachment' is a file field in your form
         message = request.POST.get('message')
+        bcc = request.POST.get('bcc')
+        cc = request.POST.get('cc')
 
         mails = AddStaff.objects.all()
-    
+        cc_list = [c.strip() for c in cc.split(',') if c.strip()]
+
+        # Split and clean the 'bcc' values
+        bcc_list = [b.strip() for b in bcc.split(',') if b.strip()]
+
         with get_connection(  
            host=settings.EMAIL_HOST, 
-           port=settings.EMAIL_PORT,  
-           username=settings.EMAIL_HOST_USER, 
-           password=settings.EMAIL_HOST_PASSWORD, 
-           use_tls=settings.EMAIL_USE_TLS  
+     port=settings.EMAIL_PORT,  
+     username=settings.EMAIL_HOST_USER, 
+     password=settings.EMAIL_HOST_PASSWORD, 
+     use_tls=settings.EMAIL_USE_TLS  ,
         ) as connection:  
             subject = title
             from_email = "info@phoneixhms.com"
             
             for staff_member in mails:
                 recipient_email = staff_member.email
-                email = EmailMessage(subject, message, from_email, [recipient_email], connection=connection)
+                email = EmailMessage(subject, message,bcc_list,cc_list, from_email,attachment, [recipient_email], connection=connection)
 
                 # Attach the file
-                email.attach(attachment.name, attachment.read(), attachment.content_type)
+              
 
                 email.send()
 
     return render(request, 'messaging/mail.html')
+
+
+def send_test(request):  
+    
+    time.sleep(3)
+    with get_connection(  
+           host=settings.EMAIL_HOST, 
+     port=settings.EMAIL_PORT,  
+     username=settings.EMAIL_HOST_USER, 
+     password=settings.EMAIL_HOST_PASSWORD, 
+     use_tls=settings.EMAIL_USE_TLS  
+       ) as connection:  
+           subject = "Account Password"
+           from_email = "info@phoneixhms.com"
+           recipient_list = ['programmer62563@gmail.com','devshandilaya1@gmail.com']  
+           message = "Hello Workinf"
+           send_mail(subject, message, from_email, recipient_list, connection=connection)
+
