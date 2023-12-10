@@ -5,11 +5,15 @@ from decimal import Decimal
 import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+import os
 from channels.layers import get_channel_layer
 from .models import Bag_available
 from django.contrib import messages
 from .models import POS
-import pdfkit
+
+GTK_FOLDER = 'C:\\Program Files\\GTK3-Runtime Win64\\bin'
+os.environ['PATH'] = GTK_FOLDER + os.pathsep + os.environ.get('PATH', '')
+from weasyprint import HTML
 from io import BytesIO
 
 from.models import Blood_Component
@@ -8479,6 +8483,8 @@ def birth_certificate(request):
     }
     return render(request,'birth/birth_certifcate.html',context)
 
+
+
 def birth_pdf(request,id):
     child = ChildBirth.objects.get(id=id)
 
@@ -8487,24 +8493,42 @@ def birth_pdf(request,id):
 
 
 
-    context= {
+    child= {
         'child':child,
 
     }
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
 
-    template = get_template('templat/birth_pdf.html')
-    html = template.render(context)
+    template = loader.get_template('templat/birth_pdf.html')
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
+
+    # template = get_template('templat/birth_pdf.html')
+    # html = template.render(context)
 
     
 
-    # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+    # # Generate PDF from HTML using ReportLab and pisa
+    # pisa_status = pisa.CreatePDF(html, dest=response)
 
-    # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
+    # # Return the response
+    # if pisa_status.err:
+    #     return HttpResponse('PDF generation failed', content_type='text/plain')
+    # return response
+    
+    html_file_path = 'C:/Users/devsh/Desktop/metamedplus/adminapp/templates/templat/birth_pdf.html'
+
+    html_content = template.render({'child': child})
+
+    # Create a WeasyPrint HTML object
+    html = HTML(string=html_content)
+
+    # Generate the PDF content
+    pdf_content = html.write_pdf()
+
+    # Create a Django HttpResponse with PDF content
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="output.pdf"'
+
     return response
 
 
@@ -8560,8 +8584,8 @@ def send(request):
             from_email = "info@phoneixhms.com"
             
             for staff_member in mails:
-                recipient_email = staff_member.email
-                email = EmailMessage(subject, message,bcc_list,cc_list, from_email, [recipient_email], connection=connection)
+                recipient_email = staff_member.email    
+                email = EmailMessage(subject, message, from_email, [recipient_email],bcc=bcc_list,cc=cc_list, connection=connection)
 
                 email.attach(attachment.name, attachment.read(), attachment.content_type)
               
@@ -8586,4 +8610,3 @@ def send_test(request):
            recipient_list = ['programmer62563@gmail.com','devshandilaya1@gmail.com']  
            message = "Hello Workinf"
            send_mail(subject, message, from_email, recipient_list, connection=connection)
-

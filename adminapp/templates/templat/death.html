@@ -1,36 +1,126 @@
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital@1&display=swap" rel="stylesheet">
-<style>
-    *{
-        font-family: 'Hedvig Letters Serif', serif;
-    }
-    .sign{
-        margin-top:3rem !important;
-    }
-    .heading{
-        font-family: 'PT Serif', serif !important; 
-    }
-</style>
 
-<div style="width:800px; height:600px; padding:20px; text-align:center; border: 10px solid #787878">
-    <div style="width:750px; height:550px; padding:20px; text-align:center; border: 5px solid #787878">
-           <span class="heading" style="font-size:50px; font-weight:bold">Death Certifcate</span>
-           <br><br>
-           <span style="font-size:25px"><i>This is to certify that</i></span>
-           <br><br>
-        
-           <span style="font-size:30px"><b>{{death.patient_name.name}}</b></span><br/><br/>
-           <span style="font-size:25px"><i>On the day of </i></span> <br/><br/>
-           <span style="font-size:30px">{{death.death_date}}</span> <br/><br/>
-           <span style="font-size:25px"><i>At __________ </i></span> <br/><br/>
-        
-      
-          <span class="sign" style="font-size:25px; margin-top:3rem !important;">Doctor Signature</span>
-        
-    </div>
-    </div>
+
+<!DOCTYPE html>
+<html>
+     
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Open+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Tajawal:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap" rel="stylesheet"> 
+
+<head>
+   
+    
+    <meta charset="utf-8">
+    <title>Birth Certifcate   </title>
+    <style>
+       .certificate{
+  border: 3px solid #787878;
+  border-radius: 70px;
+}
+.heading{
+  font-family: 'Great Vibes', cursive;
+
+}
+.head{
+    border-style: solid;
+  padding: 5px;
+  width: 50%;
+  margin-left: auto;
+    margin-right: auto;
+  border-left: 1px;
+  border-right: 1px;
+  font-size: 70px;
+}
+.name{
+  display: flex;
+  border-style: solid;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
+  
+
+
+
+
+justify-content: center
+
+
+
+}
+.certificate{
+  position: relative;
+}
+.name img{
+  position: absolute;
+  right: 80px;
+  top: 90px;
+}
+.weight{
+  border-style: solid;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.birth{
+  border-style: solid;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.born{
+  margin-top: 20px;
+}
+{% load static %}
+        </style>
+</head>
+<body>
+    
+    <div class="certificate" style=" padding:20px; text-align:center;" >
+        <div style="padding:20px; text-align:center;">
+            <div class="head">
+               <span class="heading" style="font-size:50px; font-weight:bold">Death Certifcate</span>
+            </div>
+               <br><br>
+              
+               <span class="parag" style="font-size:25px">This is to acknowlede the Death of</span>
+    
+               <br><br>
+               <div class="name">
+               <span style="font-size:30px"><b>{{child.child.child_name}}</b></span><br/><br/>
+               <img src="{% static "css/images/footsteps.png" %}" width="110px" alt="">
+    
+               </div>
+               <div class="born">
+               <span  style="font-size:25px"><i>On </i></span> <br/><br/>
+              </div>
+               <div class="weight">
+               <span style="font-size:30px">{{child.child.death_day}} </span> <br/><br/>
+               </div>
+               <div class="born">
+               <span  style="font-size:25px"><i>At</i></span> <br/><br/>
+              </div>
+               <div class="birth">
+               <span style="font-size:30px">{{child.hospital_name}} </span> <br/><br/>
+              </div>
+              <div class="born">
+               <span style="font-size:25px"><i>Signed ____________________</i></span><br>
+               <span style="font-size:25px"><i></i></span><br>
+              </div>
+           
+        </div>
+        </div>
+
+</body>
+</html>

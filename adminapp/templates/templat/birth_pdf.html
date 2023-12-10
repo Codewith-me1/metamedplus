@@ -17,7 +17,7 @@
    
     
     <meta charset="utf-8">
-    <title>CashBook</title>
+    <title>Birth Certifcate   </title>
     <style>
        .certificate{
   border: 3px solid #787878;
@@ -30,7 +30,9 @@
 .name{
   display: flex;
   border-style: solid;
-  border-width: 0px 0px 3px 0px ;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
   
 
 
@@ -51,14 +53,18 @@ justify-content: center
 }
 .weight{
   border-style: solid;
-  border-width: 0px 0px 3px 0px ;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 }
 .birth{
   border-style: solid;
-  border-width: 0px 0px 3px 0px ;
+  border-top: 1px;
+  border-right: 1px;
+  border-left: 1px;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
@@ -66,12 +72,14 @@ justify-content: center
 .born{
   margin-top: 20px;
 }
+
+{% load static %}
         </style>
 </head>
 <body>
     
-    <div class="certificate" style="width:800px; height:600px; padding:20px; text-align:center;" >
-        <div style="width:750px; height:550px; padding:20px; text-align:center;">
+    <div class="certificate" style=" padding:20px; text-align:center;" >
+        <div style="padding:20px; text-align:center;">
                <span class="heading" style="font-size:50px; font-weight:bold">Birth Certifcate</span>
                <br><br>
               
@@ -79,25 +87,25 @@ justify-content: center
     
                <br><br>
                <div class="name">
-               <span style="font-size:30px"><b>{{child.child_name}}</b></span><br/><br/>
-               <img src="footsteps.png" width="110px" alt="">
-    
+               <span style="font-size:30px"><b>{{child.child.child_name}}</b></span><br/><br/>
+               <img src="{% static 'css/images/footsteps.png' %}" width="110px" alt="">
+
                </div>
                <div class="born">
                <span  style="font-size:25px"><i>Weighing</i></span> <br/><br/>
               </div>
                <div class="weight">
-               <span style="font-size:30px">{{child.weight}} Kgs</span> <br/><br/>
+               <span style="font-size:30px">{{child.child.weight}} Kgs</span> <br/><br/>
                </div>
                <div class="born">
                <span  style="font-size:25px"><i>Was Born on</i></span> <br/><br/>
               </div>
                <div class="birth">
-               <span style="font-size:30px">{{child.birth_date}} </span> <br/><br/>
+               <span style="font-size:30px">{{child.child.birth_date}} </span> <br/><br/>
               </div>
               <div class="born">
-               <span style="font-size:25px"><i>to {{child.father_name}}</i></span><br>
-               <span style="font-size:25px"><i>and {{child.mother_name}}</i></span><br>
+               <span style="font-size:25px"><i>to {{child.child.father_name}}</i></span><br>
+               <span style="font-size:25px"><i>and {{child.child.mother_name}}</i></span><br>
               </div>
             <div class="sign" style="margin-top:3rem;">
               <span style="font-size:25px; margin-top:3rem !important;">Doctor Signature</span>
