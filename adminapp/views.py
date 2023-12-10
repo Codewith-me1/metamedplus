@@ -8548,7 +8548,7 @@ def send(request):
 
         # Split and clean the 'bcc' values
         bcc_list = [b.strip() for b in bcc.split(',') if b.strip()]
-
+        print(bcc_list)
         with get_connection(  
            host=settings.EMAIL_HOST, 
      port=settings.EMAIL_PORT,  
@@ -8561,11 +8561,11 @@ def send(request):
             
             for staff_member in mails:
                 recipient_email = staff_member.email
-                email = EmailMessage(subject, message,bcc_list,cc_list, from_email,attachment, [recipient_email], connection=connection)
+                email = EmailMessage(subject, message,bcc_list,cc_list, from_email, [recipient_email], connection=connection)
 
-                # Attach the file
+                email.attach(attachment.name, attachment.read(), attachment.content_type)
               
-
+ 
                 email.send()
 
     return render(request, 'messaging/mail.html')
