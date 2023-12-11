@@ -5594,18 +5594,28 @@ def get_header_data(request):
 def get_bed_data(request):
     bed_data = Bed.objects.all()  # Fetch all records from the Bed model
     data_list = []
-    ipd = IpdPatient.objects.all()
+
     for bed in bed_data:
-        data_list.append({
-            'name': bed.name,
-            'ipd':ipd.bed_number,
-            'id':ipd.id,
+        ipd = IpdPatient.objects.filter(bed=bed).first()  # Assuming a ForeignKey relationship from IpdPatient to Bed
 
-            # Add more fields here if needed
-        })
-
+        if ipd:
+            data_list.append({
+                'name': bed.name,
+                'ipd_bed_number': ipd.bed_number,
+                'ipd_id': ipd.id,
+                # Add more fields here if needed
+            })
+        else:
+            # Handle the case where no related IpdPatient is found for the bed
+            data_list.append({
+                'name': bed.name,
+                'ipd_bed_number': None,
+                'ipd_id': None,
+                # Add more fields here if needed
+            })
+        data = data_list
     if data_list:
-        return JsonResponse(data_list, safe=False)
+        return JsonResponse(data, safe=False)
     return JsonResponse({'error': 'No bed data found'}, status=404)
 
 
@@ -8517,10 +8527,10 @@ def birth_pdf(request,id):
     
     html_file_path = 'C:/Users/devsh/Desktop/metamedplus/adminapp/templates/templat/birth_pdf.html'
 
-    html_content = template.render({'child': child})
+    html_content = template.render({'child': child},request=request)
 
     # Create a WeasyPrint HTML object
-    html = HTML(string=html_content)
+    html = HTML(string=html_content, base_url=request.build_absolute_uri())
 
     # Generate the PDF content
     pdf_content = html.write_pdf()
@@ -8536,27 +8546,55 @@ def birth_pdf(request,id):
 
 def death_pdf(request,id):
        
-    death=DeathRecord.objects.get(id=id)
+    child=DeathRecord.objects.get(id=id)
  
 
 
 
-    context= {
-        'death':death,
+ 
+  
+   
+ 
+
+
+    header_name = header.objects.all().first()
+    child= {
+        'child':child,
+        'hospital_name':header_name.name,
 
     }
-    template = get_template('templat/death.html')
-    html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="death  .pdf"'
+    template = loader.get_template('templat/death.html')
+    # response = HttpResponse(content_type='application/pdf')
+    # response['Content-Disposition'] = 'attachment; filename="birth.pdf"'
 
-    # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+    # template = get_template('templat/birth_pdf.html')
+    # html = template.render(context)
 
-    # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
+    
+
+    # # Generate PDF from HTML using ReportLab and pisa
+    # pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # # Return the response
+    # if pisa_status.err:
+    #     return HttpResponse('PDF generation failed', content_type='text/plain')
+    # return response
+    
+    html_file_path = 'C:/Users/devsh/Desktop/metamedplus/adminapp/templates/templat/death.html'
+
+    html_content = template.render({'child': child},request=request)
+
+    # Create a WeasyPrint HTML object
+    html = HTML(string=html_content, base_url=request.build_absolute_uri())
+
+    # Generate the PDF content
+    pdf_content = html.write_pdf()
+
+    # Create a Django HttpResponse with PDF content
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="output.pdf"'
+
     return response
 
 def send(request):
@@ -8566,8 +8604,10 @@ def send(request):
         message = request.POST.get('message')
         bcc = request.POST.get('bcc')
         cc = request.POST.get('cc')
+        to = request.POST.get('to')
 
         mails = AddStaff.objects.all()
+        to_list = [t.strip() for t in to.split(',') if t.strip()]
         cc_list = [c.strip() for c in cc.split(',') if c.strip()]
 
         # Split and clean the 'bcc' values
@@ -8585,7 +8625,7 @@ def send(request):
             
             for staff_member in mails:
                 recipient_email = staff_member.email    
-                email = EmailMessage(subject, message, from_email, [recipient_email],bcc=bcc_list,cc=cc_list, connection=connection)
+                email = EmailMessage(subject, message, from_email, [to_list],bcc=bcc_list,cc=cc_list, connection=connection)
 
                 email.attach(attachment.name, attachment.read(), attachment.content_type)
               

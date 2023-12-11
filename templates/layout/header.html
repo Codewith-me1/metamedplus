@@ -410,22 +410,12 @@ form input.operator{
         <h4 class="bed"> Second<h4>
         <div class="bed_details">
             <div class="beds">
+              
                 <div class="bed_det">
                     <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p class="bed_des" >1E</p>
+                    <p class="bed_des"><a href="/ipd/4/">1E</a></p>
                 </div>
-                <div class="bed_det">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p class="bed_des" >1E</p>
-                </div>
-                <div class="bed_det">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p class="bed_des">1E</p>
-                </div>
-                <div class="bed_det ">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p class="bed_des" >1E</p>
-                </div>
+                
             </div>
 
         </div>
@@ -578,13 +568,14 @@ form input.operator{
         
         
     });
+    $('#changeLogoButton').click(changeLogo);
     function changeLogo() {
         // Replace 'new_logo_url' with the URL of the new logo image
         
     
     
     // Attach a click event listener to the button
-    $('#changeLogoButton').click(changeLogo);
+    
     console.log('heelo')
     $.get('/get_bed_data/', function (data) {
       var bedDetailsContainer = $('.beds');
@@ -602,15 +593,7 @@ form input.operator{
               bedDetailsContainer.append(bedDet);
           });
 
-          data.ipd.forEach(function (bed) {
-            var bedDet = $('<div class="bed_det">');
-            var bedImage = $('<img src="{% static "css/images/icons8-occupied-bed-100.png" %}">');
-            var bedDescription = $('<a href="/ipd ${ipd}" class="bed_des">' + ipd + '</p>');
-
-            bedDet.append(bedImage);
-            bedDet.append(bedDescription);
-            bedDetailsContainer.append(bedDet);
-        });
+         
 
       } else {
           // Display a default message if no data is found

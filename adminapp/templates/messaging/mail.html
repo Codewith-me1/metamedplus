@@ -89,9 +89,15 @@ border-radius:20px;
 
 
 <form class="form_popup" enctype="multipart/form-data"  method="post" action="{% url 'send_mail' %}">
-    {% csrf_token %}    
+    {% csrf_token %}   
+    
+    <div class="form-group">
+      <label for="to">To</label>
+      <textarea  placeholder="Comma Seprated" name="to" id="to" class="to" > </textarea>
+  </div>
+
     <div class="form_mail">
-        <label for="title">Title *</label>
+        <label for="title">Subject *</label>
         <input type="text" name="title" id="title" required>
     </div>
 
