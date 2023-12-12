@@ -9,11 +9,14 @@ import os
 from channels.layers import get_channel_layer
 from .models import Bag_available
 from django.contrib import messages
+from pusher_push_notifications import PushNotifications
 from .models import POS
 
 GTK_FOLDER = 'C:\\Program Files\\GTK3-Runtime Win64\\bin'
 os.environ['PATH'] = GTK_FOLDER + os.pathsep + os.environ.get('PATH', '')
-from weasyprint import HTML
+# from weasyprint import HTML
+import pusher
+
 from io import BytesIO
 
 from.models import Blood_Component
@@ -8605,9 +8608,10 @@ def send(request):
         bcc = request.POST.get('bcc')
         cc = request.POST.get('cc')
         to = request.POST.get('to')
+        from_mail = request.POST.get('from')
 
         mails = AddStaff.objects.all()
-        to_list = [t.strip() for t in to.split(',') if t.strip()]
+        to_list = to
         cc_list = [c.strip() for c in cc.split(',') if c.strip()]
 
         # Split and clean the 'bcc' values
@@ -8621,16 +8625,16 @@ def send(request):
      use_tls=settings.EMAIL_USE_TLS  ,
         ) as connection:  
             subject = title
-            from_email = "info@phoneixhms.com"
+            from_email = from_mail
             
-            for staff_member in mails:
-                recipient_email = staff_member.email    
-                email = EmailMessage(subject, message, from_email, [to_list],bcc=bcc_list,cc=cc_list, connection=connection)
+            
+            
+            email = EmailMessage(subject, message, from_email, [to_list],bcc=bcc_list,cc=cc_list, connection=connection)
 
-                email.attach(attachment.name, attachment.read(), attachment.content_type)
+            email.attach(attachment.name, attachment.read(), attachment.content_type)
               
  
-                email.send()
+            email.send()
 
     return render(request, 'messaging/mail.html')
 
@@ -8650,3 +8654,132 @@ def send_test(request):
            recipient_list = ['programmer62563@gmail.com','devshandilaya1@gmail.com']  
            message = "Hello Workinf"
            send_mail(subject, message, from_email, recipient_list, connection=connection)
+
+
+def send_push_notification(user_ids,title,body):
+    beams_client = PushNotifications(
+        instance_id='175d0caf-9bfe-4e3a-a666-79376576240c',
+        secret_key='04850F582CD854726A3157D752CC5E0D07DA69E3305B3EC21FB6529075365308',
+    )
+
+    response = beams_client.publish(
+        interests=[f'user_{user_id}' for user_id in user_ids],
+        publish_body={'fcm': {'notification': {'title': title, 'body': body}}},
+    )
+
+    print(response['publishId'])
+
+
+
+def send_notification_push(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        staff_id= request.POST.get('id')
+        staff_member = get_object_or_404(AddStaff, staff_id=staff_id)
+        
+    # Assuming 'user_id' is a unique identifier for each staff member
+        user_ids = [staff_member.staff_id]
+
+    
+
+        send_push_notification(user_ids, title, body)
+
+        return redirect('send_notification')
+
+    staff = AddStaff.objects.all()
+    return render(request,'messaging/notification.html',{'staff':staff})
+
+
+def appointment_letter(request):
+    context = {
+        'name':'Letter'
+    }
+    template = get_template('letters/appointment.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+def resign_letter(request):
+    context = {
+        'name':'Letter'
+    }
+    template = get_template('letters/resign.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="resign.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def leave_letter(request):
+    context = {
+        'name':'Letter'
+    }
+    template = get_template('letters/leave.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="leave.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+def sampleappointment_letter(request):
+    context = {
+        'name':'Letter'
+    }
+    template = get_template('letters/sample_appointment.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+def sampleresign_letter(request):
+    context = {
+        'name':'Letter'
+    }
+    template = get_template('letters/sample_resign.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="resign.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+

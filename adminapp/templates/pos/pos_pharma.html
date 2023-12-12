@@ -29,11 +29,9 @@
 .btn{
   margin-top:1px !important;
 }
-form{
-  display:flex;
-}
+
 .pos_left{
-  width:60%;
+  width:99%;
   margin:2rem;
 
   border-radius:20px;
@@ -44,6 +42,7 @@ form{
 .pos_right{
   width:30%;
   background-color:white;  
+
   border-radius:20px;
   padding:2rem;
 }
@@ -59,7 +58,7 @@ input{
 
 .pos_btns{
   display:flex;
-  justify-content:center;
+  justify-content:flex-end;
 }
 .pos_right h1{
   margin:2px !important;
@@ -80,15 +79,12 @@ form button{
 .pos_composition{
   display:flex;
   padding:10px;
-  margin:10px;
-  background-color:white;
-  border-radius:15px;
+  
 }
 .medicine_details{
   padding:10px;
-  margin:10px;
-  background-color:white;
-  border-radius:15px;
+  
+  
 }
 .con{
   display:flex;
@@ -115,11 +111,9 @@ margin-top:5rem !important;
 input{
     height:35px;
 }
-form{
-  display:flex;
-}
+
 .pos_left{
-  width:70%;
+  width:99%;
   margin:2rem;
   
   border-radius:20px;
@@ -128,19 +122,36 @@ form{
   margin-top:3rem;
 }
 .pos_right{
-  width:25%;
+  width:95%;
   height:90%;
+  
   background-color:white;  
+
   border-radius:20px;
-  margin-top:3.2rem !important;
+  margin-top:1rem !important
   padding:2rem;
 }
 
 .pos_text{
   margin:3rem;
+  display:flex;
+  border-style:solid;
+  border-color:#f1f1f1;
+  justify-content: flex-end;
+  align-items:center;
+  border-width:1px 0px 1px 0px;
+  padding:1rem;
+  width:100%;
+}
+
+.pos_text h1{
+  font-size:1rem !important;
 }
 .pos_text input{
   color:black !important;
+  border-width: 0px 0px 1px 0px;
+  border-color:black;
+  width: 10%;
 }
 
 form button{
@@ -150,7 +161,8 @@ form button{
   display:flex;
 }
 .pos_right h1{
-  font-size:25px !important;
+  font-size:20px !important;
+  font-weight:bold;
 }
 
 .pos_header{
@@ -172,7 +184,7 @@ form button{
 }
 .pos_btns{
   display:flex;
-  justify-content:center;
+  justify-content:flex-end;
 }
 .pos_btns button{
   padding:10px !important;
@@ -194,6 +206,34 @@ form button{
   border-radius:20px;
 }
 
+.pointofsale{
+  background-color:white;
+  margin:2rem;
+  border-radius:15px;
+}
+.form_top{
+  margin:2rem;
+  background-color:white;
+  border-radius:15px;
+}
+.calculate_btn{
+  display:flex;
+  padding:2rem;
+}
+.calculate{
+  padding:1rem;
+}
+.pharmacy_top{
+  display:flex;
+  justify-content:flex-start;
+  padding:1rem;
+}
+.pharmacy_top h1{
+  margin-left:2rem;
+ 
+  font-size:25px;
+  font-weight:bold;
+}
 
 </style>
 <script>
@@ -216,17 +256,15 @@ form button{
 
 <div class='container'>
     <h2>Point Of Sale <a class="btn btn-primary"  href="javascript:history.back()">Back</a>  <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button></h2>
-   
+    <div class="form_top">
 
     <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
-            <div class="first-container">
-
             
-        </div>
        <div class="pos_left">
         <div class="pos_composition">
+          
           <div class="form-group">
                          <label for="doctor">Doctor</label>
                          <input type="text" name="doctor" id="doctor" >
@@ -280,14 +318,22 @@ form button{
           
                   <label for="small_note">Small Note</label>
           
-                  <textarea id="small_note" name="small_note" rows="4" cols="10">
+                  <textarea id="small_note" name="small_note" rows="2" cols="30">
                  
                   </textarea>
                  </div>
                     </div>
+                    </div>
+                    </div>
+                    <div class="pharmacy_top">
 
+                    <h1> Pharmacy POS</h1>
+                  </div>
+                    <div class="pointofsale">
+                    
                     <div class="medicine_details">
         <table class="table">
+
             <thead>
               <tr>
                      <th>Medicine Category</th>
@@ -313,11 +359,12 @@ form button{
 
                 
             </tbody>
+            
           </table>
 
           
         </div>
-        </div>
+        
         <div class="pos_right">
           
           
@@ -352,9 +399,10 @@ form button{
    
     </div>
     <div class="pos_btns">
+      <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
       <button type="submit" class="btn btn-primary">Save Invoice</button>
       
-      <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
+     
     
     
           </div>
@@ -368,6 +416,7 @@ form button{
 
 
     
+</div>
 </div>
 
 

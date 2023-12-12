@@ -92,8 +92,13 @@ border-radius:20px;
     {% csrf_token %}   
     
     <div class="form-group">
+      <label for="from">From*</label>
+      <input  placeholder="john@doe.com" name="from" id="from" class="from" > 
+  </div>
+
+    <div class="form-group">
       <label for="to">To</label>
-      <textarea  placeholder="Comma Seprated" name="to" id="to" class="to" > </textarea>
+      <input  placeholder="john@doe.com" name="to" id="to" class="to" > 
   </div>
 
     <div class="form_mail">
@@ -103,11 +108,11 @@ border-radius:20px;
 
     <div class="form-group">
       <label for="cc">CC</label>
-      <textarea  placeholder="Comma Seprated" name="cc" id="cc" class="comm" >Comma Seprated </textarea>
+      <textarea  placeholder="Comma Seprated" name="cc" id="cc" class="comm" ></textarea>
   </div>
   <div class="form-group">
     <label for="bcc">BCC</label>
-    <textarea  name="bcc" id="bcc" class="comm" > Comma Seprated  </textarea>
+    <textarea placeholder="Comma Seprated"  name="bcc" id="bcc" class="comm" >   </textarea>
 </div>
 
 
