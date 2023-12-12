@@ -78,19 +78,10 @@ border-radius:20px;
     {% csrf_token %}   
 
 
-    <div class="form-group">
-        <label for="staff">Staff</label>
-        
-        <select name="id"> 
-            {% for id in staff %}
-            <option value={{id.staff_id}}>{{id.first_name}}</option>
-            {% endfor %}
-        </select>
-    </div>
     
     <div class="form-group">
-        <label for="id_subject">Subject:</label>
-        <input type="text" name="title" id="id_subject" required>
+        <label for="to">To Phone Number</label>
+        <input type="number" name="to" id="to" required>
     
     </div>
 

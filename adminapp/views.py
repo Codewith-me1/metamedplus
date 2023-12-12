@@ -8,6 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import os
 from channels.layers import get_channel_layer
 from .models import Bag_available
+
+from twilio.rest import Client
 from django.contrib import messages
 from pusher_push_notifications import PushNotifications
 from .models import POS
@@ -8656,39 +8658,55 @@ def send_test(request):
            send_mail(subject, message, from_email, recipient_list, connection=connection)
 
 
-def send_push_notification(user_ids,title,body):
-    beams_client = PushNotifications(
-        instance_id='175d0caf-9bfe-4e3a-a666-79376576240c',
-        secret_key='04850F582CD854726A3157D752CC5E0D07DA69E3305B3EC21FB6529075365308',
+def send_push_notification(request):
+    account_sid = 'ACedb7a50d829d28765419e0f2ad173f5a'
+    auth_token = '095924488d50386a6eb099130f94060e'
+
+    # Twilio phone number (a Twilio phone number that you have purchased)
+    twilio_phone_number = '+12055397628'
+
+    # Recipient's phone number
+    to_phone_number = "+919873054516"  # Replace with the actual recipient's phone number
+
+    # Create a Twilio client
+    client = Client(account_sid, auth_token)
+
+    # Send SMS
+    message = client.messages.create(
+        body="test mail",
+        from_=twilio_phone_number,
+        to=to_phone_number
     )
 
-    response = beams_client.publish(
-        interests=[f'user_{user_id}' for user_id in user_ids],
-        publish_body={'fcm': {'notification': {'title': title, 'body': body}}},
-    )
-
-    print(response['publishId'])
+    return redirect('send_notification')
 
 
 
 def send_notification_push(request):
-    if request.method == "POST":
-        title = request.POST.get('title')
+    if request.method =="POST":
+        to = request.POST.get('to')
         body = request.POST.get('body')
-        staff_id= request.POST.get('id')
-        staff_member = get_object_or_404(AddStaff, staff_id=staff_id)
-        
-    # Assuming 'user_id' is a unique identifier for each staff member
-        user_ids = [staff_member.staff_id]
+        account_sid = 'ACedb7a50d829d28765419e0f2ad173f5a'
+        auth_token = '095924488d50386a6eb099130f94060e'
 
-    
+    # Twilio phone number (a Twilio phone number that you have purchased)
+        twilio_phone_number = '+12055397628'
 
-        send_push_notification(user_ids, title, body)
+    # Recipient's phone number
+        to_phone_number = "+91"+to  # Replace with the actual recipient's phone number
 
+    # Create a Twilio client
+        client = Client(account_sid, auth_token)
+        print(to)
+
+    # Send SMS
+        message = client.messages.create(
+            body=body,
+            from_=twilio_phone_number,
+            to=to_phone_number,
+        )
         return redirect('send_notification')
-
-    staff = AddStaff.objects.all()
-    return render(request,'messaging/notification.html',{'staff':staff})
+    return render(request,'messaging/notification.html')
 
 
 def appointment_letter(request):
