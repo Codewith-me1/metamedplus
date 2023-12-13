@@ -57,14 +57,11 @@
             <td>{{ date_time }}</td>
             
         </tr>
-
         <tr>
-            <td><strong>Patient Name</strong></td>
-            <td>{{ patient }}</td>
+            <td><strong>Composition</strong></td>
+            <td>{{ composition }}</td>
             
         </tr>
-       
-       
 
         {% if small_note %}
         <tr>
@@ -81,8 +78,12 @@
     <table id="table">
         <thead>
             <tr>
-                <th>Test Category</th>
-                <th>Test Name</th>
+                <th>Medicine Category</th>
+                <th>Medicine Name</th>
+                <th>Quantity</th>
+                <th>Expiry</th>
+                <th>Tax</th>
+                <th>Discount</th>
 
                 <th>Price</th>
                 <th>Payment Mode</th>
@@ -93,13 +94,16 @@
             {% for item  in products %}
                 <tr>
                     <td>{{ item.cat }}</td>
-                    <td>{{ item.test }}</td>
+                    <td>{{ item.item }}</td>
                     
-    
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.expiry }}</td>
+                    <td>{{ item.tax_ }}</td>
                     <td>{{ item.price }}</td>
                          
                    
-
+                    
+                    <td>{{ item.total }}</td>
                
                  
                 
@@ -112,5 +116,6 @@
     <h3>Discount {{ discount }}</h3>
     <h3>Total Amount: {{ grand_total }}</h3>
     <h3>Paid Amount: {{ paid_amount }}</h3>
+    <h3>Balance: {{ balance }}</h3>
 </body>
 </html>

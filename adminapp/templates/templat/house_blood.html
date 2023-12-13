@@ -38,7 +38,7 @@
     <table id="table">
 
         <tr>
-            <td><strong>Prescribed By</strong></td>
+            <td><strong> Doctor</strong></td>
             <td>{{ doctor }}</td>
             
         </tr>
@@ -81,22 +81,23 @@
     <table id="table">
         <thead>
             <tr>
-                <th>Test Category</th>
-                <th>Test Name</th>
+                <th>Blood Group</th>
+                <th>Component</th>
 
-                <th>Price</th>
-                <th>Payment Mode</th>
+                <th>Volume</th>
+                <th>Quantity</th>
                 
             </tr>
         </thead>
         <tbody>
             {% for item  in products %}
                 <tr>
-                    <td>{{ item.cat }}</td>
-                    <td>{{ item.test }}</td>
+                    <td>{{ item.group }}</td>
+                    <td>{{ item.component }}</td>
                     
     
-                    <td>{{ item.price }}</td>
+                    <td>{{ item.volume }}</td>
+                    <td>{{ item.quantity }}</td>
                          
                    
 
@@ -104,7 +105,7 @@
                  
                 
             {% endfor %}
-            <td> {{payment}} </td>
+           
         </tr>
         </tbody>
     </table>
@@ -112,5 +113,6 @@
     <h3>Discount {{ discount }}</h3>
     <h3>Total Amount: {{ grand_total }}</h3>
     <h3>Paid Amount: {{ paid_amount }}</h3>
+    <h3>Balance: {{ balance }}</h3>
 </body>
 </html>

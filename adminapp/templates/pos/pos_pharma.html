@@ -263,8 +263,8 @@ form button{
         <input type="hidden" name="item_counter" id="item_counter" value="0">
             
        <div class="pos_left">
-        <div class="pos_composition">
-          
+        
+          <div class="pos_top">
           <div class="form-group">
                          <label for="doctor">Doctor</label>
                          <input type="text" name="doctor" id="doctor" >
@@ -321,14 +321,13 @@ form button{
                   <textarea id="small_note" name="small_note" rows="2" cols="30">
                  
                   </textarea>
-                 </div>
-                    </div>
-                    </div>
-                    </div>
+                </div>
+                </div>
+                </div>
                     <div class="pharmacy_top">
 
-                    <h1> Pharmacy POS</h1>
-                  </div>
+                    <h1> Pharmacy POS</h1></div>
+
                     <div class="pointofsale">
                     
                     <div class="medicine_details">
@@ -398,6 +397,12 @@ form button{
         <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
+
+    <div class="pos_text">
+      <h1>Paid Amount</h1>
+      <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
+ 
+  </div>
     <div class="pos_btns">
       <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
       <button type="submit" class="btn btn-primary">Save Invoice</button>

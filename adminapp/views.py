@@ -6191,6 +6191,7 @@ def pos_pdf(request):
         medicine_composition = request.POST.get('medicine_composition')
         payment = request.POST.get('payment')
         doctor = request.POST.get('doctor')
+        paid_amount = request.POST.get('paid_amount')
         
         item_counter = request.POST.get('item_counter')
 
@@ -6211,7 +6212,7 @@ def pos_pdf(request):
 
 
         )
-
+        pos.save()
         print(item_counter)
         if item_counter.isdigit():
             item_counter = int(item_counter)
@@ -6264,6 +6265,7 @@ def pos_pdf(request):
                 'quantity': qty,
                 'price': price,
                 'tax_':tax_,
+                'paid_amount':paid_amount,
                 'expiry':expiry,
                 'batch':batch,
                 'cat':cat,
@@ -7329,6 +7331,7 @@ def pos_pathpdf(request):
         payment = request.POST.get('payment')
         patient = request.POST.get('patient')
         doctor = request.POST.get('doctor')
+        paid_amount = request.POST.get('paid_amount')
         item_counter = request.POST.get('item_counter')
         print(item_counter)
         if item_counter.isdigit():
@@ -7383,10 +7386,11 @@ def pos_pathpdf(request):
         'tax':tax,
         'discount':discount,
         'small_note':small_note,
-                'date_time':date_time,
-                'patient':patient,
-                'doctor':doctor,
-                'payment':payment,
+        'date_time':date_time,
+        'patient':patient,
+        'paid_amount':paid_amount,
+        'doctor':doctor,
+        'payment':payment,
         'grand_total':grand_total,
     }
 
@@ -8285,6 +8289,7 @@ def pdf_blood(request):
         date_time = request.POST.get('date_time')
         
         payment = request.POST.get('payment')
+        paid_amount = request.POST.get('paid_amount')
         patient = request.POST.get('path_test')
         doctor = request.POST.get('doctor')
         
@@ -8376,6 +8381,7 @@ def pdf_blood(request):
         'tax':tax,
         'discount':discount,
         'patient':patient,
+        'paid_amount':paid_amount,
         'small_note':small_note,
         'date_time':date_time,
         
@@ -8801,3 +8807,373 @@ def sampleresign_letter(request):
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
 
+
+def inhouse_pathpdf(request):
+    if request.method == 'POST':
+        
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        
+        payment = request.POST.get('payment')
+        patient = request.POST.get('patient')
+        paid_amount = request.POST.get('paid_amount')
+        doctor = request.POST.get('doctor')
+        item_counter = request.POST.get('item_counter')
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+
+            test = request.POST.get(f'test_{i}')
+            
+            tests =  re.sub(r'_.*', '', test)
+
+          
+            test  = tests.replace("_", "")
+           
+            cat = request.POST.get(f'cat_{i}')
+            cate = re.sub(r'\d', '',cat)
+
+            cat  = cate.replace("_", "")
+            price = request.POST.get(f'price_{i}')
+           
+
+            total = request.POST.get(f'total_{i}')
+         
+            
+            product = {
+                'test': test,
+                'cat': cat,
+                'price': price,
+                
+                
+                'total': total
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+        
+    balance = float(grand_total)-float(paid_amount)
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'discount':discount,
+        'paid_amount':paid_amount,
+        'small_note':small_note,
+        'date_time':date_time,
+        'balance':balance,
+        'patient':patient,
+        'doctor':doctor,
+        'payment':payment,
+        'grand_total':grand_total,
+    }
+
+    template = get_template('templat/house_path.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def inhousepharma_pdf(request):
+    if request.method == 'POST':
+        
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        medicine_composition = request.POST.get('medicine_composition')
+        payment = request.POST.get('payment')
+        
+        paid_amount = request.POST.get('paid_amount')
+        doctor = request.POST.get('doctor')
+        
+        item_counter = request.POST.get('item_counter')
+
+        pos = POS(
+            doctor = doctor,
+            payment_mode=payment,
+            date=date_time,
+            composition=medicine_composition,
+            small_note=small_note,
+            tax_percent=tax,
+            discount_percent=discount,
+            
+
+
+            
+
+
+
+
+
+
+
+        )
+        pos.save()
+
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+            item = request.POST.get(f'med_{i}')
+            qty = int(request.POST.get(f'qty_{i}'))
+            
+            available = int(request.POST.get(f'available_{i}'))
+            print(qty)
+            print(available)
+
+
+            
+            if available < qty:
+                return HttpResponse('Error: Insufficient available quantity.')
+
+            
+            
+            
+            medicines_ids = [int(id) for id in re.findall(r'\d+', item)]
+
+            print(medicines_ids)
+            for medicines_id in medicines_ids:
+        
+                stock = get_object_or_404(Stock, medicine=medicines_id)
+                updated_available_quantity = available - qty
+                print(updated_available_quantity)
+                stock.stock = updated_available_quantity
+                stock.save()
+                print(stock.stock)
+
+            cat = request.POST.get(f'cat_{i}')
+            items = re.sub(r'\d', '',item)
+            item  = items.replace("_", "")
+            price = request.POST.get(f'price_{i}')
+            expiry = request.POST.get(f'expiry_{i}')
+            batch = request.POST.get(f'batch_{i}')
+            tax_ = request.POST.get(f'tax_{i}')
+
+            total = request.POST.get(f'total_{i}')
+           
+            
+            product = {
+                'item': item,
+                'quantity': qty,
+                'price': price,
+                'tax_':tax_,
+                'expiry':expiry,
+                'batch':batch,
+                'cat':cat,
+                
+                'total': total
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+    balance  = float(grand_total) - float(paid_amount)
+    
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'discount':discount,
+        'small_note':small_note,
+        'paid_amount':paid_amount,
+        'balance':balance,
+                'date_time':date_time,
+                'composition':medicine_composition,
+                'doctor':doctor,
+                'payment':payment,
+        'grand_total':grand_total,
+    }
+
+    template = get_template('templat/inhousepharmacy_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+
+def housepdf_blood(request):
+    if request.method == 'POST':
+        
+        sub_total = request.POST.get('sub_total')
+        tax = request.POST.get('tax')
+        grand_total = request.POST.get('grand_total')
+        discount = request.POST.get('disc')
+        small_note = request.POST.get('small_note')
+        date_time = request.POST.get('date_time')
+        paid_amount = request.POST.get('paid_amount')
+        
+        payment = request.POST.get('payment')
+        patient = request.POST.get('path_test')
+        doctor = request.POST.get('doctor')
+        
+        item_counter = request.POST.get('item_counter')
+
+        pos = POS(
+            doctor=doctor,
+            payment_mode=payment,
+            date=date_time,
+
+            small_note=small_note,
+            tax_percent=tax,
+            discount_percent=discount,
+            
+
+
+
+
+
+
+
+        )
+        
+
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        product_list = []
+        
+        for i in range(1, item_counter + 1):
+            
+            
+            print(item_counter)
+            
+            qty = int(request.POST.get(f'qty_{i}'))
+            available = int(request.POST.get(f'available_{i}'))
+
+
+            
+            if available < qty:
+                return HttpResponse('Error: Insufficient available quantity.')
+
+            
+            
+            
+           
+            
+        
+            stock = Bag_available.objects.get(id=1)
+            updated_available_quantity = available - qty
+            print(updated_available_quantity)
+            stock.qty = updated_available_quantity
+            stock.save()
+            
+
+            group = request.POST.get(f'group_{i}')
+            
+            component = request.POST.get(f'test_{i}')
+            volume = request.POST.get(f'volume_{i}')
+            
+
+            total = request.POST.get(f'total_{i}')
+           
+            
+            product = {
+                
+                'quantity': qty,
+                'component': component,
+                
+                'volume':volume,
+                'group':group,
+                
+                'total': total
+                }
+    
+            print(product)
+            product_list.append(product)
+        print(product_list)
+
+        
+      
+        
+    balance = float(grand_total)-float(paid_amount)
+    context= {
+        'products':product_list,
+        'sub_total':sub_total,
+        'tax':tax,
+        'discount':discount,
+        'patient':patient,
+        'paid_amount':paid_amount,
+        'balance':balance,
+        'small_note':small_note,
+        'date_time':date_time,
+        
+        'doctor':doctor,
+        'payment':payment,
+        'grand_total':grand_total,
+    }
+
+    template = get_template('templat/house_blood.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="invoice.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def pos_records(request):
+    pos = POS.objects.all()
+
+    context ={
+        'pos':pos
+    }
+
+    return render(request,'pos/pos_records.html',context)

@@ -1217,14 +1217,14 @@ class Stock(models.Model):
 
 
 class POS(models.Model):
-    doctor = models.CharField(max_length=20)
-    payment_mode = models.CharField(max_length=20)
+    doctor = models.CharField(max_length=20,null=True)
+    payment_mode = models.CharField(max_length=20,null=True)
     date = models.DateTimeField()
     composition = models.CharField(max_length=20,null=True)
-    small_note = models.CharField(max_length=20)
-    tax_percent = models.DecimalField(max_digits=13,decimal_places=3)
-    discount_percent = models.DecimalField(max_digits=13,decimal_places=3)
-    net_amount = models.DecimalField(max_digits=13,decimal_places=3)
+    small_note = models.CharField(max_length=20,null=True)
+    tax_percent = models.DecimalField(max_digits=13,decimal_places=3,null=True)
+    discount_percent = models.DecimalField(max_digits=13,decimal_places=3,null=True)
+    net_amount = models.DecimalField(max_digits=13,decimal_places=3,null=True)
     category = models.CharField(max_length=255,null=True) 
     name = models.CharField(max_length=255,null=True) 
     qty = models.DecimalField(max_digits=13, decimal_places=3,null=True)

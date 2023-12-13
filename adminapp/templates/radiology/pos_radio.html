@@ -213,7 +213,7 @@ form button{
     <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
 
   </div>
-    <form method="POST" action="{% url "pos_pathpdf" %}" id="invoiceForm">
+    <form method="POST" action="{% url "inhouse_pathpdf" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
             <div class="first-container">
@@ -342,6 +342,13 @@ form button{
         <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
+
+
+    <div class="pos_text">
+      <h1>Paid Amount</h1>
+      <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
+ 
+  </div>
     <div class="pos_btns">
     <button type="submit" class="btn btn-primary">Save Invoice</button>
     

@@ -263,7 +263,7 @@
     <button type="button" id="addItemButton" class="btn btn-primary">Add Item</button>
   </div>
   <div class="form_top">
-    <form method="POST" action="{% url "pos_pdf" %}" id="invoiceForm">
+    <form method="POST" action="{% url "inhousepharma_pdf" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
             <div class="first-container">
@@ -271,7 +271,7 @@
             
         </div>
        <div class="pos_left">
-        <div class="pos_composition">
+
           <div class="form-group">
                          <label for="doctor">Doctor</label>
                       <select class="form-control doctor" id="doctor" name="doctor"> 
@@ -315,10 +315,7 @@
                   <textarea id="small_note" name="small_note" rows="2" cols="20">
                  
                   </textarea>
-                 </div>
-                 </div>
-                 </div>
-                 </div>
+              
                  
                     <div class="pointofsale">
                     <div class="medicine_details">
@@ -387,6 +384,11 @@
         <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
+    <div class="pos_text">
+      <h1>Paid Amount</h1>
+      <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
+ 
+  </div>
     <div class="pos_btns">
       <button type="submit" class="btn btn-primary">Save Invoice</button>
       
@@ -548,6 +550,7 @@
   function calculateTotal(inputField) {
       const row = inputField.closest('tr');
       const price = parseFloat(row.find('input[id^="price_"]').val()) || 0;
+      const quantity = parseFloat(row.find('input[id^="qty_"]').val()) || 0
      
 
 
