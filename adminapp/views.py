@@ -5,11 +5,14 @@ from decimal import Decimal
 import time
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+import requests
 import os
 from channels.layers import get_channel_layer
+from .models import Other_Attendance
 from .models import Bag_available
 
 from twilio.rest import Client
+from .models import Attendance
 from django.contrib import messages
 from pusher_push_notifications import PushNotifications
 from .models import POS
@@ -668,6 +671,10 @@ def doctor(request):
         total_balance=Sum(F('net_amount'))
         )['total_balance'] or 0
     
+    total_radio = Radiology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
     total_blood = BloodDonation.objects.all().aggregate(
         total_balance=Sum(F('net_amount'))
         )['total_balance'] or 0
@@ -680,22 +687,46 @@ def doctor(request):
         total_balance=Sum(F('amount'))
         )['total_balance'] or 0
     
-    indirect_expense = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
-        total_indirect=Sum(F('expense_invoice'))
-    )['total_indirect'] or 0
+    try:
+        indirect_expense_category = Expense_Category.objects.get(expense_type='Indirect_Expense')
+        indirect_expenses = Expense_Invoice.objects.filter(expense_category=indirect_expense_category)
+        total_indirect_expense = indirect_expenses.aggregate(total_indirect=Sum('total'))['total_indirect'] or 0
+    except Expense_Category.DoesNotExist:
+        total_indirect_expense = 0
 
-    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
-        total_direct=Sum(F('expense_invoice'))
-    )['total_direct'] or 0
+    try:
+        direct_expense_type = Expense_Category.objects.get(expense_type='Direct_Expense')
+        direct_expense = Expense_Invoice.objects.filter(expense_category=direct_expense_type)
+        total_direct_expense = direct_expense.aggregate(total_direct=Sum('total'))['total_direct'] or 0
+    except Expense_Category.DoesNotExist:
+        total_direct_expense = 0
 
-    expense = indirect_expense+direct_expense
+    income = Income.objects.all().aggregate(
+        total_income= Sum(F('amount'))
+    )['total_income']or 0
+
+    doctor = AddStaff.objects.filter(role="Doctor").count()
+    pathologist = AddStaff.objects.filter(role="Pathalogist").count()
+    radiologist = AddStaff.objects.filter(role="Radiologist").count()
+    nurse = AddStaff.objects.filter(role="Nurse").count()
+    accountant = AddStaff.objects.filter(role="Accountant").count()
+
+    expense = total_indirect_expense+total_direct_expense
+
     context ={
             'opd':total_opd,
             'ipd':total_ipd,
             'path':total_path,
             'blood':total_blood,
             'ambulance':total_ambu,
+            'income':income,
             'med':total_med,
+            'acc':accountant,
+            'doctor':doctor,
+            'nurse':nurse,
+            'radiologist':radiologist,
+            'pathalogist':pathologist,
+            'radio':total_radio,
             'expense':expense,
 
         }
@@ -4630,15 +4661,24 @@ def balance_sheet(request):
     )['total_long_term_assets'] or 0
 
 
-    indirect_expens = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
-        total_indirect=Sum('expense_invoice')
-    )['total_indirect'] or 0
+    
 
     depreciation = Depreciation.objects.all().aggregate(amount=Sum('amount'))['amount'] or 0
 
-    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
-        total_direct=Sum(F('expense_invoice'))
-    )['total_direct'] or 0
+    
+    try:
+        indirect_expense_category = Expense_Category.objects.get(expense_type='Indirect_Expense')
+        indirect_expenses = Expense_Invoice.objects.filter(expense_category=indirect_expense_category)
+        total_indirect_expense = indirect_expenses.aggregate(total_indirect=Sum('total'))['total_indirect'] or 0
+    except Expense_Category.DoesNotExist:
+        total_indirect_expense = 0
+
+    try:
+        direct_expense_type = Expense_Category.objects.get(expense_type='Direct_Expense')
+        direct_expense = Expense_Invoice.objects.filter(expense_category=direct_expense_type)
+        total_direct_expense = direct_expense.aggregate(total_direct=Sum('total'))['total_direct'] or 0
+    except Expense_Category.DoesNotExist:
+        total_direct_expense = 0
 
     total_back_account = BankAccount.objects.all().aggregate(
         total_balance=Sum(F('balance'))
@@ -4647,11 +4687,16 @@ def balance_sheet(request):
         total_withdrawl= Sum(F('amount'))
     )['total_withdrawl']or 0
 
-    indirect_expense = indirect_expens+depreciation
+    income = Income.objects.all().aggregate(
+        total_income= Sum(F('amount'))
+    )['total_income']or 0
+
+
+    indirect_expense = total_indirect_expense+depreciation
     closing_stock = opening_stock + total_purchases - total_sales
     equity =   opening_stock + total_receivable  + total_back_account -withdraw
 
-    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets -indirect_expense+direct_expense +equity -(total_long_term_liablity+total_short_term_liablity)
+    balance = (total_sales - total_purchases) + (total_sales_tax - total_purchase_tax) + closing_stock + total_short_term_assets + total_long_term_assets -indirect_expense+total_direct_expense +equity -(total_long_term_liablity+total_short_term_liablity) + income
 
     
 
@@ -4671,10 +4716,11 @@ def balance_sheet(request):
         'start_date':start_date,
         'receivable':total_receivable,
         'payable':total_payable,
-        'indirect_expense':indirect_expense,
-        'direct_expense':direct_expense,
+        'indirect_expense':total_indirect_expense,
+        'direct_expense':total_direct_expense,
         'withdraw':withdraw,
         'equity':equity,
+        'other_income':income,
     }
 
     return render(request, 'accounts/report/balancesheet.html', context)
@@ -5166,15 +5212,23 @@ def profit_and_loss_statement(request):
     )['total_purchase_tax'] or 0
 
     
-    indirect_expens = Expense_Category.objects.filter(expense_category='indirect_expense').aggregate(
-        total_indirect=Sum('expense_invoice')
-    )['total_indirect'] or 0
+
 
     depreciation = Depreciation.objects.all().aggregate(amount=Sum('amount'))['amount'] or 0
 
-    direct_expense = Expense_Category.objects.filter(expense_category='direct_expense').aggregate(
-        total_direct=Sum(F('expense_invoice'))
-    )['total_direct'] or 0
+    try:
+        indirect_expense_category = Expense_Category.objects.get(expense_type='Indirect_Expense')
+        indirect_expenses = Expense_Invoice.objects.filter(expense_category=indirect_expense_category)
+        total_indirect_expense = indirect_expenses.aggregate(total_indirect=Sum('total'))['total_indirect'] or 0
+    except Expense_Category.DoesNotExist:
+        total_indirect_expense = 0
+
+    try:
+        direct_expense_type = Expense_Category.objects.get(expense_type='Direct_Expense')
+        direct_expense = Expense_Invoice.objects.filter(expense_category=direct_expense_type)
+        total_direct_expense = direct_expense.aggregate(total_direct=Sum('total'))['total_direct'] or 0
+    except Expense_Category.DoesNotExist:
+        total_direct_expense = 0
 
   
     total_short_term_assets = Asset.objects.filter(asset_type='Short-Term').aggregate(
@@ -5186,34 +5240,40 @@ def profit_and_loss_statement(request):
     )['total_short_term_liablity'] or 0
     
 
-    indirect_expense = indirect_expens+depreciation
+    indirect_expense = total_indirect_expense+depreciation
 
     closing_stock = Sales_Invoice.objects.filter(type='sales').aggregate(
         total_short_term_assets=Sum('item_invoice')
     )['total_short_term_assets'] or 0
 
     
-
+    income = Income.objects.all().aggregate(
+        total_income= Sum(F('amount'))
+    )['total_income']or 0
 
     # Calculate Gross Profit
-    gross_profit = total_sales - total_return - direct_expense
+    gross_profit = total_sales - total_return - total_direct_expense
 
     # Calculate Net Profit
     closing= opening_stock + total_purchase - closing_stock
 
-    net_profit = gross_profit  - direct_expense
+    net_profit = gross_profit  - total_direct_expense +income
+
+ 
 
     return render(request, 'accounts/report/profit_loss.html', {
         'sales': total_sales,
         'credit_notes': total_return,
         'opening_stock': opening_stock,
-        'closing_stock': closing_stock,
-        'direct_expenses': direct_expense,
+        'closing_stock': closing,
+        'direct_expenses': total_direct_expense,
         'tax_payable': total_purchase_tax,
         'short_asset':total_short_term_assets,
+        'short_liablity':total_short_term_liablity,
         'tax_receivable': total_sales_tax,
         'indirect_expenses': indirect_expense,
         'gross_profit': gross_profit,
+        'other_income':income,
         'net_profit': net_profit
     })
 
@@ -6265,7 +6325,6 @@ def pos_pdf(request):
                 'quantity': qty,
                 'price': price,
                 'tax_':tax_,
-                'paid_amount':paid_amount,
                 'expiry':expiry,
                 'batch':batch,
                 'cat':cat,
@@ -6291,6 +6350,7 @@ def pos_pdf(request):
                 'composition':medicine_composition,
                 'doctor':doctor,
                 'payment':payment,
+                'paid_amount':paid_amount,
         'grand_total':grand_total,
     }
 
@@ -8692,8 +8752,9 @@ def send_notification_push(request):
     if request.method =="POST":
         to = request.POST.get('to')
         body = request.POST.get('body')
+     
         account_sid = 'ACedb7a50d829d28765419e0f2ad173f5a'
-        auth_token = '095924488d50386a6eb099130f94060e'
+        auth_token = '9fb04b0aa3f828af698f4ba666f5f2ad'
 
     # Twilio phone number (a Twilio phone number that you have purchased)
         twilio_phone_number = '+12055397628'
@@ -8711,6 +8772,10 @@ def send_notification_push(request):
             from_=twilio_phone_number,
             to=to_phone_number,
         )
+    
+
+   
+
         return redirect('send_notification')
     return render(request,'messaging/notification.html')
 
@@ -9177,3 +9242,138 @@ def pos_records(request):
     }
 
     return render(request,'pos/pos_records.html',context)
+
+
+
+
+def search_attendance(request):
+    if 'q' in request.GET:
+        query = request.GET['q']
+        results = Attendance.objects.filter(role__icontains=query)
+        context = {
+            'results':results,
+            'role':query,
+        }
+    else:
+        context = {
+            'results':None,
+            'role':query,
+        }
+
+    return render(request, 'hr/attendance/attendance_record.html', context)
+
+def attendance_role(request):
+    role = Role.objects.all()
+    context = {
+        'role':role
+    }
+    return render(request,'hr/attendance/search_attendance.html',context)
+
+
+def attendance(request):
+    if request.method == 'POST':
+        
+        date  =request.POST.get('date')
+        for staff in AddStaff.objects.all():
+            
+            attendance_status = request.POST.get(f'attendance_{staff.id}')
+            shift = request.POST.get(f'shift_{staff.id}')
+
+            Attendance.objects.create(
+                name=staff,
+                role=staff.role,
+                
+                attendance=attendance_status,
+                date=date,
+                
+                shift=shift,
+            )
+        return redirect('attendance')  
+    
+    staff = AddStaff.objects.all()
+    context ={
+        'staff':staff,
+    }
+    return render(request,'hr/attendance/attendance.html',context)
+
+
+
+
+
+def other_attendance(request):
+    if request.method == 'POST':
+        
+        date = request.POST.get('date')
+        
+        item_counter = request.POST.get('item_counter')
+
+        
+
+        print(item_counter)
+        if item_counter.isdigit():
+            item_counter = int(item_counter)
+        else:
+            item_counter = 0
+
+        
+        
+        for i in range(1, item_counter + 1):
+            
+            
+           
+            name = request.POST.get(f'name_{i}')
+            role = request.POST.get(f'role_{i}')
+            attendance = request.POST.get(f'attendance_{i}')
+            shift = request.POST.get(f'shift_{i}')
+
+
+            attendance = Other_Attendance(
+                name=name,
+                role=role,
+                date=date,
+                attendance=attendance,
+                shift=shift,
+            )
+            attendance.save()
+
+
+        return redirect('other_attendance')
+        
+    
+    return render(request,'hr/attendance/other_attendance.html')
+
+            
+        
+            
+def otherattendance_record(request):
+    attendance = Other_Attendance.objects.all()
+
+    context={
+        'attendance':attendance,
+    }
+
+    return render(request,'hr/attendance/other_record.html',context)
+    
+
+
+def attendance_form(request):
+    
+    dt = datetime.now()
+    date = dt.strftime("%A, %d %B %Y")
+    context ={
+        'lemon': range(1,60),
+        'date':date,
+    }
+    template = get_template('templat/attendance_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="attendance.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response

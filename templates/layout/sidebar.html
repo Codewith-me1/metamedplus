@@ -483,7 +483,7 @@ body{
             </button>
             <div class="dropdown-container">
               <a class="dropdown-a" href="{% url "add_income" %}">Income</a>
-              <a class="dropdown-a" href="{% url "add_expense" %}">Expense</a>
+           
               
             </div> 
           
@@ -542,8 +542,8 @@ body{
                 <a class="dropdown-a" href="{% url 'expense_list' %}">Expense </a>
                 <a class="dropdown-a" href="{% url 'expense_category' %}">Expense Category </a>
                 <a class="dropdown-a" href="{% url 'expense_item' %}">Expense Item </a>
-                <a class="dropdown-a" href="{% url 'expense_invoice' %}">Expense Invoice </a>
-                <a class="dropdown-a" href="{% url 'expense_details' %}">Expense Details </a>
+                
+                
                  
 
               </div>
@@ -607,7 +607,7 @@ body{
             <div class="dropdown-container">
               <a class="dropdown-a" href="{% url "income_head" %}">Income</a>
               
-              <a class="dropdown-a" href="{% url "expense_head" %}">Expense</a>
+          
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
               
@@ -826,61 +826,83 @@ body{
             <li><a href="{% url 'radiology' %}">Radiology Billing</a></li>
             
             
-
-            <button class="dropdown-btn"> Accounting
+          
+            
+            <button class="dropdown-btn"> <i class="fa-solid fa-divide"></i>   <span class="side_text">Accounting</span>
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-container">
             
               <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
                <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
-               <a class="dropdown-a" href="{% url 'sale' %}">Sales Invoice</a>
-               <a class="dropdown-a" href="{% url 'sale_estimate' %}">Sales Estimate</a>
-               <a class="dropdown-a" href="{% url 'payment_in' %}">Payment In</a>
-               
-                <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
-                 <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
-                 
-                 <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
-                 <a class="dropdown-a" href="{% url 'item_acc' %}">Item</a>
-    
-                 
-                 
-           
-  
-                 <a class="dropdown-a" href="{% url 'payment_list' %}">Payment In</a>
-  
-                 <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
-  
-  
-                 <button class="dropdown-btn dropdown-nested"> Sales
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url 'estimate_list' %}">Sales Estimate</a>
-                  <a class="dropdown-a" href="{% url 'sale_order_list' %}">Sales Order </a>
-                  <a class="dropdown-a" href="{% url 'sale_invoice_list' %}">Sales Invoice </a>
-                  <a class="dropdown-a" href="{% url 'sales_returnlist' %}">Sales Return List </a>
-                  
-                  <a class="dropdown-a" href="{% url 'challan_list' %}">Delivery Challan </a>
-                   
-  
-                </div>
-  
-                <button class="dropdown-btn dropdown-nested "> Bank
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  
-                  <a class="dropdown-a" href="{% url 'bank_account' %}">Bank Account </a>
-                   
-  
-                </div>
-  
                
                <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
                <a class="dropdown-a" href="{% url 'item_acc' %}">Item</a>
+  
+               
+               
+         
+
+               <a class="dropdown-a" href="{% url 'payment_list' %}">Payment In</a>
+
                <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
+
+
+               <button class="dropdown-btn dropdown-nested"> Sales
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                <a class="dropdown-a" href="{% url 'estimate_list' %}">Sales Estimate</a>
+                <a class="dropdown-a" href="{% url 'sale_order_list' %}">Sales Order </a>
+                <a class="dropdown-a" href="{% url 'sale_invoice_list' %}">Sales Invoice </a>
+                <a class="dropdown-a" href="{% url 'sales_returnlist' %}">Sales Return List </a>
+                
+                <a class="dropdown-a" href="{% url 'challan_list' %}">Delivery Challan </a>
+                 
+
+              </div>
+
+              <button class="dropdown-btn dropdown-nested"> Bank
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                
+                <a class="dropdown-a" href="{% url 'bank_account' %}">Bank Account </a>
+                 
+
+              </div>
+
+             
+              
+              <button class="dropdown-btn dropdown-nested"> Expense
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                <a class="dropdown-a" href="{% url 'expense_list' %}">Expense </a>
+                <a class="dropdown-a" href="{% url 'expense_category' %}">Expense Category </a>
+                <a class="dropdown-a" href="{% url 'expense_item' %}">Expense Item </a>
+                
+                
+                 
+
+              </div>
+                <button class="dropdown-btn dropdown-nested "> Asset
+                  <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  <a class="dropdown-a" href="{% url 'create_asset' %}">Asset </a>
+            
+
+                </div>
+              <button class="dropdown-btn dropdown-nested "> Liablity
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                <a class="dropdown-a" href="{% url 'create_liablity' %}">Liablity </a>
+          
+
+              </div>
+              
 
                <button class="dropdown-btn dropdown-nested"> Report
                 <i class="fa fa-caret-down"></i>
@@ -889,9 +911,31 @@ body{
               
                 <a class="dropdown-a" href="{% url 'balance_sheet' %}"> Balance Sheet</a>
                  <a class="dropdown-a" href="{% url 'sales_report' %}"> Sales Report </a>
+                 <a class="dropdown-a" href="{% url 'all_party' %}"> Party </a>
+                 <a class="dropdown-a" href="{% url 'cash_flow' %}"> Cash Flow  </a>
                  <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
+                 <a class="dropdown-a" href="{% url 'transcation' %}">Trading </a>
+                 <a class="dropdown-a" href="{% url 'gst' %}">GST Report  </a>
+                 <a class="dropdown-a" href="{% url 'cashbook' %}">Cash Book  </a>
+                 
                  
 
+                 <button class="dropdown-btn dropdown-nested "> Bank Book
+                <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  <a class="dropdown-a" href="{% url 'bankbooks' %}"> Bank Book Entry  </a>
+                  <a class="dropdown-a" href="{% url 'bank' %}"> Accounts  </a>
+            
+  
+                </div>
+
+
+                 <a class="dropdown-a" href="{% url 'brs' %}">BRS</a>
+                 <a class="dropdown-a" href="{% url 'profit' %}">Profit And Loss </a>
+                 
+
+              </div>
               </div>
 
             <li><a href="{% url 'blood_component' %}">Blood Billing</a></li>
@@ -985,7 +1029,7 @@ body{
               {% endif %}
 
 
-             {% if user.role == "Pathologist" %}
+             {% if user.role == "Pathalogist" %}
            
              <<li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
             

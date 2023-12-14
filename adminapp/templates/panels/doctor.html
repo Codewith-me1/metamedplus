@@ -91,6 +91,10 @@
         background-color: #fef5cd;
      
       }
+      .nurse_img{
+        margin:0px 0px 0px -3px!important;
+        width: 90%;
+      }
 
       .img-4{
         background-color: #fedfd6;
@@ -102,7 +106,7 @@
       }
 
       .img-8{
-        background-color: #00910b; 
+        background-color:red; 
       
       }
 
@@ -342,6 +346,9 @@ color:#6A727A !important;
     margin-top:5px !important; 
     text-align:inherit;
 }
+.expenses{
+  margin-bottom:30px;
+}
 
     </style>
 
@@ -447,7 +454,7 @@ color:#6A727A !important;
             <h3>
                 General Income
             </h3>
-            <h1>₹ <span class="amount">0<span></h1>
+            <h1>₹ <span class="amount">{{income}}<span></h1>
             </div>
             </div>
         </div>
@@ -455,11 +462,13 @@ color:#6A727A !important;
 
         <div class="card">
           <div class="content_card">
-            <img  class="img_icon img-8"src="data:image/png;base64,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">
+            
+            <img  class="img_icon img-8"src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2YS2sUQRSFPwyCARculRhhQlRm1JVExPwAI5pBEXGny7j2gRtdiQsDmgeYCG407lRQEBUSUJKg+AfcmJXGBwpxMRmjRuJIwWkomu6ku6Z7JpE60Ez3ma577+mqW3WrwMPDw8PDw+P/wiuglvE1CawL+ZnKwU9N1zQ5Gi+HhLzL0VfNFhJgL/AX+AUcBFpS9vBZ2ZuI4cdJjxagB/it2EyMAWKF3NdzP27YBFTlsBTi58UXHW33KzYTY6yQfcA9YEnK23DHY9kcCfEj4m862m1TbEuKtStKSHD9AfocHe0B3li25tUTAYrqEcPvdvTRpxhjc6QCXAMKjg5OAD9l6wfwXvcmN2yMi18Ajjn6KijWSpSQTtxxxPpKT4DNQK+eZ0Lv9oZ63ySxKzqXS/a02ArMycYta/0oxwgJ+EX9fge21OG/lpWQMbV/EZqqJ2KGVsBf0EJm7u82W8g2zSDm6+6w+JKSuhpK9oAPJoGi2psh1t5MIRfV9kGIHxU/GsPb0/IjcefzENIKDAFfgFngKrA+wsgztT2ZcEGM4k/JxvMI+xuAAeCTrgFxiYUMR8zTlyMcfdR/hRQlSpjfLt58sDCGIuIYTCPkm7j91nT5NsLRgv4zPRhgJqZojOM3ijdrEDFxHAC6df/VVUh5FQjpdhUSNbQuRTiazXloDdY7tFrV4DPwAbiSY7KfXiHZb1jJfj1tsqedfh9mMP2ec4whEyHt1oK402FBLFntm7ogovLCtH9ZR4lypw7/tTyKxtsOReOcqmVXZFrGH7bK+KeqZpOU8Ys6F8i0jK9os9LhaPS4ta4k2ViZd446+upYbmOVxVZ3F/A64VbXvOuCMyttdbu0t1grhw9jcYcPjTgOqjbiOCjqgK5nFR3QHUp6QLfmj0ynG3SIPZmjiCmHXvbw8PDw8PBgteIfZchESoMD4Z4AAAAASUVORK5CYII=">
               <div class="box-content">
-            <h3>
-                Expense
+            <h3 class="expenses">
+                Expenses
             </h3>
+            
             <h1>₹ <span class="amount">{{expense}}<span></h1>
             </div>
             </div>
@@ -539,7 +548,7 @@ color:#6A727A !important;
                     Doctor
                 </h3>
 
-                <h1>0</h1>
+                <h1>{{doctor}} </h1>
               </a>
             </div>
             </div>
@@ -550,7 +559,7 @@ color:#6A727A !important;
                 <h3>
                     Accountant
                 </h3>
-                <h1>0</h1>
+                <h1> {{acc}} </h1>
               </a>
                 </div>
             </div>
@@ -561,7 +570,7 @@ color:#6A727A !important;
                 <h3>
                     Pathologist 
                 </h3>
-                <h1>0</h1>
+                <h1> {{pathalogist}}</h1>
               </a>
                 </div>
             </div>
@@ -572,18 +581,18 @@ color:#6A727A !important;
                 <h3>
                     Radiologist
                 </h3>
-                <h1>0</h1>
+                <h1> {{radiologist}} </h1>
               </a>
                 </div>
             </div>
             <div class="card_second">
               <a href ="/hr/list/">
-                <img src="{% static "/css/images/doctor/icons8-nurse-96.png" %}" alt="">
+                <img class="nurse_img" src="{% static "/css/images/doctor/icons8-nurse-96.png" %}" alt="">
                 <div class="box-content">
                 <h3>
                     Nurse
                 </h3>
-                <h1>0</h1>
+                <h1> {{nurse}} </h1>
               </a>
                 </div>
     

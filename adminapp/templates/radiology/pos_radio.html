@@ -12,286 +12,325 @@
     <title>Invoice</title>
 
 <style>
-
-@media only screen and (max-width:768px) and (min-width:300px) {
-  form{
-    display:block !important;
+  @media only screen and (max-width:768px) and (min-width:300px) {
+    form{
+      display:block !important;
+    }
+    .pos_right{
+      width:100% !important;
+    }
+    .pos_left{
+      width:90% !important;
+    }
+  
+  
+  }
+  .btn{
+    margin-top:1px !important;
+  }
+  
+  .pos_left{
+    width:99%;
+    margin:2rem;
+  
+    border-radius:20px;
+  }
+  .table{
+    margin-top:3rem;
   }
   .pos_right{
-    width:100% !important;
-  }
-  .pos_left{
-    width:90% !important;
-  }
-
-
-}
-form{
-  display:flex;
-}
-.pos_left{
-  width:60%;
-  margin:2rem;
+    width:30%;
+    background-color:white;  
   
-  border-radius:20px;
-}
-.table{
-  margin-top:3rem;
-}
-.pos_right{
-  width:30%;
-  background-color:white;  
-  border-radius:20px;
-  padding:2rem;
-}
-.pos_right h1{
-  margin:2px !important;
+    border-radius:20px;
+    padding:2rem;
+  }
   
-}
-.pos_text{
-  margin:3rem;
-}
-.pos_text input{
-  color:black !important;
-}
-.pos_text h1{
- padding:1rem;
-}
-form button{
-  margin-left:15rem;
-}
-.pos_composition{
-  display:flex;
-}
-
-.pos_header{
-  padding:20px;
-  display:flex;
-}
-.pos_header h2{
-  margin-left:10px;
-  margin-top:10px !important;
-}
-.pos_header button{
-  margin:40px 20px 20px 20px;
-
-}
-#date_time{
-  height:35px !important;
-
-}
-.pos_btns{
-  display:flex;
-  justify-content:center;
-}
-
-
-
-.pos_btns button{
-  padding:10px !important;
-  margin:10px !important;
-}
-.pos_top{
-  background-color:white;
-  padding:20px;
-  margin:20px;
-  border-radius:20px;
-}
-
-.pos_middle{
-  background-color:white;
-  padding:20px;
-  margin:20px;
-  border-radius:20px;
-}
-.pos_text h1{
-  font-size:3rem;
-}
-
-
-
-@media only screen and (max-width:768px) and (min-width:300px) {
-  form{
-    display:block !important;
-  }
-  .pos_right{
-    width:100% !important;
-  }
-  .pos_left{
-    width:90% !important;
-  }
-
-
-}
-
-input{
+  
+  input{
     height:35px;
-}
-form{
-  display:flex;
-}
-.pos_left{
-  width:70%;
-  margin:2rem;
+  }
+  .pos_btns button{
+    padding:10px !important;
+    margin:10px !important;
+  }
   
-  border-radius:20px;
-}
-.table{
-  margin-top:3rem;
-}
-.pos_right{
-  width:25%;
-  height:90%;
-  background-color:white;  
-  border-radius:20px;
-  margin-top:3.2rem !important;
-  padding:2rem;
-}
-
-.pos_text{
-  margin:3rem;
-}
-.pos_text input{
-  color:black !important;
-}
-
-form button{
-  margin-left:15rem;
-}
-.pos_composition{
-  display:flex;
-}
-.pos_right h1{
-  font-size:25px !important;
-}
-
-.pos_header{
-  padding:20px;
-  display:flex;
-}
-.pos_header h2{
-  margin-left:10px;
-  margin-top:10px !important;
-}
-.
-.pos_header button{
-  margin:40px 20px 20px 20px;
-
-}
-#date_time{
-  height:35px !important;
-
-}
-.pos_btns{
-  display:flex;
-  justify-content:center;
-}
-.pos_btns button{
-  padding:10px !important;
-  margin:10px !important;
-}
-.pos_top{
-  background-color:white;
-  padding:20px;
-  margin:20px;
-  border-radius:20px;
-}
-
-
-
-.pos_middle{
-  background-color:white;
-  padding:20px;
-  margin:20px;
-  border-radius:20px;
-}
+  .pos_btns{
+    display:flex;
+    justify-content:flex-end;
+  }
+  .pos_right h1{
+    margin:2px !important;
+    
+  }
+  .pos_text{
+    margin:3rem;
+  }
+  .pos_text input{
+    color:black !important;
+  }
+  .pos_text h1{
+   padding:1rem;
+  }
+  form button{
+    margin-left:15rem;
+  }
+  .pos_composition{
+    display:flex;
+    padding:10px;
+    
+  }
+  .medicine_details{
+    padding:10px;
+    
+    
+  }
+  .con{
+    display:flex;
+    
+  }
+  .con a{
+  margin-top:5rem !important;
+  }
+  
+  @media only screen and (max-width:768px) and (min-width:300px) {
+    form{
+      display:block !important;
+    }
+    .pos_right{
+      width:100% !important;
+    }
+    .pos_left{
+      width:90% !important;
+    }
+  
+  
+  }
+  
+  input{
+      height:35px;
+  }
+  
+  .pos_left{
+    width:99%;
+    margin:2rem;
+    
+    border-radius:20px;
+  }
+  .table{
+    margin-top:3rem;
+  }
+  .pos_right{
+    width:95%;
+    height:90%;
+    
+    background-color:white;  
+  
+    border-radius:20px;
+    margin-top:1rem !important
+    padding:2rem;
+  }
+  
+  .pos_text{
+    margin:3rem;
+    display:flex;
+    border-style:solid;
+    border-color:#f1f1f1;
+    justify-content: flex-end;
+    align-items:center;
+    border-width:1px 0px 1px 0px;
+    padding:1rem;
+    width:100%;
+  }
+  
+  .pos_text h1{
+    font-size:1rem !important;
+  }
+  .pos_text input{
+    color:black !important;
+    border-width: 0px 0px 1px 0px;
+    border-color:black;
+    width: 10%;
+  }
+  
+  
+  .pos_text select{
+    color:black !important;
+    border-width: 0px 0px 1px 0px;
+    border-color:black;
+    width: 10%;
+  }
+  form button{
+    margin-left:15rem;
+  }
+  .pos_composition{
+    display:flex;
+  }
+  .pos_right h1{
+    font-size:20px !important;
+    font-weight:bold;
+  }
+  
+  .pos_header{
+    padding:20px;
+    display:flex;
+  }
+  .pos_header h2{
+    margin-left:10px;
+    margin-top:10px !important;
+  }
+  .
+  .pos_header button{
+    margin:40px 20px 20px 20px;
+  
+  }
+  #date_time{
+    height:35px !important;
+  
+  }
+  .pos_btns{
+    display:flex;
+    justify-content:flex-end;
+  }
+  .pos_btns button{
+    padding:10px !important;
+    margin:10px !important; 
+  }
+  .pos_top{
+    background-color:white;
+    padding:20px;
+    margin:20px;
+    border-radius:20px;
+  }
+  
+  
+  
+  .pos_middle{
+    background-color:white;
+    padding:20px;
+    margin:20px;
+    border-radius:20px;
+  }
+  
+  .pointofsale{
+    background-color:white;
+    margin:2rem;
+    border-radius:15px;
+  }
+  .form_top{
+    margin:2rem;
+    background-color:white;
+    border-radius:15px;
+  }
+  .calculate_btn{
+    display:flex;
+    padding:2rem;
+  }
+  .calculate{
+    padding:1rem;
+  }
+  .pharmacy_top{
+    display:flex;
+    justify-content:flex-start;
+    padding:1rem;
+  }
+  .pharmacy_top h1{
+    margin-left:2rem;
+   
+    font-size:25px;
+    font-weight:bold;
+  }
 </style>
 
 <div class='container'>
-  <div class="pos_header">
-    <h2>In House Billing</h2>
-    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
 
-  </div>
+
+  <h2>In House Billing  <a class="btn btn-primary"  href="javascript:history.back()">Back</a>  <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button></h2>
+    <div class="form_top">
+
     <form method="POST" action="{% url "inhouse_pathpdf" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
-            <div class="first-container">
-
             
-        </div>
        <div class="pos_left">
-       <div class="pos_top">
-        <div class="form-group">
-          <label for="doctor">Doctor</label>
-       <select class="form-control doctor" id="doctor" name="doctor"> 
-         <option  value="">Select A Doctor</option>
-         {% for doc in doctor %}
-
-           <option  value="{{doc.first_name}}">{{doc.first_name}}</option>
-           {% endfor %}
-       </select>
-
-     </div>
-
-     <div class="form-group">
-       <label for="payment">Payment Mode</label>
-    <select class="form-control payment" id="payment" name="payment"> 
-      
-
-        <option  value="cash">Cash</option>
-        <option  value="card">Debit/Credit Card</option>
-        <option  value="cheque">cheque</option>
-        <option  value="online">Online/Net Banking</option>
-        <option  value="other">other</option>
-      </select>
-
-  </div>
-
-  <div class="form-group">
-
-    <label for="path_test">Patient Name</label>
-    <select class="form-control path_test" id="patient" name="patient"> 
-      <option  value="">Select A value</option>
-    {% for test in test %}
- 
-      <option  value="{{test.patient.name}}_{{test.id}}">{{test.patient.name}}</option>
-      {% endfor %}
-  </select>
- 
+        
+          <div class="pos_top">
+           
   
-      </div>
-
-  <div class="form-group">
-   <label for="date_time">Date/Time</label>
-   <input type="date" name="date_time" id="date_time" >
+                
 
 
-</div>
+                    <div class="form-group">
+                      <label for="doctor">Doctor</label>
+                   <select class="form-control doctor" id="doctor" name="doctor"> 
+                     <option  value="">Select A Doctor</option>
+                     {% for doc in doctor %}
+            
+                       <option  value="{{doc.first_name}}">{{doc.first_name}}</option>
+                       {% endfor %}
+                   </select>
+            
+                 </div>
+                  
+          
+                 <div class="form-group">
+                  <label for="date_time">Date/Time</label>
+                  <input type="date" name="date_time" id="date_time" >
+          
+          
+             </div>
+          
+               
+          
+                 
+                
+              <div class="form-group">
 
- 
+                <label for="path_test">Patient Name</label>
+                <select class="form-control path_test" id="patient" name="patient"> 
+                  <option  value="">Select A value</option>
+                {% for test in test %}
+             
+                  <option  value="{{test.patient.name}}_{{test.id}}">{{test.patient.name}}</option>
+                  {% endfor %}
+              </select>
+             
+              
+                  </div>
+            
+                 
+                 
+                
 
-  
-     <div class="form-group">
+                 <div class="form-group">
+          
+                  <label for="small_note">Small Note</label>
+          
+                  <textarea id="small_note" name="small_note" rows="2" cols="30">
+                 
+                  </textarea>
+                </div>
+                </div>
+                </div>
+                    <div class="pharmacy_top">
 
-      <label for="small_note">Small Note</label>
-   
-      <textarea id="small_note" name="small_note" rows="3" cols="30">
-     
-      </textarea>
-     </div>
-     </div>
-     <div class="pos_middle">
+                    <h1> Radiology</h1></div>
+
+                    <div class="pointofsale">
+                    
+                    <div class="medicine_details">
         <table class="table">
+
             <thead>
               <tr>
-                     <th>Radiology Category</th>
-                     <th>Radialogy Test</th>
-           
-           
-                <th>Amount</th>
+                <th>Radiology Category</th>
+                <th>Radialogy Test</th>
       
-                <th>Total</th>
+      
+           <th>Amount</th>
+ 
+           <th>Total</th>
+      
            
     
                   
@@ -304,13 +343,14 @@ form button{
 
                 
             </tbody>
+            
           </table>
-         
+
+          
         </div>
-        </div>
+        
         <div class="pos_right">
-      
-      
+          
           
             <div class="pos_text">
               <h1> Sub Total</h1>
@@ -332,16 +372,31 @@ form button{
       </div>
 
      <div class="pos_text">
-        <h1>Discount(%)</h1>
+        <h1>Discount (%)</h1>
         <input type="text" class="disc" name="disc" id="disc" >
    
     </div>
 
       <div class="pos_text">
         <h1> Net Amount</h1>
-        <input type="text" class="total" name="grand_total" id="total" >
+        <input type="text" class="total" name="grand_total" id="grand_total" >
    
     </div>
+    <div class="pos_text">
+      <h1> Payment Mode</h1>
+      <select class="form-control payment" id="payment" name="payment"> 
+                     
+          
+        <option  value="cash">Cash</option>
+        <option  value="card">Debit/Credit Card</option>
+        <option  value="cheque">cheque</option>
+        <option  value="online">Online/Net Banking</option>
+        <option  value="other">other</option>
+      </select>
+ 
+  </div>
+
+
 
 
     <div class="pos_text">
@@ -349,21 +404,31 @@ form button{
       <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
  
   </div>
+
+  <div class="pos_text">
+    <h1>Balance</h1>
+    <input type="text" class="balance" name="balance" id="balance">
+
+</div>  
     <div class="pos_btns">
-    <button type="submit" class="btn btn-primary">Save Invoice</button>
+      <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
+      <button type="submit" class="btn btn-primary">Save Invoice</button>
+      
+     
     
-    <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
-  
-  
-        </div>
+    
+          </div>
         </div>
         
         
-    </form>  
+    </form>
+    
+   
 
 
 
     
+</div>
 </div>
 
 
@@ -551,6 +616,23 @@ form button{
 }
 
 
+const paid_amount = document.getElementById('paid_amount')
+const net_amount = document.getElementById('grand_total')
+
+
+paid_amount.addEventListener('change', balance);
+net_amount.addEventListener('change', balance);
+function balance(){
+  const balanceTotal = document.getElementById('balance')
+  const net = parseFloat(net_amount.value) ||0;
+  const paid = parseFloat(paid_amount.value) ||0;
+
+  const balance = net-paid;
+  
+  balanceTotal.value = balance.toFixed(2);
+
+  
+}
 
 const calculateBtn = document.querySelector('.calculate')
 console.log(calculateBtn)
@@ -560,18 +642,21 @@ function calculateDis() {
   const subTotalInput = document.getElementById('sub_total');
   const totalInput = document.querySelector('.total');  // Updated this line
   const taxAmountInput = document.getElementById('tax_amt');
+  
 
   const subTotal = parseFloat(subTotalInput.value) || 0;
   const discount = parseFloat(discountInput.value) || 0;
   const tax = parseFloat(taxAmountInput.value) || 0;
+ 
 
   const discountType = (discount / 100) * subTotal;
   const totalAmount = subTotal  - discountType;
 
   totalInput.value = totalAmount.toFixed(2);  // Updated this line
-  console.log(discountType);
-  console.log(totalAmount);
-}
+
+  balanceTotal.value = balance.toFixed(2); 
+  
+  }
 
 
 

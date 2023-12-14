@@ -1,3 +1,7 @@
+
+
+
+
 {% include "layout/header.html" %}
 {% include "layout/sidebar.html" %}
 
@@ -8,24 +12,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income</title>
 
-    
-    
+
 {% load static %}
-   <div class="container">
-    
-        <div id="popupContainer" class="form-popup-back">
-            <div class="form-Contain">
-                <div class="POP">
-                    <div class="cards">
-                      <div class="popup-header">
-                        <span id="closePopupBtn" class="close-button">Close</span>
-                        <h1>Add Income</h1>
-                      </div>
-                        <form class="form_popup" method="post" action="{% url 'add_income' %}">
-                            {% csrf_token %}
-                            
-                            <!-- Demo Field -->
-            <label for="demo">Income Head</label>
+<div class="container"> 
+<div id="popupContainer" class="form-popup-back">
+    <div class="form-Contain">
+        <div class="POP">
+            <div class="cards">
+              <div class="popup-header">
+                <span id="closePopupBtn" class="close-button">Close</span>
+                <h1>Add Income </h1>
+              </div>
+                <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'add_income' %}">
+                    {% csrf_token %}
+                   
+                    <div class="form-group">
+
+       <label for="demo">Income Head</label>
             <select id="demo" name="demo">
                 <option value="">Select A Income </option>
                 {% for income_head in income_head %}
@@ -35,6 +38,7 @@
                    
             </select>
                 {% endfor %}
+          </div>
 
             <!-- Name Field -->
             <div class="form-group">
@@ -62,7 +66,8 @@
 
             <!-- Document Field -->
             <div class="form-group">
-                <label for="document">Attach Document:</label>
+                <label for="">Attach Document:</label>
+                <label class="file_type" for="document">Drop A File</label>
                 <input type="file" class="form-control-file" id="document" name="document">
             </div>
 
@@ -70,74 +75,77 @@
             <div class="form-group">
                 <label for="description">Description:</label>
                 <textarea class="form-control" id="description" name="description" required></textarea>
-            </div>
-    
-                            <!-- Your form fields go here -->
-                            
-                            <div style="text-align: center;">
-                                <input type="submit" value="Submit">
-                            </div>
-                        </form>
+            </div> 
+
+                    <div style="text-align: center;">
+                        <input type="submit" value="Submit">
                     </div>
-                </div>
-                </div>
-           
-       
-    
-
-
-
-    
-
-    <div class="main-header">
-        <h1 class="headline">Income</h1>
-        <div class="side-btns">
-      
-       
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Income</a>
-      
-    </div>    
-    </div>    
-    
-    <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>income</th>
-            <th>invoice_number</th>
-            <th>Date</th>
-            <th>Description</th>
-              
-           
-          </tr>
-        </thead>
-        <tbody>
-          
-          {% for income in income %}
-            <tr>
-               <td>{{ income.name }}</td>
-              <td>{{ income.demo }}</td>
-              <td>{{ income.invoice_number }}</td>
-              <td>{{ income.date }}</td>
-              <td>{{ income.description }}</td>
-              
-          
-            
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-  
+                </form>
+            </div>
+        </div>
     </div>
+    </div>
+    
 
-    <!-- Include Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="{% static "/css/javscript/index.js" %}"></script>  
-   <script>
+
+
+
+
+
+
+<div class="main-header">
+<h1 class="headline">Income Record</h1>
+<div class="side-btns">
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+<a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Income Record</a>
+
+</div>    
+</div>   
+<table class="table">
+    <thead>
+      <tr>
+        
+        <th>Income Type</th>
+        <th>Name </th>
+        <th>Invoice Number</th>
+        <th>Amount</th>
+        <th>Description</th>
+       
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for income in income %}
+        <tr>
+            <td>{{income.demo}}</td>
+            <td>{{income.name}}</td>
+           
+          <td>{{ income.invoice_number }}</td>
+          <td>{{ income.amount }}</td>
+          <td>{{ income.description }}</td>
+ 
+          
+          
+      
+        
+        </tr>
+      {% endfor %}
+     
+    </tbody>
+  </table>
+
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static "/css/javscript/index.js" %}"></script>
+<script>
+
     {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
 const popupContainer = document.getElementById("popupContainer");
 const closePopupBtn = document.getElementById("closePopupBtn");
@@ -148,9 +156,6 @@ function change(){
 closePopupBtn.addEventListener("click", function() {
     popupContainer.style.display = "none";
 }); {% endcomment %}
-   </script> 
    
-    
+</script>
 
-</body>
-</html>

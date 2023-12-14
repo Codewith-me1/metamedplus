@@ -1,0 +1,111 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role</title>
+
+<style>
+.form-group {
+    margin-left:2rem;
+}
+</style>
+{% load static %}
+    
+   <div class="container">
+    
+   
+
+
+    
+
+    <div class="main-header">
+        <h1 class="headline">Attendance</h1>
+        <div class="side-btns">
+      
+       
+        <a class="btn-primary btn" href="{% url "attendance_role" %}">Attendance Record</a>
+        <a class="btn-primary btn" href="{% url "other_attendance" %}">Other Attendance</a>
+        
+      
+    </div>    
+    </div>    
+    
+    <form method="post"action={% url "attendance" %} >
+        {% csrf_token %}
+        <div class="form-group">
+            <input required type='date' name="date">
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <input type="hidden" name="staff_role" value="{{ role }}">
+                    <th>Id</th>
+                    <th>Staff Id</th>
+                    <th>First Name</th>
+                
+                    <th>Role</th>
+                    <th>Attendance</th>
+                    <th>Shift</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staff %}
+                    <tr>
+                     
+                        <td>{{ staff.id }}</td>   
+                        <td>{{ staff.staff_id }}</td>   
+                        <td>{{ staff.first_name }}</td>   
+               
+                        <td>{{ staff.role }}</td>
+                        <td>
+                            <select name="attendance_{{ staff.id }}">
+                                <option value="Present">Present</option>
+                                <option value="Absent">Absent</option>
+                                <option value="half_day">Half Day</option>
+                                <option value="late">Late</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <select name="shift_{{ staff.id }}">
+                                <option value="Morning">Morning</option>
+                                <option value="Night">Night</option>
+                                <!-- Add more shift options if needed -->
+                            </select>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <input class="btn btn-primary" type="submit" value="Submit Attendance">
+    </form>
+  
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    
+    <script src="{% static "/css/javscript/index.js" %}"></script> 
+   <script>
+    {% comment %} const openPopupBtn = document.getElementById("openPopupBtn");
+const popupContainer = document.getElementById("popupContainer");
+const closePopupBtn = document.getElementById("closePopupBtn");
+
+function change(){
+  popupContainer.style.display = "block";
+}
+closePopupBtn.addEventListener("click", function() {
+    popupContainer.style.display = "none";
+}); {% endcomment %}
+   </script> 
+   
+    
+
+</body>
+</html>

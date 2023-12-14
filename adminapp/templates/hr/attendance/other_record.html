@@ -1,0 +1,86 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Attendance</title>
+
+  {% load static %}
+  <style>
+  
+  .apply{
+      width:70%;
+  }
+  </style>
+  <div class='container'>
+    
+          
+      
+      
+      
+      
+      
+      
+      
+      <div class="main-header">
+      <h1 class="headline">Other Attendance Record</h1>
+      <div class="side-btns">
+       
+      <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+    
+      
+      </div>    
+      </div>   
+  
+  
+  
+  
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Attendance</th>
+            <th>Shift</th>
+            <th>Date</th>
+            
+          
+            
+            
+              
+           
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for attendance in attendance %}
+            <tr>
+             
+              <td>{{ attendance.name }}</td>        
+              <td>{{ attendance.role }}</td>        
+              <td>{{ attendance.attendance }}</td>        
+              <td>{{ attendance.shift }}</td>        
+              <td>{{ attendance.date }}</td>        
+
+          
+            
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+  
+      </div>
+      
+<script src="{% static "/css/javscript/index.js" %}"></script>
+  <script>
+  
+      </script>
+  
+  </div>
+  </body>
+  </html> 

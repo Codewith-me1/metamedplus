@@ -27,15 +27,94 @@
   
   
   }
+  .btn{
+    margin-top:1px !important;
+  }
+  
+  .pos_left{
+    width:99%;
+    margin:2rem;
+  
+    border-radius:20px;
+  }
+  .table{
+    margin-top:3rem;
+  }
+  .pos_right{
+    width:30%;
+    background-color:white;  
+  
+    border-radius:20px;
+    padding:2rem;
+  }
+  
+  
+  input{
+    height:35px;
+  }
+  .pos_btns button{
+    padding:10px !important;
+    margin:10px !important;
+  }
+  
+  .pos_btns{
+    display:flex;
+    justify-content:flex-end;
+  }
+  .pos_right h1{
+    margin:2px !important;
+    
+  }
+  .pos_text{
+    margin:3rem;
+  }
+  .pos_text input{
+    color:black !important;
+  }
+  .pos_text h1{
+   padding:1rem;
+  }
+  form button{
+    margin-left:15rem;
+  }
+  .pos_composition{
+    display:flex;
+    padding:10px;
+    
+  }
+  .medicine_details{
+    padding:10px;
+    
+    
+  }
+  .con{
+    display:flex;
+    
+  }
+  .con a{
+  margin-top:5rem !important;
+  }
+  
+  @media only screen and (max-width:768px) and (min-width:300px) {
+    form{
+      display:block !important;
+    }
+    .pos_right{
+      width:100% !important;
+    }
+    .pos_left{
+      width:90% !important;
+    }
+  
+  
+  }
   
   input{
       height:35px;
   }
-  form{
-    display:flex;
-  }
+  
   .pos_left{
-    width:70%;
+    width:99%;
     margin:2rem;
     
     border-radius:20px;
@@ -44,21 +123,45 @@
     margin-top:3rem;
   }
   .pos_right{
-    width:25%;
+    width:95%;
     height:90%;
+    
     background-color:white;  
+  
     border-radius:20px;
-    margin-top:3.2rem !important;
+    margin-top:1rem !important
     padding:2rem;
   }
   
   .pos_text{
     margin:3rem;
+    display:flex;
+    border-style:solid;
+    border-color:#f1f1f1;
+    justify-content: flex-end;
+    align-items:center;
+    border-width:1px 0px 1px 0px;
+    padding:1rem;
+    width:100%;
+  }
+  
+  .pos_text h1{
+    font-size:1rem !important;
   }
   .pos_text input{
     color:black !important;
+    border-width: 0px 0px 1px 0px;
+    border-color:black;
+    width: 10%;
   }
   
+  
+  .pos_text select{
+    color:black !important;
+    border-width: 0px 0px 1px 0px;
+    border-color:black;
+    width: 10%;
+  }
   form button{
     margin-left:15rem;
   }
@@ -66,7 +169,8 @@
     display:flex;
   }
   .pos_right h1{
-    font-size:25px !important;
+    font-size:20px !important;
+    font-weight:bold;
   }
   
   .pos_header{
@@ -88,11 +192,11 @@
   }
   .pos_btns{
     display:flex;
-    justify-content:center;
+    justify-content:flex-end;
   }
   .pos_btns button{
     padding:10px !important;
-    margin:10px !important;
+    margin:10px !important; 
   }
   .pos_top{
     background-color:white;
@@ -109,86 +213,108 @@
     margin:20px;
     border-radius:20px;
   }
+  
+  .pointofsale{
+    background-color:white;
+    margin:2rem;
+    border-radius:15px;
+  }
+  .form_top{
+    margin:2rem;
+    background-color:white;
+    border-radius:15px;
+  }
+  .calculate_btn{
+    display:flex;
+    padding:2rem;
+  }
+  .calculate{
+    padding:1rem;
+  }
+  .pharmacy_top{
+    display:flex;
+    justify-content:flex-start;
+    padding:1rem;
+  }
+  .pharmacy_top h1{
+    margin-left:2rem;
+   
+    font-size:25px;
+    font-weight:bold;
+  }
+
 </style>
 
 <div class='container'>
-  <div class="pos_header">
-    <h2>In House Billing</h2>
-    <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
 
- 
-  </div>
+  
+  
+  <h2>In House Billing  <a class="btn btn-primary"  href="javascript:history.back()">Back</a>  <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button></h2>
+    <div class="form_top">
+
     <form method="POST" action="{% url "housepdf_blood" %}" id="invoiceForm">
         {% csrf_token %}
         <input type="hidden" name="item_counter" id="item_counter" value="0">
-            <div class="first-container">
-
             
-        </div>
        <div class="pos_left">
-       <div class="pos_top">
-        <div class="form-group">
-          <label for="doctor">Doctor</label>
-          <select class="form-control doctor" id="doctor" name="doctor"> 
-      
-            <option value="">Select A Doctor </option>
-            {% for doctor in doctor %}
-            <option value={{doctor.first_name}}> {{doctor.first_name}} </option>
-            {% endfor %}
-          </select>
-          
-
-     </div>
-
-     <div class="form-group">
-       <label for="payment">Payment Mode</label>
-    <select class="form-control payment" id="payment" name="payment"> 
-      
-
-        <option  value="cash">Cash</option>
-        <option  value="card">Debit/Credit Card</option>
-        <option  value="cheque">cheque</option>
-        <option  value="online">Online/Net Banking</option>
-        <option  value="other">other</option>
-      </select>
-
-  </div>
-
-  <div class="form-group">
-
-    <label for="path_test">Patient Name</label>
-    <select class="form-control path_test" >
-        <option value="">Select A Patient </option>
-    {% for patient in patient %}
-    <option value={{patient.name}}> {{patient.name}} </option>
-    {% endfor %}
-    </select>
-  </div>
-
-  <div class="form-group">
-   <label for="date_time">Date/Time</label>
-   <input type="date" name="date_time" id="date_time" >
-
-
-    </div>
-
- 
-
+        
+          <div class="pos_top">
+           
   
-     <div class="form-group">
+            <div class="form-group">
 
-      <label for="small_note">Small Note</label>
-   
-      <textarea id="small_note" name="small_note" rows="3" cols="30">
-     
-      </textarea>
-     </div>
-     </div>
-     <div class="pos_middle">
+              <label for="path_test">Patient Name</label>
+              <select class="form-control path_test" >
+                  <option value="">Select A Patient </option>
+              {% for patient in patient %}
+              <option value={{patient.name}}> {{patient.name}} </option>
+              {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="doctor">Doctor</label>
+              <select class="form-control doctor" id="doctor" name="doctor"> 
+          
+                <option value="">Select A Doctor </option>
+                {% for doctor in doctor %}
+                <option value={{doctor.first_name}}> {{doctor.first_name}} </option>
+                {% endfor %}
+              </select>
+              
+    
+         </div>
+    
+                  
+          
+                 <div class="form-group">
+                  <label for="date_time">Date/Time</label>
+                  <input type="date" name="date_time" id="date_time" >
+          
+          
+             </div>
+          
+               
+          
+                 
+               
+                 
+                 
+            
+                </div>
+                </div>
+                    <div class="pharmacy_top">
+
+                    <h1> In House Billing</h1></div>
+
+                    <div class="pointofsale">
+                    
+                    <div class="medicine_details">
         <table class="table">
+
             <thead>
               <tr>
-                     <th>Blood Group </th>
+                <th>Blood Group </th>
                      <th>Component</th>
            
            
@@ -211,12 +337,12 @@
             </tbody>
             
           </table>
-     
+
+          
         </div>
-        </div>
+        
         <div class="pos_right">
-      
-      
+          
           
             <div class="pos_text">
               <h1> Sub Total</h1>
@@ -238,38 +364,60 @@
       </div>
 
      <div class="pos_text">
-        <h1>Discount Amount</h1>
+        <h1>Discount (%)</h1>
         <input type="text" class="disc" name="disc" id="disc" >
    
     </div>
 
       <div class="pos_text">
-        <h1> Total</h1>
-        <input type="text" class="total" name="grand_total" id="total" >
+        <h1> Net Amount</h1>
+        <input type="text" class="total" name="grand_total" id="grand_total" >
    
     </div>
+    <div class="pos_text">
+      <h1> Payment Mode</h1>
+      <select class="form-control payment" id="payment" name="payment"> 
+                     
+          
+        <option  value="cash">Cash</option>
+        <option  value="card">Debit/Credit Card</option>
+        <option  value="cheque">cheque</option>
+        <option  value="online">Online/Net Banking</option>
+        <option  value="other">other</option>
+      </select>
+ 
+  </div>
+
+
+
 
     <div class="pos_text">
       <h1>Paid Amount</h1>
       <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
  
   </div>
+
+  <div class="pos_text">
+    <h1>Balance</h1>
+    <input type="text" class="balance" name="balance" id="balance">
+
+</div>  
     <div class="pos_btns">
-    <button type="submit" class="btn btn-primary">Save Invoice</button>
+      <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
+      <button type="submit" class="btn btn-primary">Save Invoice</button>
+      
+     
     
-    <button type="button" id="calculate" class="calculate btn btn-primary">Calculate</button>
-  
-  
-        </div>
+    
+          </div>
         </div>
         
         
-    </form>  
-
-
-
+    </form>
     
-</div>
+   
+
+
 
 
 
@@ -338,6 +486,24 @@
 
         createNewItemRow();
         
+
+        const paid_amount = document.getElementById('paid_amount')
+        const net_amount = document.getElementById('grand_total')
+        
+        
+        paid_amount.addEventListener('change', balance);
+        net_amount.addEventListener('change', balance);
+        function balance(){
+          const balanceTotal = document.getElementById('balance')
+          const net = parseFloat(net_amount.value) ||0;
+          const paid = parseFloat(paid_amount.value) ||0;
+        
+          const balance = net-paid;
+          
+          balanceTotal.value = balance.toFixed(2);
+        
+          
+        }
     
         // Function to remove an item row
         function removeItemRow(rowNumber) {

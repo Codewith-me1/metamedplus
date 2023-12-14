@@ -1331,3 +1331,22 @@ class Leaves(models.Model):
 
 class Bag_available(models.Model):
     qty = models.IntegerField(max_length=10)
+
+
+
+class Attendance(models.Model):
+    name = models.ForeignKey(AddStaff,on_delete=models.CASCADE)
+    role = models.CharField(max_length=20)
+    attendance = models.CharField(max_length=20) 
+    date = models.DateField()
+    note = models.TextField()
+    shift = models.CharField(max_length=20,null=True)
+
+
+class Other_Attendance(models.Model):
+    name = models.CharField(max_length=20)
+    role = models.CharField(max_length=20)
+    attendance = models.CharField(max_length=20) 
+    date = models.DateField()
+
+    shift = models.CharField(max_length=20,null=True)

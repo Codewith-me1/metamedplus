@@ -237,6 +237,14 @@
     font-size:25px;
     font-weight:bold;
   }
+  
+
+  .pos_text select{
+    color:black !important;
+    border-width: 0px 0px 1px 0px;
+    border-color:black;
+    width: 10%;
+  }
 
 </style>
 <script>
@@ -284,19 +292,7 @@
           
                     </div>
           
-                    <div class="form-group">
-                      <label for="payment">Payment Mode</label>
-                   <select class="form-control payment" id="payment" name="payment"> 
-                     
-          
-                       <option  value="cash">Cash</option>
-                       <option  value="card">Debit/Credit Card</option>
-                       <option  value="cheque">cheque</option>
-                       <option  value="online">Online/Net Banking</option>
-                       <option  value="other">other</option>
-                     </select>
-          
-                 </div>
+                   
           
                  <div class="form-group">
                   <label for="date_time">Date/Time</label>
@@ -384,6 +380,19 @@
         <input type="text" class="total" name="grand_total" id="total" >
    
     </div>
+    <div class="pos_text">
+      <h1> Payment Mode </h1>
+      <select class="form-control payment" id="payment" name="payment"> 
+                     
+          
+        <option  value="cash">Cash</option>
+        <option  value="card">Debit/Credit Card</option>
+        <option  value="cheque">cheque</option>
+        <option  value="online">Online/Net Banking</option>
+        <option  value="other">other</option>
+      </select>
+    </div>
+    
     <div class="pos_text">
       <h1>Paid Amount</h1>
       <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
