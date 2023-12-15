@@ -244,6 +244,7 @@ button a{
 
 {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
 <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add OPD Record</a>
+<a  class="btn-primary btn" href="/download_opdcolumn">Download </a>
 <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
 
 </div>    
@@ -275,7 +276,7 @@ button a{
           <td>{{ opd.symptoms_title }}</td>
           <td>{{ opd.symptoms_type }}</td>  
           <td>{{ opd.charge_category }}</td>
-          <td><button value="{{ipd.id}}" class="appointment-button btn hide_download download"><a href="/download_sopd/{{opd.id}}"><i class="fa-solid fa-download"></i></a></button></td>
+          <td><button value="{{ipd.id}}" class="appointment-button btn hide_download download"><a href="/download_opd/{{opd.id}}"><i class="fa-solid fa-download"></i></a></button></td>
 
           
         

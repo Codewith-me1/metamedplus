@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <style>
+        #table {
+          font-family: Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        #table td, {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #table tr:nth-child(even){background-color: #f2f2f2;}
+        th{
+            border: 1px solid #ddd;
+            padding:1rem 1rem 1rem 1rem !important;
+        }
+        #table th {
+       
+          background-color: #605BFF;
+          color: white;
+        }
+        </style>
+</head>
+<body>
+    <div class="center">
+        <h1> {{hospital_name}} </h1>
+    </div>
+    <h1>OPD List</h1>
+    
+    <table id="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Doctor</th>
+          
+                <th>Gender</th>
+                <th>Amount</th>
+                <th>Paid Amount</th>
+                <th>Admission Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ipd in opd %}
+            <tr>
+                
+          <td>{{ipd.id}}</td>
+          <td>{{ipd.patient.name}}</td>
+          <td>{{ipd.patient.phone}}</td>
+          <td>{{ipd.consultant_doctor}}</td>
+          
+          <td>{{ipd.patient.gender}}</td>
+          <td>{{ipd.amount}}</td>
+          <td>{{ipd.paid_amount}}</td>
+          <td>{{ipd.admission_date}}</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+</body>
+</html>

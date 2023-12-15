@@ -398,6 +398,12 @@
       <input type="text" class="paid_amount" name="paid_amount" id="paid_amount" >
  
   </div>
+
+  <div class="pos_text">
+    <h1>Balance</h1>
+    <input type="text" class="balance" name="balance" id="balance">
+
+</div>  
     <div class="pos_btns">
       <button type="submit" class="btn btn-primary">Save Invoice</button>
       
@@ -555,6 +561,22 @@
 
   // Trigger the initial calculation when the page loads
   calculateTotal($('input'));
+  const paid_amount = document.getElementById('paid_amount')
+  const net_amount = document.getElementById('total')
+  
+  paid_amount.addEventListener('change', balance);
+  net_amount.addEventListener('change', balance);
+  function balance(){
+    const balanceTotal = document.getElementById('balance')
+    const net = parseFloat(net_amount.value) ||0;
+    const paid = parseFloat(paid_amount.value) ||0;
+  
+    const balance = net-paid;
+    
+    balanceTotal.value = balance.toFixed(2);
+  
+    
+  }
   
   function calculateTotal(inputField) {
       const row = inputField.closest('tr');

@@ -146,7 +146,7 @@ urlpatterns = [
     path('sales_estimate/',views.sales_estimate,name="sales_estimate"),
     path('download/',views.download,name="download"),
     path('download_ipd/<int:id>',views.IPD_pdf,name="download_ipd"),
-    path('download_opd/<int:id>',views.IPD_pdf,name="download_opd"),
+    path('download_opd/<int:id>',views.OPD_pdf,name="download_opd"),
     path('bank_accountlist/<int:id>', views.bank_account_list, name='bank_accountlist'),
     path('bank_account/',views.bank_account,name="bank_account"),
     path('delivery_challan/',views.delivery_challan,name="delivery_challan"),
@@ -262,6 +262,8 @@ urlpatterns = [
     path('send_mail', views.send, name='send_mail'),
     path('medicine_composition', views.medicine_composition, name='medicine_composition'),
     path('approval/<int:id>', views.approval_path, name='approval_path'),
+    path('download_opdcolumn', views.download_opdcolumn, name='download_opdcolumn'),
+    path('download_ipdcolumn', views.download_ipdcolumn, name='download_ipdcolumn'),
 
 
 

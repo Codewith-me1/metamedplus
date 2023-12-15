@@ -135,10 +135,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-PUSHER_APP_ID = 'your_app_id'
-PUSHER_KEY = 'your_key'
-PUSHER_SECRET = 'your_secret'
-PUSHER_CLUSTER = 'your_cluster'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

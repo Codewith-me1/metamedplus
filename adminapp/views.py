@@ -6174,7 +6174,7 @@ def IPD_pdf(request,id):
     
     
     ipd_patient = IpdPatient.objects.get(id=id)
-    hospital_name = header.objects.all()
+    hospital_name = header.objects.all().first()
    
 
     context = {
@@ -6186,12 +6186,12 @@ def IPD_pdf(request,id):
             'bed':ipd_patient.bed_number,
             'gender':ipd_patient.patient.gender,
         }
-    template = get_template('templat/opd_pdf.html')
+    template = get_template('templat/ipd_pdf.html')
     html = template.render(context)
 
     # Create a response object with PDF content type
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="opd.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="ipd.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
     pisa_status = pisa.CreatePDF(html, dest=response)
@@ -6208,7 +6208,7 @@ def IPD_pdf(request,id):
 
 def OPD_pdf(request,id):
     ipd_patient = OpdPatient.objects.get(id=id)
-    hospital_name = header.objects.all()
+    hospital_name = header.objects.all().first()
    
 
     context = {
@@ -9369,6 +9369,52 @@ def attendance_form(request):
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="attendance.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def download_ipdcolumn(request):
+
+    ipd = IpdPatient.objects.all()
+    hospital_name = header.objects.all().first()
+    context ={
+        'ipd': ipd,
+        'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+    }
+    template = get_template('templat/ipd_list.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="ipd_list.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+
+def download_opdcolumn(request):
+
+    opd = OpdPatient.objects.all()
+    hospital_name = header.objects.all().first()
+    context ={
+        'opd': opd,
+        'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+    }
+    template = get_template('templat/opd_list.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="opd_list.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
     pisa_status = pisa.CreatePDF(html, dest=response)
