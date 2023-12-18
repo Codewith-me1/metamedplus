@@ -225,7 +225,7 @@ def login(request):
         if user is not None:
             log(request, user)  # Corrected login function call
             if user.role == 'Doctor':
-                return render(request, 'doctor/dashboard.html',context)  # Redirect to the doctor's dashboard
+                return redirect('ipd')  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
                 return redirect('doctor') 
             elif user.role == 'New':
