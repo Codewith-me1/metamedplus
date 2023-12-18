@@ -207,8 +207,8 @@ def login(request):
         password = request.POST.get('password')
         print(password)
         print(username)
-        user = authenticate( request,email=username, password=password)
-        
+        user = authenticate(username=username, password=password)
+        log(request,user)
         total_opd = OpdPatient.objects.all().aggregate(
         total_opd=Sum(F('amount'))
         )['total_opd'] or 0
@@ -225,7 +225,7 @@ def login(request):
         if user is not None:
             log(request, user)  # Corrected login function call
             if user.role == 'Doctor':
-                return redirect('ipd')  # Redirect to the doctor's dashboard
+                return redirect('ipd_patient')  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
                 return redirect('doctor') 
             elif user.role == 'New':
@@ -234,11 +234,11 @@ def login(request):
                 return redirect('doctor')
             elif user.role =='Radiologist':
                 return redirect('radiology')
-            elif user.role =='Pathologist':
-                return redirect('pathology')
+            elif user.role =='Pathalogist':
+                return redirect('path')
             
             elif user.role =='Nurse':
-                return redirect('ipd')
+                return redirect('ipd_patient')
             
             elif user.role =='Pharmacist':
                 return redirect('medicine_composition')
@@ -593,7 +593,7 @@ def add_staff(request):
         # Redirect to a success page or staff list page
         password = generate_random_password()
 
-        User = CustomUser.objects.create_user(id=staff_id,username=first_name, email=email, password=password, role=role)
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
         message = "Your Password Is " + password
         subject = "Password"
         print(password)

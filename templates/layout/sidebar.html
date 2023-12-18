@@ -941,37 +941,24 @@ body{
             <li><a href="{% url 'blood_component' %}">Blood Billing</a></li>
               
               {% endif %}
-
-
-              {% if user.role == 'Nurse' %}
-              <li><a href="{% url 'opd' %}">Opd</a></li>
-              <li><a href="{% url 'ipd_patient' %}">IPD</a></li>
-              <li><a href="{% url 'path' %}">Pathology</a></li>
-              <li><a href="{% url 'radiology' %}">Radiology</a></li>
-              <li><a href="{% url 'blood_component' %}">Blood Bank</a></li>
-
+              
+          {% if user.role == 'Radiologist' %}
+             
             
             
-            <button class="dropdown-btn">Setup 
+            <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
+ 
+            
+           
+            <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
               <i class="fa fa-caret-down"></i>
             </button>
-           
+            <div class="dropdown-container">
+            
+
 
              
-
-
-              </div>
-              <button class="dropdown-btn dropdown-nested"> Pathology
-                <i class="fa fa-caret-down"></i>
-              </button>
-              <div class="dropdown-container">
               
-                <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
-                 <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
-
-
-
-              </div>
 
               <button class="dropdown-btn dropdown-nested"> Radiology
                 <i class="fa fa-caret-down"></i>
@@ -984,18 +971,103 @@ body{
 
 
               </div>
+            </div>
+
+           
+           
+          {% endif %}
+
+              {% if user.role == "Pathalogist" %}
+           
+              <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
+             
+              <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
               
+  
+  
+               
+                <button class="dropdown-btn dropdown-nested"> Pathology
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                
+                  <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
+                   <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
+  
+  
+  
+                </div>
+  
+                
+ 
               
               
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
  
-
-
-
+ 
+ 
+ 
       
-
+ 
               </div>
+ 
+            
+            
+         {% endif %}
 
+            {% if user.role == 'Nurse' %}
+            <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
+            <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
+            <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
+            <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
+            <li><a href="{% url 'blood_component' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+
+            
+            
+              <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
+              
+  
+  
+               
+                <button class="dropdown-btn dropdown-nested"> Pathology
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                
+                  <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
+                   <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
+  
+  
+  
+                </div>
+  
+                <button class="dropdown-btn dropdown-nested"> Radiology
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                
+                  <a class="dropdown-a" href="{% url 'radio_parameter' %}">Radio Parameter</a>
+                   <a class="dropdown-a" href="{% url 'radio_category' %}">Radio Category</a>
+                  
+  
+  
+                </div>
+                
+                
+                
+                
+                
+    
+  
+  
+                
+                
             
             
               {% endif %}
@@ -1029,89 +1101,9 @@ body{
               {% endif %}
 
 
-             {% if user.role == "Pathologist" %}
-           
-             <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
-            
-           </div>
-           <button class="dropdown-btn">Setup 
-             <i class="fa fa-caret-down"></i>
-           </button>
           
 
-
-             </div>
-             <button class="dropdown-btn dropdown-nested"> Pathology
-              <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-container">
-            
-              <a class="dropdown-a" href="{% url 'path_parameter' %}">Add Parameter</a>
-               <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
-
-
-
-            </div>
-
              
-             
-             <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
-
-
-
-
-     
-
-             </div>
-
-           
-           
-             {% endif %}
-
-             {% if user.role == 'Radiologist' %}
-             
-       
-             <li><a href="{% url 'radiology' %}">Radiology</a></li>
- 
-
-           </div>
-           <button class="dropdown-btn">Setup 
-             <i class="fa fa-caret-down"></i>
-           </button>
-          
-
-            
-
-
-             </div>
-        
-             <button class="dropdown-btn dropdown-nested"> radiology
-               <i class="fa fa-caret-down"></i>
-             </button>
-             <div class="dropdown-container">
-             
-               <a class="dropdown-a" href="{% url 'radio_parameter' %}">Radio Parameter</a>
-                <a class="dropdown-a" href="{% url 'radio_category' %}">Radio Category</a>
-               
-
-
-             </div>
-             
-             
-             
-             <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
-             
-
-
-
-
-     
-
-             </div>
-
-           
-           
-             {% endif %}
             
         </ul>
 
