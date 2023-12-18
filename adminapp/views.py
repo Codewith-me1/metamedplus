@@ -207,7 +207,7 @@ def login(request):
         password = request.POST.get('password')
         print(password)
         print(username)
-        user = authenticate( request,username=username, password=password)
+        user = authenticate( request,email=username, password=password)
         
         total_opd = OpdPatient.objects.all().aggregate(
         total_opd=Sum(F('amount'))
@@ -224,7 +224,7 @@ def login(request):
         }
         if user is not None:
             log(request, user)  # Corrected login function call
-            if user.role == 'doctor':
+            if user.role == 'Doctor':
                 return render(request, 'doctor/dashboard.html',context)  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
                 return redirect('doctor') 
@@ -232,6 +232,22 @@ def login(request):
                 return redirect('doctor')
             elif user.role =='Manooj':
                 return redirect('doctor')
+            elif user.role =='Radiologist':
+                return redirect('radiology')
+            elif user.role =='Pathologist':
+                return redirect('pathology')
+            
+            elif user.role =='Nurse':
+                return redirect('ipd')
+            
+            elif user.role =='Pharmacist':
+                return redirect('medicine_composition')
+        
+            elif user.role =='Accountant':
+                return redirect('doctor')
+        
+        
+
             else:
                 return redirect('doctor')
 
