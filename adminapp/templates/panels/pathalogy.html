@@ -1,0 +1,637 @@
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+
+    {% load static %}
+    
+    <style>
+      
+      .container{
+        background: rgb(254,247,240);
+        background: linear-gradient(0deg, rgba(254,247,240,1) 0%, rgba(241,243,253,1) 52%);
+        
+        border:none;
+      }
+   
+      .main-cards{
+        overflow:scroll;
+      }
+      .container{
+      
+        width: 89% !important ;
+      } 
+      @media only screen and (max-width:768px) and (min-width:300px){
+        width: 90% !important ;
+      }
+
+      .content_card{
+        display:flex;
+        width:80% !important;
+        margin-left:1rem;
+       
+      }
+      .card_second{
+        background-color: white;
+            border: none !important;
+            display: flex !important;
+    
+    margin-left: 10px;
+    font-family: 'Poppins', sans-serif !important;
+    box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+    
+    height:15rem;
+    background: #fff;
+    width: 25rem;
+   
+    /* box-shadow: 0 1px 1px rgba(0,0,0,0.1); */
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+    padding: 20px;
+    border-radius: 10px;
+      }
+ a img{
+  margin-right:30px;
+  margin-top:20px;
+
+}
+      .container{
+        background-color: #f6f4fb !important;
+      }
+      .img-1{
+        background-color: #ffddf2 ;
+       
+      }
+      .img_icon{
+        padding:10px !important;
+        width: 30% !important;
+        border-radius:10px;
+      }
+      .img-2{
+        background-color: #dcdffe;
+     
+      }
+
+      .img-5{
+        background-color: #e2c7ff;
+     
+      }
+      .img-6{
+        background-color: #ff6f6f;
+     
+      }
+      .img-3{
+        background-color: #fef5cd;
+     
+      }
+      .nurse_img{
+        margin:0px 0px 0px -3px!important;
+        width: 90%;
+      }
+
+      .img-4{
+        background-color: #fedfd6;
+     
+      }
+      .img-7{
+        background-color: #53A165; 
+      
+      }
+
+      .img-8{
+        background-color:red; 
+      
+      }
+
+        div#calendar{
+            width:70%;
+            margin:0px 2rem 2rem 2rem;
+            padding:2rem;
+            background-color:white;
+            border-radius:20px;
+        }
+      
+        .fc-button{
+          color:black !important;
+        }
+        .fc-button:hover{
+          background-color:#0f83ff !important;
+        }
+
+        @media only screen and(max-width:768px) and (min-width:300px){
+        
+          .btn{
+            display:none !important;
+          }
+        }
+        .card{
+            background-color: white;
+            border: none !important;
+    
+    margin-left: 10px;
+    font-family: 'Poppins', sans-serif !important;
+    box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+    
+    height:15rem;
+    background: #fff;
+    width: 30rem;
+   
+    /* box-shadow: 0 1px 1px rgba(0,0,0,0.1); */
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+    padding: 20px;
+    border-radius: 10px;
+
+        }
+
+        .char{
+          display:flex;
+          height:60vh;
+          width:95%;
+        }
+        slider {
+            margin: 0 auto;
+            max-width: 940px;
+            padding:2rem;
+          }
+          
+          .slide_viewer {
+          
+          }
+          
+          .slide_group {
+            
+          }
+          
+          .slide {
+            display: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+          }
+          
+          .slide:first-child {
+            display: block;
+          }
+          
+        
+          
+          .slide .card{
+            width:50%;
+            margin:10rem 10rem 20rem 15rem;
+          }
+          .slide_buttons {
+            left: 0;
+            position: absolute;
+            right: 0;
+            text-align: center;
+          }
+          
+          a.slide_btn {
+            color: #474544;
+            font-size: 42px;
+            margin: 0 0.175em;
+            -webkit-transition: all 0.4s ease-in-out;
+            -moz-transition: all 0.4s ease-in-out;
+            -ms-transition: all 0.4s ease-in-out;
+            -o-transition: all 0.4s ease-in-out;
+            transition: all 0.4s ease-in-out;
+          }
+          
+          .slide_btn.active, .slide_btn:hover {
+            color: #428CC6;
+            cursor: pointer;
+          }
+          
+          .directional_nav {
+            height: 340px;
+            margin: 0 auto;
+            max-width: 940px;
+            position: relative;
+            top: -340px;
+          }
+          
+          .previous_btn {
+            bottom: 0;
+            left: 100px;
+            margin: auto;
+            position: absolute;
+            top: 0;
+          }
+          
+          .next_btn {
+            bottom: 0;
+            margin: auto;
+            position: absolute;
+            right: 100px;
+            top: 0;
+          }
+          
+          .previous_btn, .next_btn {
+            cursor: pointer;
+            height: 65px;
+            opacity: 0.5;
+            -webkit-transition: opacity 0.4s ease-in-out;
+            -moz-transition: opacity 0.4s ease-in-out;
+            -ms-transition: opacity 0.4s ease-in-out;
+            -o-transition: opacity 0.4s ease-in-out;
+            transition: opacity 0.4s ease-in-out;
+            width: 65px;
+          }
+          
+          .previous_btn:hover, .next_btn:hover {
+            opacity: 1;
+          }
+          
+          @media only screen and (max-width: 767px) {
+            .previous_btn {
+              left: 50px;
+            }
+            .next_btn {
+              right: 50px;
+            }
+          }
+
+
+          .POP {
+            margin-top:10rem;
+          }
+
+          
+        .card:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.22);
+}
+.main-cards{
+   display: grid;
+   gap: 10px;
+   grid-template-columns: auto auto auto auto auto auto auto auto auto ;
+   align-items: start;
+   justify-content: start;
+   margin: 1rem;
+   margin-top:5rem !important; 
+   padding-right:10%;
+   flex-wrap: nowrap;
+    
+
+}
+.fc-button, .fc-button-primary{
+    border:none !important;
+    background-color:#1cb88e !important;
+}
+.calender button{
+    background-color:#1cb88e !important;
+}
+.charts{
+    display: flex;
+    height:100%; 
+    width: 95%;
+
+}
+.chart{
+    width: 100%;
+    padding: 1rem;
+    border-radius:20px;
+    background-color: #fefefe;
+    box-shadow: 19px 20px 35px -20px rgba(0,0,0,0.75);
+    margin: 1rem;
+}
+
+.calender-section{
+    display: flex;
+    margin-top:5rem;
+    
+}
+h1{
+    font-size:25px !important; 
+}
+.card{
+    display:flex;
+}
+.card_nurse{
+   
+
+}
+.card img{
+    width:40%;
+    height:50%;
+    padding:5px;
+    margin-top:20px;
+    margin-right:10px;
+
+}
+.amount{
+  color:#262666 !important;
+  font-weight:600;
+
+}
+.slide img{
+  width:100%;
+}
+.box-content h3{
+    font-size:2rem;
+color:#6A727A !important;
+}
+.box-content h1{
+    font-size:3rem !important;
+    font-weight:500;
+    margin-top:5px !important; 
+    text-align:inherit;
+}
+.expenses{
+  margin-bottom:30px;
+}
+
+    </style>
+
+    <div class="container">
+      {%  if user.role == 'Pathologist' %}
+   
+
+
+<div class="char">
+      <div class="chart">
+          <div class="chart-heading">
+             
+           
+   
+    <div class="slider">
+        <div class="slide_viewer">
+          <div class="slide_group">
+            <div class="slide">
+              <img class="ad_0" src="">
+            </div>
+            <div class="slide">
+              <img class="ad_1" src="">
+            </div>
+          
+          </div>
+        </div>
+      </div>
+  
+
+
+
+    </div>
+    </div>
+  
+
+
+
+   
+  </div>  
+
+ 
+
+
+
+
+
+
+ 
+
+    
+   
+
+
+     <div class="calender-section">
+      
+      
+
+      <div id='calendar'></div>
+   
+      
+        
+        </div>
+     </div>
+     {% endif %}
+ 
+     
+     </div>
+
+     <button id="changeadsButton" onClick="changeads()">Change ads</button>
+</body>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+
+</script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+<script src="html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.9/index.min.js"></script>
+<script>
+
+
+var static = "{% static '";
+   const xValues = ['Jan', 'feb','march','april','may','june','july','august','september','october','november','december'];
+const yValues = [0, 1000, 2000,3000,4000,5000 ];
+const barColors = ["#605bff", "#ff906b"];
+const inc = ['income','expense']
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+   
+    datasets: [
+      {
+        label: 'Income',
+        data: [112,12,234,45],
+        backgroundColor: barColors[0],
+       
+        
+        borderSkipped: false,
+      },
+      {
+        label: 'Small Radius',
+        data:[112,12,121,12],
+
+        backgroundColor: barColors[1],
+        
+        borderRadius: 5,
+        borderSkipped: false,
+      }
+    ]
+  },
+  
+   
+    
+  options: {}
+});
+
+  
+var chrt = document.getElementById("chartId").getContext("2d");
+      var chartId = new Chart(chrt, {
+         type: 'doughnut',
+         data: {
+            labels: ["radiology", "income", "expense", "pathlology", "blood bank", "IPD"],
+            datasets: [{
+            label: "online tutorial subjects",
+            data: [20, 40, 13, 35, 20, 38],
+            
+            backgroundColor: ['#dcdffe', '#ff55c4', '#7a5cff', '#5dd871', 'gold', '#ff7d5c'],
+            hoverOffset: 5
+            }],
+         }, 
+         options: {
+            responsive: false,
+         },
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+
+      $('.slider').each(function() {
+  var $this = $(this);
+  var $group = $this.find('.slide_group');
+  var $slides = $this.find('.slide');
+  var bulletArray = [];
+  var currentIndex = 0;
+  var timeout;
+  
+  function move(newIndex) {
+    var animateLeft, slideLeft;
+    
+    advance();
+    
+    if ($group.is(':animated') || currentIndex === newIndex) {
+      return;
+    }
+    
+    bulletArray[currentIndex].removeClass('active');
+    bulletArray[newIndex].addClass('active');
+    
+    if (newIndex > currentIndex) {
+      slideLeft = '100%';
+      animateLeft = '-100%';
+    } else {
+      slideLeft = '-100%';
+      animateLeft = '100%';
+    }
+    
+    $slides.eq(newIndex).css({
+      display: 'block',
+      left: slideLeft
+    });
+    $group.animate({
+      left: animateLeft
+    }, function() {
+      $slides.eq(currentIndex).css({
+        display: 'none'
+      });
+      $slides.eq(newIndex).css({
+        left: 0
+      });
+      $group.css({
+        left: 0
+      });
+      currentIndex = newIndex;
+    });
+  }
+  
+  function advance() {
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      if (currentIndex < ($slides.length - 1)) {
+        move(currentIndex + 1);
+      } else {
+        move(0);
+      }
+    }, 4000);
+  }
+  
+  $('.next_btn').on('click', function() {
+    if (currentIndex < ($slides.length - 1)) {
+      move(currentIndex + 1);
+    } else {
+      move(0);
+    }
+  });
+  
+  $('.previous_btn').on('click', function() {
+    if (currentIndex !== 0) {
+      move(currentIndex - 1);
+    } else {
+      move(3);
+    }
+  });
+  
+  $.each($slides, function(index) {
+    var $button = $('<a class="slide_btn">&bull;</a>');
+    
+    if (index === currentIndex) {
+      $button.addClass('active');
+    }
+    $button.on('click', function() {
+      move(index);
+    }).appendTo('.slide_buttons');
+    bulletArray.push($button);
+  });
+  
+  advance();
+});
+
+function changeads() {
+  // Replace 'new_logo_url' with the URL of the new logo image
+  
+
+
+// Attach a click event listener to the button
+$('#changeadsButton').click(changeLogo);
+console.log('heelo')
+// Fetch and update hospital name as before
+$.get('/get_ads_data/', function (data) {
+
+  
+  if (data.ads) {
+  
+   
+
+
+          
+          // Initial population of the slider
+          
+      for (let i = 0; i < data.ads.length; i++) {
+         
+        setTimeout(function () {
+            $('.ad_'+i).attr('src', "/root/projectdir/metamedplus"+data.ads[i].image);
+
+           
+        
+              
+              console.log('ad_'+i)
+
+            }, i * 2000);
+          // Change the image every 2 seconds (2000 milliseconds)
+      }
+  } else {
+      
+  }
+});
+}
+console.log('hello')
+function newClick(){
+console.log('ads')
+const m = document.querySelector('#changeadsButton').click()
+console.log(m)
+}
+newClick() 
+     
+
+
+
+</script>
+
+

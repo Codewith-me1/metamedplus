@@ -350,17 +350,43 @@ body{
            
             
               {% if user.role == 'Doctor' %}
-             
+              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
               <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}">Appointment</a></li>
              
             
             
-          
+            
             <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
-            <li><a href="{% url 'approval' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
-            <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
-            <li><a href="{% url 'blood_component' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+            <li class="{% if request.resolver_match.url_name == 'patient_list' %}active{% endif %}" ><a href="{% url 'patient_list' %}"><i class="fa-solid fa-hospital-user"></i>   <span class="side_text">Patient</span></a></li>
+            
+            <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+              <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
+              <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
+              <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
+              <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
+              <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
+              <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
+              <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
+              <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
+              <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
+              <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
+              <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
+              <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
+              <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
+              <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
+              <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
+              <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
+              <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
+              <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
+              <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
+  
+              
+            </div>   
 
             <button class="dropdown-btn">Setup 
               <i class="fa fa-caret-down"></i>
@@ -401,6 +427,64 @@ body{
          
               <!-- Add other links that should be visible to doctors here -->
               {% endif %}
+            {% if user.role == 'Receptionist' %}
+
+            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
+            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+            <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Appointment</span></a></li>
+            <li><a href="{% url 'blood_component' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
+            <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Messaging </span>  </a></li>
+            <li class="{% if request.resolver_match.url_name == 'attendance' %}active{% endif %}"><a href="{% url 'attendance' %}"><i class="fa-solid fa-user-group"></i>   <span class="side_text">Attendance</span> </a></li>
+
+            <li class="{% if request.resolver_match.url_name == 'patient_list' %}active{% endif %}" ><a href="{% url 'patient_list' %}"><i class="fa-solid fa-hospital-user"></i>   <span class="side_text">Patient</span></a></li>
+
+              <button class="dropdown-btn dropdown-nested"> Referral
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
+              
+                <a class="dropdown-a" href="{% url 'add_referral_cate' %}">Referral Category</a>
+                 <a class="dropdown-a" href="{% url 'referral_commission' %}">Referral Commission</a>
+
+
+                
+
+              </div>
+
+              <button class="dropdown-btn">Setup 
+                <i class="fa fa-caret-down"></i>
+              </button>
+                <a class="dropdown-a" href="{% url 'med_det' %}">Medication Details</a>
+
+                <button class="dropdown-btn dropdown-nested"> Front Office
+                  <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  
+                  <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
+                  <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
+                   
+  
+                </div>
+
+                <button class="dropdown-btn dropdown-nested"> Referral
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                
+                  <a class="dropdown-a" href="{% url 'add_referral_cate' %}">Referral Category</a>
+                   <a class="dropdown-a" href="{% url 'referral_commission' %}">Referral Commission</a>
+  
+  
+                  
+  
+                </div>
+               
+              </div>    
+              
+                
+            {% endif %}
 
             {% if user.role == 'Admin' %}
             <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
@@ -412,6 +496,7 @@ body{
             <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
             <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
             <li><a href="{% url 'blood_component' %}"><i class="fa-solid fa-droplet"></i><span class="side_text">Blood Bank</span></a></li>
+            
             <li  class="{% if request.resolver_match.url_name == 'add_med' %}active{% endif %}" ><a href="{% url 'add_med' %}"><i class="fa-solid fa-mortar-pestle"></i><span class="side_text">Pharmacy</span></a></li>  
           <li><a href="{% url 'add_ambulance' %}"><i class="fa-solid fa-truck-medical"></i>   <span class="side_text">Ambulance</span></a></li>
           <li  class="{% if request.resolver_match.url_name == 'meeting' %}active{% endif %}" ><a href="{% url 'meeting' %}"><i class="fa-solid fa-globe"></i>   <span class="side_text">Meeting</span></a></li>
@@ -438,38 +523,14 @@ body{
             
             
           </div>    
-          <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
-            <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-container">
-            <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
-            <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
-            <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
-            <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
-            <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
-            <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
-            <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
-            <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
-            <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
-            <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
-            <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
-            <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
-            <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
-            <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
-            <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
-            <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
-            <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
-            <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
-            <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
-
-            
-          </div>   
+          
 
           
 
 
-          <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i>   <span class="side_text">Refferal</span>  </a></li>
-          <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i>   <span class="side_text">Messaging </span>  </a></li>
+          <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Refferal</span>  </a></li>
+          <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Messaging </span>  </a></li>
+          <li><a href="{% url 'blood_component' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
           <li><a href="{% url 'add_tpa' %}"><i class="fa-solid fa-person"></i>   <span class="side_text">TPA </span> </a></li>
           <li><a href="{% url 'add_itemstock' %}"><i class="fa-solid fa-boxes-stacked"></i>   <span class="side_text">Inventory</span> </a></li>
 
@@ -483,6 +544,7 @@ body{
             </button>
             <div class="dropdown-container">
               <a class="dropdown-a" href="{% url "add_income" %}">Income</a>
+              <a class="dropdown-a" href="{% url "expense_list" %}">Expense</a>
            
               
             </div> 
@@ -532,8 +594,17 @@ body{
                  
 
               </div>
+              
+              <button class="dropdown-btn dropdown-nested"> Front Office
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                
+                <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
+                <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
+                 
 
-             
+              </div>
               
               <button class="dropdown-btn dropdown-nested"> Expense
                 <i class="fa fa-caret-down"></i>
@@ -607,6 +678,7 @@ body{
             <div class="dropdown-container">
               <a class="dropdown-a" href="{% url "income_head" %}">Income</a>
               
+              
           
               <a  class="dropdown-a"href="{% url 'submit_symptom' %}">Systoms</a>
               <a  class="dropdown-a"href="{% url 'role_form' %}">Human Resource</a>
@@ -629,16 +701,7 @@ body{
 
 
               </div>
-              <button class="dropdown-btn dropdown-nested "> CMS
-                <i class="fa fa-caret-down"></i>
-              </button> 
-              <div class="dropdown-container">
-                
-                <a class="dropdown-a" href="{% url 'add_ads' %}">Ads </a>
-                <a class="dropdown-a" href="{% url 'add_hospital' %}">Header</a>
-                 
-
-              </div>
+    
 
 
 
@@ -790,36 +853,13 @@ body{
                  
               {% endif %}
 
-              {% if user.role == 'Receptionist' %}
-
-
               
-              <li  class="{% if request.resolver_match.url_name == 'purchase_med' %}active{% endif %}" ><a href="{% url 'purchase_med' %}">Pharmacy</a></li>  
-  <button class="dropdown-btn">Setup 
-                <i class="fa fa-caret-down"></i>
-              </button>
-             
-                <button class="dropdown-btn dropdown-nested"> Pharmacy
-                  <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url "supplier_form" %}">Supplier  </a> 
-                  
-                  <a class="dropdown-a" href="{% url 'med_det' %}">Medication Details</a>
-                   <a class="dropdown-a" href="{% url 'med_cat' %}">Medicine Category</a>
-
-
-
-                </div>
-               
-              </div>    
-              
-                
-              {% endif %}
-
 
 
               {% if user.role == 'Accountant' %}
+
+              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
               <li><a href="{% url 'opd' %}">Opd Billing</a></li>
             <li><a href="{% url 'ipd_patient' %}">IPD Billing</a></li>
             <li><a href="{% url 'path' %}">Pathology Billing</a></li>
@@ -945,8 +985,36 @@ body{
           {% if user.role == 'Radiologist' %}
              
             
-            
+          <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
             <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
+            <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-container">
+              <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
+              <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
+              <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
+              <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
+              <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
+              <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
+              <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
+              <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
+              <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
+              <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
+              <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
+              <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
+              <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
+              <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
+              <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
+              <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
+              <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
+              <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
+              <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
+  
+              
+            </div>   
+  
  
             
            
@@ -977,9 +1045,37 @@ body{
            
           {% endif %}
 
-              {% if user.role == "Pathalogist" %}
-           
+              {% if user.role == "Pathologist" %}
+              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
               <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
+              <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-container">
+                <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
+                <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
+                <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
+                <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
+                <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
+                <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
+                <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
+                <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
+                <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
+                <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
+                <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
+                <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
+                <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
+                <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
+                <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
+                <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
+                <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
+                <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
+                <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
+    
+                
+              </div>   
+    
              
               <button class="dropdown-btn"><i class="spin fa-solid fa-gear"></i>   <span class="side_text">Setup</span> 
                 <i class="fa fa-caret-down"></i>
@@ -1019,6 +1115,8 @@ body{
          {% endif %}
 
             {% if user.role == 'Nurse' %}
+            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
             <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
             <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
@@ -1073,9 +1171,15 @@ body{
               {% endif %}
 
               
+              
+              {% if user.role == 'HumanResource' %}
+              <li class="{% if request.resolver_match.url_name == 'staff_list' %}active{% endif %}"><a href="{% url 'staff_list' %}"><i class="fa-solid fa-user-group"></i>   <span class="side_text">Human Resource</span> </a></li>
 
+
+              {% endif %}
               {% if user.role == 'Pharmacist' %}
-
+              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+    
               <li  class="{% if request.resolver_match.url_name == 'purchase_med' %}active{% endif %}" ><a href="{% url 'purchase_med' %}">Pharmacy</a></li>  
               <button class="dropdown-btn">Setup 
                             <i class="fa fa-caret-down"></i>

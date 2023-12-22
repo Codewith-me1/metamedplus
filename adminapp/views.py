@@ -233,15 +233,15 @@ def login(request):
             elif user.role =='Manooj':
                 return redirect('doctor')
             elif user.role =='Radiologist':
-                return redirect('radiology')
-            elif user.role =='Pathalogist':
-                return redirect('path')
+                return redirect('doctor')
+            elif user.role =='Pathologist':
+                return render('doctor')
             
             elif user.role =='Nurse':
-                return redirect('ipd_patient')
+                return redirect('doctor')
             
             elif user.role =='Pharmacist':
-                return redirect('medicine_composition')
+                return redirect('doctor')
         
             elif user.role =='Accountant':
                 return redirect('doctor')
@@ -587,17 +587,21 @@ def add_staff(request):
 
 
         # Save the Staff object to the database
+        password = generate_random_password()
+        message = "Your Password Is " + password
+
+        subject = "Password"
+        print(password)
+        # send_email(request,email,message)
         staff.save()
     
 
         # Redirect to a success page or staff list page
-        password = generate_random_password()
+        
 
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
-        message = "Your Password Is " + password
-        subject = "Password"
-        print(password)
-        send_email(request,email,message)
+        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
+        
+        
         
 
         
@@ -7571,7 +7575,7 @@ def visitors(request):
         return render(request,'visitors/visit.html',context)
     visitor = Visitors.objects.all()
     context = {
-        'visitors':record,
+        'visitors':visitor,
     }
     return render(request,'visitors/visit.html',context)
   
