@@ -27,7 +27,17 @@
       
         width: 89% !important ;
       } 
+    
+     
+      @media only screen and (min-width: 1500px){
+        .branding{
+          display:block;
+        }
+      }
       @media only screen and (max-width:768px) and (min-width:300px){
+        .branding{
+          display:none;
+        }
         width: 90% !important ;
       }
 
@@ -126,7 +136,9 @@
         }
 
         @media only screen and(max-width:768px) and (min-width:300px){
-        
+          .branding{
+            display:none;
+          }
           .btn{
             display:none !important;
           }
@@ -252,6 +264,9 @@
           }
           
           @media only screen and (max-width: 767px) {
+            .branding{
+              display:none;
+            }
             .previous_btn {
               left: 50px;
             }

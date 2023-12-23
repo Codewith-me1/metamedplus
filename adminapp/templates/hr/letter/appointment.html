@@ -1,0 +1,116 @@
+
+{% include "layout/header.html" %}
+{% include "layout/sidebar.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Letter</title>
+
+  {% load static %}
+  <style>
+  
+  .apply{
+      width:70%;
+  }
+  form{
+    padding:2rem;
+  }
+  </style>
+  <div class='container'>
+    <div class="main-header">
+        <h1 class="headline">Offer Letter</h1>
+        <div class="side-btns">
+         
+        <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+      
+        
+    </div>  </div>  
+                      <form   enctype="multipart/form-data" method="post" action="{% url 'appointment_letter' %}">
+                          {% csrf_token %}
+  
+                          
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" name="date" >
+                        </div>
+                        <div class="form-group">
+                            <label for="employe">Employee Name</label>
+                            <input type="text" id="employe" name="employe" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="position">Employee Designation</label>
+                            <input type="text" id="position" name="position" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="department">Employee Department</label>
+                            <input type="text" id="department" name="department" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="joining">Joining Date</label>
+                            <input type="date" id="joining" name="joining" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <input type="text" id="salary" name="salary" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="basis">Salary Basis [biweekly/monthly] </label>
+                            <input type="text" id="basis" name="basis" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expiry">Offer Expiry Date</label>
+                            <input type="date" id="expiry" name="expiry" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sender">Sender Name</label>
+                            <input type="text" id="sender" name="sender" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sender_designation">Sender Designation</label>
+                            <input type="text" id="sender_designation" name="sender_designation" >
+                        </div>
+
+
+
+                  
+                          
+                          <div style="text-align: center;">
+                              <input class="btn btn-primary" type="submit" value="Submit">
+                          </div>
+                      </form>
+             
+          
+      
+      
+      
+      
+      
+      
+      
+       
+       
+  
+  
+      
+  
+      
+      
+<script src="{% static "/css/javscript/index.js" %}"></script>
+  <script>
+  
+      </script>
+  
+  </div>
+  </body>
+  </html> 

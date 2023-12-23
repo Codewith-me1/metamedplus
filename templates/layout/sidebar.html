@@ -433,7 +433,7 @@ body{
     
             <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
             <li  class="{% if request.resolver_match.url_name == 'appointment' %}active{% endif %}" ><a href="{% url 'appointment' %}"><i class="fa-solid fa-calendar-days"></i><span class="side_text">Appointment</span></a></li>
-            <li><a href="{% url 'blood_component' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
+            <li><a href="{% url 'visitors' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
             <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Messaging </span>  </a></li>
             <li class="{% if request.resolver_match.url_name == 'attendance' %}active{% endif %}"><a href="{% url 'attendance' %}"><i class="fa-solid fa-user-group"></i>   <span class="side_text">Attendance</span> </a></li>
 
@@ -530,7 +530,7 @@ body{
 
           <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Refferal</span>  </a></li>
           <li><a href="{% url 'send_mail' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Messaging </span>  </a></li>
-          <li><a href="{% url 'blood_component' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
+          <li><a href="{% url 'visitors' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
           <li><a href="{% url 'add_tpa' %}"><i class="fa-solid fa-person"></i>   <span class="side_text">TPA </span> </a></li>
           <li><a href="{% url 'add_itemstock' %}"><i class="fa-solid fa-boxes-stacked"></i>   <span class="side_text">Inventory</span> </a></li>
 
@@ -687,7 +687,16 @@ body{
               
               
               <li><a class="dropdown-nested" href="{% url 'add_bed' %}"> <p class="dropdown-nested">Bed</p> </a></li>
-              
+              <button class="dropdown-btn dropdown-nested"> Front Office
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                
+                <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
+                <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
+                 
+
+              </div>
               <button class="dropdown-btn dropdown-nested">Hospital Charges 
                 <i class="fa fa-caret-down"></i>
               </button>

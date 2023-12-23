@@ -11,24 +11,41 @@
         h1{
             text-align: center;
         }
+        .header{
+            display: flex;
+
+        }
+        .header img{
+            
+            width: 12rem;
+            height: 12rem;
+        }
+        .header h1{
+            margin-left:10rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <img alt="Logo" src="/root/projectdir/metamedplus{{image}}">
+            
+            
         <h1>Offer {{name}}</h1>
-        <p>____________________</p>
-        <p>________</p>
+        </div>
+        <p class="name">{{company_name}}</p>
+        <p class="name">{{date}}</p>
         <p>Subject : Employment Offer</p>
-        <p>Dear _____</p>
-        <p>We at ______________________ are pleased to offer you the position of _______ in our ___________</p>
-        <p>Your starting date will be _________ . The starting salary is _______ per year paid on a ____________ basis by direct deposit. This offer of employment is contingent on you passing a pre-employment background check and signing standard confidentiality agreements.</p>
-        <p> If you choose to accept this job offer, please sign and return this letter at your earliest convenience by___________. Once your acceptance has been received, we will send you information about onboarding and other asset details.</p>
+        <p>Dear <span class="">{{employe}}</span></p>
+        <p>We at {{company_name}} are pleased to offer you the position of {{designation}} in our {{department}} </p>
+        <p>Your starting date will be {{joining_date}} . The starting salary is {{salary}} per year paid on a {{basis}} basis by direct deposit. This offer of employment is contingent on you passing a pre-employment background check and signing standard confidentiality agreements.</p>
+        <p> If you choose to accept this job offer, please sign and return this letter at your earliest convenience by {{expiry_date}}. Once your acceptance has been received, we will send you information about onboarding and other asset details.</p>
         <p>Congratulations! We look forward to working with you. Please let me know if you have any questions or concerns.</p>
 
         <p>Sincerely,</p>
-        <p>______________</p>
-        <p>______________</p>
-        <p>______________________</p>
+        <p>{{sender_name}}</p>
+        <p>{{sender_designation}}</p>
+        <p>{{company_name}}</p>
 
 
     </div>

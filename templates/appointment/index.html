@@ -120,6 +120,9 @@
 .download{
   border-radius:8px;
 }
+.appointment_pdf{
+  display:flex;
+}
   
 </style>
 </style>
@@ -265,9 +268,21 @@
 
  
   {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+  <form class="appointment_pdf" method="POST" >
+  <div class="form-group">
+    <label for="from_date">From Date</label>
+    <input type="date" id="from_date" name="from_date" required>
+  </div>
+  <div class="form-group">
+    <label for="to_date">To Date</label>
+    <input type="date" id="to_date" name="to_date" required>
+  </div>
+  <button class="btn btn-primary"> Download </button>
+</form>
   <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Appointment Form</a>
   <a  class="btn-primary btn" href="/patient/list/">Add Patient</a>
   <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+  <button type="button" class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
                               
 
 
@@ -312,7 +327,7 @@
         {% endfor %}
       </tbody>
     </table>
-    <button type="button" class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+    
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js" integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="{% static "/css/javscript/index.js" %}"></script>

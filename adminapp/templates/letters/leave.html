@@ -15,21 +15,29 @@
 </head>
 <body>
     <div class="container">
-        <h1>Leave {{name}}</h1>
+        <div class="header">
+            <img alt="Logo" src="/root/projectdir/metamedplus{{image}}">
+            
+            
+            <h1>Leave {{name}}</h1>
+        </div>
+        
     
         
-        <p>Dear ___________</p>
+        <p>{{date}}</p>
+        <p>{{company_name}}</p>
+        
+        <p>Dear {{manager}}</p>
       
-        <p>I Am Writing to request a leave of absence from the company for ___________from  ____________ to _____________. I Shall be taking this to __________________________</p>
+        <p>I Am Writing to request a leave of absence from the company for {{days}} from {{from_date}} to {{to_date}}. I Shall be taking this to {{reason}} </p>
         <p>I Shall make sure to finish all my existing and pending workload before my leave. If you have any more questions regarding my request for leave. I Am Looking Forward to receive a positive response from you</p>
-        <p>Congratulations! We look forward to working with you. Please let me know if you have any questions or concerns.</p>
+        
 
         <p>Regards</p>
-        <p>______________</p>
+        <p>{{employe}}</p>
         <br>
         <br>
-        <p>______________________</p>
-
+  
 
     </div>
 </body>

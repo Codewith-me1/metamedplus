@@ -752,6 +752,17 @@ def doctor(request):
         }
      
     return render(request,'panels/doctor.html',context)
+
+
+def radiologist(request):
+    total_radio = Radiology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    context = {
+        'radio':total_radio,
+    }
+
+    return render(request,'panels/radiologist.html',context)
 def search_staff(request):
     if 'q' in request.GET:
         query = request.GET['q']
@@ -8801,22 +8812,49 @@ def send_notification_push(request):
 
 
 def appointment_letter(request):
-    context = {
+    if request.method == "POST":
+        employe = request.POST.get('employe')
+        date = request.POST.get('date')
+        designation = request.POST.get('designation')
+        joining = request.POST.get('joining')
+        salary = request.POST.get('salary')
+        basis = request.POST.get('basis')
+        expiry = request.POST.get('expiry')
+        department = request.POST.get('department')
+        sender = request.POST.get('sender')
+        basis = request.POST.get('basis')
+        sender_designation = request.POST.get('sender_designation')
+        hospital_name = header.objects.all().first()
+        context = {
+        'sender_designation':sender_designation,
+        'basis':basis,
+        'sender_name':sender,
+        'expiry_date':expiry,
+        'salary':salary,
+        'image':hospital_name.image.url if hospital_name else 'Logo',
+        'joining_date':joining,
+        'department':department,
+        'company_name':hospital_name.name if hospital_name else 'Your Hospital',
+        'designation':designation,
+        'date':date,
+        'employe':employe,
         'name':'Letter'
-    }
-    template = get_template('letters/appointment.html')
-    html = template.render(context)
+          }
+    
+        template = get_template('letters/appointment.html')
+        html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
+        if pisa_status.err:
+            return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    return render(request,'hr/letter/appointment.html')
 def resign_letter(request):
     context = {
         'name':'Letter'
@@ -8837,41 +8875,67 @@ def resign_letter(request):
 
 
 def leave_letter(request):
-    context = {
+    if request.method == "POST":
+        employe = request.POST.get('employe')
+        date = request.POST.get('date')
+        
+        
+        to = request.POST.get('to')
+        from_date = request.POST.get('from_date')
+        days = request.POST.get('days')
+        reason = request.POST.get('reason')
+        to_date = request.POST.get('to_date')
+        
+        
+        hospital_name = header.objects.all().first()
+        context = {
+       
+      
+ 
+        'image':hospital_name.image.url if hospital_name else 'Logo',
+        'from_date':from_date,
+        'to_date':to_date,
+        'manager':to,
+        'company_name':hospital_name.name if hospital_name else 'Your Hospital',
+        
+        'date':date,
+        'days':days,
+        'employe':employe,
+        'reason':reason,
         'name':'Letter'
-    }
-    template = get_template('letters/leave.html')
-    html = template.render(context)
+          }
+   
+        template = get_template('letters/leave.html')
+        html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="leave.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="leave.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
-
+        if pisa_status.err:
+            return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    
+    return render(request,'hr/letter/leave.html')
 def sampleappointment_letter(request):
-    context = {
-        'name':'Letter'
-    }
-    template = get_template('letters/sample_appointment.html')
-    html = template.render(context)
+    
+        template = get_template('letters/sample_appointment.html')
+        html = template.render(template)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
-
+        if pisa_status.err:
+                return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    
 
 
 def sampleresign_letter(request):

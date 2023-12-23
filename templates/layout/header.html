@@ -84,7 +84,8 @@ body{
         }
         a.logo img{
           float:left;
-          width:17rem;
+          width: 15rem;
+          height: 12rem;
       }
 
         .navbar a:hover {
@@ -108,7 +109,7 @@ body{
             margin-left:2rem;
             font-size:3rem;
             margin-top: 2rem;
-            color:#ee9d1f !important;
+            color:#09a1d9 !important;
         }
 
         .modal {
@@ -327,6 +328,13 @@ form input.operator{
 .search i{
   padding-top:20px !important;
 }
+.branding{
+  width:10%;
+  float:left;
+  margin-left:15%;
+  display:none;
+  
+}
 
           
     </style>
@@ -352,10 +360,10 @@ form input.operator{
 
  
     
-    <a href="#" class="logo"><img src="/root/projectdir/metamedplus/static/css/images/Pheonix.png" alt="Logo"></a>
-    <a class="navbar-brand" href="#">Your Hospital Name</a>
-   
-
+    <a href="/home" class="logo"><img src="/root/projectdir/metamedplus/static/css/images/Pheonix.png" alt="Logo"></a>
+    <a class="navbar-brand" href="/home">Your Hospital Name</a>
+  
+    <img class="branding" src="{% static "cms/Pheonixhis.png" %}">
     <div class="header-btn">
         <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
         <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>

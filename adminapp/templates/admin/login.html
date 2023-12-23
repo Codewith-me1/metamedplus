@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Login</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {% load static %}
     <style>
         /* Basic CSS styles for the form */
@@ -77,15 +78,21 @@
             background-color:#ee9d1f ;
 
         }
-        .background{
-            margin-top:25%;
+        .login_form{
+            margin-bottom:10%;
+            
+        
+        }
+        html{
+            width:100%;
+            height:100%;
         }
         body{
             
 
 
             background-image: url('{% static "css/bg.png" %}');
-            background-size: 100%;
+            background-size: cover;
 background-repeat: no-repeat;
 background-position: center;
 background-attachment: fixed;
@@ -98,12 +105,124 @@ background-attachment: fixed;
         position:absolute;
         bottom:10px;
         right:50px;
+        color: white;
     }
+    .logo{
+        margin-top:10%;
+        margin-bottom: 10%;
+        display:flex;
+            justify-content:center;
+
+    }
+    .policy{
+        display:flex;
+        justify-content:space-between;
+    }
+    .fa-facebook {
+        background: #3B5998;
+        color: white;
+
+      }
+      
+      .fa-twitter {
+        background: #55ACEE;
+        color: white;
+      }
+      .fa-linkedin {
+        background: #007bb5;
+        color: white;
+      }
+      .fa{
+        padding: 10px;
+  font-size: 30px;
+  width: 32px;
+  text-align: center;
+  text-decoration: none;
+  border-radius:100px;
+      }
+      .fa:hover {
+        opacity: 0.7;
+      }
+      .fa-instagram {
+        background: #125688;
+        color: white;
+
+      }
+      .socials{
+        margin-top:15rem;
+        padding-left:0rem;
+        position: fixed;
+        bottom: 150px;
+        background-color:white;
+        border-radius:15px;
+        right: 40px;
+        
+      }
+      .socials a{
+        margin:1rem;
+        text-decoration:none;
+        display:block;
+      }
+
+      @media screen and (max-width :768px){
+        .socials a{
+            display:inline;
+            margin:2rem 1rem 0rem 1rem;
+        }
+       
+        .socials{
+            margin-top:15rem;
+            display:flex;
+            width:100%;
+            right:0px;
+            padding-left:0rem;
+            position: fixed;
+            bottom: 150px;
+            background-color:transparent ;
+            border-radius:15px;
+            justify-content:center;
+         
+
+        }
+
+        .fa{
+            padding: 10px;
+      font-size: 20px;
+      width: 20px;
+      text-align: center;
+      text-decoration: none;
+      border-radius:10px;
+          }
+          .privacy{
+            display:block;
+           text-align: center !important;
+           width:100%;
+           right:0px;
+
+          }
+          .policy{
+            display:block;
+
+          }
+    
+
+          {% comment %} .fa fa-facebook{
+            width: 40px; !important
+            font-size: 30px; !important
+          } {% endcomment %}
+      }
     </style>
 
 </head>
 <body>
+    {% load static %}
+    
     <div class="background">
+        <div class="logo">
+            <img src="{% static "cms/Pheonixbg2.png" %}">
+        </div>
+        <div class="login_form">
+            <div class="form-login">
     <h1> Login</h1>
     <form method="post" action="{% url "login" %}">
         {% csrf_token %}
@@ -116,8 +235,24 @@ background-attachment: fixed;
         <button type="submit">Login</button>
     </form>
 </div>
+    <div class="socials">
+        <a href="#" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-linkedin"></a>
+        <a href="#" class="fa fa-instagram"></a>
+
+    </div>
+    
+</div>
+
 <div class="privacy">
-<p>@Saiph Technologies Pvt Ltd</p>
+    <p>@Saiph Technologies Pvt Ltd</p>
+    <div class="policy">
+    <p>T&C</p>
+    <p>Privacy Policy</p>
+
+    </div>    
+    </div>
 </div>
 
 </body>
