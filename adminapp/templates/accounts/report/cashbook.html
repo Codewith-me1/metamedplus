@@ -17,7 +17,18 @@
 .side-btns{
     text-align:center !important;
 }
-
+.side-btns{
+    display:flex;
+    margin-top:0px;
+}
+.side-btns a{
+    margin:3rem 1rem 1rem 1rem;
+}  
+.pdf{
+    display:flex;
+    align-items:flex-end;
+}
+    
 .show-debit {
     display: block !important;
 }
@@ -113,7 +124,18 @@
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
     <h1 style="display:inline; text-align:center; margin-right:10rem;"> Total Balance: {{balance}} </h1>
-
+    <form class="pdf" method="POST" action="{% url "cash_pdf" %}" >
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="from_date">From Date</label>
+          <input type="date" id="from_date" name="from_date" required>
+        </div>
+        <div class="form-group">
+          <label for="to_date">To Date</label>
+          <input type="date" id="to_date" name="to_date" required>
+        </div>
+        <button class="btn btn-primary"> Download </button>
+      </form>
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Record </a>
     <a  class="btn-primary btn" href="/cash_pdf">CashBook Download</a>
     

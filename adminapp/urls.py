@@ -80,6 +80,7 @@ urlpatterns = [
     path('pathology/get_tax_info', views.get_tax_info, name='get_tax_info'),
     path('get_tax', views.get_tax, name='get_tax'),
     path('opd',views.opd,name='opd'),
+    path('panels/dashboard',views.pathalogist,name='pathalogist'),
     path('purchase_med',views.purchase_med,name='purchase_med'),
     path('nurse/<int:id>/',views.add_nursing_record,name='nurse'),
     path('doctor/<int:id>/',views.add_doctor_record,name='doctor'),

@@ -198,6 +198,16 @@ from django.contrib.auth import login as log
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 
+
+
+def pathalogist(request):
+    total_radio = Radiology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    context = {
+        'radio':total_radio,
+    }
+    return render(request,'panels/pathalogy.html',context)
 def login(request):
      if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -208,7 +218,7 @@ def login(request):
         print(password)
         print(username)
         user = authenticate(username=username, password=password)
-        log(request,user)
+        
         total_opd = OpdPatient.objects.all().aggregate(
         total_opd=Sum(F('amount'))
         )['total_opd'] or 0
@@ -217,15 +227,83 @@ def login(request):
         total_ipd = Ipd_Payments.objects.all().aggregate(
         total_balance=Sum(F('amount'))
         )['total_balance'] or 0
+        total_opd = OpdPatient.objects.all().aggregate(
+        total_opd=Sum(F('amount'))
+        )['total_opd'] or 0
+
+       
+        total_ipd = Ipd_Payments.objects.all().aggregate(
+        total_balance=Sum(F('amount'))
+        )['total_balance'] or 0
+    
+        total_path = Pathology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+        total_radio = Radiology.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+        total_blood = BloodDonation.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+        )['total_balance'] or 0
+    
+        total_ambu = add_ambulancecall.objects.all().aggregate(
+        total_balance=Sum(F('net_amount'))
+             )['total_balance'] or 0
+    
+        total_med = Purchase.objects.all().aggregate(
+        total_balance=Sum(F('amount'))
+            )['total_balance'] or 0
+    
+        try:
+            indirect_expense_category = Expense_Category.objects.get(expense_type='Indirect_Expense')
+            indirect_expenses = Expense_Invoice.objects.filter(expense_category=indirect_expense_category)
+            total_indirect_expense = indirect_expenses.aggregate(total_indirect=Sum('total'))['total_indirect'] or 0
+        except Expense_Category.DoesNotExist:
+            total_indirect_expense = 0
+
+        try:
+            direct_expense_type = Expense_Category.objects.get(expense_type='Direct_Expense')
+            direct_expense = Expense_Invoice.objects.filter(expense_category=direct_expense_type)
+            total_direct_expense = direct_expense.aggregate(total_direct=Sum('total'))['total_direct'] or 0
+        except Expense_Category.DoesNotExist:
+            total_direct_expense = 0
+
+        income = Income.objects.all().aggregate(
+        total_income= Sum(F('amount'))
+        )['total_income']or 0
+
+        doctor = AddStaff.objects.filter(role="Doctor").count()
+        pathologist = AddStaff.objects.filter(role="Pathalogist").count()
+        radiologist = AddStaff.objects.filter(role="Radiologist").count()
+        nurse = AddStaff.objects.filter(role="Nurse").count()
+        accountant = AddStaff.objects.filter(role="Accountant").count()
+
+        expense = total_indirect_expense+total_direct_expense
 
         context ={
             'opd':total_opd,
             'ipd':total_ipd,
-        }
+            'path':total_path,
+            'blood':total_blood,
+            'ambulance':total_ambu,
+            'income':income,
+            'med':total_med,
+            'acc':accountant,
+            'doctor':doctor,
+            'nurse':nurse,
+            'radiologist':radiologist,
+            'pathalogist':pathologist,
+            'radio':total_radio,
+            'expense':expense,
+
+            }
+        
         if user is not None:
-            log(request, user)  # Corrected login function call
+            log(request,user)
             if user.role == 'Doctor':
-                return redirect('ipd_patient')  # Redirect to the doctor's dashboard
+                return redirect('pathalogist')  # Redirect to the doctor's dashboard
             elif user.role == 'Admin':
                 return redirect('doctor') 
             elif user.role == 'New':
@@ -233,21 +311,24 @@ def login(request):
             elif user.role =='Manooj':
                 return redirect('doctor')
             elif user.role =='Radiologist':
-                return redirect('doctor')
-            elif user.role =='Pathologist':
-                return render('doctor')
-            
+                return redirect('pathalogist')
+            elif user.role =='Pathologist': 
+                return redirect('pathalogist')
             elif user.role =='Nurse':
-                return redirect('doctor')
+                return redirect('pathalogist')
             
             elif user.role =='Pharmacist':
-                return redirect('doctor')
+                return redirect('pathalogist')
         
             elif user.role =='Accountant':
                 return redirect('doctor')
         
         
-
+            elif user.role == "HumanResource":
+                return redirect('pathalogist')
+            elif user.role == "Cashier":
+                return redirect('pathalogist')
+            
             else:
                 return redirect('doctor')
 
@@ -6199,24 +6280,25 @@ def create_liablity(request):
 
 
 
-
 def IPD_pdf(request,id):
 
-    
-    
     ipd_patient = IpdPatient.objects.get(id=id)
     hospital_name = header.objects.all().first()
    
 
+        
+
+        
     context = {
-            'id':ipd_patient.id,
-            'name':ipd_patient.patient.name,
-            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
-            'phone':ipd_patient.patient.phone,
-            'doctor':ipd_patient.consultant_doctor,
-            'bed':ipd_patient.bed_number,
-            'gender':ipd_patient.patient.gender,
+                'id': ipd_patient.id,
+                'name': ipd_patient.patient.name,
+                'hospital_name': hospital_name.name if hospital_name else 'Your Hospital',
+                'phone': ipd_patient.patient.phone,
+                'doctor': ipd_patient.consultant_doctor,
+                'bed': ipd_patient.bed_number,
+                'gender': ipd_patient.patient.gender,
         }
+
     template = get_template('templat/ipd_pdf.html')
     html = template.render(context)
 
@@ -6229,9 +6311,10 @@ def IPD_pdf(request,id):
 
     # Return the response
     if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
+            return HttpResponse('PDF generation failed', content_type='text/plain')
     
     return response
+    
 
 
 
@@ -8284,33 +8367,36 @@ def bank_pdf(request,id):
 
 def cash_pdf(request):
 
-        
-    cash=CashBook.objects.all()
+    if request.method =="POST":
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        cash=CashBook.objects.filter(date__range=(from_date,to_date))
 
 
-    total_debit = sum(transaction.debit or 0 for transaction in cash)
-    total_credit = sum(transaction.credit or 0 for transaction in cash)
-    dt = datetime.now()
-    date = dt.strftime("%A, %d %B %Y")
-    balance = total_credit-total_debit
-    context= {
-        'balance':balance,
-        'date':date,    
-        'cash':cash,
+        total_debit = sum(transaction.debit or 0 for transaction in cash)
+        total_credit = sum(transaction.credit or 0 for transaction in cash)
+        dt = datetime.now()
+        date = dt.strftime("%A, %d %B %Y")
+        balance = total_credit-total_debit
+        context= {
+            'balance':balance,
+            'date':date,    
+            'cash':cash,
     }
-    template = get_template('templat/cash_pdf.html')
-    html = template.render(context)
+        template = get_template('templat/cash_pdf.html')
+        html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="cashbook.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="cashbook.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     # Return the response
-    if pisa_status.err: 
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
+        if pisa_status.err: 
+            return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    return redirect('cashbook')
 
 def bankorigin(request):
 
@@ -9465,45 +9551,58 @@ def attendance_form(request):
 
 def download_ipdcolumn(request):
 
-    ipd = IpdPatient.objects.all()
-    hospital_name = header.objects.all().first()
-    context ={
-        'ipd': ipd,
-        'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
-    }
-    template = get_template('templat/ipd_list.html')
-    html = template.render(context)
+    
+    if request.method=="POST":
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        
+        ipd_patient = IpdPatient.objects.filter(admission_date__range=(from_date, to_date))
+    
+        hospital_name = header.objects.all().first()
+        context ={
+            'ipd': ipd_patient,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+        }
+        template = get_template('templat/ipd_list.html')
+        html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="ipd_list.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="ipd_list.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
+        if pisa_status.err:
+            return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    return redirect('ipd_patient')
 
 
 def download_opdcolumn(request):
+    if request.method=="POST":
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+        
+        opd = OpdPatient.objects.filter(admission_date__range=(from_date, to_date))
 
-    opd = OpdPatient.objects.all()
-    hospital_name = header.objects.all().first()
-    context ={
-        'opd': opd,
-        'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
-    }
-    template = get_template('templat/opd_list.html')
-    html = template.render(context)
+    
+        hospital_name = header.objects.all().first()
+        context ={
+            'opd': opd,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+        }
+        template = get_template('templat/opd_list.html')
+        html = template.render(context)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="opd_list.pdf"'
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="opd_list.pdf"'
 
     # Generate PDF from HTML using ReportLab and pisa
-    pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(html, dest=response)
 
     # Return the response
-    if pisa_status.err:
-        return HttpResponse('PDF generation failed', content_type='text/plain')
-    return response
+        if pisa_status.err:
+            return HttpResponse('PDF generation failed', content_type='text/plain')
+        return response
+    return redirect('opd')

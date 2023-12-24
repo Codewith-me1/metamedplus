@@ -994,7 +994,7 @@ body{
           {% if user.role == 'Radiologist' %}
              
             
-          <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+          <li  class="{% if request.resolver_match.url_name == 'pathalogist' %}active{% endif %}" ><a href="{% url 'pathalogist' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
     
             <li><a href="{% url 'radiology' %}"><i class="fa-solid fa-stethoscope"></i><span class="side_text">Radiology</span></a></li>
             <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  

@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
+from datetime import date
 from django.dispatch import receiver
 # Create your models here.
 import datetime
@@ -218,6 +219,7 @@ class IpdPatient(models.Model):
     consultant_doctor = models.CharField(max_length=255)
     bed_group = models.CharField(max_length=255)
     bed_number = models.CharField(max_length=10)
+    date = models.DateField(default=date.today())
     discharged_status = models.BooleanField(default=False)
     discharged = models.CharField(max_length=20,default='normal')
 
@@ -703,6 +705,30 @@ class Radio_Parameter(models.Model):
 
 
 
+class BalanceSheet(models.Model):
+    total_sales = models.DecimalField(max_digits=13, decimal_places=3)
+    total_purchases = models.DecimalField(max_digits=13, decimal_places=3)
+    balance = models.DecimalField(max_digits=13, decimal_places=3)
+    opening_stock = models.DecimalField(max_digits=13, decimal_places=3)
+    closing_stock = models.DecimalField(max_digits=13, decimal_places=3)
+    total_sales_tax = models.DecimalField(max_digits=13, decimal_places=3)
+    total_short_term_assets = models.DecimalField(max_digits=13, decimal_places=3)
+    total_long_term_liability = models.DecimalField(max_digits=13, decimal_places=3)
+    total_short_term_liability = models.DecimalField(max_digits=13, decimal_places=3)
+    total_long_term_assets = models.DecimalField(max_digits=13, decimal_places=3)
+    total_purchase_tax = models.DecimalField(max_digits=13, decimal_places=3)
+    start_date = models.DateField()
+    receivable = models.DecimalField(max_digits=13, decimal_places=3)
+    payable = models.DecimalField(max_digits=13, decimal_places=3)
+    indirect_expense = models.DecimalField(max_digits=13, decimal_places=3)
+    direct_expense = models.DecimalField(max_digits=13, decimal_places=3)
+    withdraw = models.DecimalField(max_digits=13, decimal_places=3)
+    equity = models.DecimalField(max_digits=13, decimal_places=3)
+    other_income = models.DecimalField(max_digits=13, decimal_places=3)
+
+    def __str__(self):
+        return f'Financial Summary for {self.start_date}'
+    
 
 class OpdPatient(models.Model):
     id = models.AutoField(primary_key=True)
@@ -725,7 +751,7 @@ class OpdPatient(models.Model):
     consultant_doctor = models.CharField(max_length=255)
     discharged_status = models.BooleanField(default=False)
     discharged = models.CharField(max_length=20,default='normal')
-
+    date = models.DateField(default=date.today())
     charge_category = models.CharField(max_length=100, blank=True, null=True)
     charge_name = models.CharField(max_length=100, blank=True, null=True)
     tax_percentage = models.IntegerField(max_length=5, blank=True, null=True)

@@ -211,6 +211,7 @@ button a{
 
 {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
 <form class="pdf" method="POST" action="{% url "download_ipdcolumn" %}" >
+    {% csrf_token %}
     <div class="form-group">
       <label for="from_date">From Date</label>
       <input type="date" id="from_date" name="from_date" required>
