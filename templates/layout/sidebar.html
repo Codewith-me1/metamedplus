@@ -41,6 +41,17 @@
 
 
 }
+.header-btn{
+  top:50px; 
+  height:50px;
+}
+.top-bar-text{
+  display:none;
+}
+.top-bar-text1 ,.top-bar-text2{
+  display:none;
+  
+}
 
 
 
@@ -261,8 +272,31 @@ body{
   .hide_download{
     display:none !important;
   }
+  .search{
+    position:static;
+
+  }
+
+  .top-bar-text{
+    display:none;
+  }
+  .top-bar-text1 ,.top-bar-text2{
+    display:none;
+    
+  }
   
+
 }
+
+
+@media only screen and (max-width:1350px) and (min-width:1250px) {
+  input#search-input {
+    width: 70%;
+}
+
+
+}
+
 
 @media only screen and (max-width:1350px) and (min-width:300px) {
   
@@ -1055,7 +1089,7 @@ body{
           {% endif %}
 
               {% if user.role == "Pathologist" %}
-              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+              <li  class="{% if request.resolver_match.url_name == 'pathalogist' %}active{% endif %}" ><a href="{% url 'pathalogist' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
     
               <li><a href="{% url 'path' %}"><i class="fa-solid fa-prescription-bottle-medical"></i><span class="side_text">Pathology</span></a></li>
               <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
@@ -1124,7 +1158,7 @@ body{
          {% endif %}
 
             {% if user.role == 'Nurse' %}
-            <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+            <li  class="{% if request.resolver_match.url_name == 'pathalogist' %}active{% endif %}" ><a href="{% url 'pathalogist' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
     
             <li><a href="{% url 'opd' %}"><i class="fa-solid fa-kit-medical"></i><span class="side_text">OPD</span></a></li>
             <li><a href="{% url 'ipd_patient' %}"><i class="fa-solid fa-laptop-medical"></i><span class="side_text">IPD</span></a></li>
@@ -1187,7 +1221,7 @@ body{
 
               {% endif %}
               {% if user.role == 'Pharmacist' %}
-              <li  class="{% if request.resolver_match.url_name == 'doctor' %}active{% endif %}" ><a href="{% url 'doctor' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+              <li  class="{% if request.resolver_match.url_name == 'pathalogist' %}active{% endif %}" ><a href="{% url 'pathalogist' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
     
               <li  class="{% if request.resolver_match.url_name == 'purchase_med' %}active{% endif %}" ><a href="{% url 'purchase_med' %}">Pharmacy</a></li>  
               <button class="dropdown-btn">Setup 

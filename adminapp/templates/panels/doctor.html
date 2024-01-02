@@ -366,8 +366,9 @@ color:#6A727A !important;
 }
 
     </style>
-
+    {% if user.role == "Admin" %}
     <div class="container">
+      {% endif %}
       {%  if user.role == 'Admin' %}
     <div class="main-cards">
         <div class="card">
@@ -653,6 +654,7 @@ color:#6A727A !important;
      </div>
 
      <button id="changeadsButton" onClick="changeads()">Change ads</button>
+     
 </body>
 <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">

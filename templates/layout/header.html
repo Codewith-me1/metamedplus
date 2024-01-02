@@ -85,11 +85,11 @@ body{
         a.logo img{
           float:left;
           width: 15rem;
-          height: 12rem;
+
       }
 
         .navbar a:hover {
-            background-color: #ddd; /* Change the background color on hover */
+           
             color: black;
         }
         .container{
@@ -100,15 +100,31 @@ body{
         }
 
         .search{
-            float:right !important; 
+          
+          position: absolute;
+          right: 10px; 
+          display: flex;
+    align-items: center;
         }
+
+        .header-btn {
+          top: 62px;
+          padding-top:6px;
+    height: 65px;
+          background-color: #605BFF;
+          position: fixed;
+          color:white;
+          width: 100%;
+          
+          float: left;
+      }
         .navbar{
             background-color: white;
         }
         .navbar-brand{
             margin-left:2rem;
             font-size:3rem;
-            margin-top: 2rem;
+            margin-top: 5px;
             color:#09a1d9 !important;
         }
 
@@ -151,19 +167,19 @@ body{
             cursor: pointer;
           }
           #myBtn{
-            float: right;
+            float: left;
             border:none;
-            color:black !important;
+            color:white !important;
             margin:0.5rem 1rem 1rem 0.5rem;
             transition: transform .7s ease-in-out;
 
             
           }
           #myBtns{
-            float: right;
+            float: left;
             border:none;
             border-radius:5px;
-            color:black !important;
+            color:white !important;
             margin:0.5rem 1rem 1rem 0.5rem;
 
             
@@ -188,15 +204,9 @@ body{
           #myBtns:hover i , svg{
             transform: scale(1.2);
           }
-          #myBtn:hover{
-            color:white !important;
-            background-color:#009bf6 !important; 
-          
-          }
-          #myBtns:hover{
-            color:white !important;
-            background-color:#605BFF !important;
-          }
+
+        
+
           .beds{
             display:flex;
 
@@ -319,6 +329,7 @@ form input.operator{
 #search-button{
 
   border:none !important;
+  background-color: #00ffff00;
   margin:0.5rem 2rem 1rem 0.5rem;
 
 }
@@ -330,12 +341,58 @@ form input.operator{
 }
 .branding{
   width:10%;
-  float:left;
+  float:right;
   margin-left:15%;
-  display:none;
+
   
 }
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.top-bar-text{
+  padding-left:10px;
+}
+
+.top-bar-text1{
+  border:solid white;
+  border-width:0px 1px 0px 0px;
+  padding:10px;
+}
+
+.top-bar-text2{
+  text-align:left !important;
+  padding:10px !important;
+}
+
+a.top-bar-icon{
+  margin:10px 0px 10px 0px  !important;
+  padding:10px 1px 10px 1px  !important;
+}
           
     </style>
 
@@ -358,114 +415,136 @@ form input.operator{
   
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
- 
+ <div class="top-bar">
     
     <a href="/home" class="logo"><img src="/root/projectdir/metamedplus/static/css/images/Pheonix.png" alt="Logo"></a>
     <a class="navbar-brand" href="/home">Your Hospital Name</a>
   
     <img class="branding" src="{% static "cms/Pheonixhis.png" %}">
-    <div class="header-btn">
-        <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i></a>
-        <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i></a>
-        <a href="/chat/1/1" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg></a>
-        
-    <a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i></a>
-    <a href="{% url "add_task" %}" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
    
-    {% if user.role != 'Admin' %}
-    
-    <a href="{% url 'public_notice' %}" id="myBtns"><i class="fa-regular fa-note-sticky"></i></a>
-    {% endif %}
-    {% if user.role == 'Admin' %}
-    
-    <a href="{% url 'admin_notice' %}" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H288V352c0-17.7 14.3-32 32-32h80V96c0-8.8-7.2-16-16-16H64zM288 480H64c-35.3 0-64-28.7-64-64V96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V320v5.5c0 17-6.7 33.3-18.7 45.3l-90.5 90.5c-12 12-28.3 18.7-45.3 18.7H288z"/></svg></a>
-    {% endif %}
-    <a href="{% url 'logout' %}" id="myBtns"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg></a>
-
-    
-    
-
-    <div id="myModal" class="modal">
-    
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="nobed">
-        {% comment %} <h4 class="bed"> First<h4>
-
-        <div class="bed_details">
-            <div class="beds">
-              
-                <div class="bed_det">
-                  
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
-                </div>
-                <div class="bed_det">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
-                </div>
-                <div class="bed_det">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
-                </div>
-                <div class="bed_det">
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p>1E</p>
-                </div>
-            </div>
-
-        </div> {% endcomment %}
-        <h4 class="bed"> Second<h4>
-        <div class="bed_details">
-            <div class="beds">
-              
-                <div class="bed_det">
-                  <p> 1E</p>
-                    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-                    <p class="bed_des"><a href="/ipd/4/">DemoTest</a></p>
-                </div>
-                
-            </div>
-
-        </div>
-
-
-      </div>
-    
-    </div>
-
-
-    </div>
-
-    <!-- The Modal -->
-   
- 
-  {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-      <form class="form-inline search my-2 my-lg-0">
-       
-        <input id="search-input"class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-
-        <button id="search-button"class=" my-2 my-sm-0 " type="submit"> <i class="fa-solid fa-magnifying-glass fa-lg icon"></i></button>
-      </form>
-
-      <button id="changeLogoButton" onClick="changeLogo()">Change Logo</button>
-
-
-
-    </div>
 
 
       <br>
       
-   
+ </div>  
+ <div class="header-btn">
       
-  </nav>
-  
+  <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-house"></i><span class="top-bar-text">  Home</span></a>
+  <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i><span class="top-bar-text">  Profile</span></a>
 
+  <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i> <span class="top-bar-text">  Calculator</span></a>
+  <a href="/chat/1/1" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg><span class="top-bar-text">  Home</span></a>
+
+  {% if user.role == 'Admin' %}
+<a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">Bed</span></a>
+{% endif %}
+
+{% if user.role == 'Nurse' %}
+<a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">  Bed</span></a>
+{% endif %}
+
+{% if user.role == 'SuperIntendent' %}
+<a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">  Bed</span></a>
+{% endif %}
+{% if user.role == 'Accountant' %}
+<a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">  Bed</span></a>
+{% endif %}
+
+<a href="{% url "add_task" %}" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M152.1 38.2c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 113C-2.3 103.6-2.3 88.4 7 79s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zm0 160c9.9 8.9 10.7 24 1.8 33.9l-72 80c-4.4 4.9-10.6 7.8-17.2 7.9s-12.9-2.4-17.6-7L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l22.1 22.1 55.1-61.2c8.9-9.9 24-10.7 33.9-1.8zM224 96c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H256c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H192c-17.7 0-32-14.3-32-32zM48 368a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+  <span class="top-bar-text">Task List</span>
+</a>
+
+{% if user.role != 'Admin' %}
+
+<a href="{% url 'public_notice' %}" id="myBtns"><i class="fa-regular fa-note-sticky"></i> <span class="top-bar-text">  Notice</span></a>
+{% endif %}
+{% if user.role == 'Admin' %}
+
+<a href="{% url 'admin_notice' %}" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H288V352c0-17.7 14.3-32 32-32h80V96c0-8.8-7.2-16-16-16H64zM288 480H64c-35.3 0-64-28.7-64-64V96C0 60.7 28.7 32 64 32H384c35.3 0 64 28.7 64 64V320v5.5c0 17-6.7 33.3-18.7 45.3l-90.5 90.5c-12 12-28.3 18.7-45.3 18.7H288z"/></svg> <span class="top-bar-text">  Notice</span></a>
+{% endif %}
+<a href="{% url 'logout' %}" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
+  <span class="top-bar-text">Logout</span>
+</a>
+
+<a class="top-bar-icon" href="/profile/{{user.id}}" ><span class="top-bar-text1">Knowledge Hub</span></a>
+<a    href="/profile/{{user.id}}"  class="top-bar-icon"><span class="top-bar-text2 ">Learning Hub</span></a>
+
+
+<div id="myModal" class="modal">
+
+<!-- Modal content -->
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <div class="nobed">
+  {% comment %} <h4 class="bed"> First<h4>
+
+  <div class="bed_details">
+      <div class="beds">
+        
+          <div class="bed_det">
+            
+              <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+              <p>1E</p>
+          </div>
+          <div class="bed_det">
+              <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+              <p>1E</p>
+          </div>
+          <div class="bed_det">
+              <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+              <p>1E</p>
+          </div>
+          <div class="bed_det">
+              <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+              <p>1E</p>
+          </div>
+      </div>
+
+  </div> {% endcomment %}
+  <h4 class="bed"> Second<h4>
+  <div class="bed_details">
+      <div class="beds">
+        
+          <div class="bed_det">
+            <p> 1E</p>
+              <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
+              <p class="bed_des"><a href="/ipd/4/">DemoTest</a></p>
+          </div>
+          
+      </div>
+
+  </div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+<!-- The Modal -->
+
+
+{% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+<form class="form-inline search my-2 my-lg-0">
+ 
+  <input id="search-input"class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+
+  <button id="search-button"class=" my-2 my-sm-0 " type="submit"> <i class="fa-solid fa-magnifying-glass fa-lg icon"></i></button>
+</form>
+
+<button id="changeLogoButton" onClick="changeLogo()">Change Logo</button>
+
+
+
+</div>
+
+
+  </nav>
 
 
   <div id="calContainer" class="form-popup-back-cal">
