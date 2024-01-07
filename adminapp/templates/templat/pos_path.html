@@ -20,7 +20,7 @@
          #table tr:nth-child(even){background-color: #f2f2f2;}
          th{
              border: 1px solid #ddd;
-             padding:0.7rem 0.7rem 0.7rem 0.7rem !important;
+             padding:0.7rem 0.7rem 0.7rem 0.7rem !important; 
          }
          #table th {
         
@@ -31,38 +31,45 @@
              background-color: #605BFF;
              
          }
+         .hospital_det{
+            text-align:center;
+
+         }
+         .hospital_det h1{
+            text-align:center;
+            font-weight:bold;
+         }
  </style>
 </head>
 <body>
-    <h1>Bill</h1>
+    
+    <div class="hospital_det">
+        <h1> {{hospital_name}}</h1>
+        <p>{{address}}</p><br>
+        <p>PH:-{{phone}},email-id:-{{email_id}}</p>
+        <h1>Receipt</h1>
+
+    </div>
     <table id="table">
 
         <tr>
             <td><strong>Prescribed By</strong></td>
             <td>{{ doctor }}</td>
-            
-        </tr>
-     
-
-        <tr>
+       
             <td><strong>Sub Total</strong></td>
             <td>{{ sub_total }}</td>
-        </tr>
+        </tr> 
         <tr>
             <td><strong>Tax Percentage</strong></td>
             <td>{{ tax }}</td>
-        </tr>
-        <tr>
+ 
             <td><strong>Date/Time</strong></td>
             <td>{{ date_time }}</td>
             
         </tr>
-
-        <tr>
             <td><strong>Patient Name</strong></td>
             <td>{{ patient }}</td>
-            
-        </tr>
+
        
        
 
@@ -72,6 +79,7 @@
             <td>{{ small_note }}</td>
             
         </tr>
+   
         
         {% endif %}
    
@@ -106,11 +114,83 @@
             {% endfor %}
             <td> {{payment}} </td>
         </tr>
+        
         </tbody>
+        
+        
     </table>
+
+    <table>
     
-    <h3>Discount {{ discount }}</h3>
-    <h3>Total Amount: {{ grand_total }}</h3>
-    <h3>Paid Amount: {{ paid_amount }}</h3>
+        <tr>
+            <th>Total</th>
+            <th></th>
+            <td><h3>Total Amount: {{ grand_total }}</h3></td>
+    
+                            
+        </tr>
+    
+    
+      
+    
+         
+               
+    
+           
+    
+    
+    
+    
+    </table>
+        
+       
+        
+
+    <table>
+    
+            <tr>
+                <th>Total</th>
+                <td> <h3>Discount {{ discount }}</h3></td>
+
+                                
+            </tr>
+        
+
+          
+
+             
+                   
+
+               
+
+        
+
+        
+    </table>
+
+    <table id="table">
+    
+        <tr>
+            <th>Total</th>
+            <td> <h3>Paid Amount: {{ paid_amount }}</h3></td>
+
+                            
+        </tr>
+    
+
+      
+
+         
+               
+
+           
+
+    
+
+    
+</table>
+
+
+   
 </body>
 </html>

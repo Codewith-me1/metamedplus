@@ -1376,3 +1376,10 @@ class Other_Attendance(models.Model):
     date = models.DateField()
 
     shift = models.CharField(max_length=20,null=True)
+
+
+class Address(models.Model):
+    address  = models.CharField(max_length=20)
+    phone_no = models.IntegerField(max_length=20,null=True)
+    email_id = models.CharField(max_length=20,null=True)
+    

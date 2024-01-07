@@ -10,6 +10,7 @@ import os
 from channels.layers import get_channel_layer
 from .models import Other_Attendance
 from .models import Bag_available
+from .models import Address
 
 from twilio.rest import Client
 from .models import Attendance
@@ -402,9 +403,11 @@ def appointment_details_form_view(request):
             patient_name = patient
 
 
-        new = request.POST['new']
+        new = request.POST.get('new')
+        
+
         print(new)
-        if new == 'on':
+        if new == 'true':
             name = request.POST['name']
             p_phone = request.POST['patient_phone']
             p_gender = request.POST['patient_gender']
@@ -1041,7 +1044,11 @@ def submit_symptom(request):
 
         return render(request, 'ipd/systoms.html')  
 
-    return render(request, 'ipd/systoms.html')
+    symptom = Symtopms.objects.all()
+    context ={
+        'sys':symptom,
+    }
+    return render(request, 'ipd/systoms.html',context)
 
 
 from django.shortcuts import render, redirect
@@ -1457,9 +1464,9 @@ def add_charge(request):
 
 def create_charge_type(request):
     if request.method == 'POST':
-        charge_type = request.POST['charge_type']
-        name = request.POST['name']
-        description = request.POST['description']
+        charge_type = request.POST.get('charge_type')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
 
         charge_type = get_object_or_404(Module_Charge,charge_name=charge_type)
         ChargeType.objects.create(charge_type=charge_type,name=name, description=description)
@@ -6167,7 +6174,7 @@ def download(request):
         # Example: Fetch data from your database
 
         appointment_det = AppointmentDetails.objects.get(id=appointment_id)
-        hospital_name = header.objects.all()
+        hospital_name = header.objects.all().first()
         appointment_data = {
             
             'name':appointment_det.appointment_date,
@@ -6364,6 +6371,7 @@ def pos_pdf(request):
         date_time = request.POST.get('date_time')
         medicine_composition = request.POST.get('medicine_composition')
         payment = request.POST.get('payment')
+        patient = request.POST.get('patient')
         doctor = request.POST.get('doctor')
         paid_amount = request.POST.get('paid_amount')
         
@@ -6452,13 +6460,16 @@ def pos_pdf(request):
 
         
       
-        
-    
+    hospital = header.objects.all().first()
+    address = Address.objects.all().first()
     context= {
         'products':product_list,
         'sub_total':sub_total,
         'tax':tax,
+        'hospital':hospital,
+        'patient':patient,
         'discount':discount,
+        'address':address,
         'small_note':small_note,
                 'date_time':date_time,
                 'composition':medicine_composition,
@@ -9606,3 +9617,66 @@ def download_opdcolumn(request):
             return HttpResponse('PDF generation failed', content_type='text/plain')
         return response
     return redirect('opd')
+
+
+def add_address(request):
+    if request.method == 'POST':
+        address = request.POST.get('address')
+        phone_no = request.POST.get('phone_no')
+        email_id = request.POST.get('email_id')
+
+        Address.objects.create(
+            address=address,
+            phone_no=phone_no,
+            email_id=email_id
+        )
+
+        return redirect('add_address')
+
+    return render(request, 'hospital/address.html')
+
+
+
+
+def appointment_download(request):
+    appointment = AppointmentDetails.objects.all()
+    hospital_name = header.objects.all().first()
+    context ={
+            'appointment': appointment,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+        }
+    template = get_template('templat/appointment.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response
+
+def appointmentpdf_download(request,id):
+    id = AppointmentDetails.objects.get(id=id)
+    
+    hospital_name = header.objects.all().first()
+    context ={
+            'appointment': id,
+            'hospital_name':hospital_name.name if hospital_name else 'Your Hospital',
+        }
+    template = get_template('templat/appointment_pdf.html')
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="appointment.pdf"'
+
+    # Generate PDF from HTML using ReportLab and pisa
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # Return the response
+    if pisa_status.err:
+        return HttpResponse('PDF generation failed', content_type='text/plain')
+    return response

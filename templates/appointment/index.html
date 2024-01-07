@@ -145,7 +145,7 @@
                         {% csrf_token %}
                         <div class='form-group checkbox-wrapper-2'>
                           <label for="new">New Patient  </label>
-                          <input onClick="reload()" class="sc-gJwTLC ikxBAC" type="checkbox" id="new" name="new">
+                          <input onClick="reload()" class="sc-gJwTLC ikxBAC" value="false" type="checkbox" id="new" name="new">
                        
                           </div>
                         <label for="patient">Patient</label>
@@ -271,7 +271,7 @@
   <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Appointment Form</a>
   <a  class="btn-primary btn" href="/patient/list/">Add Patient</a>
   <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
-  <button type="button" class="btn btn-primary" onclick="downloadPDF()">Download PDF</button>
+  <a href="/appointment_download" class="btn btn-primary" >Download PDF</a>
                               
 
 
@@ -310,7 +310,7 @@
             <td class="hide_download">{{ appointments.priority }}</td>
             <td class="hide_download">{{ appointments.fees }}</td>
             <td class="hide_download">{{ appointments.status }}</td>
-            <td><button value="{{appointments.id}}" class="appointment-button btn hide_download download"><i class="fa-solid fa-download"></i></button></td>
+            <td><a href="/appointment_pdf/{{appointments.id}}/" class="appointment-button btn hide_download download"><i class="fa-solid fa-download"></i></a></td>
 
           </tr>
         {% endfor %}
@@ -325,18 +325,22 @@
 <script>
 
   async function downloadPDF() {
-    // Fetch the HTML content of the table
-    const tableHtml = document.querySelector('.table').outerHTML;
+    try {
+        // Fetch the HTML content of the table
+        const tableHtml = document.querySelector('.table').outerHTML;
 
-    // Create a new HTML2PDF instance
-    const pdf = await html2pdf();
+        // Create a new HTML2PDF instance
+        const pdf = await html2pdf();
 
-    // Generate PDF from the HTML content
-    pdf.from({ html: tableHtml }).outputPdf();
+        // Generate PDF from the HTML content
+        pdf.from({ html: tableHtml }).outputPdf();
 
-    
-    pdf.save('appointments.pdf');
-  }
+        pdf.save('appointments.pdf');
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        
+    }
+}
 </script>
 
 <script>

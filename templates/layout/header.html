@@ -108,7 +108,7 @@ body{
         }
 
         .header-btn {
-          top: 62px;
+          top: 70px;
           padding-top:6px;
     height: 65px;
           background-color: #605BFF;
@@ -168,7 +168,8 @@ body{
           }
           #myBtn{
             float: left;
-            border:none;
+            border: solid white;
+            border-width: 0px 1px 0px 0px;
             color:white !important;
             margin:0.5rem 1rem 1rem 0.5rem;
             transition: transform .7s ease-in-out;
@@ -177,8 +178,8 @@ body{
           }
           #myBtns{
             float: left;
-            border:none;
-            border-radius:5px;
+            border: solid white;
+            border-width: 0px 1px 0px 0px;
             color:white !important;
             margin:0.5rem 1rem 1rem 0.5rem;
 
@@ -229,11 +230,9 @@ body{
             border-radius:10px;
 
           }
-          .sidebar{
-            padding-top:3rem;
-          }
+         
           .container{
-            margin-top:10rem;
+            margin-top:16rem;
           }
     
           .ad{
@@ -429,11 +428,11 @@ a.top-bar-icon{
  </div>  
  <div class="header-btn">
       
-  <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-house"></i><span class="top-bar-text">  Home</span></a>
+  <a  href="/home" id="myBtns"><i class="fa fa-solid fa-house"></i><span class="top-bar-text">  Home</span></a>
   <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i><span class="top-bar-text">  Profile</span></a>
 
   <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i> <span class="top-bar-text">  Calculator</span></a>
-  <a href="/chat/1/1" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg><span class="top-bar-text">  Home</span></a>
+  <a href="/chat/1/1" id="myBtns"><svg fill="white" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/></svg><span class="top-bar-text">Chat</span></a>
 
   {% if user.role == 'Admin' %}
 <a href="#"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">Bed</span></a>
@@ -467,7 +466,8 @@ a.top-bar-icon{
 </a>
 
 <a class="top-bar-icon" href="/profile/{{user.id}}" ><span class="top-bar-text1">Knowledge Hub</span></a>
-<a    href="/profile/{{user.id}}"  class="top-bar-icon"><span class="top-bar-text2 ">Learning Hub</span></a>
+<a    href="/profile/{{user.id}}"  class="top-bar-icon"><span class="top-bar-text1 ">Learning Hub</span></a>
+<a    href="/profile/{{user.id}}"  class="top-bar-icon"><span class="top-bar-text2">iHelp</span></a>
 
 
 <div id="myModal" class="modal">

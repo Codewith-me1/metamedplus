@@ -514,7 +514,7 @@ transition: .3s;
 }
 .sidebar{
   overflow: scroll;
-  height: 90% !important;
+  height: 85% !important;
   position: fixed !important;
   z-index: 10;
 }
