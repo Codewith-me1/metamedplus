@@ -68,6 +68,7 @@ th:nth-child(10){
   }
 .sidebar{
   height: 80% !important;
+  top: 123px;
 }
 
   .toggle-btn {
@@ -1246,8 +1247,18 @@ body{
                             </div>
               
               {% endif %}
-
-
+                            
+              {% if user.role == "Front Office" %}
+              <li  class="{% if request.resolver_match.url_name == 'pathalogist' %}active{% endif %}" ><a href="{% url 'pathalogist' %}"><i class="fa-solid fa-house"></i><span class="side_text">Dashboard</span></a></li>  
+              <li><a href="{% url 'visitors' %}"><i class="fa-regular fa-building"></i><span class="side_text">Front Office</span></a></li>
+              <li><a href="{% url 'add_ambulance' %}"><i class="fa-solid fa-truck-medical"></i>   <span class="side_text">Ambulance</span></a></li>
+           
+                
+                
+                
+                
+                
+              {% endif %}
           
 
              
