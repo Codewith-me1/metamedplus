@@ -309,7 +309,7 @@ def login(request):
                 return redirect('doctor') 
             elif user.role == 'New':
                 return redirect('doctor')
-            elif user.role =='Manooj':
+            elif user.role =='Manager':
                 return redirect('doctor')
             elif user.role =='Radiologist':
                 return redirect('pathalogist')
@@ -320,6 +320,16 @@ def login(request):
             
             elif user.role =='Pharmacist':
                 return redirect('pathalogist')
+            elif user.role =='Ipd Nurse':
+                return redirect('pathalogist')
+            
+            elif user.role =='OPD':
+                return redirect('pathalogist')
+            
+            elif user.role =='Front Office':
+                return redirect('pathalogist')
+
+            
         
             elif user.role =='Accountant':
                 return redirect('doctor')
@@ -528,182 +538,194 @@ def pass_email(email, password):
         pass  
 
 def add_staff(request):
-    
-    if request.method == 'POST':
-        
-        # role = request.POST.get('role')
-        # designation = request.POST.get('designation')
-        # department = request.POST.get('department')   
-        # specialist = request.POST.get('specialist')
-        # if patient_id:
-        #     patient = Patient.objects.get(id=patient_id)
-        #     patient_name = patient
-
-        # Get data from the POST request
-        staff_id = request.POST.get('staff_id')
-        role = request.POST.get('role')
-        designation = request.POST.get('designation','')
-        department = request.POST.get('department','')
-        specialist = request.POST.get('specialist','')
-        first_name = request.POST.get('first_name','')
-        last_name = request.POST.get('last_name','')
-        father_name = request.POST.get('father_name','')
-        mother_name = request.POST.get('mother_name','')
-        gender = request.POST.get('gender','')
-        marital_status = request.POST.get('marital_status','')
-        blood_group = request.POST.get('blood_group','')
-        date_of_birth = request.POST.get('date_of_birth','')
-        date_of_joining = request.POST.get('date_of_joining','')
-        phone = request.POST.get('phone')
-        emergency_contact = request.POST.get('emergency_contact','')
-        email = request.POST.get('email')
-        current_address = request.POST.get('current_address','')
-        permanent_address = request.POST.get('permanent_address','')
-        photo = request.FILES.get('photo')
-        
-        
-        qualification = request.POST.get('qualification', '')
-        work_experience = request.POST.get('work_experience', '')
-        specialization = request.POST.get('specialization', '')
-        note = request.POST.get('note', '')
-
-        # Identification Numbers
-        pan_number = request.POST.get('pan_number', '')
-        national_id_number = request.POST.get('national_id_number', '')
-        local_id_number = request.POST.get('local_id_number', '')
-
-        # Payroll and Salary
-        payroll = request.POST.get('payroll', '')
-        epf_no = request.POST.get('epf_no', '')
-        basic_salary = request.POST.get('basic_salary',0)
-        try:
-             basic_salary = float(basic_salary)  # Try to convert the value to a float
-        except ValueError:
-            basic_salary = 0
-        
-        contract_type = request.POST.get('contract_type')
-
-        # Work Details
-        work_shift = request.POST.get('work_shift')
-        work_location = request.POST.get('work_location')
-
-        # Leave Information
-        if 'paid_leave' in request.POST:
-            paid_leave = True
-        else:
-            paid_leave = False
-        number_of_leaves = request.POST.get('number_of_leaves')
-        try:
-            number_of_leaves = float(number_of_leaves)
+    try:
+        if request.method == 'POST':
             
-        except ValueError:
-            number_of_leaves
+            # role = request.POST.get('role')
+            # designation = request.POST.get('designation')
+            # department = request.POST.get('department')   
+            # specialist = request.POST.get('specialist')
+            # if patient_id:
+            #     patient = Patient.objects.get(id=patient_id)
+            #     patient_name = patient
 
-        # Bank Account Details
-        account_title = request.POST.get('account_title', '')
-        bank_account_no = request.POST.get('bank_account_no', '')
-        bank_name = request.POST.get('bank_name', '')
-        ifsc_code = request.POST.get('ifsc_code', '')
-        bank_branch_name = request.POST.get('bank_branch_name', '')
+            # Get data from the POST request
+            staff_id = request.POST.get('staff_id')
+            role = request.POST.get('role')
+            designation = request.POST.get('designation','')
+            department = request.POST.get('department','')
+            specialist = request.POST.get('specialist','')
+            first_name = request.POST.get('first_name','')
+            last_name = request.POST.get('last_name','')
+            father_name = request.POST.get('father_name','')
+            mother_name = request.POST.get('mother_name','')
+            gender = request.POST.get('gender','')
+            marital_status = request.POST.get('marital_status','')
+            blood_group = request.POST.get('blood_group','')
+            date_of_birth = request.POST.get('date_of_birth','')
+            date_of_joining = request.POST.get('date_of_joining','')
+            phone = request.POST.get('phone')
+            emergency_contact = request.POST.get('emergency_contact','')
+            email = request.POST.get('email')
+            current_address = request.POST.get('current_address','')
+            permanent_address = request.POST.get('permanent_address','')
+            photo = request.FILES.get('photo')
+            
+            
+            qualification = request.POST.get('qualification', '')
+            work_experience = request.POST.get('work_experience', '')
+            specialization = request.POST.get('specialization', '')
+            note = request.POST.get('note', '')
 
-        # Social Media Links
-        facebook_url = request.POST.get('facebook_url', '')
-        twitter_url = request.POST.get('twitter_url', '')
-        linkedin_url = request.POST.get('linkedin_url', '')
-        instagram_url = request.POST.get('instagram_url', '')
+            # Identification Numbers
+            pan_number = request.POST.get('pan_number', '')
+            national_id_number = request.POST.get('national_id_number', '')
+            local_id_number = request.POST.get('local_id_number', '')
 
-        # Documents
-        resume = request.FILES.get('resume')
-        joining_letter = request.FILES.get('joining_letter')
-        other_documents = request.FILES.get('other_documents')
-        print(photo)
-        # Create a Staff object and save it to the database
-        staff = AddStaff(
-            staff_id=staff_id,
-            role=role,
-            designation=designation,
-            department=department,
-            specialist=specialist,
-            first_name=first_name,
-            last_name=last_name,
-            father_name=father_name,
-            mother_name=mother_name,
-            gender=gender,
-            marital_status=marital_status,
-            blood_group=blood_group,
-            date_of_birth=date_of_birth,
-            date_of_joining=date_of_joining,
-            phone=phone,
-            emergency_contact=emergency_contact,
-            email=email,
-            current_address=current_address,
-            photo=photo,
-            permanent_address=permanent_address,
-            qualification=qualification,
-            work_experience=work_experience,
-            specialization=specialization,
-            note=note,
-            pan_number=pan_number,
-            national_id_number=national_id_number,
-            local_id_number=local_id_number,
-            payroll_new=payroll,
-            epf_no=epf_no,
-            basic_salary=basic_salary,
-            contract_type=contract_type,
-            work_shift=work_shift,
-            work_location=work_location,
-            paid_leave=paid_leave,
-            number_of_leaves=number_of_leaves,
-            account_title=account_title,
-            bank_account_no=bank_account_no,
-            bank_name=bank_name,
-            ifsc_code=ifsc_code,
-            bank_branch_name=bank_branch_name,
-            facebook_url=facebook_url,
-            twitter_url=twitter_url,
-            linkedin_url=linkedin_url,
-            instagram_url=instagram_url,
-            resume=resume,
-            joining_letter=joining_letter,
-            other_documents=other_documents
-            # Add other fields here
-        )
+            # Payroll and Salary
+            payroll = request.POST.get('payroll', '')
+            epf_no = request.POST.get('epf_no', '')
+            basic_salary = request.POST.get('basic_salary',0)
+            try:
+                basic_salary = float(basic_salary)  # Try to convert the value to a float
+            except ValueError:
+                basic_salary = 0
+            
+            contract_type = request.POST.get('contract_type')
+
+            # Work Details
+            work_shift = request.POST.get('work_shift')
+            work_location = request.POST.get('work_location')
+
+            # Leave Information
+            if 'paid_leave' in request.POST:
+                paid_leave = True
+            else:
+                paid_leave = False
+            number_of_leaves = request.POST.get('number_of_leaves')
+            try:
+                number_of_leaves = float(number_of_leaves)
+                
+            except ValueError:
+                number_of_leaves
+
+            # Bank Account Details
+            account_title = request.POST.get('account_title', '')
+            bank_account_no = request.POST.get('bank_account_no', '')
+            bank_name = request.POST.get('bank_name', '')
+            ifsc_code = request.POST.get('ifsc_code', '')
+            bank_branch_name = request.POST.get('bank_branch_name', '')
+
+            # Social Media Links
+            facebook_url = request.POST.get('facebook_url', '')
+            twitter_url = request.POST.get('twitter_url', '')
+            linkedin_url = request.POST.get('linkedin_url', '')
+            instagram_url = request.POST.get('instagram_url', '')
+
+            # Documents
+            resume = request.FILES.get('resume')
+            joining_letter = request.FILES.get('joining_letter')
+            other_documents = request.FILES.get('other_documents')
+            print(photo)
+            # Create a Staff object and save it to the database
+            staff = AddStaff(
+                staff_id=staff_id,
+                role=role,
+                designation=designation,
+                department=department,
+                specialist=specialist,
+                first_name=first_name,
+                last_name=last_name,
+                father_name=father_name,
+                mother_name=mother_name,
+                gender=gender,
+                marital_status=marital_status,
+                blood_group=blood_group,
+                date_of_birth=date_of_birth,
+                date_of_joining=date_of_joining,
+                phone=phone,
+                emergency_contact=emergency_contact,
+                email=email,
+                current_address=current_address,
+                photo=photo,
+                permanent_address=permanent_address,
+                qualification=qualification,
+                work_experience=work_experience,
+                specialization=specialization,
+                note=note,
+                pan_number=pan_number,
+                national_id_number=national_id_number,
+                local_id_number=local_id_number,
+                payroll_new=payroll,
+                epf_no=epf_no,
+                basic_salary=basic_salary,
+                contract_type=contract_type,
+                work_shift=work_shift,
+                work_location=work_location,
+                paid_leave=paid_leave,
+                number_of_leaves=number_of_leaves,
+                account_title=account_title,
+                bank_account_no=bank_account_no,
+                bank_name=bank_name,
+                ifsc_code=ifsc_code,
+                bank_branch_name=bank_branch_name,
+                facebook_url=facebook_url,
+                twitter_url=twitter_url,
+                linkedin_url=linkedin_url,
+                instagram_url=instagram_url,
+                resume=resume,
+                joining_letter=joining_letter,
+                other_documents=other_documents
+                # Add other fields here
+            )
 
 
-        # Save the Staff object to the database
-        password = generate_random_password()
-        message = "Your Password Is " + password
+            # Save the Staff object to the database
+            password = generate_random_password()
+            message = "Your Password Is " + password
 
-        subject = "Password"
-        print(password)
-        # send_email(request,email,message)
-        staff.save()
+            subject = "Password"
+            print(password)
+            # send_email(request,email,message)
+            staff.save()
+        
+
+            # Redirect to a success page or staff list page
+            
+
+            User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
+            
+            
+            
+
+            
+
+            User.save()
+            
+            return redirect("staff_list")
+        
+        
+
+        else:
+            # Render the form for adding staff information
+            role = Role.objects.all()
+            context = {
+            "role":role, 
+            }
+        
+            return render(request, 'hr/hr.html',context)
     
-
-        # Redirect to a success page or staff list page
-        
-
-        User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
-        
-        
-        
-
-        
-
-        User.save()
-        
-        return redirect("staff_list")
-       
-       
-
-    else:
-        # Render the form for adding staff information
-        role = Role.objects.all()
-        context = {
-           "role":role, 
-        }
-       
-        return render(request, 'hr/hr.html',context)
+    except Exception as e:
+        # If an error occurs, delete the created staff object
+        if staff:
+            staff.delete()
+        # Log the error or handle it accordingly
+        print(f"Error during staff creation: {str(e)}")
+        # You can add additional error handling here if needed
+        # ...
+        messages.error(request, f"Error during staff creation: {str(e)}")
+        # Redirect to an error page or the form page with an error message
+        return redirect('staff_list')
     
 
 

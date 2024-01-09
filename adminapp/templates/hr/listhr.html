@@ -29,7 +29,13 @@
     border:1px solid #dfdfdf;
     background-color:white;
 }
-
+.alert-error{
+  color: #f7f7f7 !important;
+  border-color: #a3c8e3 !important;
+  padding: 15px !important;
+  border-radius: 5px !important;
+  margin-bottom: 20px !important;
+}
 </style>
 
 <div class="container">
@@ -38,6 +44,8 @@
     
     <div class="main-header"> 
       <h1 class="headline">Staff Details</h1>
+
+
       <div class="side-btns">
     
      
@@ -52,7 +60,15 @@
     
     </div>
     </div>
-
+{% if messages %}
+    <div class="ale alert-error">
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  </div>
+{% endif %}
     <table class="table">
       <thead>
         <tr>

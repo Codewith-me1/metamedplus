@@ -32,6 +32,7 @@
       {% comment %} <link rel="stylesheet" href=" {% static "css/blue/skins/skin-darkblue.min.css" %}">  {% endcomment %}
       <link rel="stylesheet" href=" {% static "css/blue/ss-main-darkblue.css" %}">  
       <link rel="stylesheet" href="{% static "/css/calender.min.css" %} ">
+      <link rel="icon" type="image/x-icon" href="{% static "css/bg.png" %}">
       <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"> 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.3.1/swiper-bundle.css" integrity="sha512-cAtZ0Luj6XlQ7YGgi5mPW0szI2z/2+btPjOqVEqK3z4h1/qojUwvQyTcocgKKOFv8noUFH5GOuhheX7PeDwwPA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/11.2.0/highcharts.js" integrity="sha512-yQKwezlCfw1iUy19z7b7xp0Xz20rBfEUI9iN5jQ55e56WXzi4ZPQpiKsn0xtSUWIYuV2y6B+GsHgsLK8KAZrFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -84,7 +85,9 @@ body{
         }
         a.logo img{
           float:left;
-          width: 15rem;
+       
+          width: 16rem;
+          margin-top: -14px !important;
 
       }
 
@@ -124,7 +127,7 @@ body{
         .navbar-brand{
             margin-left:2rem;
             font-size:3rem;
-            border:solid #c5c5c5;
+            border:solid black;
             border-width:0px 0px 0px 2px;
             margin-top: 5px;
             color:#09a1d9 !important;
@@ -172,6 +175,7 @@ body{
             float: left;
             border: solid white;
             border-width: 0px 1px 0px 0px;
+            font-weight:bold;
             color:white !important;
             margin:0.5rem 1rem 1rem 0.5rem;
             transition: transform .7s ease-in-out;
@@ -183,6 +187,7 @@ body{
             border: solid white;
             border-width: 0px 1px 0px 0px;
             color:white !important;
+            font-weight:bold;
             margin:0.5rem 1rem 1rem 0.5rem;
 
             
@@ -377,16 +382,19 @@ form input.operator{
 
 .top-bar-text{
   padding-left:10px;
+  font-weight:bold;
 }
 
 .top-bar-text1{
   border:solid white;
   border-width:0px 1px 0px 0px;
   padding:10px;
+  font-weight:bold;
 }
 
 .top-bar-text2{
   text-align:left !important;
+  font-weight:bold;
   padding:10px !important;
 }
 

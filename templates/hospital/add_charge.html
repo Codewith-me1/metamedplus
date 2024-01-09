@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Charge</title>
+    <title>Charge Category</title>
 
 
 {% load static %}
@@ -24,7 +24,7 @@
                 <div class="cards">
                   <div class="popup-header">
                     <span id="closePopupBtn" class="close-button">Close</span>
-                    <h1>Add Charge Details</h1>
+                    <h1>Add Charge Category</h1>
                   </div>
                     <form class="form_popup" method="post" action="{% url 'add_charge' %}">
                         {% csrf_token %}
@@ -103,12 +103,12 @@
 
 
 <div class="main-header">
-  <h1 class="headline">Add Charge Details</h1>
+  <h1 class="headline">Add Charge Category</h1>
   <div class="side-btns">
 
  
   {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Charge Details</a>
+  <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Charge Category</a>
 
 </div>
 
