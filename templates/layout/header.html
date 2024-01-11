@@ -427,8 +427,9 @@ a.top-bar-icon{
  <div class="top-bar">
     
     <a href="/home" class="logo"><img src="/root/projectdir/metamedplus/static/css/images/Pheonix.png" alt="Logo"></a>
+    
     <a class="navbar-brand" href="/home">Your Hospital Name </a>
-  
+    
     <img class="branding" src="{% static "cms/Pheonixhis.png" %}">
    
 
@@ -437,8 +438,15 @@ a.top-bar-icon{
       
  </div>  
  <div class="header-btn">
-      
+  {% if user.role == "Admin" %}
   <a  href="/home" id="myBtns"><i class="fa fa-solid fa-house"></i><span class="top-bar-text">  Home</span></a>
+  {% endif %}
+
+  {% if user.role not in "Admin" %}
+    <a  href="{% url "pathalogist" %}" id="myBtns"><i class="fa fa-solid fa-house"></i><span class="top-bar-text">Home</span></a>
+  {% endif %}
+
+
   <a  href="/profile/{{user.id}}" id="myBtns"><i class="fa fa-solid fa-user"></i><span class="top-bar-text">  Profile</span></a>
 
   <a href="#" onClick="pop()" class="opencal" id="myBtns"><i class=" fa fa-solid fa-calculator"></i> <span class="top-bar-text">  Calculator</span></a>

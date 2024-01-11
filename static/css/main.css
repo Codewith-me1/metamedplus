@@ -506,6 +506,13 @@ transition: .3s;
   border-radius:10px;
 }
 
+#prescription {
+  background-color: white;
+  margin: 15rem 4rem 4rem 4rem;
+  padding: 3rem;
+  border-radius: 2rem;
+}
+
 .form-Contain {
   display: flex !important;
   justify-content: center !important;

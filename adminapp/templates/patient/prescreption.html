@@ -27,13 +27,13 @@
             <span id="closePopupBtn" class="close-button">Close</span>
             <h1>Add Prescription </h1>
           </div>
-          {% for ipd in ipd %}
+    
           
           
 
            
-            <form class="form_popup" method="post" action="{% url 'ipd_prep' ipd.id%}">
-                {% endfor %}
+            <form  method="post" action="/prescreption/{{ipd}}">
+     
                 {% csrf_token %}
                  <!-- Basic Information -->
                  <input type="hidden" name="item_counter" id="item_counter" value="0">
@@ -44,6 +44,11 @@
                 <div class="form-group">
                     <label for="findings">Finding</label>
                     <input type="text" step="0.01" id="findings" name="findings" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="finding_description">Finding</label>
+                    <textarea type="text" step="0.01" id="finding_description" name="finding_description" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="doctor">Prescribed By</label>
@@ -60,8 +65,9 @@
                 <div class="form-group">
                     <label for="pathology">Pathology Test</label>
                     <select id="pathology" name="pathology">
+                        <option value="">Select a Test Name</option>
                         {% for path in path %}
-                            <option value="{{path.test_name}}">{{ path.test_name }}</option>
+                            <option value="{{path.id}}">{{ path.test_name }}</option>
             
                         {% endfor %}
                     </select>
@@ -71,14 +77,14 @@
                 <div class="form-group">
                     <label for="radiology">Radiology Test</label>
                     <select id="radiology" name="radiology">
+                        <option value="">Select a Test Name</option>
                         {% for radio in radio %}
-                            <option value="{{radio.test_name}}">{{ radio.test_name }}</option>
+                            <option value="{{radio.id}}">{{ radio.test_name }}</option>
             
                         {% endfor %}
                     </select>
 
                 </div>
-
 
 
                 <table class="table">

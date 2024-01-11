@@ -193,14 +193,9 @@
             <div class="ipd-container">
                 
                 <ul class="ipd-navbar-nav">
-                    <li class="ipd-nav-item"><a href="#overview" class="ipd-nav-link">Profile</a></li>
-                    <li class="ipd-nav-item {% if request.resolver_match.url_name == '#nurse' %}clicked{% endif %}"><a href="#nurse" class="ipd-nav-link">Nurse Note</a></li>
-                    <li class="ipd-nav-item"><a href="#doctor" class="ipd-nav-link">Doctor Note</a></li>
-                    <li class="ipd-nav-item"><a href="#medicine" class="ipd-nav-link">Medication</a></li>
-                    <li class="ipd-nav-item"><a href="#consultant" class="ipd-nav-link">Consultant</a></li>
-                    <li class="ipd-nav-item"><a href="#operation" class="ipd-nav-link">Operation</a></li>
-                    <li class="ipd-nav-item"><a href="#payment" class="ipd-nav-link">Payment</a></li>
-                    <li class="ipd-nav-item"><a href="#prescription" class="ipd-nav-link">Prescription</a></li>
+                    <li class="ipd-nav-item"><a href="#overview" class="ipd-nav-link">Profile</a></li>  
+                    <li class="ipd-nav-item"><a href="#doctor" class="ipd-nav-link">Lab Investigation</a></li>
+                    
                     <!-- Add more menu items as needed -->
                 </ul>
             </div>
@@ -209,7 +204,7 @@
 
 
         <section id="overview"class="overview toggeable ">
-            {% for ipd in ipd %}
+          
             
             
             
@@ -293,7 +288,6 @@
                 </li>
         
             </div>
-            {% endfor %}
             <div class="nursenote ipd-left">
                 <h1>
                     Nurse Note
@@ -319,114 +313,6 @@
 
 
 
-        <section id="nurse"class="nurse toggeable " >
-            <div class="main-header">
-                <h1 class="headline">Nurse Note</h1>
-                <div class="side-btns">
-                
-                
-                {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-                <button  class="btn-primary btn openPopupBtn" data-popup="1" class="openPopupBtn" id="openPopupBtn">Add Note</button>
-                
-            </div>    
-                </div>
-    
-                
-    <div id="popupContainer1" class="form-popup-back">
-        <div class="form-Contain">
-            <div class="POP">
-                <div class="cards">
-                  <div class="popup-header">
-                    <span id="closePopupBtn" class="close-button">Close</span>
-                    <h1>Add Nurse Note</h1>
-                  </div>
-                  
-               
-                   
-          
-                  {% for ipd in ipd %}
-                  
-                  
-    
-                   
-                    <form class="form_popup" method="post" action="{% url 'nurse' ipd.id%}">
-                        {% endfor %}
-                        {% csrf_token %}
-                         <!-- Basic Information -->
-      
-                           
-                                
-                                <div class="form-group">
-                                    <label for="date">Date *</label>
-                                    <input type="date" id="date" name="date" required>
-                                </div>
-                    
-                            <div class="form-group">
-                                    <label for="nurse">Nurse *</label>
-                                <select id="nurse" name="nurse" required>
-                                    <option value="Nurse1">Nurse 1</option>
-                                        <option value="Nurse2">Nurse 2</option>
-                                <option value="Nurse3">Nurse 3</option>
-                            <!-- Add more nurse options as needed -->
-                                        </select>
-    
-                            </div>
-                            <div class="form-group">
-                                        <label for="note">Note *</label>
-                                        <textarea id="note" name="note" rows="3" required></textarea>
-                            </div>
-                                    
-                            <div class="form-group">
-                                        <label for="comment">Comment *</label>
-                                        <textarea id="comment" name="comment" rows="3" required></textarea>
-                         </div>
-                                    
-                                        
-                                                    
-                                                    <div style="text-align: center;">
-                                                        <input type="submit" value="Submit">
-                                                     </div>
-                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-                
-                <table class="table">
-                    <thead>
-                      <tr>
-                        
-                        <th>Patient Name </th>
-                        <th>Date</th>
-                        <th>Nurse Name</th>
-                       
-                       
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                      {% for nurse in nurse %}
-                        <tr>
-                            
-                          <td>{{ nurse.patient }}</td>
-                          <td>{{ nurse.date }}</td>
-                            
-                          <td>{{ nurse.nurse }}</td>
-                          
-                          
-                        
-                        
-                      {% endfor %}
-                      
-                    
-                    </tbody>
-                  </table>
-                
-                  
-    </section>
-
-
 
 
 <section id="doctor"class="doctor toggeable " >
@@ -434,74 +320,16 @@
 
     
         <div class="main-header">
-            <h1 class="headline">Doctor Note</h1>
+            <h1 class="headline">Lab Investigation</h1>
             <div class="side-btns">
             
             
             {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-            <button  class="btn-primary btn openPopupBtn" data-popup="2"  id="openDoc">Add Note</button>
-            
+         
         </div>    
             </div>
 
             
-<div id="popupContainer2" class="form-popup-back">
-    <div class="form-Contain">  
-        <div class="POP">
-            <div class="cards">
-              <div class="popup-header">
-                <span id="closePopupBtn" class="close-button">Close</span>
-                <h1>Add Doctor Note</h1>
-              </div>
-              {% for ipd in ipd %}
-              
-              
-
-               
-                <form class="form_popup" method="post" action="{% url 'doctor' ipd.id%}">
-                    {% endfor %}
-                    {% csrf_token %}
-                     <!-- Basic Information -->
-  
-                     
-                            
-                            <div class="form-group">
-                                <label for="date">Date *</label>
-                                <input type="date" id="date" name="date" required>
-                            </div>
-                
-                        <div class="form-group">
-                              
-                            <select id="doctor" name="doctor">
-                                <option value="">Select A Doctor </option>
-                                {% for doctor in doctor %}
-                                    <option value="{{doctor.name}}">{{ doctor.name }}</option>
-                    
-                                {% endfor %}
-                        </div>
-                        <div class="form-group">
-                                    <label for="note">Note *</label>
-                                    <textarea id="note" name="note" rows="3" required></textarea>
-                        </div>
-                                
-                        <div class="form-group">
-                                    <label for="comment">Comment *</label>
-                                    <textarea id="comment" name="comment" rows="3" required></textarea>
-                     </div>
-                                
-                                    
-                                                
-                                                <div style="text-align: center;">
-                                                    <input type="submit" value="Submit">
-                                                 </div>
-                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 
 
             
@@ -509,26 +337,45 @@
                 <thead>
                   <tr>
                     
-                    <th>Patient Name </th>
+                    <th>Test Name </th>
+                    <th>Lab</th>
+                
                     <th>Date</th>
-                    <th>Nurse Name</th>
+                    <th>Aprroved By</th>
+                    <th>Total</th>
                    
                    
                   </tr>
                 </thead>
                 <tbody>
                   
-                  {% for doc in doc_note %} 
+                  {% for pathology in pathology %} 
                     <tr>
                         
-                      <td>{{ doc.patient }}</td>
-                      <td>{{ doc.date }}</td>
+                      <td>{{ pathology.test_name }}</td>
+                      <td>Pathology</td>
                         
-                      <td>{{ doc.doctor }}</td>
+                      <td>{{ pathology.report_date }}</td>
+                      <td>{{ pathology.referral_doctor }}</td>
+                      <td>{{ pathology.total }}</td>
                       
                       
                     
+                    </tr>
+                  {% endfor %}
+                  {% for Radiology in radiology %} 
+                <tr>
+                        
+                      <td>{{ Radiology.test_name }}</td>
+                      <td>Radiology</td>
+                        
+                      <td>{{ Radiology.report_date }}</td>
+                      <td>{{ Radiology.referral_doctor }}</td>
+                      <td>{{ Radiology.total }}</td>
+                      
+                      
                     
+                    </tr>
                   {% endfor %}
                   
                 
@@ -545,614 +392,7 @@
 
 
 
-<section id="medicine"class="medicine toggeable " >
-    <div class="main-header">
-        <h1 class="headline">Add Dosage</h1>
-        <div class="side-btns">
-        
-        
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <button  class="btn-primary btn openPopupBtn" data-popup="4" class="openPopupBtn" id="openPopupBtn">Add Dosage</button>
-        
-    </div>    
-        </div>
 
-        
-<div id="popupContainer4" class="form-popup-back">
-<div class="form-Contain">
-    <div class="POP">
-        <div class="cards">
-          <div class="popup-header">
-            <span id="closePopupBtn" class="close-button">Close</span>
-            <h1>Add Dosage Note</h1>
-          </div>
-          {% for ipd in ipd %}
-          
-          
-
-           
-            <form class="form_popup" method="post" action="{% url 'dosage' ipd.id%}">
-                {% endfor %}
-                {% csrf_token %}
-                 <!-- Basic Information -->
-
-                   
-                        
-                        
-                            <div class="form-group">
-                                <label for="date">Date *</label>
-                                <input type="date" name="date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="time">Time</label>
-                                <input type="time" name="time">
-                            </div>
-                            <div class="form-group">
-                                <label for="medicine_category">Medicine Category *</label>
-                                <input type="text" name="medicine_category" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="medicine_name">Medicine Name *</label>
-                                <input type="text" name="medicine_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="dosage">Dosage *</label>
-                                <input type="text" name="dosage" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="remarks">Remarks</label>
-                                <textarea name="remarks" rows="4"></textarea>
-                            </div>
-                            
-                                
-                                            
-                                            <div style="text-align: center;">
-                                                <input type="submit" value="Submit">
-                                             </div>
-                                             
-             </form>
-        </div>
-    </div>
-</div>
-</div>
-
-
-        
-        <table class="table">
-            <thead>
-              <tr>
-                
-                <th>Dosage </th>
-                <th>Time</th>
-                <th>Medicine Category</th>
-                <th>Medicine Name</th>
-               
-               
-              </tr>
-            </thead>
-            <tbody>
-              
-              {% for medicine in medicine %}
-                <tr>
-                    
-                  <td>{{ medicine.dosage }}</td>
-                  <td>{{ medicine.time }}</td>
-                    
-                  <td>{{ medicine.medicine_category}}</td>
-                  <td>{{ medicine.medicine_name }}</td>
-                  
-                  
-                
-                
-              {% endfor %}
-              
-            
-            </tbody>
-          </table>
-        
-          
-</section>
-
-
-
-
-
-
-<section id="operation"class="operation toggeable " >
-    <div class="main-header">
-        <h1 class="headline">Add Operation</h1>
-        <div class="side-btns">
-        
-        
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <button  class="btn-primary btn openPopupBtn" data-popup="6" class="openPopupBtn" id="openPopupBtn">Add Operation</button>
-        
-    </div>    
-        </div>
-
-        
-<div id="popupContainer6" class="form-popup-back">
-<div class="form-Contain">
-    <div class="POP">
-        <div class="cards">
-          <div class="popup-header">
-            <span id="closePopupBtn" class="close-button">Close</span>
-            <h1>Add Operation </h1>
-          </div>
-          {% for ipd in ipd %}
-          
-          
-
-           
-            <form class="form_popup" method="post" action="{% url 'ipd_operation' ipd.id%}">
-                {% endfor %}
-                {% csrf_token %}
-                 <!-- Basic Information -->
-
-                   
-                 <div class="form-group">
-                    <label for="operation_category">Operation Category *</label>
-                    <input type="text" id="operation_category" name="operation_category" required>
-                </div>
-                <div class="form-group">
-                    <label for="operation_name">Operation Name *</label>
-                    <input type="text" id="operation_name" name="operation_name" required>
-                </div>
-                <div class="form-group">
-                    <label for="operation_date">Operation Date *</label>
-                    <input type="date" id="operation_date" name="operation_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="consultant_doctor">Consultant Doctor *</label>
-                    <input type="text" id="consultant_doctor" name="consultant_doctor" required>
-                </div>
-                <div class="form-group">
-                    <label for="operation_assistant">Operation Assistant *</label>
-                    <input type="text" id="operation_assistant" name="operation_assistant" required>
-                </div>
-                <div class="form-group">
-                    <label for="anesthesia_type">Anesthesia Type</label>
-                    <input type="text" id="anesthesia_type" name="anesthesia_type">
-                </div>
-                <div class="form-group">
-                    <label for="ot_technician">OT Technician</label>
-                    <input type="text" id="ot_technician" name="ot_technician">
-                </div>
-                <div class="form-group">
-                    <label for="ot_assistant"> Assistant 1</label>
-                    <input type="text" id="ot_assistant" name="ot_assistant">
-                </div>
-
-                <div class="form-group">
-                    <label for="assistant2">Assistant 2</label>
-                    <input type="text" id="assistant2" name="assistant2">
-                </div>
-                <div class="form-group">
-                    <label for="remark">Remark</label>
-                    <textarea id="remark" name="remark" rows="4"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="result">Result</label>
-                    <textarea id="result" name="result" rows="4"></textarea>
-                </div>
-                                
-                                            
-                                            <div style="text-align: center;">
-                                                <input type="submit" value="Submit">
-                                             </div>
-                                             
-             </form>
-        </div>
-    </div>
-</div>
-</div>
-
-
-        
-        <table class="table">
-            <thead>
-              <tr>
-                
-                <th>Operation Category </th>
-                <th>Operation Name</th>
-                <th>Operation Date</th>
-                <th>Consultant Doctor</th>
-                <th>Operation Assistant</th>
-                
-               
-               
-              </tr> 
-            </thead>
-            <tbody>
-              
-              {% for operation in operation %}
-                <tr>
-                    
-                  <td>{{ operation.applied_date }}</td>
-                  <td>{{ consultant.instruction_date }}</td>
-                    
-                  <td>{{ consultant.consultant_doctor}}</td>
-                  <td>{{ consultant.consultant_name }}</td>
-                  
-                  
-                
-                
-              {% endfor %}
-              
-            
-            </tbody>
-          </table>
-        
-          
-</section>
-
-
-
-
-
-
-<section id="consultant"class="consultant toggeable " >
-    <div class="main-header">
-        <h1 class="headline">Add Dosage</h1>
-        <div class="side-btns">
-        
-        
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <button  class="btn-primary btn openPopupBtn" data-popup="5" class="openPopupBtn" id="openPopupBtn">Add Consultant</button>
-        
-    </div>    
-        </div>
-
-        
-<div id="popupContainer5" class="form-popup-back">
-<div class="form-Contain">
-    <div class="POP">
-        <div class="cards">
-          <div class="popup-header">
-            <span id="closePopupBtn" class="close-button">Close</span>
-            <h1>Add Consultant Register </h1>
-          </div>
-          {% for ipd in ipd %}
-          
-          
-
-           
-            <form class="form_popup" method="post" action="{% url 'consultant_register' ipd.id%}">
-                {% endfor %}
-                {% csrf_token %}
-                 <!-- Basic Information -->
-
-                   
-                        
-                        
-                 <div class="form-group">
-                    <label for="applied_date">Applied Date *</label>
-                    <input type="date" id="applied_date" name="applied_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="instruction_date">Instruction Date *</label>
-                    <input type="date" id="instruction_date" name="instruction_date" required>
-                </div>
-                <div class="form-group">
-                    <label for="consultant_doctor">Consultant Doctor *</label>
-                    <input type="text" id="consultant_doctor" name="consultant_doctor" required>
-                </div>
-                <div class="form-group">
-                    <label for="instruction">Instruction *</label>
-                    <textarea id="instruction" name="instruction" rows="4" required></textarea>
-                </div>  
-                                
-                                            
-                                            <div style="text-align: center;">
-                                                <input type="submit" value="Submit">
-                                             </div>
-                                             
-             </form>
-        </div>
-    </div>
-</div>
-</div>
-
-
-        
-        <table class="table">
-            <thead>
-              <tr>
-                
-                <th>Applied Date </th>
-                <th>Instruction Date</th>
-                <th>Consultant Doctor</th>
-                
-               
-               
-              </tr> 
-            </thead>
-            <tbody>
-              
-              {% for consultant in consultant %}
-                <tr>
-                    
-                  <td>{{ consultant.applied_date }}</td>
-                  <td>{{ consultant.instruction_date }}</td>
-                    
-                  <td>{{ consultant.consultant_doctor}}</td>
-                  <td>{{ consultant.consultant_name }}</td>
-                  
-                  
-                
-                
-              {% endfor %}
-              
-            
-            </tbody>
-          </table>
-        
-          
-</section>
-
-
-
-
-
-
-
-
-
-<section id="payment"class="payment toggeable " >
-    <div class="main-header">
-        <h1 class="headline">Add Payment</h1>
-        <div class="side-btns">
-        
-        
-        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
-        <button  class="btn-primary btn openPopupBtn" data-popup="7" class="openPopupBtn" id="openPopupBtn">Add Consultant</button>
-        
-    </div>    
-        </div>
-
-        
-<div id="popupContainer7" class="form-popup-back">
-<div class="form-Contain">
-    <div class="POP">
-        <div class="cards">
-          <div class="popup-header">
-            <span id="closePopupBtn" class="close-button">Close</span>
-            <h1>Add Consultant Register </h1>
-          </div>
-          {% for ipd in ipd %}
-          
-          
-
-           
-            <form class="form_popup" method="post" action="{% url 'ipd_payment' ipd.id%}">
-                {% endfor %}
-                {% csrf_token %}
-                 <!-- Basic Information -->
-                 
-                 <div class="form-group">
-                    <label for="date">Date *</label>
-                    <input type="date" id="date" name="date" required>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Amount ($) *</label>
-                    <input type="number" step="0.01" id="amount" name="amount" required>
-                </div>
-                <div class="form-group">
-                    <label for="payment_mode">Payment Mode *</label>
-                    <select id="payment_mode" name="payment_mode">
-                        <option value="Cash">Cash</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="note">Note</label>
-                    <textarea id="note" name="note" rows="4"></textarea>
-                </div>
-
-                   
-               
-                                
-                                            
-                                            <div style="text-align: center;">
-                                                <input type="submit" value="Submit">
-                                             </div>
-                                             
-             </form>
-        </div>
-    </div>
-</div>
-</div>
-
-
-        
-        <table class="table">
-            <thead>
-              <tr>
-                
-                
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Payment Mode </th>  
-                
-                
-               
-               
-              </tr> 
-            </thead>
-            <tbody>
-              
-              {% for payment  in payment %}
-                <tr>
-                    
-                  <td>{{ payment.date }}</td>
-                  <td>{{ payment.amount }}</td>
-                    
-                  <td>{{ payment.payment_mode}}</td>
-                  
-                  
-                  
-                
-                
-              {% endfor %}
-              
-            
-            </tbody>
-          </table>
-        
-          
-</section>
-
-
-
-
-
-<section id="prescription"class="prescription toggeable " >
-    <div class="main-header">
-        <h1 class="headline">Add Prescription</h1>
-        <div class="side-btns">
-        
-        
-            {% for ipd in ipd %}
-        
-             <a href="/prescreption/{{ipd.id}}">Add Prescription</a>
-            {% endfor %}
-        
-    </div>    
-        </div>
-        
-{% comment %} 
-        
-<div id="popupContainer8" class="form-popup-back">
-<div class="form-Contain">
-    <div class="POP">
-        <div class="cards">
-          <div class="popup-header">
-            <span id="closePopupBtn" class="close-button">Close</span>
-            <h1>Add Prescription </h1>
-          </div>
-          {% for ipd in ipd %}
-          
-          
-
-           
-            <form class="form_popup" method="post" action="{% url 'ipd_prep' ipd.id%}">
-                {% endfor %}
-                {% csrf_token %}
-                 <!-- Basic Information -->
-                 <input type="hidden" name="item_counter" id="item_counter" value="0">
-                 <div class="form-group">
-                    <label for="finding_category">Finding Category</label>
-                    <input type="text" id="finding_category" name="finding_category" required>
-                </div>
-                <div class="form-group">
-                    <label for="findings">Finding</label>
-                    <input type="text" step="0.01" id="findings" name="findings" required>
-                </div>
-                <div class="form-group">
-                    <label for="doctor">Prescribed By</label>
-                    <select id="doctor" name="doctor">
-                        <option value="">Select A Doctor </option>
-                        {% for doctor in doctor %}
-                            <option value="{{doctor.first_name}}">{{ doctor.first_name }}</option>
-            
-                        {% endfor %}
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-                    <label for="finding_description">Finding Description</label>
-                    <textarea id="finding_description" name="finding_description" rows="4"></textarea>
-                </div>
-
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Medicine Category </th>
-                        <th>Medicine</th>
-                        <th>Dosage</th>
-                        <th>Interval</th>
-                        <th>Duration</th>
-                        
-            
-                          
-                       
-                      </tr>
-                    </thead>
-                    <tbody class="prep">
-                      
-                       
-        
-                        
-                    </tbody>
-                  </table>
-        
-
-                   
-               
-                                
-                                            
-                                            <div style="text-align: center;">
-                                                <input type="submit" value="Submit">
-                                             </div>
-                                             
-                                          
-                                    
-                                    
-                                            
-                                        </form>
-                                    
-                                        <button type="button" id="addItemButton" class="btn btn-secondary">Add Item</button>
-                                    
-                                    
-                                    
-                                        
-        </div>
-    </div>
-</div>
-</div>
- {% endcomment %}
-
-        
-        <table class="table">
-            <thead>
-              <tr>
-                
-                
-                <th>Finding Category</th>
-                <th>Findings</th>
-                <th>Finding Description </th>  
-                <th>Doctor </th>  
-                
-                
-               
-               
-              </tr> 
-            </thead>
-            <tbody>
-              
-              {% for prep  in prep %}
-                <tr>
-                    
-                  <td>{{ prep.finding_category }}</td>
-                  <td>{{ prep.findings }}</td>
-                    
-                  <td>{{ prep.finding_description}}</td>
-                  <td>{{ prep.doctor}}</td>
-                  
-                  
-                  
-                
-                
-              {% endfor %}
-              
-            
-            </tbody>
-          </table>
-        
-          
-</section>
 
 
 

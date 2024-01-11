@@ -51,7 +51,7 @@
                 
                         <div class="form-group">
                             <label for="report_days">Report Days *</label>
-                            <input type="number" name="report_days" required>
+                            <input id="report_days" type="number" name="report_days" required>
                         </div>
                 
                         <div class="form-group">
@@ -243,6 +243,7 @@
                 success: function (data) {
                     // Update the driver_name input field with the retrieved value
                     $('#tax_percentage').val(data.tax);
+                    $('#report_days').val(data.report_days);
                 },
                 error: function () {
                     // Handle errors if any

@@ -923,7 +923,32 @@ body{
           </div>    
           
 
-          
+          <button class="dropdown-btn"><i class="fa-regular fa-file-lines"></i>   <span class="side_text">Medical Reports</span>  
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-container">
+            <a class="dropdown-a" href="{% url "search_tpa" %}">TPA</a>
+            <a class="dropdown-a" href="{% url "search_appointments" %}">Appointment</a>
+            <a class="dropdown-a" href="{% url "search_medicine" %}">Medicine</a>
+            <a class="dropdown-a" href="{% url "search_patient" %}">Patient</a>
+            <a class="dropdown-a" href="{% url "search_opd" %}">OPD</a>
+            <a class="dropdown-a" href="{% url "search_ipd" %}">IPD</a>
+            <a class="dropdown-a" href="{% url "birth_report" %}">Birth Report</a>
+            <a class="dropdown-a" href="{% url "death_report" %}">Death Report</a>
+            <a class="dropdown-a" href="{% url "ot_report" %}">OT Report</a>
+            <a class="dropdown-a" href="{% url "stock_report" %}">Stock Report</a>
+            <a class="dropdown-a" href="{% url "search_opdbalance" %}">OPD Balance</a>
+            <a class="dropdown-a" href="{% url "search_ipdbalance" %}">IPD Balance</a>
+            <a class="dropdown-a" href="{% url "ipd_discharge" %}">IPD Discharged</a>
+            <a class="dropdown-a" href="{% url "opd_discharge" %}">OPD Discharged</a>
+            <a class="dropdown-a" href="{% url "blood_issue_report" %}">Blood Issue Report</a>
+            <a class="dropdown-a" href="{% url "blood_donor_report" %}">Blood Donor Report</a>
+            <a class="dropdown-a" href="{% url "payroll_report" %}">Payroll Report</a>
+            <a class="dropdown-a" href="{% url "refferal_report" %}">Refferal</a>
+            <a class="dropdown-a" href="{% url "ambulance_report" %}">Ambulance</a>
+
+            
+          </div>   
 
 
           <li><a href="{% url 'referral' %}"><i class="fa-solid fa-network-wired"></i><span class="side_text">Refferal</span>  </a></li>

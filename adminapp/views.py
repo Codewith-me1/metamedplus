@@ -1490,7 +1490,7 @@ def create_charge_type(request):
         name = request.POST.get('name')
         description = request.POST.get('description')
 
-        charge_type = get_object_or_404(Module_Charge,charge_name=charge_type)
+        charge_type = get_object_or_404(Module_Charge,pk=charge_type)
         ChargeType.objects.create(charge_type=charge_type,name=name, description=description)
         return redirect('charge_type')
     
@@ -2524,10 +2524,11 @@ def get_tax_info(request):
 
     try:
         selected =  request.GET.get('test_name')
-        parameter = Pathology_test.objects.get(test_name=selected)
+        parameter = Pathology_test.objects.get(id=selected)
         data = {
             'tax': parameter.tax_percentage,
             'standard_charge': parameter.standard_charge,
+            'report_days': parameter.report_days,
         }
         return JsonResponse(data)   
     except Path_Parameter.DoesNotExist:
@@ -5665,7 +5666,7 @@ def add_hospital(request):
 
 
 
-def search_patient(request):
+def search_patients(request):
     query = request.GET.get('q', '')
 
     if query:
@@ -7084,6 +7085,8 @@ def prescription(request,id):
         findings = request.POST.get('findings')
         finding_description = request.POST.get('finding_description')
         doctor = request.POST.get('doctor')
+        radiology = request.POST.get('radiology')
+        pathology = request.POST.get('pathology')
         
         
         
@@ -7097,16 +7100,31 @@ def prescription(request,id):
         if item_counter.isdigit():
             item_counter = int(item_counter)
         else:
-            item_counter = 0  
+            item_counter = 0    
+        
+        ipd = IpdPatient.objects.get(pk=id)
 
-        patient = Patient.objects.get(id=id)
+        patient = Patient.objects.get(id=ipd.patient.id)
+        radio = Radiology.objects.get(id=radiology)
+        
+        try:
+            path  = Pathology.objects.get(id=pathology)
+        except Exception:
+            path = None
+
+        try:
+            radio = Radiology.objects.get(id=radiology)
+        except Exception:
+            radio = None
+
+
         pres =Precreption (
             patient=patient,
             finding_category=finding_category,
             findings=findings,
             finding_description=finding_description,
             doctor=doctor,
-            pathology = path,
+            pathology =path,
             radiology=radio,
            
         )
@@ -7162,68 +7180,30 @@ def prescription(request,id):
             item.save()
             
 
-        ids = id
         
-
-        context = {
-            'id':ids
-        } 
-        url = reverse('ipd_dashboard', args=[id])
-        url+= "#nurse"
-        return redirect(url)
+        return redirect('ipd_patient')
 
     dosage = Med_Details.objects.all()
     cat = Med_Category.objects.all()
     doctor = AddStaff.objects.filter(role="Doctor")
     medicine = Medicine.objects.all()
+    ipd = IpdPatient.objects.get(pk=id)
+    radio = Radiology.objects.filter(patient=ipd.patient)
+    path = Pathology.objects.filter(patient=ipd.patient)
   
 
 
-    try:
-        radio = Radiology.objects.get(patient=id)
-    except ObjectDoesNotExist:
-        radio = None
-
-    try:
-        path = Pathology.objects.get(patient=id)
-    except ObjectDoesNotExist:
-        path = None
-
-    if not radio and not path:
-        context = {
-        
-        'dosage':dosage,
-        'cat':cat,
-        'medicine':medicine,
-        'doctor':doctor,
-        }
-    elif not path:
-        context = {
-        'radio':radio,
-        'dosage':dosage,
-        'cat':cat,
-        'medicine':medicine,
-        'doctor':doctor,
-        } 
-
-    elif not radio:
-        context = {
-        'path':path,
-        'dosage':dosage,
-        'cat':cat,
-        'medicine':medicine,
-        'doctor':doctor,
-        } 
-
-    else:
-        context = {
+   
+    
+    context = {
         'path':path,
         'radio':radio,
         'dosage':dosage,
+        'ipd':id,
         'cat':cat,
         'medicine':medicine,
         'doctor':doctor,
-        } 
+    } 
 
     
     
@@ -7297,12 +7277,14 @@ def blood_issue_report(request):
         patient = request.GET.get('patient')
         blood_group = request.GET.get('blood_group')
         
-        if not patient:
-            patient = 1
-        if not gender:
-            patient = Patient.objects.get(id=patient)
+        print(patient)
+        print(blood_group)
+        print(gender)
+        if not patient and not gender:
+            
+
             blood_donation = BloodDonation_component.objects.filter(
-                patient = patient,
+            
                 blood_group=blood_group,
 
             )
@@ -7321,6 +7303,16 @@ def blood_issue_report(request):
                 patient__gender=gender
 
             )
+        elif not patient and not blood_group and not gender:
+            donor = Patient.objects.all()
+
+            context = {
+                'result':"No Result Found",
+                'model':donor,
+        
+            }
+
+            return render(request,'reports/blood_issue.html',context)
         else:
             patient = Patient.objects.get(id=patient)
 
@@ -7618,7 +7610,7 @@ def pos_pathpdf(request):
 
 
 def opd_dashboard(request,ipd_id):
-    ipd = OpdPatient.objects.filter(pk=ipd_id)
+    ipd = OpdPatient.objects.get(pk=ipd_id)
     nurse= NursingRecord.objects.all()
     staff = AddStaff.objects.filter(role="Nurse")
     doctor  = AddStaff.objects.filter(role="Doctor")
@@ -7630,9 +7622,10 @@ def opd_dashboard(request,ipd_id):
     cat = Med_Category.objects.all()
     medicine_name = Medicine.objects.all()
     prep = Precreption.objects.all()
-    context= {
-        
-    }
+
+    pathology = Pathology.objects.filter(patient=ipd.patient)
+    radiology = Radiology.objects.filter(patient=ipd.patient)
+ 
     payment = Ipd_Payments.objects.all()
 
     
@@ -7647,6 +7640,8 @@ def opd_dashboard(request,ipd_id):
         'nurse':nurse,
         'prep':prep,
         'staff':staff,
+        'pathology':pathology,
+        'radiology':radiology,
         'ipd':ipd,
         'doctor':doctor,
         'medicine':medicine,
