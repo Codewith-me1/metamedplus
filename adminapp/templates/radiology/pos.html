@@ -245,25 +245,55 @@ form button{
   <div class="form-group">
 
     <label for="path_test">Patient Name</label>
-    <input type="text" name="path_test" id="path_test">
+    <input type="text" name="patient" id="patient">
+
+  </div>
+
+  
+
+  <div class="form-group">
+
+    <label for="path_test">Bill Date</label>
+    <input type="date" name="bill_date" id="bill_date">
 
   </div>
 
   <div class="form-group">
-   <label for="date_time">Date/Time</label>
+
+    <label for="path_test">Age</label>
+    <input type="number" name="Age" id="age">
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="path_test">Guardian Name</label>
+    <input type="text" name="guardian_name" id="guardian_name">
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="path_test">Address</label>
+    <textarea name="address" id="address"></textarea>
+
+  </div>
+
+
+  <div class="form-group">
+   <label for="date_time">Admission Date</label>
    <input type="date" name="date_time" id="date_time" >
 
 
     </div>
 
- 
 
   
      <div class="form-group">
 
       <label for="small_note">Small Note</label>
    
-      <textarea id="small_note" name="small_note" rows="3" cols="30">
+      <textarea id="small_note" name="small_note">
      
       </textarea>
      </div>
@@ -437,6 +467,8 @@ form button{
               var parts = selectedValue.split('_');
               var selectId = $(this).attr('id');
               var id = parts[1];
+              console.log(id)
+              console.log(id)
               console.log(id)
               $.ajax({
                   url: '/radio_details',

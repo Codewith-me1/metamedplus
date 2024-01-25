@@ -274,12 +274,17 @@
                   
           
                  <div class="form-group">
-                  <label for="date_time">Date/Time</label>
-                  <input type="date" name="date_time" id="date_time" >
+                  <label for="date_time">Admission Date</label>
+                  <input type="date" name="date_time" id="date_time" required >
           
           
              </div>
-          
+             <div class="form-group">
+              <label for="date_time">Bill Date</label>
+              <input type="date" name="bill_date" id="bill_date" required >
+      
+      
+         </div>
                
           
                  
@@ -291,7 +296,7 @@
                   <option  value="">Select A value</option>
                 {% for test in test %}
              
-                  <option  value="{{test.patient.name}}_{{test.id}}">{{test.patient.name}}</option>
+                  <option  value="{{test.id}}">{{test.patient.name}}</option>
                   {% endfor %}
               </select>
              

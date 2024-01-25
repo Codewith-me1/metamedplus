@@ -39,7 +39,7 @@
     </div>
     <div class="form-group">
         <label for="id_weight">Weight *</label>
-        <input type="number" class="form-control" id="id_weight" name="weight" required>
+        <input type="text" class="form-control" id="id_weight" name="weight" required>
     </div>
     <div class="form-group">
         <label for="id_case_id">Case ID *</label>
@@ -134,6 +134,7 @@
         <th>Name</th>
         <th>Gender</th>
         <th>Phone</th>
+        <th>Weight</th>
         <th>Address</th>
        
           
@@ -148,6 +149,7 @@
            <td>{{ child.child_name }}</td>
           <td>{{ child.gender }}</td>
           <td>{{ child.phone }}</td>
+          <td>{{ child.weight }}</td>
           <td>{{ child.address }}</td>
           
           

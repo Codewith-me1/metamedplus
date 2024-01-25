@@ -1081,7 +1081,7 @@ def ipd_patient(request):
         height = request.POST['height']
         patient_name = request.POST['patient']
         weight = request.POST['weight']
-        bp = request.POST['bp']
+        bp = request.POST.get('bp')
         pulse = request.POST['pulse']
         temperature = request.POST['temperature']
         respiration = request.POST['respiration']
@@ -1108,14 +1108,14 @@ def ipd_patient(request):
 
         ipd = IpdPatient(
             patient = patient,
-            height=height,
-            weight=weight,
-            bp=bp,
-            pulse=pulse,
-            temperature=temperature,
+            height=float(height),
+            weight=float(weight),
+            bp=float(bp),
+            pulse=float(pulse),
+            temperature=float(temperature),
             symptoms_description=symptoms_description,
             symptoms_title=symptoms_title,
-            respiration=respiration,
+            respiration=float(respiration),
             symptoms_type=symptoms_type,
             admission_date=admission_date,
             is_case_casualty=is_case_casualty,
@@ -1129,9 +1129,8 @@ def ipd_patient(request):
         )
         ipd.save()
       
-        url = reverse('ipd_dashboard', args=[ipd.id])
-        url+= "#overview"
-        return redirect(url)
+        
+        return redirect('ipd_patient')
          # Redirect to a success page
     type = Symtopms.objects.all()
     bedtype = BedGroup.objects.all()
@@ -1869,7 +1868,7 @@ def create_child(request):
         child = ChildBirth(
             child_name=child_name,
             gender=gender,
-            weight=weight,
+            weight=Decimal(weight),
             child_photo=child_photo,
             birth_date=birth_date,
             phone=phone,
@@ -2556,7 +2555,7 @@ def opd(request):
         credit_limit = request.POST['credit_limit']
         reference = request.POST['reference']
         consultant_doctor = request.POST['consultant_doctor']
-        note = request.POST['note']
+        note = request.POST.get('note')
         any_known = request.POST['any_known']
         charge_category = request.POST.get('charge_category')
         charge_name = request.POST.get('charge_name')
@@ -5922,7 +5921,8 @@ def admin_notice_board(request):
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
-        notice = Notice(title=title, content=content)
+        date = request.POST.get('date')
+        notice = Notice(title=title, content=content,timestamp=date)
         notice.save()
         # message = 'New Notice By Admin: {}'.format(title)
         # channel_layer = get_channel_layer()
@@ -6314,6 +6314,8 @@ def IPD_pdf(request,id):
 
     ipd_patient = IpdPatient.objects.get(id=id)
     hospital_name = header.objects.all().first()
+    address = Address.objects.all()
+    date = datetime.now()
    
 
         
@@ -6324,6 +6326,12 @@ def IPD_pdf(request,id):
                 'name': ipd_patient.patient.name,
                 'hospital_name': hospital_name.name if hospital_name else 'Your Hospital',
                 'phone': ipd_patient.patient.phone,
+                'address':address,
+                'height':ipd_patient.height,
+                'weight':ipd_patient.weight,
+                'age':ipd_patient.patient.Age,
+                'admission_date':ipd_patient.admission_date,
+                'date':date,
                 'doctor': ipd_patient.consultant_doctor,
                 'bed': ipd_patient.bed_number,
                 'gender': ipd_patient.patient.gender,
@@ -7522,13 +7530,18 @@ def pos_pathpdf(request):
         
         sub_total = request.POST.get('sub_total')
         tax = request.POST.get('tax')
+
+        
         grand_total = request.POST.get('grand_total')
         discount = request.POST.get('disc')
         small_note = request.POST.get('small_note')
         date_time = request.POST.get('date_time')
+        bill_date = request.POST.get('bill_date')
+        patient_address = request.POST.get('address')
         
         payment = request.POST.get('payment')
         patient = request.POST.get('patient')
+        age = request.POST.get('Age')
         doctor = request.POST.get('doctor')
         paid_amount = request.POST.get('paid_amount')
         item_counter = request.POST.get('item_counter')
@@ -7566,8 +7579,6 @@ def pos_pathpdf(request):
                 'test': test,
                 'cat': cat,
                 'price': price,
-                
-                
                 'total': total
                 }
     
@@ -7577,13 +7588,20 @@ def pos_pathpdf(request):
 
         
       
-        
+    hospital_name = header.objects.all().first()
+    address = Address.objects.all()
     
     context= {
         'products':product_list,
         'sub_total':sub_total,
+        'hospital_name':hospital_name.name,
         'tax':tax,
+        'address':address,
         'discount':discount,
+        'patient_address':patient_address,
+        'age':age,
+        'bill_date':bill_date,
+        
         'small_note':small_note,
         'date_time':date_time,
         'patient':patient,
@@ -7932,6 +7950,8 @@ def     search_case_id(request):
         if search_id is not None:
             
             ipd_result = IpdPatient.objects.filter(id=search_id)
+            ipd_result = Radiology.objects.filter(id=search_id)
+            ipd_result = Pathology.objects.filter(id=search_id)
             opd_result = OpdPatient.objects.filter(id=search_id)
 
             context = {
@@ -9080,6 +9100,7 @@ def inhouse_pathpdf(request):
         discount = request.POST.get('disc')
         small_note = request.POST.get('small_note')
         date_time = request.POST.get('date_time')
+        bill_date = request.POST.get('bill_date')
         
         payment = request.POST.get('payment')
         patient = request.POST.get('patient')
@@ -9133,6 +9154,7 @@ def inhouse_pathpdf(request):
       
         
     balance = float(grand_total)-float(paid_amount)
+    patient_details = Pathology.objects.get(id=patient)
     context= {
         'products':product_list,
         'sub_total':sub_total,
@@ -9140,8 +9162,10 @@ def inhouse_pathpdf(request):
         'discount':discount,
         'paid_amount':paid_amount,
         'small_note':small_note,
+        'bill_date':bill_date,
         'date_time':date_time,
         'balance':balance,
+        'patient_details':patient_details,
         'patient':patient,
         'doctor':doctor,
         'payment':payment,
@@ -9271,13 +9295,16 @@ def inhousepharma_pdf(request):
         
       
     balance  = float(grand_total) - float(paid_amount)
-    
+    address = Address.objects.all().first()
+    hospital = header.objects.all().first()
     context= {
         'products':product_list,
         'sub_total':sub_total,
         'tax':tax,
         'discount':discount,
+        'address':address,
         'small_note':small_note,
+        'hospital_name':hospital.name,
         'paid_amount':paid_amount,
         'balance':balance,
                 'date_time':date_time,
@@ -9697,3 +9724,62 @@ def appointmentpdf_download(request,id):
     if pisa_status.err:
         return HttpResponse('PDF generation failed', content_type='text/plain')
     return response
+
+
+def beds(request):
+    beds = Bed.objects.all()
+
+    occupied_beds = []
+    vacant_beds = []
+
+    for bed in beds:
+        occupied = IpdPatient.objects.filter(bed_number=bed.name)
+
+        if occupied.exists():
+            occupied_beds.append({'bed_number': bed.name, 'status': 'occupied'})
+            # You can customize the dictionary based on your requirements
+        else:
+            vacant_beds.append({'bed_number': bed.name, 'status': 'vacant'})
+            # You can customize the dictionary based on your requirements
+
+    context = {
+        'occupied_beds': occupied_beds,
+        'vacant_beds': vacant_beds,
+    }
+    return render(request, 'beds/beds.html', context)
+
+
+def emergency_patient(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        date_of_birth = request.POST['date_of_birth']
+        phone = request.POST['phone']
+        gender = request.POST['gender']
+        guardian_1 = request.POST.get('guardian_1')
+        guardian_2 = request.POST.get('guardian_2')
+        guardian_3 = request.POST.get('guardian_3')
+        tpa = request.POST.get('tpa')
+        cause = request.POST.get('cause')
+        address = request.POST['address']
+
+        # Create a new Patient instance and save it to the database
+        patient = Patient(
+            name=name,
+            date_of_birth=date_of_birth,
+            phone=phone,
+            gender=gender,
+            address=address,
+            cause_of_emergebcy=cause,
+            tpa=tpa,
+            gardian_1=guardian_1,
+            gardian_2=guardian_2,
+            gardian_3=guardian_3,
+            emergency=True,
+        )
+        patient.save()
+        return redirect('emergency_patient')
+    patient = Patient.objects.filter(emergency=True)
+    context={
+        'patient':patient,
+    }
+    return render(request,'patient/emergency.html',context)

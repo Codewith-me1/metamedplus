@@ -83,7 +83,7 @@ button a{
 
 <div class="form-group">
     <label for="pulse">Pulse:</label>
-    <input type="number" class="form-control" name="pulse" required>
+    <input type="text" class="form-control" name="pulse" required>
 </div>
 
 <div class="form-group">
@@ -93,7 +93,7 @@ button a{
 
 <div class="form-group">
     <label for="respiration">Respiration:</label>
-    <input type="number" class="form-control" name="respiration" required>
+    <input type="text" class="form-control" name="respiration" required>
 </div>
 
 <div class="form-group">
@@ -108,7 +108,13 @@ button a{
 
 <div class="form-group">
     <label for="symptoms_description">Symptoms Description:</label>
-    <input type="text" class="form-control" name="symptoms_description" required>
+    <select class="form-control" id="symptoms_description" name="symptoms_type">
+        <option value="">Select Symptoms Description</option>
+        {% for type in type %}
+            <option>{{ type.symptoms_description }}</option>
+        {% endfor %}
+    </select>
+   
 </div>
 
 <div class="form-group">

@@ -196,19 +196,7 @@ input{
 
      </div>
 
-     <div class="form-group">
-       <label for="payment">Payment Mode</label>
-    <select class="form-control payment" id="payment" name="payment"> 
-      
-
-        <option  value="cash">Cash</option>
-        <option  value="card">Debit/Credit Card</option>
-        <option  value="cheque">cheque</option>
-        <option  value="online">Online/Net Banking</option>
-        <option  value="other">other</option>
-      </select>
-
-  </div>
+  
 
   <div class="form-group">
 
@@ -217,12 +205,45 @@ input{
 
   </div>
 
+  
+
   <div class="form-group">
-   <label for="date_time">Date/Time</label>
-   <input type="date" name="date_time" id="date_time" >
+
+    <label for="path_test">Bill Date</label>
+    <input type="date" name="bill_date" id="bill_date">
+
+  </div>
+  <div class="form-group">
+    <label for="date_time">Admission Date</label>
+    <input type="date" name="date_time" id="date_time" >
+ 
+ 
+     </div>
+  <div class="form-group">
+
+    <label for="path_test">Guardian Name</label>
+    <input type="text" name="guardian_name" id="guardian_name">
+
+  </div>
 
 
-    </div>
+  
+  <div class="form-group">
+
+    <label for="path_test">Age</label>
+    <input type="number" name="Age" id="Age">
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="path_test">Address</label>
+    <textarea name="address" id="address"></textarea>
+
+  </div>
+
+
+ 
 
  
 
@@ -231,10 +252,25 @@ input{
 
       <label for="small_note">Small Note</label>
    
-      <textarea id="small_note" name="small_note" rows="3" cols="30">
+      <textarea id="small_note" name="small_note" >
      
       </textarea>
-     </div>
+
+      
+     </div> 
+     <div class="form-group">
+      <label for="payment">Payment Mode</label>
+   <select class="form-control payment" id="payment" name="payment"> 
+     
+
+       <option  value="cash">Cash</option>
+       <option  value="card">Debit/Credit Card</option>
+       <option  value="cheque">cheque</option>
+       <option  value="online">Online/Net Banking</option>
+       <option  value="other">other</option>
+     </select>
+
+ </div>
      </div>
      <div class="pos_middle">
         <table class="table">

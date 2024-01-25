@@ -45,46 +45,59 @@
     
     <div class="hospital_det">
         <h1> {{hospital_name}}</h1>
-        <p>{{address}}</p><br>
-        <p>PH:-{{phone}},email-id:-{{email_id}}</p>
-        <h1>Receipt</h1>
-
+        {% for address in address %}
+        <p>{{address.address}}</p>
+        <p>PH:-{{address.phone_no}},email-id:-{{address.email_id}}</p>
+        {% endfor %}
+        <h1>Final Bill</h1>
+    
     </div>
     <table id="table">
-
+    
         <tr>
-            <td><strong>Prescribed By</strong></td>
-            <td>{{ doctor }}</td>
-       
-            <td><strong>Sub Total</strong></td>
-            <td>{{ sub_total }}</td>
-        </tr> 
-        <tr>
-            <td><strong>Tax Percentage</strong></td>
-            <td>{{ tax }}</td>
- 
-            <td><strong>Date/Time</strong></td>
-            <td>{{ date_time }}</td>
-            
-        </tr>
             <td><strong>Patient Name</strong></td>
             <td>{{ patient }}</td>
+    
+           
+    
+            <td><strong>Age</strong></td>
+            <td>{{ age }}</td>
+            
+        </tr>
+     
+    
+        <tr>
+            <td><strong>Admission Date</strong></td>
+            <td>{{ date_time }}</td>
+    
+            <td><strong>Bill Date</strong></td>
+            <td>{{ bill_date }}</td>
+        </tr>
+    
+        <tr>
 
-       
-       
+            <td><strong>Address</strong></td>
+            <td>{{ patient_address }}</td>
 
+            <td><strong>Prescribed By</strong></td>
+            <td>{{ doctor }}</td>
+    
+          
+            
+        </tr>
+    
+    
+    
         {% if small_note %}
         <tr>
             <td><strong>Small Note</strong></td>
             <td>{{ small_note }}</td>
             
         </tr>
-   
         
         {% endif %}
-   
-    </table>
     
+    </table>
     <h2>Items</h2>
     <table id="table">
         <thead>
@@ -124,7 +137,7 @@
     
         <tr>
             <th>Total</th>
-            <th></th>
+            
             <td><h3>Total Amount: {{ grand_total }}</h3></td>
     
                             
@@ -149,8 +162,8 @@
     <table>
     
             <tr>
-                <th>Total</th>
-                <td> <h3>Discount {{ discount }}</h3></td>
+                <th>Discount</th>
+                <td> <h3> {{ discount }}</h3></td>
 
                                 
             </tr>
@@ -171,8 +184,8 @@
     <table id="table">
     
         <tr>
-            <th>Total</th>
-            <td> <h3>Paid Amount: {{ paid_amount }}</h3></td>
+            <th>Paid Amount</th>
+            <td> <h3> {{ paid_amount }}</h3></td>
 
                             
         </tr>

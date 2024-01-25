@@ -34,33 +34,47 @@
  </style>
 </head>
 <body>
-    <h1>Bill</h1>
+    <div class="hospital_det">
+        <h1> {{hospital_name}}</h1>
+        {% for address in address %}
+        <p>{{address.address}}</p>
+        <p>PH:-{{address.phone_no}},email-id:-{{address.email_id}}</p>
+        {% endfor %}
+        <h1>Final Bill</h1>
+    
+    </div>
     <table id="table">
 
         <tr>
-            <td><strong>Prescribed By</strong></td>
-            <td>{{ doctor }}</td>
+            <td><strong>Patient Name</strong></td>
+            <td>{{ patient }}</td>
+
             
+            <td><strong>Age</strong></td>
+            <td>{{ patient_details.age }}</td>
         </tr>
      
 
         <tr>
             <td><strong>Sub Total</strong></td>
             <td>{{ sub_total }}</td>
-        </tr>
-        <tr>
+
             <td><strong>Tax Percentage</strong></td>
             <td>{{ tax }}</td>
         </tr>
+  
         <tr>
-            <td><strong>Date/Time</strong></td>
+            <td><strong>Admission Date</strong></td>
             <td>{{ date_time }}</td>
+
+            <td><strong>Bill Date</strong></td>
+            <td>{{ bill_date }}</td>
             
         </tr>
 
         <tr>
-            <td><strong>Patient Name</strong></td>
-            <td>{{ patient }}</td>
+            <td><strong>Prescribed By</strong></td>
+            <td>{{ bill_date }}</td>
             
         </tr>
        
@@ -109,9 +123,97 @@
         </tbody>
     </table>
     
-    <h3>Discount {{ discount }}</h3>
-    <h3>Total Amount: {{ grand_total }}</h3>
-    <h3>Paid Amount: {{ paid_amount }}</h3>
-    <h3>Balance {{ balance }}</h3>
+     <table>
+    
+        <tr>
+            <th>Total</th>
+            
+            <td><h3>Total Amount: {{ grand_total }}</h3></td>
+    
+                            
+        </tr>
+    
+    
+      
+    
+         
+               
+    
+           
+    
+    
+    
+    
+    </table>
+        
+       
+        
+
+    <table>
+    
+            <tr>
+                <th>Discount</th>
+                <td> <h3> {{ discount }}</h3></td>
+
+                                
+            </tr>
+        
+
+          
+
+             
+                   
+
+               
+
+        
+
+        
+    </table>
+
+    <table >
+    
+        <tr>
+            <th>Paid Amount</th>
+            <td> <h3> {{ paid_amount }}</h3></td>
+
+                            
+        </tr>
+    
+
+      
+
+         
+               
+
+           
+
+    
+
+    
+</table>
+
+<table >
+    
+    <tr>
+        <th>Balance</th>
+        <td> <h3> {{ balance }}</h3></td>
+
+                        
+    </tr>
+
+
+  
+
+     
+           
+
+       
+
+
+
+
+</table>
+
 </body>
 </html>

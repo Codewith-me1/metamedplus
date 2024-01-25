@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient</title>
+    <title>Emergency Patient</title>
 
 
 {% load static %}
@@ -19,43 +19,66 @@
                 <div class="cards">
                   <div class="popup-header">
                     <span id="closePopupBtn" class="close-button">Close</span>
-                    <h1>Add Patient</h1>
+                    <h1>Add Emergency Patient</h1>
                   </div>
 
 
 
-                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'patient_form' %}">
+                    <form class="form_popup"  enctype="multipart/form-data" method="post" action="{% url 'emergency_patient' %}">
                         {% csrf_token %}
-                        <div class="form-group">
-                          <label for="name">Name:</label>
-                          <input type="text" id="name" name="name" required>
-                      </div>
-                  
-                      
-                      <div class="form-group">
-                          <label for="phone">Phone:</label>
-                          <input type="text" id="phone" name="phone" required>
-                      </div>
-                  
-                      <div class="form-group">
-                          <label for="gender">Gender:</label>
-                          <select id="gender" name="gender" required>
-                              <option value="M">Male</option>
-                              <option value="F">Female</option>
-                          </select>
-                      </div>
-                  
-                      <div class="form-group">
-                          <label for="address">Address:</label>
-                          <input type="text" id="address" name="address" required>
-                      </div>
-                      <div class="form-group">
-                        <label for="date_of_birth">Date of Birth:</label>
-                        <input type="date" id="date_of_birth" name="date_of_birth" required>
-                    </div>
-                     
-    
                        
+    <div class="form-group">
+        <label for="name">Emergency Patient Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="date_of_birth">Date of Birth:</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required>
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required>
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+    </div>
+
+    <div class="form-group">
+        <label for="guardian_1">Guardian 1</label>
+        <input type="text" id="guardian_1" name="guardian_1" >
+    </div>
+
+    <div class="form-group">
+        <label for="guardian_2">Guardian 2</label>
+        <input type="text" id="guardian_2" name="guardian_2" >
+    </div>
+
+    <div class="form-group">
+        <label for="guardian_3">Guardian 3</label>
+        <input type="text" id="guardian_3" name="guardian_3" >
+    </div>
+
+    <div class="form-group">
+        <label for="tpa">TPA</label>
+        <input type="text" id="tpa" name="tpa" >
+    </div>
+
+    <div class="form-group">
+        <label for="cause">Cause Of Emergency</label>
+        <textarea  name="cause" ></textarea>
+    </div>
             
                         
                         <div style="text-align: center;">
@@ -75,13 +98,12 @@
     
     
     <div class="main-header">
-    <h1 class="headline">Patient</h1>
+    <h1 class="headline"> Emergency Patient</h1>
     <div class="side-btns">
     
     
     {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
     <a  class="btn-primary btn" onClick="change()" id="openPopupBtn">Add Patient </a>
-    <a  class="btn-primary btn" href="/emergency_patient">Add Emergency Patient </a>
     <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
 
     
@@ -98,13 +120,14 @@
           <th>Date of Birth</th>
           <th>Phone</th>
           <th>Gender</th>
+          <th>Emergency Cause</th>
           
          
         </tr>
       </thead>
       <tbody>
         
-        {% for patients in patients %}
+        {% for patients in patient %}
           <tr>
             <td>{{ patients.id }}</td>
 
@@ -112,6 +135,7 @@
             <td>{{ patients.date_of_birth}}</td>
             <td>{{ patients.phone}}</td>
             <td>{{ patients.gender}}</td>
+            <td>{{ patients.cause_of_emergency}}</td>
             
           
           </tr>
@@ -183,3 +207,8 @@
     </script>
 </body>
 </html>
+
+
+
+
+

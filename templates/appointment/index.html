@@ -214,7 +214,14 @@
                     
                     <div class="form-group">
                         <label for="gender">Gender:</label>
-                        <input type="text" id="gender" name="gender" required>
+                        <select id="gender" name="gender">
+
+                          
+                          <option value="Female">Female</option>
+                          <option value="Male">Male</option>
+                          <option value="Other">Other</option>
+                        
+                    </select>
                     </div>
                     
                     <div class="form-group">
@@ -234,7 +241,17 @@
                     
                     <div class="form-group">
                         <label for="priority">Priority:</label>
-                        <input type="text" id="priority" name="priority" required>
+                       
+                        <select id="priority" name="priority">
+
+                          
+                            <option value="Emergency">Emergency</option>
+                            <option value="High">High</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Low">Low</option>
+                          
+                          
+                      </select>
                     </div>
                     
                     <div class="form-group">
@@ -244,7 +261,16 @@
                     
                     <div class="form-group">
                         <label for="status">Status:</label>
-                        <input type="text" id="status" name="status" required>
+                        <select id="status" name="status">
+
+                          
+                          <option value="active">Active</option>
+                          <option value="pending">pending</option>
+                          <option value="denied">denied</option>
+                          
+                        
+                        
+                    </select>
                     </div>
                     
 
@@ -300,7 +326,7 @@
         
         {% for appointments in appointments %}
           <tr>
-            <td class="hide_download">{{ appointments.appointment_no }}</td>
+            <td class="hide_download">{{ appointments.id }}</td>
             <td>{{ appointments.patient_name }}</td>
             <td>{{ appointments.appointment_date }}</td>
             <td>{{ appointments.phone }}</td>

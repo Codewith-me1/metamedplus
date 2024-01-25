@@ -64,8 +64,8 @@ class AppointmentDetails(models.Model):
   phone = models.CharField(max_length=255)
   gender = models.CharField(max_length=255)
   doctor = models.CharField(max_length=255)
-  source = models.CharField(max_length=255)
-  priority = models.CharField(max_length=255)
+  source = models.CharField(max_length=255,default=True,blank=True)
+  priority = models.CharField(max_length=255,default=True,blank=True)
   fees = models.DecimalField(max_digits=10, decimal_places=2)
   status = models.CharField(max_length=255)
 
@@ -88,6 +88,12 @@ class Patient(models.Model):
     phone = models.CharField(max_length=15)
     gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
     address = models.CharField(max_length=200)
+    gardian_1=models.CharField(max_length=20,blank=True,null=True)
+    gardian_2=models.CharField(max_length=20,blank=True,null=True)
+    gardian_3=models.CharField(max_length=20,blank=True,null=True)
+    tpa= models.CharField(max_length=20,blank=True,null=True)
+    emergency= models.BooleanField(default=False)
+    cause_of_emergebcy= models.TextField(blank=True,null=True)
     # Add other patient-related fields here
 
     def __str__(self):
@@ -177,6 +183,7 @@ class Role(models.Model):
 class Floor(models.Model):
    name =  models.CharField(max_length=100)
    description = models.CharField(max_length=100,blank=True, null=True)
+
 
 
 
@@ -462,8 +469,7 @@ class Radiology(models.Model):
     payment_amount = models.IntegerField(max_length=10)
 
     note = models.TextField(null=True)
-    def __str__(self):
-        return self.test_name
+    
 
 class MedicineCategory(models.Model):
     category_name = models.CharField(max_length=255)
@@ -747,7 +753,7 @@ class OpdPatient(models.Model):
     is_old_patient = models.BooleanField()
     is_tpa = models.BooleanField()
     credit_limit = models.DecimalField(max_digits=10, decimal_places=2)
-    reference = models.CharField(max_length=255)
+    reference = models.CharField(max_length=255,default=True,blank=True)
     consultant_doctor = models.CharField(max_length=255)
     discharged_status = models.BooleanField(default=False)
     discharged = models.CharField(max_length=20,default='normal')
@@ -1115,7 +1121,7 @@ class Ads(models.Model):
 class Notice(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
@@ -1190,7 +1196,7 @@ class Visitors(models.Model):
     num_of_person = models.IntegerField()
     date = models.DateField()
     in_time = models.TimeField()
-    out_time = models.TimeField()
+    out_time = models.TimeField(null=True,blank=True,auto_now_add=True)
     note = models.TextField()
     document = models.FileField(upload_to='static/visitors', null=True, blank=True)
 
