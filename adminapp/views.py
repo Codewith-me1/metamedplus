@@ -874,9 +874,13 @@ def search_staff(request):
         query = request.GET['q']
         results = AddStaff.objects.filter(role__icontains=query)
     else:
-        results = None
-
-    return render(request, 'hr/staff_search.html', {'results': results})
+        results = "No result Found"
+    role = Role.objects.all()
+    context = {
+        'role':role,
+        'results': results,
+    }
+    return render(request, 'hr/payroll.html', context)
 
 
 
@@ -8737,10 +8741,12 @@ def birth_pdf(request,id):
    
  
 
-
+    header_name = header.objects.all().first()
 
     child= {
         'child':child,
+        'hospital_name':header_name.name,
+        'url':header_name.image.url,
 
     }
 
@@ -9733,10 +9739,11 @@ def beds(request):
     vacant_beds = []
 
     for bed in beds:
-        occupied = IpdPatient.objects.filter(bed_number=bed.name)
+        occupied = IpdPatient.objects.filter(bed_number=bed.name) 
 
         if occupied.exists():
-            occupied_beds.append({'bed_number': bed.name, 'status': 'occupied'})
+            patient = occupied.first()
+            occupied_beds.append({'bed_number': bed.name, 'status': 'occupied', 'ipdpatient_id': patient.patient.id})
             # You can customize the dictionary based on your requirements
         else:
             vacant_beds.append({'bed_number': bed.name, 'status': 'vacant'})

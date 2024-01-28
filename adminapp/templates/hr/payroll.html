@@ -11,10 +11,35 @@
     <style>
 .search_payroll{
     margin-top:5rem;
+    display:flex;
+    width:50%;
+    margin:5px 5px 5px 20px;
+    
 }
+.search_payroll button{
+    margin-left:20px;
+    margin-bottom:5px;
+
+}
+
     </style>
 
 <div class="container">
+
+        
+
+    <div class="main-header">
+        <h1 class="headline">Search Payroll</h1>
+
+        <div class="side-btns">
+      
+       
+        {% comment %} <a class="btn-primary btn" href="{% url "appointmentForm" %}">Appointment Form</a> {% endcomment %}
+        <a class="btn btn-primary"  href="javascript:history.back()">Back</a>
+      
+    </div>    
+    </div>    
+
 <form class="search_payroll" method="GET" action="{% url 'search-staff' %}">
     <select id="role" name="q">
         <option value="">Select A Role</option>
@@ -25,4 +50,33 @@
 <br>
     <button class="btn" type="submit">Search</button>
 </form>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>Staff ID </th>
+        <th>first Name</th>
+        <th>Last Name</th>
+        <th>Role</th>
+          
+       
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for staff in results %}
+        <tr>
+            <td><a href="/payroll/{{ staff.staff_id }}">Generate Payroll<a></td>
+          <td>{{ staff.first_name }}</td>   
+          <td>{{ staff.last_name }}</td>
+          <td>{{ staff.role }}</td>
+          
+      
+        
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
 </div>

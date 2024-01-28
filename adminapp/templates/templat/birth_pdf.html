@@ -73,6 +73,10 @@ justify-content: center
   margin-top: 20px;
 }
 
+.head{
+  display:flex;
+  justify-content:space-between;
+}
 {% load static %}
         </style>
 </head>
@@ -80,6 +84,10 @@ justify-content: center
     
     <div class="certificate" style=" padding:20px; text-align:center;" >
         <div style="padding:20px; text-align:center;">
+            <div class="head">
+              <img src="{% static "{{url}}" %}">
+              <h1>{{hospital_name}}</h1>
+            </div>
                <span class="heading" style="font-size:50px; font-weight:bold">Birth Certifcate</span>
                <br><br>
               

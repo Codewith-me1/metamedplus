@@ -42,15 +42,16 @@
     {% for bed in occupied_beds %}
     <div class="beds_image">
     <img src="{% static "css/images/greenbed.png" %}">
-    <p>{{bed.bed_number}}</p>
+    
+    <a href="/ipd/{{bed.ipdpatient_id}}"><p>{{bed.bed_number}}</p></a>
     </div>
     {% endfor %}
 
 
     {% for vacant in vacant_beds %}
     <div class="beds_image">
-    <img src="{% static "css/images/icons8-occupied-bed-100.png" %}">
-    <p>{{vacant.bed_number}}</p>
+    <img src="{% static "css/images/icons8-occupied-bed-red.png" %}">
+    <p>{{vacant.bed_number}} vacant</p>
     </div>
     {% endfor %}
 

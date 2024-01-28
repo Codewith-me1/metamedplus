@@ -456,6 +456,10 @@ a.top-bar-icon{
 <a   href="/beds/"id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">Bed</span></a>
 {% endif %}
 
+{% if user.role == 'Manager' %}
+<a   href="/beds/"id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">Bed</span></a>
+{% endif %}
+
 {% if user.role == 'Nurse' %}
 <a href="/beds/"  id="myBtn"><i class="fa fa-bed" aria-hidden="true"></i> <span class="top-bar-text">  Bed</span></a>
 {% endif %}

@@ -169,6 +169,11 @@
         </div>
 
         <div class="form-group">
+            <label for="checkbox">Same as Current Address</label>
+            <input type="checkbox" id="checkbox" name="checkbox" >
+        </div>
+
+        <div class="form-group">
             <label for="permanent_address">Permanent Address</label>
             <textarea id="permanent_address" name="permanent_address"></textarea>
         </div>
@@ -344,9 +349,22 @@
     </div>
 </div>
 </form>
-
 <script>
-   
+    // Get references to the elements
+    var currentAddress = document.getElementById('current_address');
+    var permanentAddress = document.getElementById('permanent_address');
+    var checkbox = document.getElementById('checkbox');
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener('change', function () {
+        // If the checkbox is checked, copy the current address to permanent address
+        if (checkbox.checked) {
+            permanentAddress.value = currentAddress.value;
+        } else {
+            // If unchecked, clear the permanent address
+            permanentAddress.value = '';
+        }
+    });
 </script>
 
 
