@@ -75,7 +75,11 @@ justify-content: center
 
 .head{
   display:flex;
+  margin:10px;
   justify-content:space-between;
+}
+.head img{
+  width:200px;
 }
 {% load static %}
         </style>
@@ -85,8 +89,8 @@ justify-content: center
     <div class="certificate" style=" padding:20px; text-align:center;" >
         <div style="padding:20px; text-align:center;">
             <div class="head">
-              <img src="{% static "{{url}}" %}">
-              <h1>{{hospital_name}}</h1>
+              <img src="/root/projectdir/metamedplus{{child.url}}">
+              <h1>{{child.hospital_name}}</h1>
             </div>
                <span class="heading" style="font-size:50px; font-weight:bold">Birth Certifcate</span>
                <br><br>
