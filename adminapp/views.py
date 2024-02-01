@@ -627,6 +627,7 @@ def add_staff(request):
             joining_letter = request.FILES.get('joining_letter')
             other_documents = request.FILES.get('other_documents')
             print(photo)
+            password = request.POST.get('password')
             # Create a Staff object and save it to the database
             staff = AddStaff(
                 staff_id=staff_id,
@@ -681,19 +682,18 @@ def add_staff(request):
 
 
             # Save the Staff object to the database
-            password = generate_random_password()
-            message = "Your Password Is " + password
+            # password = generate_random_password()
+            # message = "Your Password Is " + password
 
-            subject = "Password"
-            print(password)
-            # send_email(request,email,message)
+            # subject = "Password"
+            
             staff.save()
         
 
             # Redirect to a success page or staff list page
             
 
-            User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password='password', role=role)
+            User = CustomUser.objects.create_user(id=staff_id,username=email, email=email, password=password, role=role)
             
             
             

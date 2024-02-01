@@ -8,7 +8,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Staff</title>
+<style>
+    .password{
+        display:flex !important;
+        position:relative;
+        align-items: center;
 
+        ;
+    }
+    .password .input-group-text{
+        margin:5px;
+    }
+    
+</style>
 
     <div class="container">
             
@@ -22,7 +34,7 @@
           
           </div>
           </div>
-      
+
           <div class="ale alert-main">
             Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.   
                                  </div>
@@ -162,6 +174,17 @@
             <label for="email">Email *</label>
             <input type="email" id="email" name="email" required>
         </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password">
+           
+            <input class="form-control" id="password" name="password" placeholder="Password" value="" required>
+            <span class="input-group-text ">
+              <i class="fa fa-eye" id="togglePassword" style="cursor: pointer"></i>
+             </span>
+          </div>
+          </div>
 
         <div class="form-group">
             <label for="current_address">Current Address</label>
@@ -365,6 +388,19 @@
             permanentAddress.value = '';
         }
     });
+
+    const togglePassword = document.querySelector("#togglePassword");
+const password = document.querySelector("#password");
+
+togglePassword.addEventListener("click", function () {
+   
+  // toggle the type attribute
+  const type = password.getAttribute("type") === "password" ? "text" : "password";
+  password.setAttribute("type", type);
+  // toggle the eye icon
+  this.classList.toggle('fa-eye');
+  this.classList.toggle('fa-eye-slash');
+});
 </script>
 
 

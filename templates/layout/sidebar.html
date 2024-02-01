@@ -660,124 +660,7 @@ body{
             
             
               
-              <button class="dropdown-btn"> <i class="fa-solid fa-divide"></i>   <span class="side_text">Accounting</span>
-                <i class="fa fa-caret-down"></i>
-              </button>
-              <div class="dropdown-container">
               
-                <a class="dropdown-a" href="{% url 'party' %}"> Add Party</a>
-                 <a class="dropdown-a" href="{% url 'purchase' %}"> Purchase Invoice</a>
-                 
-                 <a class="dropdown-a" href="{% url 'unit' %}">Unit</a>
-                 <a class="dropdown-a" href="{% url 'item_acc' %}">Item</a>
-    
-                 
-                 
-           
-  
-                 <a class="dropdown-a" href="{% url 'payment_list' %}">Payment In</a>
-  
-                 <a class="dropdown-a" href="{% url 'add_itemcat' %}">Item Catgory</a>
-  
-  
-                 <button class="dropdown-btn dropdown-nested"> Sales
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url 'estimate_list' %}">Sales Estimate</a>
-                  <a class="dropdown-a" href="{% url 'sale_order_list' %}">Sales Order </a>
-                  <a class="dropdown-a" href="{% url 'sale_invoice_list' %}">Sales Invoice </a>
-                  <a class="dropdown-a" href="{% url 'sales_returnlist' %}">Sales Return List </a>
-                  
-                  <a class="dropdown-a" href="{% url 'challan_list' %}">Delivery Challan </a>
-                   
-  
-                </div>
-  
-                <button class="dropdown-btn dropdown-nested"> Bank
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  
-                  <a class="dropdown-a" href="{% url 'bank_account' %}">Bank Account </a>
-                   
-  
-                </div>
-                
-                <button class="dropdown-btn dropdown-nested"> Front Office
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  
-                  <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
-                  <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
-                   
-  
-                </div>
-                
-                <button class="dropdown-btn dropdown-nested"> Expense
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url 'expense_list' %}">Expense </a>
-                  <a class="dropdown-a" href="{% url 'expense_category' %}">Expense Category </a>
-                  <a class="dropdown-a" href="{% url 'expense_item' %}">Expense Item </a>
-                  
-                  
-                   
-  
-                </div>
-                  <button class="dropdown-btn dropdown-nested "> Asset
-                    <i class="fa fa-caret-down"></i>
-                  </button> 
-                  <div class="dropdown-container">
-                    <a class="dropdown-a" href="{% url 'create_asset' %}">Asset </a>
-              
-  
-                  </div>
-                <button class="dropdown-btn dropdown-nested "> Liablity
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                  <a class="dropdown-a" href="{% url 'create_liablity' %}">Liablity </a>
-            
-  
-                </div>
-                
-  
-                 <button class="dropdown-btn dropdown-nested"> Report
-                  <i class="fa fa-caret-down"></i>
-                </button> 
-                <div class="dropdown-container">
-                
-                  <a class="dropdown-a" href="{% url 'balance_sheet' %}"> Balance Sheet</a>
-                   <a class="dropdown-a" href="{% url 'sales_report' %}"> Sales Report </a>
-                   <a class="dropdown-a" href="{% url 'all_party' %}"> Party </a>
-                   <a class="dropdown-a" href="{% url 'cash_flow' %}"> Cash Flow  </a>
-                   <a class="dropdown-a" href="{% url 'purchase_report' %}">Purchase Report</a>
-                   <a class="dropdown-a" href="{% url 'transcation' %}">Trading </a>
-                   <a class="dropdown-a" href="{% url 'gst' %}">GST Report  </a>
-                   <a class="dropdown-a" href="{% url 'cashbook' %}">Cash Book  </a>
-                   
-                   
-  
-                   <button class="dropdown-btn dropdown-nested "> Bank Book
-                  <i class="fa fa-caret-down"></i>
-                  </button> 
-                  <div class="dropdown-container">
-                    <a class="dropdown-a" href="{% url 'bankbooks' %}"> Bank Book Entry  </a>
-                    <a class="dropdown-a" href="{% url 'bank' %}"> Accounts  </a>
-              
-    
-                  </div>
-  
-  
-                   <a class="dropdown-a" href="{% url 'brs' %}">BRS</a>
-                   <a class="dropdown-a" href="{% url 'profit' %}">Profit And Loss </a>
-                   
-  
-                </div>
-                </div>
    
                 <li  class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" ><a href="{% url 'dashboard' %}"><i class="fa-solid fa-wallet"></i><span class="side_text">Wallet</span></a></li>  
             
@@ -845,6 +728,17 @@ body{
                    <a class="dropdown-a" href="{% url 'path_category' %}">Add Category</a>
   
   
+  
+                </div>
+
+                <button class="dropdown-btn dropdown-nested"> Front Office
+                  <i class="fa fa-caret-down"></i>
+                </button> 
+                <div class="dropdown-container">
+                  
+                  <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
+                  <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
+                   
   
                 </div>
   
@@ -1018,16 +912,7 @@ body{
 
               </div>
               
-              <button class="dropdown-btn dropdown-nested"> Front Office
-                <i class="fa fa-caret-down"></i>
-              </button> 
-              <div class="dropdown-container">
-                
-                <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
-                <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
-                 
-
-              </div>
+            
               
               <button class="dropdown-btn dropdown-nested"> Expense
                 <i class="fa fa-caret-down"></i>
@@ -1149,6 +1034,16 @@ body{
                  <a class="dropdown-a" href="{% url 'med_cat' %}">Medicine Category</a>
 
 
+
+              </div>
+              <button class="dropdown-btn dropdown-nested"> Front Office
+                <i class="fa fa-caret-down"></i>
+              </button> 
+              <div class="dropdown-container">
+                
+                <a class="dropdown-a" href="{% url 'complain_type' %}">Complain Type </a>
+                <a class="dropdown-a" href="{% url 'complain_source' %}">Complain Source </a>
+                 
 
               </div>
               <button class="dropdown-btn dropdown-nested"> Pathology
